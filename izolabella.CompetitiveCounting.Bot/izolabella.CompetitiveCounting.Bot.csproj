@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\izolabella.DataStore\izolabella.Storage.csproj">
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\izolabella.Discord\izolabella.Discord.csproj">
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Objects\Error Control\Exceptions\Implementations\" />
+  </ItemGroup>
+
+</Project>

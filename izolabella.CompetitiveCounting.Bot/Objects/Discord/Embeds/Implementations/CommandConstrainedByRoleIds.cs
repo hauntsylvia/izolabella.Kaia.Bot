@@ -31,7 +31,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementati
             this.Fields.Add(new()
             {
                 Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *missing permissions*\n {(MissingStr != Strings.EmbedStrings.Empty ? $"{MissingStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}",
+                Value = $"// *missing roles*\n {(MissingStr != Strings.EmbedStrings.Empty ? $"{MissingStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}",
             });
         }
     }

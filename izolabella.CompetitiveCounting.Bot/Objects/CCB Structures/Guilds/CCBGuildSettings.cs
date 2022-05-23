@@ -34,5 +34,8 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures.Guilds
 
         [JsonProperty("OverrideCommandPermissionsConstraint", Required = Required.Default)]
         public IReadOnlyDictionary<string, GuildPermission[]> OverrideCommandPermissionsConstraint { get; set; } = new Dictionary<string, GuildPermission[]>();
+
+        [JsonProperty("OverrideCommandRolesConstraint", Required = Required.Default)]
+        public IReadOnlyDictionary<string, ulong[]> OverrideCommandRolesConstraint { get; set; } = new Dictionary<string, ulong[]>();
     }
 }

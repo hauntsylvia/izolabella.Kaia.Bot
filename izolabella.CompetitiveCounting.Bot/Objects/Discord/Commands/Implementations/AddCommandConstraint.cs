@@ -15,14 +15,18 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
     {
         public string Name => "Add Command Constraint";
 
-        public string Description => "Constrain a command in my guild to certain roles or permissions.";
+        public string Description => "[Admin] Constrain a command in my guild to certain roles or permissions.";
 
         public List<IzolabellaCommandParameter> Parameters { get; } = new()
         {
-            new("Add Allowed Role", "The role to add to the list of allowed roles.", ApplicationCommandOptionType.Role, false),
+            new("Allowed Role", "The role to add or overwrite to the list of allowed roles.", ApplicationCommandOptionType.Role, false),
             new("Permissions Allowed", "The role to copy the permissions of.", ApplicationCommandOptionType.Role, false),
+            new("Overwrite", "If true, the current constraints will get entirely replaced by the new ones.", ApplicationCommandOptionType.Boolean, true),
         };
-        public List<IIzolabellaCommandConstraint> Constraints => new();
+        public List<IIzolabellaCommandConstraint> Constraints { get; } = new()
+        {
+            new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
+        };
 
         public string ForeverId => CommandForeverIds.AddCommandConstraint;
 
@@ -31,11 +35,15 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
             if(Context.UserContext.User is SocketGuildUser SUser)
             {
                 CCBGuild Guild = await CCBGuild.GetOrCreateAsync(SUser.Guild.Id);
-                IzolabellaCommandArgument? RoleAllowed = Arguments.FirstOrDefault(A => A.Name == "add-allowed-role");
+                IzolabellaCommandArgument? RoleAllowed = Arguments.FirstOrDefault(A => A.Name == "allowed-role");
                 IzolabellaCommandArgument? RoleToCopyPermissionsFrom = Arguments.FirstOrDefault(A => A.Name == "permissions-allowed");
-                if(Arguments.First(A => A.IsRequired).Value is string CommandId)
+                IzolabellaCommandArgument? OverwriteArg = Arguments.FirstOrDefault(A => A.Name == "overwrite");
+                bool Overwrite = OverwriteArg != null && (OverwriteArg.Value as bool? ?? false);
+                if(Arguments.First(A => A.IsRequired && A.Name == "command").Value is string CommandId)
                 {
-                    if(RoleToCopyPermissionsFrom != null && RoleToCopyPermissionsFrom.Value is IRole CopyFrom)
+                    Dictionary<string, GuildPermission[]> PermissionsDict = new(Overwrite ? new Dictionary<string, GuildPermission[]>() : Guild.Settings.OverrideCommandPermissionsConstraint);
+                    Dictionary<string, ulong[]> RolesDict = new(Overwrite ? new Dictionary<string, ulong[]>() : Guild.Settings.OverrideCommandRolesConstraint);
+                    if (RoleToCopyPermissionsFrom != null && RoleToCopyPermissionsFrom.Value is IRole CopyFrom)
                     {
                         Array AllGuildPermissions = Enum.GetValues(typeof(GuildPermission));
                         List<GuildPermission> Watch = new();
@@ -46,20 +54,37 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
                                 Watch.Add(Permission);
                             }
                         }
-                        Dictionary<string, GuildPermission[]> New = new(Guild.Settings.OverrideCommandPermissionsConstraint)
+                        if (PermissionsDict.ContainsKey(CommandId))
                         {
-                            { CommandId, Watch.ToArray() }
-                        };
-                        Guild.Settings.OverrideCommandPermissionsConstraint = New;
+                            Watch.AddRange(Overwrite ? new List<GuildPermission>() : PermissionsDict[CommandId]);
+                            PermissionsDict[CommandId] = Watch.ToArray();
+                        }
+                        else
+                        {
+                            PermissionsDict.Add(CommandId, Watch.ToArray());
+                        }
                     }
+                    if(RoleAllowed != null && RoleAllowed.Value is IRole RolePassed)
+                    {
+                        List<ulong> Watch = new()
+                        {
+                            RolePassed.Id
+                        };
+                        if (RolesDict.ContainsKey(CommandId))
+                        {
+                            Watch.AddRange(Overwrite ? new List<ulong>() : RolesDict[CommandId]);
+                            RolesDict[CommandId] = Watch.ToArray();
+                        }
+                        else
+                        {
+                            RolesDict.Add(CommandId, Watch.ToArray());
+                        }
+                    }
+                    Guild.Settings.OverrideCommandPermissionsConstraint = PermissionsDict;
+                    Guild.Settings.OverrideCommandRolesConstraint = RolesDict;
                     Guild = await Guild.ChangeGuildSettings(Guild.Settings);
                 }
             }
-            else
-            {
-
-            }
-            await Context.UserContext.RespondAsync(text: "", embed: new MeView(Context.UserContext.User.Username, await CCBUser.GetOrCreateAsync(Context.UserContext.User.Id)).Build());
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)

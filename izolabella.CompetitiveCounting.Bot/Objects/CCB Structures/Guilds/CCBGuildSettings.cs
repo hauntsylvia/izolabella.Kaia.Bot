@@ -14,8 +14,8 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures.Guilds
         {
             this.CountingChannelId = CountingChannelId;
             this.LastSuccessfulNumber = LastSuccessfulNumber;
-            this.LastUserWhoCounted = LastUserWhoCounted;
-            this.HighestCountEver = HighestCountEver;
+            this.LastUserWhoCounted = LastUserWhoCounted ?? this.LastUserWhoCounted;
+            this.HighestCountEver = HighestCountEver ?? this.HighestCountEver;
         }
 
         [JsonProperty("CountingChannelId", Required = Required.AllowNull)]

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Bases
 {
-    public interface ICCBCommand : ISelfHandler, IIzolabellaCommand
+    public interface ICCBCommand : IIzolabellaCommand
     {
     }
 }

@@ -17,7 +17,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Clients
         public CompetitiveCountingBot(ClientParameters Parameters)
         {
             this.Parameters = Parameters;
-            this.Parameters.Wrapper.Client.MessageReceived += this.MessageReceived;
+            this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceived;
             this.MessageReceivers = GetMessageReceivers();
         }
 

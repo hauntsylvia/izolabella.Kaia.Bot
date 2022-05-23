@@ -5,6 +5,8 @@ using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Bases;
 using izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementations;
 using izolabella.CompetitiveCounting.Bot.Objects.Exceptions;
 using izolabella.Discord.Objects.Arguments;
+using izolabella.Discord.Objects.Constraints.Implementations;
+using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using System;
 using System.Collections.Generic;
@@ -18,11 +20,17 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
     {
         public string Name => "Guild Settings";
 
-        public string Description => "Change guild settings.";
+        public string Description => "Change my guild's settings.";
 
-        public IzolabellaCommandParameter[] Parameters => new[]
+        public List<IzolabellaCommandParameter> Parameters => new()
         {
             new IzolabellaCommandParameter("Counting Channel", "The channel used for counting.", ApplicationCommandOptionType.Channel, false)
+        };
+        public List<IIzolabellaCommandConstraint> Constraints => new()
+        {
+            {
+                new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
+            }
         };
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
@@ -34,7 +42,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
                 CCBGuild Guild = await CCBGuild.GetOrCreateAsync(SUser.Guild.Id);
                 if (CountingChannelArgument != null && CountingChannelArgument.Value is IGuildChannel NewCountingChannelId)
                 {
-                    Guild = await Guild.ChangeGuildSettings(new(NewCountingChannelId.Id));
+                    Guild = await Guild.ChangeGuildSettings(new(NewCountingChannelId.Id, Guild.Settings.LastSuccessfulNumber, Guild.Settings.LastUserWhoCounted, Guild.Settings.HighestCountEver));
                 }
                 await Context.UserContext.RespondAsync(text: "", ephemeral: false, embed: new GuildSettingsView(SUser.Guild.Name, Guild).Build());
 
@@ -44,7 +52,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
             }
         }
 
-        public Task OnErrorAsync(Exception Exception)
+        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
         {
             return Task.CompletedTask;
         }

@@ -1,6 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Clients;
+using izolabella.Discord.Objects.Constraints.Interfaces;
+using izolabella.Discord.Objects.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +16,18 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Client_Parameters
     {
         public ClientParameters(DiscordSocketConfig Config, string? Token)
         {
-            this.Wrapper = new(Config);
+            this.CommandHandler = new(Config);
             this.Token = Token;
         }
 
-        public IzolabellaDiscordCommandClient Wrapper { get; }
+        public IzolabellaDiscordCommandClient CommandHandler { get; }
         private string? Token { get; }
-
         public async Task StartAsync(string? Token = null)
         {
             string? T = this.Token ?? Token;
             if(T != null)
             {
-                await this.Wrapper.StartAsync(T);
+                await this.CommandHandler.StartAsync(T);
             }
             else
             {

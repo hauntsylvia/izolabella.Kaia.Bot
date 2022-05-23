@@ -30,8 +30,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
 
         public List<IIzolabellaCommandConstraint> Constraints { get; } = new()
         {                
-            new WhitelistUsersConstraint(916140079309787137),
-            new WhitelistPermissionsConstraint(true, GuildPermission.Administrator, GuildPermission.AttachFiles, GuildPermission.BanMembers)
+            new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
         };
         public string ForeverId => CommandForeverIds.GuildSettingsCommand;
 

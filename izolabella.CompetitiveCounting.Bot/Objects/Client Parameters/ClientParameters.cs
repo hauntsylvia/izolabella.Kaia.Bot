@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures;
 using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Bases;
+using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementations;
 using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Clients;
 using izolabella.Discord.Objects.Constraints.Implementations;
@@ -34,6 +35,13 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Client_Parameters
                 this.CommandHandler.Client.Ready += async () =>
                 {
                     await this.RefreshCommandsAsync();
+                };
+                this.CommandHandler.CommandInvoked += async (Context, Args, CommandInvoked) =>
+                {
+                    if(Context.UserContext.User is SocketGuildUser SUser && CommandInvoked is AddCommandConstraint)
+                    {
+                        await this.RefreshCommandsAsync(SUser.Guild);
+                    }
                 };
                 await this.CommandHandler.StartAsync(T, false);
             }

@@ -7,6 +7,7 @@ using izolabella.CompetitiveCounting.Bot.Objects.Exceptions;
 using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
+using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using System;
 using System.Collections.Generic;
@@ -24,17 +25,15 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
 
         public List<IzolabellaCommandParameter> Parameters => new()
         {
-            new IzolabellaCommandParameter("Counting Channel", "The channel used for counting.", ApplicationCommandOptionType.Channel, false)
+            new IzolabellaCommandParameter("Counting Channel", "The channel used for counting.", ApplicationCommandOptionType.Channel, false),
         };
-        public List<IIzolabellaCommandConstraint> Constraints => new()
-        {
-            {
-                new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
-            },
-            {
-                new WhitelistUsersConstraint(916140079309787137)
-            }
+
+        public List<IIzolabellaCommandConstraint> Constraints { get; } = new()
+        {                
+            new WhitelistUsersConstraint(916140079309787137),
+            new WhitelistPermissionsConstraint(true, GuildPermission.Administrator, GuildPermission.AttachFiles, GuildPermission.BanMembers)
         };
+        public string ForeverId => CommandForeverIds.GuildSettingsCommand;
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
@@ -53,6 +52,11 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
             else
             {
             }
+        }
+
+        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
+        {
+            return Task.CompletedTask;
         }
 
         public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)

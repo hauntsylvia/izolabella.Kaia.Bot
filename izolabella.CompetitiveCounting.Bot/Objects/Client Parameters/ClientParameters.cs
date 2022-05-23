@@ -1,8 +1,12 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures;
+using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Bases;
 using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Clients;
+using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
+using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using System;
 using System.Collections.Generic;
@@ -27,7 +31,31 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Client_Parameters
             string? T = this.Token ?? Token;
             if(T != null)
             {
-                await this.CommandHandler.StartAsync(T);
+                this.CommandHandler.Client.Ready += async () =>
+                {
+                    List<IIzolabellaCommand> Commands = await IzolabellaDiscordCommandClient.GetIzolabellaCommandsAsync();
+                    foreach(SocketGuild DiscordGuild in this.CommandHandler.Client.Guilds)
+                    {
+                        CCBGuild Guild = await CCBGuild.GetOrCreateAsync(DiscordGuild.Id);
+                        foreach(IIzolabellaCommand Command in Commands)
+                        {
+                            if(Command is ICCBCommand CCBLevelCommand)
+                            {
+                                GuildPermission[]? Permissions = Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
+                                if(Permissions != null)
+                                {
+                                    CCBLevelCommand.Constraints.RemoveAll(C => C.Type == izolabella.Discord.Objects.Enums.ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
+                                    CCBLevelCommand.Constraints.Add(new WhitelistPermissionsConstraint(true, Permissions)
+                                    {
+                                        ConstrainToOneGuildOfThisId = Guild.Id
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    await this.CommandHandler.UpdateCommandsAsync(Commands.ToArray());
+                };
+                await this.CommandHandler.StartAsync(T, false);
             }
             else
             {

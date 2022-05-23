@@ -30,6 +30,9 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
         {
             {
                 new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
+            },
+            {
+                new WhitelistUsersConstraint(916140079309787137)
             }
         };
 

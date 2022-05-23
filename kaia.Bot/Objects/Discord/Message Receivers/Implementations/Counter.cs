@@ -1,15 +1,16 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Events.Interfaces;
-using izolabella.CompetitiveCounting.Bot.Objects.Exceptions;
+using Kaia.Bot.Objects.CCB_Structures;
+using Kaia.Bot.Objects.Discord.Events.Interfaces;
+using Kaia.Bot.Objects.Exceptions;
+using Kaia.Bot.Objects.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Message_Receivers.Implementations
+namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
 {
     internal class Counter : IMessageReceiver
     {

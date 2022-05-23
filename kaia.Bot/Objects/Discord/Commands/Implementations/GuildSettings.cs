@@ -1,21 +1,22 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Bases;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementations;
-using izolabella.CompetitiveCounting.Bot.Objects.Exceptions;
+using Kaia.Bot.Objects.CCB_Structures;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations;
+using Kaia.Bot.Objects.Exceptions;
 using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using Kaia.Bot.Objects.Constants;
+using Kaia.Bot.Objects.Discord.Commands.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementations
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
     public class GuildSettings : ICCBCommand
     {
@@ -29,7 +30,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
         };
 
         public List<IIzolabellaCommandConstraint> Constraints { get; } = new()
-        {                
+        {
             new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
         };
         public string ForeverId => CommandForeverIds.GuildSettingsCommand;
@@ -37,8 +38,8 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementa
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? CountingChannelArgument = Arguments.FirstOrDefault();
-            
-            if(Context.UserContext.User is SocketGuildUser SUser)
+
+            if (Context.UserContext.User is SocketGuildUser SUser)
             {
                 CCBGuild Guild = await CCBGuild.GetOrCreateAsync(SUser.Guild.Id);
                 if (CountingChannelArgument != null && CountingChannelArgument.Value is IGuildChannel NewCountingChannelId)

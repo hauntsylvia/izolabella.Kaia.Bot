@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Kaia.Bot.Objects.Constants;
+using Kaia.Bot.Objects.Discord.Embeds.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementations
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
     public class CommandConstrainedByRoleIds : CCBEmbed
     {
@@ -19,7 +21,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementati
             foreach (ulong RoleId in RoleIdsRequired)
             {
                 SocketRole? RoleOfId = Guild.GetRole(RoleId);
-                if(RoleOfId != null)
+                if (RoleOfId != null)
                 {
                     RoleStr += $"{(RoleStr != Strings.EmbedStrings.Empty ? ", " : "")}{RoleOfId.Mention}";
                 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Constants
+namespace Kaia.Bot.Objects.Constants
 {
     internal static class Colors
     {

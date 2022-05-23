@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures.Guilds
+namespace Kaia.Bot.Objects.CCB_Structures.Guilds
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class CCBGuildSettings

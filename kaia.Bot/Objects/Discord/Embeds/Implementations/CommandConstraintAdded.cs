@@ -1,8 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Base;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Enums;
+using Kaia.Bot.Objects.Constants;
+using Kaia.Bot.Objects.Discord.Embeds.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementations
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
     internal class CommandConstraintAdded : CCBEmbed
     {
         public CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : base()
         {
             this.Description = $"*{Guild.Name}* // ***{CommandName.ToLower()}***";
-            if(Permissions != null)
+            if (Permissions != null)
             {
                 string PermsStr = Strings.EmbedStrings.Empty;
                 foreach (GuildPermission P in Permissions)
@@ -30,7 +31,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementati
                     Value = $"// *required permissions*\n {PermsStr}",
                 });
             }
-            if(Roles != null)
+            if (Roles != null)
             {
                 int MissingRolesCount = 0;
                 string RoleStr = Strings.EmbedStrings.Empty;

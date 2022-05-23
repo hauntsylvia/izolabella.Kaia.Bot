@@ -1,4 +1,4 @@
-﻿namespace izolabella.CompetitiveCounting.Bot.Objects.Util
+﻿namespace Kaia.Bot.Objects.Util
 {
     public class IdGenerator
     {

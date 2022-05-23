@@ -1,12 +1,13 @@
-﻿using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures.Derivations;
-using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures.Users;
+﻿using Kaia.Bot.Objects.CCB_Structures.Derivations;
+using Kaia.Bot.Objects.CCB_Structures.Users;
+using Kaia.Bot.Objects.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures
+namespace Kaia.Bot.Objects.CCB_Structures
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
     public class CCBUser : Unique

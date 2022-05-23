@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Constants
+namespace Kaia.Bot.Objects.Constants
 {
     internal static class Strings
     {
@@ -31,8 +31,8 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Constants
                 internal static string GuildSetSaveFail => "guild settings could not be saved.";
             }
             internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
-            private static string[] UserFailedInCounting => new[] 
-            { 
+            private static string[] UserFailedInCounting => new[]
+            {
                 "oh my . . how unfortunate. time to start over!",
                 "one day.",
                 "yikes.",

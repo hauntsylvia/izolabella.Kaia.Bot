@@ -1,5 +1,6 @@
 ﻿using izolabella.Storage.Objects.DataStores;
-namespace izolabella.CompetitiveCounting.Bot.Objects.Constants
+
+namespace Kaia.Bot.Objects.Constants
 {
     internal static class DataStores
     {

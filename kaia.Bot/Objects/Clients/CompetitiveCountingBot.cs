@@ -1,4 +1,4 @@
-﻿using izolabella.CompetitiveCounting.Bot.Objects.Client_Parameters;
+﻿using Kaia.Bot.Objects.Client_Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Discord.WebSocket;
-using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Events.Interfaces;
+using Kaia.Bot.Objects.CCB_Structures;
+using Kaia.Bot.Objects.Discord.Events.Interfaces;
 using System.Reflection;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Clients
+namespace Kaia.Bot.Objects.Clients
 {
     public class CompetitiveCountingBot
     {
@@ -31,7 +31,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Clients
             {
                 return M.CheckMessageValidityAsync(User, Arg).Result;
             });
-            if(Receiver != null)
+            if (Receiver != null)
             {
                 try
                 {
@@ -39,7 +39,7 @@ namespace izolabella.CompetitiveCounting.Bot.Objects.Clients
                 }
                 catch (Exception Ex)
                 {
-                    await Receiver.OnErrorAsync(Ex);  
+                    await Receiver.OnErrorAsync(Ex);
                 }
             }
         }

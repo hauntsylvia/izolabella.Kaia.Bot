@@ -1,13 +1,14 @@
-﻿using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Bases;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Embeds.Implementations;
+﻿using Kaia.Bot.Objects.CCB_Structures;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations;
 using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using Kaia.Bot.Objects.Constants;
+using Kaia.Bot.Objects.Discord.Commands.Bases;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementations
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
     public class Me : ICCBCommand
     {

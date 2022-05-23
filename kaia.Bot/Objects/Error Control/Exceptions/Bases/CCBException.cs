@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Exceptions
+namespace Kaia.Bot.Objects.Exceptions
 {
     public class CCBException : Exception
     {

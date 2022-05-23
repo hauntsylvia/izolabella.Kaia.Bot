@@ -1,21 +1,21 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using izolabella.CompetitiveCounting.Bot.Objects.CCB_Structures;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Bases;
-using izolabella.CompetitiveCounting.Bot.Objects.Discord.Commands.Implementations;
+using Kaia.Bot.Objects.CCB_Structures;
 using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Clients;
 using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using Kaia.Bot.Objects.Discord.Commands.Bases;
+using Kaia.Bot.Objects.Discord.Commands.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.CompetitiveCounting.Bot.Objects.Client_Parameters
+namespace Kaia.Bot.Objects.Client_Parameters
 {
     public class ClientParameters
     {

@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Kaia.Bot.Objects.CCB_Structures.Users;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Properties;
+using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations;
 
 namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
 {
@@ -23,8 +25,9 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
             return Task.FromResult(Message.Author is SocketGuildUser SUser && new CCBGuild(SUser.Guild.Id).Settings.CountingChannelId == Message.Channel.Id);
         }
 
-        public async Task RunAsync(CCBUser Author, SocketMessage Message)
+        public async Task<MessageReceiverResult> RunAsync(CCBUser Author, SocketMessage Message)
         {
+            MessageReceiverResult Result = new();
             string? Split = Message.Content.Split(' ').FirstOrDefault();
             if (Split != null && decimal.TryParse(Split, out decimal Num))
             {
@@ -44,7 +47,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                         UserHighestCounted = UserHighestCounted > LastSuccessfulNumber ? UserHighestCounted : LastSuccessfulNumber;
                         UserNumbersCounted++;
 
-                        bool RareCheck = new Random().Next(0, 100) == 50;
+                        bool RareCheck = new Random().Next(100) < 2;
                         await Message.AddReactionAsync(RareCheck ? Emotes.Counting.CheckRare : Emotes.Counting.Check);
                         if(RareCheck)
                         {
@@ -59,6 +62,11 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                     }
                     else
                     {
+                        CountingRefresher? UsersR = Author.Settings.Inventory.Items.FirstOrDefault(InvI => InvI.GetType() == typeof(CountingRefresher)) as CountingRefresher;
+                        if (UsersR != null)
+                        {
+
+                        }
                         await Message.AddReactionAsync(Emotes.Counting.ThumbDown);
                         await Message.Channel.SendMessageAsync(Strings.Responses.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                     }
@@ -71,6 +79,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                     await Author.SaveAsync();
                 }
             }
+            return Result;
         }
 
         public Task OnErrorAsync(Exception Exception)

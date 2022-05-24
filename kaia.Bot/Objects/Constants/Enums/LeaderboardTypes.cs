@@ -11,6 +11,6 @@ namespace Kaia.Bot.Objects.Constants.Enums
         UsersHighestNumberCounted,
         UsersMostNumbersCounted,
         GuildsHighestNumberCounted,
-        GuildsMostNumbersCounted
+        GuildsCurrentHighestNumber
     }
 }

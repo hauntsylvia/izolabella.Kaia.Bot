@@ -47,10 +47,33 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
             }
             else
             {
-
+                List<CCBGuild> Guilds = DataStores.GuildStore.ReadAllAsync<CCBGuild>().Result
+                    .OrderByDescending(U => LType == LeaderboardTypes.GuildsHighestNumberCounted ? U.Settings.HighestCountEver : U.Settings.LastSuccessfulNumber)
+                    .Take(NumberOfElements)
+                    .ToList();
+                int LongestDisplayName = Strings.EmbedStrings.UnknownGuild.Length;
+                foreach (CCBGuild Guild in Guilds)
+                {
+                    SocketGuild? DGuild = Reference.Client.GetGuild(Guild.Id);
+                    if (DGuild != null && LongestDisplayName < DGuild.Name.Length)
+                    {
+                        LongestDisplayName = DGuild.Name.Length;
+                    }
+                }
+                for (int Index = 0; Index < NumberOfElements && Guilds.Count > Index; Index++)
+                {
+                    CCBGuild ThisGuild = Guilds[Index];
+                    SocketGuild? DiscordGuild = Reference.Client.GetGuild(ThisGuild.Id);
+                    string DisplayName = DiscordGuild != null ? DiscordGuild.Name : Strings.EmbedStrings.UnknownGuild;
+                    DisplayName = DisplayName.Length < LongestDisplayName ? DisplayName + new string(' ', LongestDisplayName - DisplayName.Length) : DisplayName;
+                    Displays.Add($"@`{DisplayName}` - " +
+                        $"`{(LType == LeaderboardTypes.GuildsHighestNumberCounted ? ThisGuild.Settings.HighestCountEver : ThisGuild.Settings.LastSuccessfulNumber)}`" +
+                        $"{(LType == LeaderboardTypes.GuildsHighestNumberCounted ? " - highest number counted" : " - current number")}");
+                }
             }
 
-            this.WriteListToOneField(Strings.EmbedStrings.FakePaths.Users, Displays, "\n");
+            this.WriteListToOneField(LType == LeaderboardTypes.GuildsHighestNumberCounted || LType == LeaderboardTypes.GuildsCurrentHighestNumber ? 
+                Strings.EmbedStrings.FakePaths.Guilds : Strings.EmbedStrings.FakePaths.Users, Displays, "\n");
         }
     }
 }

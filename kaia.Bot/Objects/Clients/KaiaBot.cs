@@ -32,7 +32,7 @@ namespace Kaia.Bot.Objects.Clients
             {
                 return M.CheckMessageValidityAsync(User, Arg).Result;
             });
-            if (Receiver != null)
+            if (Receiver != null && !Arg.Author.IsBot)
             {
                 try
                 {

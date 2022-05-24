@@ -24,11 +24,13 @@ namespace Kaia.Bot.Objects.Constants
             internal static DateTime DefaultTimestamp => DateTime.UtcNow;
             internal static string Empty => "\u200b";
             internal static string UnknownUser => "unknown user";
+            internal static string UnknownGuild => "unknown guild";
             public static string PathIfNoGuild => "global";
             internal static class FakePaths
             {
                 internal static string Commands => "commands";
                 internal static string Users => "users";
+                internal static string Guilds => "guilds";
                 internal static string Settings => "settings";
                 internal static string Leaderboards => "leaderboards";
                 internal static string StoreOrShop => "store";

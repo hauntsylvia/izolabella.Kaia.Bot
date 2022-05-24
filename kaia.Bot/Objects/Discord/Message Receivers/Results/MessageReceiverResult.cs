@@ -14,6 +14,6 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Results
             this.ItemToUse = ItemToUse;
         }
 
-        public ICCBInventoryItem? ItemToUse { get; }
+        public ICCBInventoryItem? ItemToUse { get; set; }
     }
 }

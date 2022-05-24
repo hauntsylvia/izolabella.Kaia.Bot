@@ -16,7 +16,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
     {
         public string Name => "Me";
 
-        public string Description => "View my statistics.";
+        public string Description => "View my or another user's statistics.";
 
         public List<IzolabellaCommandParameter> Parameters => new()
         {
@@ -28,9 +28,9 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "users");
-            CCBUser U = UserArg != null && UserArg.Value is IUser DU ? new(DU.Id) : new(Context.UserContext.User.Id);
-            await Context.UserContext.RespondAsync(text: "", embed: new MeView(Context.UserContext.User.Username, U).Build());
+            IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "user");
+            IUser U = UserArg != null && UserArg.Value is IUser DU ? DU : Context.UserContext.User;
+            await Context.UserContext.RespondAsync(text: "", embed: new MeView(U.Username, new(U.Id)).Build());
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)

@@ -27,10 +27,5 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations
             this.ReceivedAt = DateTime.UtcNow;
             return Task.CompletedTask;
         }
-
-        public Task<bool> UserUsingAsync(CommandContext Context, CCBUser User)
-        {
-            if(Context.UserContext.)
-        }
     }
 }

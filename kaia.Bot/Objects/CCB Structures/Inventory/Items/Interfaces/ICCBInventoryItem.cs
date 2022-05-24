@@ -18,6 +18,5 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases
         Emoji DisplayEmote { get; }
         DateTime ReceivedAt { get; }
         Task UserBoughtAsync(CommandContext Context, CCBUser User);
-        Task<bool> UserUsingAsync(CommandContext Context, CCBUser User);
     }
 }

@@ -10,6 +10,8 @@ using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.Discord.Events.Interfaces;
 using System.Reflection;
 using Kaia.Bot.Objects.CCB_Controllers;
+using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations;
 
 namespace Kaia.Bot.Objects.Clients
 {
@@ -27,21 +29,30 @@ namespace Kaia.Bot.Objects.Clients
 
         private async Task MessageReceived(SocketMessage Arg)
         {
-            CCBUser User = new(Arg.Author.Id);
-            IMessageReceiver? Receiver = this.MessageReceivers.FirstOrDefault((M) =>
+            if(!Arg.Author.IsBot)
             {
-                return M.CheckMessageValidityAsync(User, Arg).Result;
-            });
-            if (Receiver != null && !Arg.Author.IsBot)
-            {
-                try
+                CCBUser User = new(Arg.Author.Id);
+                IMessageReceiver? Receiver = this.MessageReceivers.FirstOrDefault((M) =>
                 {
-                    await Receiver.RunAsync(User, Arg);
-                }
-                catch (Exception Ex)
+                    return M.CheckMessageValidityAsync(User, Arg).Result;
+                });
+                if (Receiver != null)
                 {
-                    await Receiver.OnErrorAsync(Ex);
+                    try
+                    {
+                        MessageReceiverResult Result = await Receiver.RunAsync(User, Arg);
+                        if(Result.ItemToUse != null && Result.ItemToUse is CountingRefresher CRef)
+                        {
+                            await Receiver.CallbackAsync(User, Arg, Result);
+                            User.Settings.Inventory.Items.Remove(CRef);
+                        }
+                    }
+                    catch (Exception Ex)
+                    {
+                        await Receiver.OnErrorAsync(Ex);
+                    }
                 }
+                await User.SaveAsync();
             }
         }
     }

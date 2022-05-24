@@ -14,6 +14,7 @@ namespace Kaia.Bot.Objects.Discord.Events.Interfaces
     {
         Task<bool> CheckMessageValidityAsync(CCBUser Author, SocketMessage Message);
         Task<MessageReceiverResult> RunAsync(CCBUser Author, SocketMessage Message);
+        Task CallbackAsync(CCBUser Author, SocketMessage Message, MessageReceiverResult CausedCallback);
         string Name { get; }
     }
 }

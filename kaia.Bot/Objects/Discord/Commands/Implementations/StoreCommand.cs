@@ -41,6 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                     decimal TotalCost = InventoryItem.Cost * Quantity;
                     if (TotalCost <= User.Settings.Inventory.Petals)
                     {
+                        List<ICCBInventoryItem> ItemsBought = new();
                         for (long Q = 0; Q < Quantity; Q++)
                         {
                             object? O = Activator.CreateInstance(InventoryItem.GetType());
@@ -48,15 +49,23 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                             {
                                 await NewItem.UserBoughtAsync(Context, User);
                                 User.Settings.Inventory.Items.Add(NewItem);
+                                ItemsBought.Add(NewItem);
                                 User.Settings.Inventory.Petals -= NewItem.Cost;
                             }
                         }
+                        List<CCBPathEmbed> Embeds = new();
+                        List<ICCBInventoryItem[]> ItemsBoughtChunked = ItemsBought.Chunk(10).ToList();
+                        foreach (ICCBInventoryItem[] ItemArray in ItemsBoughtChunked)
+                        {
+                            Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()));
+                        }
                         await User.SaveAsync();
-                        await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new StoreTransactionCompleted(User).Build());
+                        CCBPathPaginatedEmbed P = new(Embeds, Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
+                        await P.StartAsync();
                     }
                     else
                     {
-
+                        await Context.UserContext.RespondAsync(text: Strings.Responses.Commands.InvalidCurrencyAmount);
                     }
                 }
                 else

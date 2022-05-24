@@ -56,17 +56,21 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                     }
                     else if(NotSameUserAsLastTime)
                     {
-                        LastSuccessfulNumber = 0;
-                        await Message.AddReactionAsync(Emotes.Counting.Invalid);
-                        await Message.Channel.SendMessageAsync(Strings.Responses.GetRandomCountingFailText(), messageReference: Ref);
+                        if (Author.Settings.Inventory.Items.FirstOrDefault(InvI => InvI.GetType() == typeof(CountingRefresher)) is CountingRefresher UsersR)
+                        {
+                            Result.ItemToUse = UsersR;
+                            await Message.AddReactionAsync(UsersR.DisplayEmote);
+                            await Message.Channel.SendMessageAsync(Strings.Responses.UserCountingSaved + $" - the next number is `{LastSuccessfulNumber--}`.", messageReference: Ref);
+                        }
+                        else
+                        {
+                            LastSuccessfulNumber = 0;
+                            await Message.AddReactionAsync(Emotes.Counting.Invalid);
+                            await Message.Channel.SendMessageAsync(Strings.Responses.GetRandomCountingFailText(), messageReference: Ref);
+                        }
                     }
                     else
                     {
-                        CountingRefresher? UsersR = Author.Settings.Inventory.Items.FirstOrDefault(InvI => InvI.GetType() == typeof(CountingRefresher)) as CountingRefresher;
-                        if (UsersR != null)
-                        {
-
-                        }
                         await Message.AddReactionAsync(Emotes.Counting.ThumbDown);
                         await Message.Channel.SendMessageAsync(Strings.Responses.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                     }
@@ -81,7 +85,10 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
             }
             return Result;
         }
-
+        public Task CallbackAsync(CCBUser Author, SocketMessage Message, MessageReceiverResult CausedCallback)
+        {
+            return Task.CompletedTask;
+        }
         public Task OnErrorAsync(Exception Exception)
         {
             return Task.CompletedTask;

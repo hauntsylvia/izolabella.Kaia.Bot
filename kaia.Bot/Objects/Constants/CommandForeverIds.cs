@@ -12,5 +12,6 @@ namespace Kaia.Bot.Objects.Constants
         internal static string GuildSettingsCommand => "guildsettings-52320221242";
         internal static string AddCommandConstraint => "addcommandconstraint-52320220135";
         internal static string ViewLeaderboard => "viewleaderboard-52320221727";
+        internal static string StoreOrBuy => "storeorbuy-52420220324";
     }
 }

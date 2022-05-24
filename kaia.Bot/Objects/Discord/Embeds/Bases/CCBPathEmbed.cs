@@ -27,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         internal void WriteField(string Name, string Value)
         {
-            this.AddField(Strings.EmbedStrings.Empty, $"// *{Name}*\n{Value}");
+            this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower()}*\n{Value.ToLower()}");
         }
 
         internal void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")

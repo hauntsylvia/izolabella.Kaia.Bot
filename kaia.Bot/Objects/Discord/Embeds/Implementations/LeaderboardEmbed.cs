@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
             if (LType == LeaderboardTypes.UsersHighestNumberCounted || LType == LeaderboardTypes.UsersMostNumbersCounted)
             {
                 List<CCBUser> Users = DataStores.UserStore.ReadAllAsync<CCBUser>().Result
-                    .OrderByDescending(U => LType == LeaderboardTypes.UsersHighestNumberCounted ? U.CountingInfo.HighestCountEver : U.CountingInfo.NumbersCounted)
+                    .OrderByDescending(U => LType == LeaderboardTypes.UsersHighestNumberCounted ? U.Settings.HighestCountEver : U.Settings.NumbersCounted)
                     .Take(NumberOfElements)
                     .ToList();
                 int LongestDisplayName = Strings.EmbedStrings.UnknownUser.Length;
@@ -41,7 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
                     string DisplayName = DiscordUser != null ? DiscordUser.Username : Strings.EmbedStrings.UnknownUser;
                     DisplayName = DisplayName.Length < LongestDisplayName ? DisplayName + new string(' ', LongestDisplayName - DisplayName.Length) : DisplayName;
                     Displays.Add($"@`{DisplayName}` - " +
-                        $"`{(LType == LeaderboardTypes.UsersHighestNumberCounted ? ThisUser.CountingInfo.HighestCountEver : ThisUser.CountingInfo.NumbersCounted)}`" +
+                        $"`{(LType == LeaderboardTypes.UsersHighestNumberCounted ? ThisUser.Settings.HighestCountEver : ThisUser.Settings.NumbersCounted)}`" +
                         $"{(LType == LeaderboardTypes.UsersHighestNumberCounted ? " - highest number counted" : " - total numbers counted")}");
                 }
             }

@@ -13,8 +13,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
     {
         public MeView(string UserName, CCB_Structures.CCBUser User) : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, UserName)
         {
-            this.WriteField("highest number counted", $"`{User.CountingInfo.HighestCountEver ?? 0}`");
-            this.WriteField("total numbers counted", $"`{User.CountingInfo.NumbersCounted ?? 0}`");
+            this.WriteField("highest number counted", $"`{User.Settings.HighestCountEver ?? 0}`");
+            this.WriteField("total numbers counted", $"`{User.Settings.NumbersCounted ?? 0}`");
+            this.WriteField($"current {Strings.Economy.CurrencyName} {Strings.Economy.CurrencyEmote}", $"`{User.Settings.Inventory.Petals}`");
         }
     }
 }

@@ -10,9 +10,13 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations
 {
-    internal class CountingRefresher : ICCBInventoryItem
+    public class CountingRefresher : ICCBInventoryItem
     {
         public string DisplayName => "Counting Refresher";
+
+        public string Description => "allows u to keep counting even if u fail.";
+
+        public decimal Cost => 10;
 
         public Emoji DisplayEmote => Emotes.Items.CountingRefresher;
 

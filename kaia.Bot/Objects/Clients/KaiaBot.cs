@@ -9,6 +9,7 @@ using Discord.WebSocket;
 using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.Discord.Events.Interfaces;
 using System.Reflection;
+using Kaia.Bot.Objects.CCB_Controllers;
 
 namespace Kaia.Bot.Objects.Clients
 {
@@ -18,7 +19,7 @@ namespace Kaia.Bot.Objects.Clients
         {
             this.Parameters = Parameters;
             this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceived;
-            this.MessageReceivers = GetMessageReceivers();
+            this.MessageReceivers =  InterfaceImplementationController.GetItems<IMessageReceiver>();
         }
 
         public KaiaParams Parameters { get; }
@@ -42,23 +43,6 @@ namespace Kaia.Bot.Objects.Clients
                     await Receiver.OnErrorAsync(Ex);
                 }
             }
-        }
-
-        private static List<IMessageReceiver> GetMessageReceivers()
-        {
-            List<IMessageReceiver> R = new();
-            foreach (Type T in Assembly.GetCallingAssembly().GetTypes())
-            {
-                if (typeof(IMessageReceiver).IsAssignableFrom(T) && !T.IsInterface)
-                {
-                    object? O = Activator.CreateInstance(T);
-                    if (O != null && O is IMessageReceiver M)
-                    {
-                        R.Add(M);
-                    }
-                }
-            }
-            return R;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Discord;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,7 @@ namespace Kaia.Bot.Objects.Constants
                 internal static string Users => "users";
                 internal static string Settings => "settings";
                 internal static string Leaderboards => "leaderboards";
+                internal static string StoreOrShop => "store";
             }
         }
         internal static class Responses
@@ -39,6 +41,7 @@ namespace Kaia.Bot.Objects.Constants
                 internal static string GuildSetSaved => "guild settings saved!";
                 internal static string GuildSetSaveFail => "guild settings could not be saved.";
                 internal static string InvalidLeaderboardOption => "that's an invalid leaderboard option!";
+                internal static string NoInventoryItemWithThatNameFound => "there r no items matching that name . .";
             }
             internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
             private static string[] UserFailedInCounting => new[]
@@ -53,6 +56,11 @@ namespace Kaia.Bot.Objects.Constants
             {
                 return UserFailedInCounting[new Random().Next(0, UserFailedInCounting.Length)];
             }
+        }
+        internal static class Economy
+        {
+            internal static string CurrencyName => "Petals";
+            internal static Emoji CurrencyEmote => Emoji.Parse("💮");
         }
     }
 }

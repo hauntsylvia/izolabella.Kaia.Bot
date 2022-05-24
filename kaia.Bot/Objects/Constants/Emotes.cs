@@ -20,5 +20,10 @@ namespace Kaia.Bot.Objects.Constants
         {
             internal static Emoji CountingRefresher => Emoji.Parse("🔄");
         }
+        internal static class Embeds
+        {
+            internal static Emoji Back => Emoji.Parse("◀️");
+            internal static Emoji Forward => Emoji.Parse("▶️");
+        }
     }
 }

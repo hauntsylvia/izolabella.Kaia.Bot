@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kaia.Bot.Objects.CCB_Structures.Users;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Properties;
 
 namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
 {
@@ -32,8 +34,8 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                     MessageReference Ref = new(Message.Id, Message.Channel.Id, SUser.Guild.Id);
                     ulong LastSuccessfulNumber = G.Settings.LastSuccessfulNumber ?? 0;
                     ulong HighestGuildNumberCounted = G.Settings.HighestCountEver ?? 0;
-                    ulong UserHighestCounted = Author.CountingInfo.HighestCountEver ?? 0;
-                    ulong UserNumbersCounted = Author.CountingInfo.NumbersCounted ?? 0;
+                    ulong UserHighestCounted = Author.Settings.HighestCountEver ?? 0;
+                    ulong UserNumbersCounted = Author.Settings.NumbersCounted ?? 0;
                     bool NotSameUserAsLastTime = G.Settings.LastUserWhoCounted == null || SUser.Id != G.Settings.LastUserWhoCounted || LastSuccessfulNumber == 0;
                     if (Num - 1 == (G.Settings.LastSuccessfulNumber ?? 0) && NotSameUserAsLastTime)
                     {
@@ -41,8 +43,13 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                         HighestGuildNumberCounted = HighestGuildNumberCounted > LastSuccessfulNumber ? HighestGuildNumberCounted : LastSuccessfulNumber;
                         UserHighestCounted = UserHighestCounted > LastSuccessfulNumber ? UserHighestCounted : LastSuccessfulNumber;
                         UserNumbersCounted++;
-                        
-                        await Message.AddReactionAsync(new Random().Next(0, 100) == 50 ? Emotes.Counting.CheckRare : Emotes.Counting.Check);
+
+                        bool RareCheck = new Random().Next(0, 100) == 50;
+                        await Message.AddReactionAsync(RareCheck ? Emotes.Counting.CheckRare : Emotes.Counting.Check);
+                        if(RareCheck)
+                        {
+                            Author.Settings.Inventory.Petals += new Random().Next(10, 100) + (decimal)new Random().NextDouble();
+                        }
                     }
                     else if(NotSameUserAsLastTime)
                     {
@@ -59,7 +66,9 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                     G.Settings.HighestCountEver = HighestGuildNumberCounted;
                     G.Settings.LastUserWhoCounted = Message.Author.Id;
                     G.Settings = G.Settings;
-                    Author.CountingInfo = new(UserHighestCounted, UserNumbersCounted);
+                    Author.Settings.HighestCountEver = UserHighestCounted;
+                    Author.Settings.NumbersCounted = UserNumbersCounted;
+                    await Author.SaveAsync();
                 }
             }
         }

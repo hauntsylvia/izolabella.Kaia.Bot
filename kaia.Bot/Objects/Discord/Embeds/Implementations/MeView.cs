@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Kaia.Bot.Objects.Constants;
-using Kaia.Bot.Objects.Discord.Embeds.Base;
+using Kaia.Bot.Objects.Discord.Embeds.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +9,12 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    internal class MeView : CCBEmbed
+    internal class MeView : CCBPathEmbed
     {
-        public MeView(string UserName, CCB_Structures.CCBUser User) : base()
+        public MeView(string UserName, CCB_Structures.CCBUser User) : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, UserName)
         {
-            this.Description = $"// ***{UserName.ToLower()}***";
-            this.Fields.Add(new()
-            {
-                Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *highest number counted*\n `{User.Settings.HighestCountEver ?? 0}`",
-            });
-            this.Fields.Add(new()
-            {
-                Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *total numbers counted*\n `{User.Settings.NumbersCounted ?? 0}`",
-            });
+            this.WriteField("highest number counted", $"`{User.CountingInfo.HighestCountEver ?? 0}`");
+            this.WriteField("total numbers counted", $"`{User.CountingInfo.NumbersCounted ?? 0}`");
         }
     }
 }

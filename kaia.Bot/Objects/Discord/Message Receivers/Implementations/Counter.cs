@@ -16,9 +16,9 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
     {
         public string Name => "Counter";
 
-        public async Task<bool> CheckMessageValidityAsync(CCBUser Author, SocketMessage Message)
+        public Task<bool> CheckMessageValidityAsync(CCBUser Author, SocketMessage Message)
         {
-            return Message.Author is SocketGuildUser SUser && (await CCBGuild.GetOrCreateAsync(SUser.Guild.Id)).Settings.CountingChannelId == Message.Channel.Id;
+            return Task.FromResult(Message.Author is SocketGuildUser SUser && new CCBGuild(SUser.Guild.Id).Settings.CountingChannelId == Message.Channel.Id);
         }
 
         public async Task RunAsync(CCBUser Author, SocketMessage Message)
@@ -28,12 +28,12 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
             {
                 if(Message.Author is SocketGuildUser SUser)
                 {
-                    CCBGuild G = await CCBGuild.GetOrCreateAsync(SUser.Guild.Id);
+                    CCBGuild G = new(SUser.Guild.Id);
                     MessageReference Ref = new(Message.Id, Message.Channel.Id, SUser.Guild.Id);
                     ulong LastSuccessfulNumber = G.Settings.LastSuccessfulNumber ?? 0;
                     ulong HighestGuildNumberCounted = G.Settings.HighestCountEver ?? 0;
-                    ulong UserHighestCounted = Author.Settings.HighestCountEver ?? 0;
-                    ulong UserNumbersCounted = Author.Settings.NumbersCounted ?? 0;
+                    ulong UserHighestCounted = Author.CountingInfo.HighestCountEver ?? 0;
+                    ulong UserNumbersCounted = Author.CountingInfo.NumbersCounted ?? 0;
                     bool NotSameUserAsLastTime = G.Settings.LastUserWhoCounted == null || SUser.Id != G.Settings.LastUserWhoCounted || LastSuccessfulNumber == 0;
                     if (Num - 1 == (G.Settings.LastSuccessfulNumber ?? 0) && NotSameUserAsLastTime)
                     {
@@ -42,21 +42,24 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                         UserHighestCounted = UserHighestCounted > LastSuccessfulNumber ? UserHighestCounted : LastSuccessfulNumber;
                         UserNumbersCounted++;
                         
-                        await Message.AddReactionAsync(new Random().Next(0, 100) == 50 ? Emotes.CheckRare : Emotes.Check);
+                        await Message.AddReactionAsync(new Random().Next(0, 100) == 50 ? Emotes.Counting.CheckRare : Emotes.Counting.Check);
                     }
                     else if(NotSameUserAsLastTime)
                     {
                         LastSuccessfulNumber = 0;
-                        await Message.AddReactionAsync(Emotes.Invalid);
+                        await Message.AddReactionAsync(Emotes.Counting.Invalid);
                         await Message.Channel.SendMessageAsync(Strings.Responses.GetRandomCountingFailText(), messageReference: Ref);
                     }
                     else
                     {
-                        await Message.AddReactionAsync(Emotes.ThumbDown);
+                        await Message.AddReactionAsync(Emotes.Counting.ThumbDown);
                         await Message.Channel.SendMessageAsync(Strings.Responses.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                     }
-                    await G.ChangeGuildSettings(new(G.Settings.CountingChannelId, LastSuccessfulNumber, Message.Author.Id, HighestGuildNumberCounted));
-                    await Author.ChangeUserSettings(new(UserHighestCounted, UserNumbersCounted));
+                    G.Settings.LastSuccessfulNumber = LastSuccessfulNumber;
+                    G.Settings.HighestCountEver = HighestGuildNumberCounted;
+                    G.Settings.LastUserWhoCounted = Message.Author.Id;
+                    G.Settings = G.Settings;
+                    Author.CountingInfo = new(UserHighestCounted, UserNumbersCounted);
                 }
             }
         }

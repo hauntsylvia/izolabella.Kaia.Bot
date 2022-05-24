@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Kaia.Bot.Objects.Constants;
-using Kaia.Bot.Objects.Discord.Embeds.Base;
+using Kaia.Bot.Objects.Discord.Embeds.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +11,10 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    public class CommandConstrainedByRoleIds : CCBEmbed
+    public class CommandConstrainedByRoleIds : CCBPathEmbed
     {
-        public CommandConstrainedByRoleIds(string CommandName, SocketGuild Guild, params ulong[] RoleIdsRequired) : base()
+        public CommandConstrainedByRoleIds(string CommandName, SocketGuild Guild, params ulong[] RoleIdsRequired) : base(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
         {
-            this.Description = $"// ***{CommandName.ToLower()}***";
             int MissingRolesCount = 0;
             string RoleStr = Strings.EmbedStrings.Empty;
             foreach (ulong RoleId in RoleIdsRequired)

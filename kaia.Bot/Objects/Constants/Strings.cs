@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Constants
 {
-    internal static class Strings
+    public static class Strings
     {
         internal static class App
         {
@@ -17,11 +17,20 @@ namespace Kaia.Bot.Objects.Constants
             internal static string UserStore => "CCBUsers";
             internal static string GuildStore => "CCBGuilds";
         }
-        internal static class EmbedStrings
+        public static class EmbedStrings
         {
             internal static string FooterString => "⊹⊱-☿ Mercury-Izolabella ☿-⊰⊹";
             internal static DateTime DefaultTimestamp => DateTime.UtcNow;
             internal static string Empty => "\u200b";
+            internal static string UnknownUser => "unknown user";
+            public static string PathIfNoGuild => "global";
+            internal static class FakePaths
+            {
+                internal static string Commands => "commands";
+                internal static string Users => "users";
+                internal static string Settings => "settings";
+                internal static string Leaderboards => "leaderboards";
+            }
         }
         internal static class Responses
         {
@@ -29,6 +38,7 @@ namespace Kaia.Bot.Objects.Constants
             {
                 internal static string GuildSetSaved => "guild settings saved!";
                 internal static string GuildSetSaveFail => "guild settings could not be saved.";
+                internal static string InvalidLeaderboardOption => "that's an invalid leaderboard option!";
             }
             internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
             private static string[] UserFailedInCounting => new[]

@@ -17,9 +17,9 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Client_Parameters
 {
-    public class ClientParameters
+    public class KaiaParams
     {
-        public ClientParameters(DiscordSocketConfig Config, string? Token)
+        public KaiaParams(DiscordSocketConfig Config, string? Token)
         {
             this.CommandHandler = new(Config);
             this.Token = Token;
@@ -56,7 +56,7 @@ namespace Kaia.Bot.Objects.Client_Parameters
             List<IIzolabellaCommand> Commands = await IzolabellaDiscordCommandClient.GetIzolabellaCommandsAsync();
             foreach (SocketGuild DiscordGuild in RefreshFor)
             {
-                CCBGuild Guild = await CCBGuild.GetOrCreateAsync(DiscordGuild.Id);
+                CCBGuild Guild = new(DiscordGuild.Id);
                 foreach (IIzolabellaCommand Command in Commands)
                 {
                     if (Command is ICCBCommand CCBLevelCommand)

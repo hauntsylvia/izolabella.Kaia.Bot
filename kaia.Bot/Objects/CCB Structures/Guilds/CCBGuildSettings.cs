@@ -21,16 +21,16 @@ namespace Kaia.Bot.Objects.CCB_Structures.Guilds
         }
 
         [JsonProperty("CountingChannelId", Required = Required.AllowNull)]
-        public ulong? CountingChannelId { get; }
+        public ulong? CountingChannelId { get; set; }
 
         [JsonProperty("LastSuccessfulNumber", Required = Required.AllowNull)]
-        public ulong? LastSuccessfulNumber { get; }
+        public ulong? LastSuccessfulNumber { get; set; }
 
         [JsonProperty("LastUserWhoCounted", Required = Required.AllowNull)]
-        public ulong? LastUserWhoCounted { get; }
+        public ulong? LastUserWhoCounted { get; set; }
 
         [JsonProperty("HighestCountEver", Required = Required.Default)]
-        public ulong? HighestCountEver { get; }
+        public ulong? HighestCountEver { get; set; }
 
         [JsonProperty("OverrideCommandPermissionsConstraint", Required = Required.Default)]
         public IReadOnlyDictionary<string, GuildPermission[]> OverrideCommandPermissionsConstraint { get; set; } = new Dictionary<string, GuildPermission[]>();

@@ -12,21 +12,21 @@ using System.Reflection;
 
 namespace Kaia.Bot.Objects.Clients
 {
-    public class CompetitiveCountingBot
+    public class KaiaBot
     {
-        public CompetitiveCountingBot(ClientParameters Parameters)
+        public KaiaBot(KaiaParams Parameters)
         {
             this.Parameters = Parameters;
             this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceived;
             this.MessageReceivers = GetMessageReceivers();
         }
 
-        public ClientParameters Parameters { get; }
+        public KaiaParams Parameters { get; }
         public List<IMessageReceiver> MessageReceivers { get; }
 
         private async Task MessageReceived(SocketMessage Arg)
         {
-            CCBUser User = await CCBUser.GetOrCreateAsync(Arg.Author.Id);
+            CCBUser User = new(Arg.Author.Id);
             IMessageReceiver? Receiver = this.MessageReceivers.FirstOrDefault((M) =>
             {
                 return M.CheckMessageValidityAsync(User, Arg).Result;

@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Kaia.Bot.Objects.Constants;
-using Kaia.Bot.Objects.Discord.Embeds.Base;
+using Kaia.Bot.Objects.Discord.Embeds.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,10 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    public class CommandConstrainedByPermissions : CCBEmbed
+    public class CommandConstrainedByPermissions : CCBPathEmbed
     {
-        public CommandConstrainedByPermissions(string CommandName, GuildPermissions UserHas, GuildPermission[] Required) : base()
+        public CommandConstrainedByPermissions(string GuildName, string CommandName, GuildPermissions UserHas, GuildPermission[] Required) : base(GuildName, Strings.EmbedStrings.FakePaths.Commands, CommandName)
         {
-            this.Description = $"// ***{CommandName.ToLower()}***";
             string MissingStr = Strings.EmbedStrings.Empty;
             GuildPermission[] MissingGP = Required.Where(P => !UserHas.Has(P)).ToArray();
             foreach (GuildPermission P in MissingGP)

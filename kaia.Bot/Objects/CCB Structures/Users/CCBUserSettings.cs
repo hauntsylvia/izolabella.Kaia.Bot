@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace Kaia.Bot.Objects.CCB_Structures.Users
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class CCBUserSettings
+    public class CCBUserCountingInfo
     {
         [JsonConstructor]
-        public CCBUserSettings(ulong? HighestCountEver = null, ulong? NumbersCounted = null)
+        public CCBUserCountingInfo(ulong? HighestCountEver = null, ulong? NumbersCounted = null)
         {
             this.HighestCountEver = HighestCountEver;
             this.NumbersCounted = NumbersCounted;

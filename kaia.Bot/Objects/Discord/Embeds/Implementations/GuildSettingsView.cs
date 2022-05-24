@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Kaia.Bot.Objects.Constants;
-using Kaia.Bot.Objects.Discord.Embeds.Base;
+using Kaia.Bot.Objects.Discord.Embeds.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +9,12 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    internal class GuildSettingsView : CCBEmbed
+    internal class GuildSettingsView : CCBPathEmbed
     {
-        public GuildSettingsView(string GuildName, CCB_Structures.CCBGuild Guild) : base()
+        public GuildSettingsView(string GuildName, CCB_Structures.CCBGuild Guild) : base(GuildName, Strings.EmbedStrings.FakePaths.Settings)
         {
-            this.Description = $"// ***{GuildName.ToLower()}***";
-            this.Fields.Add(new()
-            {
-                Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *counting channel*\n <#{Guild.Settings.CountingChannelId}>",
-            });
-            this.Fields.Add(new()
-            {
-                Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *highest number counted*\n `{Guild.Settings.HighestCountEver ?? 0}`",
-            });
+            this.WriteField("counting channel", $"<#{Guild.Settings.CountingChannelId}>");
+            this.WriteField("highest number counted", $"`{Guild.Settings.HighestCountEver ?? 0}`");
         }
     }
 }

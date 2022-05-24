@@ -1,4 +1,6 @@
 ﻿using Kaia.Bot.Objects.CCB_Structures.Derivations;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Properties;
 using Kaia.Bot.Objects.CCB_Structures.Users;
 using Kaia.Bot.Objects.Constants;
 using System;
@@ -13,26 +15,37 @@ namespace Kaia.Bot.Objects.CCB_Structures
     public class CCBUser : Unique
     {
         [JsonConstructor]
-        private CCBUser(ulong Id, CCBUserSettings Settings) : base(Id)
+        public CCBUser(ulong Id, CCBUserCountingInfo? CountingInfo = null, CCBUserInventory? Inventory = null) : base(DataStores.UserStore, Id)
         {
             this.Id = Id;
-            this.Settings = Settings;
+            this.countingInfo = CountingInfo ?? this.GetAsync<CCBUser>().Result?.CountingInfo ?? new();
+            this.inventory = Inventory ?? this.GetAsync<CCBUser>().Result?.Inventory ?? new();
         }
 
         public new ulong Id { get; }
 
+        private CCBUserCountingInfo countingInfo;
         [JsonProperty("Settings", Required = Required.Always)]
-        public CCBUserSettings Settings { get; }
-
-        public async Task<CCBUser> ChangeUserSettings(CCBUserSettings Settings)
+        public CCBUserCountingInfo CountingInfo
         {
-            CCBUser New = new(this.Id, Settings);
-            await DataStores.UserStore.SaveAsync(New);
-            return New;
+            get => this.countingInfo ?? new();
+            set
+            {
+                this.countingInfo = value;
+                this.SaveAsync().GetAwaiter().GetResult();
+            }
         }
-        public static async Task<CCBUser> GetOrCreateAsync(ulong Id, CCBUserSettings? Settings = null)
+
+        private CCBUserInventory? inventory;
+        [JsonProperty("Inventory", Required = Required.DisallowNull)]
+        public CCBUserInventory Inventory
         {
-            return (await DataStores.UserStore.ReadAsync<CCBUser>(Id)) ?? new(Id, Settings ?? new());
+            get => this.inventory ?? this.GetAsync<CCBUser>().Result?.inventory ?? new();
+            set
+            {
+                this.inventory = value;
+                this.SaveAsync().GetAwaiter().GetResult();
+            }
         }
     }
 }

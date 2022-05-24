@@ -37,7 +37,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         {
             if (Context.UserContext.User is SocketGuildUser SUser)
             {
-                CCBGuild Guild = await CCBGuild.GetOrCreateAsync(SUser.Guild.Id);
+                CCBGuild Guild = new(SUser.Guild.Id);
                 IzolabellaCommandArgument? RoleAllowed = Arguments.FirstOrDefault(A => A.Name == "allowed-role");
                 IzolabellaCommandArgument? RoleToCopyPermissionsFrom = Arguments.FirstOrDefault(A => A.Name == "permissions-allowed");
                 IzolabellaCommandArgument? OverwriteArg = Arguments.FirstOrDefault(A => A.Name == "overwrite");
@@ -86,7 +86,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                     }
                     Guild.Settings.OverrideCommandPermissionsConstraint = PermissionsDict;
                     Guild.Settings.OverrideCommandRolesConstraint = RolesDict;
-                    Guild = await Guild.ChangeGuildSettings(Guild.Settings);
+                    Guild.Settings = Guild.Settings;
                     await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, this.AllCommands?.FirstOrDefault(C =>
                     {
                         return C is ICCBCommand CCB && CCB.ForeverId == CommandId;

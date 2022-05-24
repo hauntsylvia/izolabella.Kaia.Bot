@@ -13,27 +13,24 @@ namespace Kaia.Bot.Objects.CCB_Structures
     public class CCBGuild : Unique
     {
         [JsonConstructor]
-        private CCBGuild(ulong Id, CCBGuildSettings Settings) : base(Id)
+        public CCBGuild(ulong Id, CCBGuildSettings? Settings = null) : base(DataStores.GuildStore, Id)
         {
             this.Id = Id;
-            this.Settings = Settings;
+            this.settings = Settings ?? this.GetAsync<CCBGuild>().Result?.Settings ?? new();
         }
 
         public new ulong Id { get; }
 
+        private CCBGuildSettings settings;
         [JsonProperty("Settings", Required = Required.Always)]
-        public CCBGuildSettings Settings { get; }
-
-        public async Task<CCBGuild> ChangeGuildSettings(CCBGuildSettings Settings)
+        public CCBGuildSettings Settings
         {
-            CCBGuild New = new(this.Id, Settings);
-            await DataStores.GuildStore.SaveAsync(New);
-            return New;
-        }
-
-        public static async Task<CCBGuild> GetOrCreateAsync(ulong Id, CCBGuildSettings? Settings = null)
-        {
-            return (await DataStores.GuildStore.ReadAsync<CCBGuild>(Id)) ?? new(Id, Settings ?? new());
+            get => this.settings;
+            set
+            {
+                this.settings = value;
+                this.SaveAsync().GetAwaiter().GetResult();
+            }
         }
     }
 }

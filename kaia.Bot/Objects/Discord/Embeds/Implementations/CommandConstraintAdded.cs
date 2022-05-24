@@ -3,7 +3,7 @@ using Discord.WebSocket;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Enums;
 using Kaia.Bot.Objects.Constants;
-using Kaia.Bot.Objects.Discord.Embeds.Base;
+using Kaia.Bot.Objects.Discord.Embeds.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,23 +13,18 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    internal class CommandConstraintAdded : CCBEmbed
+    internal class CommandConstraintAdded : CCBPathEmbed
     {
-        public CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : base()
+        public CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : base(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
         {
-            this.Description = $"*{Guild.Name}* // ***{CommandName.ToLower()}***";
             if (Permissions != null)
             {
-                string PermsStr = Strings.EmbedStrings.Empty;
+                List<string> PermsStrs = new();
                 foreach (GuildPermission P in Permissions)
                 {
-                    PermsStr += $"{(PermsStr != Strings.EmbedStrings.Empty ? ", " : "")}{Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower()}";
+                    PermsStrs.Add(Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower());
                 }
-                this.Fields.Add(new()
-                {
-                    Name = $"{Strings.EmbedStrings.Empty}",
-                    Value = $"// *required permissions*\n {PermsStr}",
-                });
+                this.WriteListToOneField("required permissions", PermsStrs, ", ");
             }
             if (Roles != null)
             {
@@ -47,11 +42,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
                         MissingRolesCount++;
                     }
                 }
-                this.Fields.Add(new()
-                {
-                    Name = $"{Strings.EmbedStrings.Empty}",
-                    Value = $"// *required roles*\n {(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}",
-                });
+                this.WriteField("required roles", $"{(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
             }
         }
     }

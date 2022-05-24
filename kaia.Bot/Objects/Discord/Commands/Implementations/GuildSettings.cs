@@ -41,10 +41,11 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
             if (Context.UserContext.User is SocketGuildUser SUser)
             {
-                CCBGuild Guild = await CCBGuild.GetOrCreateAsync(SUser.Guild.Id);
+                CCBGuild Guild = new(SUser.Guild.Id);
                 if (CountingChannelArgument != null && CountingChannelArgument.Value is IGuildChannel NewCountingChannelId)
                 {
-                    Guild = await Guild.ChangeGuildSettings(new(NewCountingChannelId.Id, Guild.Settings.LastSuccessfulNumber, Guild.Settings.LastUserWhoCounted, Guild.Settings.HighestCountEver));
+                    Guild.Settings.CountingChannelId = NewCountingChannelId.Id;
+                    Guild.Settings = Guild.Settings;
                 }
                 await Context.UserContext.RespondAsync(text: "", ephemeral: false, embed: new GuildSettingsView(SUser.Guild.Name, Guild).Build());
 

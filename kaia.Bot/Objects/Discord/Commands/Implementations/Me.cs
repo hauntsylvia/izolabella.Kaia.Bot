@@ -7,6 +7,7 @@ using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Constants;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
+using Discord.WebSocket;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
@@ -23,7 +24,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            await Context.UserContext.RespondAsync(text: "", embed: new MeView(Context.UserContext.User.Username, await CCBUser.GetOrCreateAsync(Context.UserContext.User.Id)).Build());
+            await Context.UserContext.RespondAsync(text: "", embed: new MeView(Context.UserContext.User.Username, new(Context.UserContext.User.Id)).Build());
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)

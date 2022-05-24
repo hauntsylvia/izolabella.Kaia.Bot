@@ -30,7 +30,14 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         {
             IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "user");
             IUser U = UserArg != null && UserArg.Value is IUser DU ? DU : Context.UserContext.User;
-            await Context.UserContext.RespondAsync(text: "", embed: new MeView(U.Username, new(U.Id)).Build());
+            if(U.Id == Context.UserContext.User.Id)
+            {
+                await new MeInventory(new(U.Id), Context, 4).StartAsync();
+            }
+            else
+            {
+                await Context.UserContext.RespondAsync(text: "", embed: new MeView(U.Username, new(U.Id)).Build());
+            }
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)

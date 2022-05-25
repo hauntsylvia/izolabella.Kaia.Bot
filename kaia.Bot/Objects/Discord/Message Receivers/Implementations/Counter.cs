@@ -29,7 +29,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
         {
             MessageReceiverResult Result = new();
             string? Split = Message.Content.Split(' ').FirstOrDefault();
-            if (Split != null && decimal.TryParse(Split, out decimal Num))
+            if (Split != null && double.TryParse(Split, out double Num))
             {
                 if(Message.Author is SocketGuildUser SUser)
                 {
@@ -51,7 +51,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                         await Message.AddReactionAsync(RareCheck ? Emotes.Counting.CheckRare : Emotes.Counting.Check);
                         if(RareCheck)
                         {
-                            Author.Settings.Inventory.Petals += new Random().Next(10, 100) + (decimal)new Random().NextDouble();
+                            Author.Settings.Inventory.Petals += new Random().Next(10, 100) + (double)new Random().NextDouble();
                         }
                     }
                     else if(NotSameUserAsLastTime)

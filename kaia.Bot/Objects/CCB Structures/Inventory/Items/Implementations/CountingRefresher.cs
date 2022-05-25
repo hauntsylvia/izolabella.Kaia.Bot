@@ -16,7 +16,7 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations
 
         public string Description => "allows u to keep counting even if u fail.";
 
-        public decimal Cost => 50;
+        public double Cost => 50;
 
         public Emoji DisplayEmote => Emotes.Items.CountingRefresher;
 

@@ -8,25 +8,20 @@ using System.Threading.Tasks;
 namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Properties
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class CCBUserInventory
+    public class UserInventory
     {
         [JsonConstructor]
-        public CCBUserInventory(decimal? Petals, decimal? Ego, params ICCBInventoryItem[]? Items)
+        public UserInventory(double? Petals, params ICCBInventoryItem[]? Items)
         {
             this.Items = Items?.ToList() ?? new();
-            this.Petals = Petals ?? 10.0m;
-            this.Ego = Ego ?? 0.0m;
+            this.Petals = Petals ?? 10.0;
         }
 
         [JsonProperty("Items", Required = Required.Default)]
         public List<ICCBInventoryItem> Items { get; }
 
-        private decimal petals;
+        private double petals;
         [JsonProperty("Currency", Required = Required.Default)]
-        public decimal Petals { get => decimal.Round(this.petals, 2); set => this.petals = value; }
-
-        private decimal ego;
-        [JsonProperty("Ego", Required = Required.Default)]
-        public decimal Ego { get => decimal.Round(this.ego, 2); set => this.ego = value; }
+        public double Petals { get => Math.Round(this.petals, 2); set => this.petals = value; }
     }
 }

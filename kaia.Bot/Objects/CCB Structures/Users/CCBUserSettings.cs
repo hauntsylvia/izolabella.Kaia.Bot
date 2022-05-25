@@ -1,4 +1,5 @@
-﻿using Kaia.Bot.Objects.CCB_Structures.Inventory.Properties;
+﻿using Kaia.Bot.Objects.CCB_Structures.Books.Properties;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,12 @@ namespace Kaia.Bot.Objects.CCB_Structures.Users
     public class CCBUserSettings
     {
         [JsonConstructor]
-        public CCBUserSettings(ulong? HighestCountEver = null, ulong? NumbersCounted = null, CCBUserInventory? Inv = null)
+        public CCBUserSettings(ulong? HighestCountEver = null, ulong? NumbersCounted = null, UserInventory? Inv = null, UserLibrary? Library = null)
         {
             this.HighestCountEver = HighestCountEver;
             this.NumbersCounted = NumbersCounted;
-            this.Inventory = Inv ?? new(0.0m, 0.0m);
+            this.Inventory = Inv ?? new(0.0);
+            this.Library = Library ?? new();
         }
 
         [JsonProperty("HighestCountEver", Required = Required.Default)]
@@ -25,6 +27,9 @@ namespace Kaia.Bot.Objects.CCB_Structures.Users
         public ulong? NumbersCounted { get; set; }
 
         [JsonProperty("Inventory", Required = Required.Default)]
-        public CCBUserInventory Inventory { get; set; }
+        public UserInventory Inventory { get; set; }
+
+        [JsonProperty("Library", Required = Required.Default)]
+        public UserLibrary Library { get; set; }
     }
 }

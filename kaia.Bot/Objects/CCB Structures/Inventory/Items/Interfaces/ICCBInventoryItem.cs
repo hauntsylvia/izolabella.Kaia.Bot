@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases
     {
         string DisplayName { get; }
         string Description { get; }
-        decimal Cost { get; }
+        double Cost { get; }
         Emoji DisplayEmote { get; }
         DateTime ReceivedAt { get; }
         Task UserBoughtAsync(CommandContext Context, CCBUser User);

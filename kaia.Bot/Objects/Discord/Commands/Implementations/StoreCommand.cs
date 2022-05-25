@@ -38,7 +38,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                 if(InventoryItem != null && Quantity > 0)
                 {
                     CCBUser User = new(Context.UserContext.User.Id);
-                    decimal TotalCost = InventoryItem.Cost * Quantity;
+                    double TotalCost = InventoryItem.Cost * Quantity;
                     if (TotalCost <= User.Settings.Inventory.Petals)
                     {
                         List<ICCBInventoryItem> ItemsBought = new();

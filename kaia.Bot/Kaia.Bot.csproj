@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Objects\CCB Structures\Books\Covers\Implementations\" />
     <Folder Include="Objects\Error Control\Exceptions\Implementations\" />
   </ItemGroup>
 

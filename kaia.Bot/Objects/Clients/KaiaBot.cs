@@ -12,6 +12,8 @@ using System.Reflection;
 using Kaia.Bot.Objects.CCB_Controllers;
 using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations;
+using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
+using Kaia.Bot.Objects.Discord.Message_Receivers.Implementations;
 
 namespace Kaia.Bot.Objects.Clients
 {
@@ -20,14 +22,32 @@ namespace Kaia.Bot.Objects.Clients
         public KaiaBot(KaiaParams Parameters)
         {
             this.Parameters = Parameters;
-            this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceived;
+            this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
+            this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceivedAsync;
+            this.Parameters.CommandHandler.Client.SlashCommandExecuted += this.SlashCommandReceivedAsync;
             this.MessageReceivers =  InterfaceImplementationController.GetItems<IMessageReceiver>();
         }
-
         public KaiaParams Parameters { get; }
+
         public List<IMessageReceiver> MessageReceivers { get; }
 
-        private async Task MessageReceived(SocketMessage Arg)
+        private async Task AfterCommandExecutedAsync(izolabella.Discord.Objects.Arguments.CommandContext Context, izolabella.Discord.Objects.Parameters.IzolabellaCommandArgument[] Arguments, izolabella.Discord.Objects.Interfaces.IIzolabellaCommand CommandInvoked)
+        {
+            await new CCBUser(Context.UserContext.User.Id).SaveAsync();
+            if(Context.UserContext.User is SocketGuildUser SU)
+            {
+                await new CCBGuild(SU.Guild.Id).SaveAsync();
+            }
+            Console.WriteLine("saved data");
+        }
+        private async Task SlashCommandReceivedAsync(SocketSlashCommand Arg)
+        {
+            CCBUser User = new(Arg.User.Id);
+            await new BookTicker().RunAsync(User, null);
+            await User.SaveAsync();
+        }
+
+        private async Task MessageReceivedAsync(SocketMessage Arg)
         {
             if(!Arg.Author.IsBot)
             {

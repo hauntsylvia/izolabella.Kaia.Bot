@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
-    internal class CCBPathPaginatedEmbed : CCBPathEmbed, IDisposable
+    public class CCBPathPaginatedEmbed : IDisposable
     {
         public CCBPathPaginatedEmbed(
             List<CCBPathEmbed> Embeds,
+            CCBPathEmbed IfNoListElements,
             CommandContext Context,
             int StartingIndex,
             IEmote PageBack, 
@@ -22,9 +23,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             string Parent,
             string? Sub1 = null,
             string? Sub2 = null,
-            Color? Override = null) : base(Parent, Sub1, Sub2, Override)
+            Color? Override = null)
         {
             this.Embeds = Embeds;
+            this.IfNoListElements = IfNoListElements;
             this.Context = Context;
             this.ZeroBasedIndex = StartingIndex;
             this.PageBack = PageBack;
@@ -38,7 +40,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         }
 
         public List<CCBPathEmbed> Embeds { get; }
-
+        public CCBPathEmbed IfNoListElements { get; }
         public CommandContext Context { get; }
 
         private int index;
@@ -48,7 +50,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public int ZeroBasedIndex
         {
-            get => this.index >= this.Embeds.Count ? this.Embeds.Count - 1 : this.index < 0 ? 0 : this.index;
+            get => this.index >= this.Embeds.Count && this.Embeds.Count > 0 ? this.Embeds.Count - 1 : this.index < 0 ? 0 : this.index;
             set => this.index = value;
         }
         public IEmote PageBack { get; }
@@ -86,14 +88,14 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                 SelfMessageAction.Components = this.GetComponentBuilder().Build();
                 SelfMessageAction.Embed =
                     this.Embeds.ElementAtOrDefault(this.ZeroBasedIndex) is CCBPathEmbed Embed ? Embed.Build() :
-                        this.Embeds.ElementAt(this.ZeroBasedIndex >= this.Embeds.Count ? this.Embeds.Count - 1 : 0).Build();
+                        this.Embeds.ElementAtOrDefault(this.ZeroBasedIndex >= this.Embeds.Count ? this.Embeds.Count - 1 : 0)?.Build() ?? this.IfNoListElements.Build();
             });
             this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
         }
 
         private async Task ClientButtonPressedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
         {
-            if (Component.Data.CustomId == this.BId || Component.Data.CustomId == this.FId)
+            if ((Component.Data.CustomId == this.BId || Component.Data.CustomId == this.FId) && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 this.ZeroBasedIndex = Component.Data.CustomId == this.BId ? this.ZeroBasedIndex - 1 : this.ZeroBasedIndex + 1;
                 CCBPathEmbed EmbedOfThis = this.Embeds.ElementAt(this.ZeroBasedIndex);
@@ -109,6 +111,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             this.Context.Reference.Client.ButtonExecuted -= this.ClientButtonPressedAsync;
         }
     }

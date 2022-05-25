@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
 {
-    internal class MeInventory : CCBPathPaginatedEmbed
+    public class MeInventory : CCBPathPaginatedEmbed
     {
         public MeInventory(CCBUser User, CommandContext Context, int InventoryChunkSize) : base(new(),
+                                                          new(Strings.EmbedStrings.PathIfNoGuild,
+                                                          Strings.EmbedStrings.FakePaths.Users,
+                                                          Context.UserContext.User.Username),
                                                           Context,
                                                           0,
                                                           Emotes.Embeds.Back,
@@ -22,7 +25,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
         {
             MeView LandingPage = new(Context.UserContext.User.Username, User);
             IEnumerable<ICCBInventoryItem[]> InventoryChunked = User.Settings.Inventory.Items.Chunk(InventoryChunkSize);
-            LandingPage.WriteField($"{Emotes.Counting.Inventory}", $"`{User.Settings.Inventory.Items.Count}` items");
+            LandingPage.WriteField($"{Emotes.Counting.Inventory} inventory", $"`{User.Settings.Inventory.Items.Count}` {(User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
             this.Embeds.Add(LandingPage);
             List<KeyValuePair<ICCBInventoryItem, int>> ItemsAndTheirCounts = new();
             foreach (ICCBInventoryItem[] Chunk in InventoryChunked)

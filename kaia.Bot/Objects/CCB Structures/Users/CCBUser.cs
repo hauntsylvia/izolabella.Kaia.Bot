@@ -19,7 +19,8 @@ namespace Kaia.Bot.Objects.CCB_Structures
         public CCBUser(ulong Id, CCBUserSettings? Settings = null) : base(DataStores.UserStore, Id)
         {
             this.Id = Id;
-            this.Settings = Settings ?? this.GetAsync<CCBUser>().Result?.Settings ?? new();
+            this.Settings = Settings ?? this.GetAsync<CCBUser>().Result?.Settings ?? new(Id);
+            this.Settings.LibraryProcessor = new(Id);
         }
 
         public new ulong Id { get; }

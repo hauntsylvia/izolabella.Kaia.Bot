@@ -11,7 +11,13 @@ namespace Kaia.Bot.Objects.CCB_Structures.Books.Covers.Implementations
     {
         public static List<KaiaBook> Books => new()
         {
-            new("Somokuto", "Santōka Taneda", 5, 3.36, 1.2, 500, 1.2125, DateTime.UtcNow.AddMonths(2)),
+            new("Somokuto", "Santōka Taneda", 5, 0.185, 1.0005, 5, 2, new(2022, 7, 24), 5252022232),
+            new("Dogra Magra", "Yumeno Kyūsaku", 505, 0.1, 1.122, 10, 1.95, new(2024, 7, 24), 5252022232),
         };
+
+        public static KaiaBook? GetActiveBookById(string Id)
+        {
+            return KaiaLibrary.Books.FirstOrDefault(B => B.BookId == Id);
+        }
     }
 }

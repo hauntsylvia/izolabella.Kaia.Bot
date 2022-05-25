@@ -17,6 +17,7 @@ namespace Kaia.Bot.Objects.Constants
         {
             internal static string UserStore => "CCBUsers";
             internal static string GuildStore => "CCBGuilds";
+            internal static string BookStore => "Kaia Library";
         }
         public static class EmbedStrings
         {
@@ -34,6 +35,7 @@ namespace Kaia.Bot.Objects.Constants
                 internal static string Settings => "settings";
                 internal static string Leaderboards => "leaderboards";
                 internal static string StoreOrShop => "store";
+                internal static string Library => "library";
             }
         }
         internal static class Responses
@@ -46,6 +48,7 @@ namespace Kaia.Bot.Objects.Constants
                 internal static string NoInventoryItemWithThatNameFound => "there r no items matching that name . .";
                 internal static string ZeroOrNegativeQuantity => "u don't want to buy anything?";
                 internal static string InvalidCurrencyAmount => "u don't have enough to cover this transaction.";
+                internal static string NoBookFound => "oh no, there's no matching book.";
             }
             internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
             internal static string UserCountingSaved => "counting refreshed. don't fail next time.";

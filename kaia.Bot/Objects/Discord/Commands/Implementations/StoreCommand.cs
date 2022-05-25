@@ -10,6 +10,7 @@ using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Discord.WebSocket;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
 using Discord;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
@@ -60,7 +61,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                             Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()));
                         }
                         await User.SaveAsync();
-                        CCBPathPaginatedEmbed P = new(Embeds, Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
+                        CCBPathPaginatedEmbed P = new(Embeds, new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
                         await P.StartAsync();
                     }
                     else
@@ -78,7 +79,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                 CCBPathPaginatedEmbed E = new(new List<CCBPathEmbed>()
                 {
                     new StorePage("1", new(Context.UserContext.User.Id), InterfaceImplementationController.GetItems<ICCBInventoryItem>()),
-                }, Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, "a");
+                }, new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, "a");
                 await E.StartAsync();
             }
         }

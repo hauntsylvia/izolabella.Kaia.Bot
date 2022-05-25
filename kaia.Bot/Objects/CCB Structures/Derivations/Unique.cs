@@ -18,7 +18,7 @@ namespace Kaia.Bot.Objects.CCB_Structures.Derivations
             this.Id = Id ?? IdGenerator.CreateNewId();
         }
 
-        public DataStore BelongsTo { get; }
+        public DataStore BelongsTo { get; set; }
 
         [JsonProperty("Id", Required = Required.Always)]
         public ulong Id { get; }

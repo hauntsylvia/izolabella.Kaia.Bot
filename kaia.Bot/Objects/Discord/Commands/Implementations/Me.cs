@@ -9,6 +9,7 @@ using Kaia.Bot.Objects.Constants;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Discord.WebSocket;
 using Discord;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {

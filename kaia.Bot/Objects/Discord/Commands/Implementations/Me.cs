@@ -22,6 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         {
             new("User", "The user I'd like to view.", ApplicationCommandOptionType.User, false)
         };
+
         public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
         public string ForeverId => CommandForeverIds.MeCommand;

@@ -35,7 +35,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             if (ItemArg != null && QuantityArg != null && ItemArg.Value is string ItemName && QuantityArg.Value is long Quantity)
             {
                 ICCBInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<ICCBInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
-                if(InventoryItem != null)
+                if(InventoryItem != null && Quantity > 0)
                 {
                     CCBUser User = new(Context.UserContext.User.Id);
                     decimal TotalCost = InventoryItem.Cost * Quantity;
@@ -70,7 +70,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                 }
                 else
                 {
-                    await Context.UserContext.RespondAsync(text: Strings.Responses.Commands.NoInventoryItemWithThatNameFound);
+                    await Context.UserContext.RespondAsync(text: Quantity > 0 ? Strings.Responses.Commands.NoInventoryItemWithThatNameFound : Strings.Responses.Commands.ZeroOrNegativeQuantity);
                 }
             }
             else

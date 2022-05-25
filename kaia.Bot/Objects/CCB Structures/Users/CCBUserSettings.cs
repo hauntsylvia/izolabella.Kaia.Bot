@@ -15,7 +15,7 @@ namespace Kaia.Bot.Objects.CCB_Structures.Users
         {
             this.HighestCountEver = HighestCountEver;
             this.NumbersCounted = NumbersCounted;
-            this.Inventory = Inv ?? new(0);
+            this.Inventory = Inv ?? new(0.0m, 0.0m);
         }
 
         [JsonProperty("HighestCountEver", Required = Required.Default)]

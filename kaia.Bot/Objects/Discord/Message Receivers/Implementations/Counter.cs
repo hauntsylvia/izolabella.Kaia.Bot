@@ -85,10 +85,12 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
             }
             return Result;
         }
+
         public Task CallbackAsync(CCBUser Author, SocketMessage Message, MessageReceiverResult CausedCallback)
         {
             return Task.CompletedTask;
         }
+
         public Task OnErrorAsync(Exception Exception)
         {
             return Task.CompletedTask;

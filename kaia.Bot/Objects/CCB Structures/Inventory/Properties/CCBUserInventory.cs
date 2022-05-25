@@ -11,10 +11,11 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Properties
     public class CCBUserInventory
     {
         [JsonConstructor]
-        public CCBUserInventory(decimal? Petals, params ICCBInventoryItem[]? Items)
+        public CCBUserInventory(decimal? Petals, decimal? Ego, params ICCBInventoryItem[]? Items)
         {
             this.Items = Items?.ToList() ?? new();
             this.Petals = Petals ?? 10.0m;
+            this.Ego = Ego ?? 0.0m;
         }
 
         [JsonProperty("Items", Required = Required.Default)]
@@ -23,5 +24,9 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Properties
         private decimal petals;
         [JsonProperty("Currency", Required = Required.Default)]
         public decimal Petals { get => decimal.Round(this.petals, 2); set => this.petals = value; }
+
+        private decimal ego;
+        [JsonProperty("Ego", Required = Required.Default)]
+        public decimal Ego { get => decimal.Round(this.ego, 2); set => this.ego = value; }
     }
 }

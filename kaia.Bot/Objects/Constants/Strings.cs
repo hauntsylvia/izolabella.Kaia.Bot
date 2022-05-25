@@ -44,6 +44,7 @@ namespace Kaia.Bot.Objects.Constants
                 internal static string GuildSetSaveFail => "guild settings could not be saved.";
                 internal static string InvalidLeaderboardOption => "that's an invalid leaderboard option!";
                 internal static string NoInventoryItemWithThatNameFound => "there r no items matching that name . .";
+                internal static string ZeroOrNegativeQuantity => "u don't want to buy anything?";
                 internal static string InvalidCurrencyAmount => "u don't have enough to cover this transaction.";
             }
             internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";

@@ -20,8 +20,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username)
         {
-            this.Embeds.Add(new MeView(Context.UserContext.User.Username, User));
+            MeView LandingPage = new(Context.UserContext.User.Username, User);
             IEnumerable<ICCBInventoryItem[]> InventoryChunked = User.Settings.Inventory.Items.Chunk(InventoryChunkSize);
+            LandingPage.WriteField($"{Emotes.Counting.Inventory}", $"`{User.Settings.Inventory.Items.Count}` items");
+            this.Embeds.Add(LandingPage);
             List<KeyValuePair<ICCBInventoryItem, int>> ItemsAndTheirCounts = new();
             foreach (ICCBInventoryItem[] Chunk in InventoryChunked)
             {

@@ -15,7 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
         {
             this.WriteField("highest number counted", $"`{User.Settings.HighestCountEver ?? 0}`");
             this.WriteField("total numbers counted", $"`{User.Settings.NumbersCounted ?? 0}`");
-            this.WriteField($"current {Strings.Economy.CurrencyName} {Strings.Economy.CurrencyEmote}", $"`{User.Settings.Inventory.Petals}`");
+            this.WriteField($"{Strings.Economy.CurrencyEmote} current {Strings.Economy.CurrencyName}", $"`{User.Settings.Inventory.Petals}`");
         }
     }
 }

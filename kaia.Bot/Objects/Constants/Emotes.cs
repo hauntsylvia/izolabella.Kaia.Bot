@@ -15,6 +15,8 @@ namespace Kaia.Bot.Objects.Constants
             internal static Emoji CheckRare => Emoji.Parse("💮");
             internal static Emoji ThumbDown => Emoji.Parse("👎");
             internal static Emoji Invalid => Emoji.Parse("❌");
+            internal static Emoji Book => Emoji.Parse("📖");
+            internal static Emoji Inventory => Emoji.Parse("🎀");
         }
         internal static class Items
         {

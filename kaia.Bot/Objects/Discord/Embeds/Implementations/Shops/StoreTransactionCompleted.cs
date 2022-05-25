@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     internal class StoreTransactionCompleted : CCBPathEmbed
     {
@@ -17,7 +17,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
                 $"current {Strings.Economy.CurrencyName} {Strings.Economy.CurrencyEmote}: `{User.Settings.Inventory.Petals}`"
             }, "\n");
             List<string> Display = new();
-            foreach(ICCBInventoryItem Item in ItemsBuying)
+            foreach (ICCBInventoryItem Item in ItemsBuying)
             {
                 Display.Add($"{Item.DisplayName} :: {Strings.Economy.CurrencyName} {Strings.Economy.CurrencyEmote} `{Item.Cost}`");
             }

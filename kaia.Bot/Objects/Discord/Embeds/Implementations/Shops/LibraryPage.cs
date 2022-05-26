@@ -40,7 +40,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                             }, "\n");
                     }
                 }
-                this.Embeds.Add(Embed);
+                this.EmbedsAndOptions.Add(Embed, null);
             }
         }
     }

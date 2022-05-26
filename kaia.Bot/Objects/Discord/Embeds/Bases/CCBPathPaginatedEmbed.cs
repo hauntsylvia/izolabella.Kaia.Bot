@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
     public class CCBPathPaginatedEmbed : IDisposable
     {
         public CCBPathPaginatedEmbed(
-            List<CCBPathEmbed> Embeds,
+            Dictionary<CCBPathEmbed, List<SelectMenuOptionBuilder>?> EmbedsAndOptions,
             CCBPathEmbed IfNoListElements,
             CommandContext Context,
             int StartingIndex,
@@ -25,7 +25,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             string? Sub2 = null,
             Color? Override = null)
         {
-            this.Embeds = Embeds;
+            this.EmbedsAndOptions = EmbedsAndOptions;
             this.IfNoListElements = IfNoListElements;
             this.Context = Context;
             this.ZeroBasedIndex = StartingIndex;
@@ -37,32 +37,46 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.Override = Override;
             this.BId = $"back-paginationembed-{IdGenerator.CreateNewId()}";
             this.FId = $"forward-paginationembed-{IdGenerator.CreateNewId()}";
+            this.GlobalSelectMenuId = IdGenerator.CreateNewId();
         }
 
-        public List<CCBPathEmbed> Embeds { get; }
+        public Dictionary<CCBPathEmbed, List<SelectMenuOptionBuilder>?> EmbedsAndOptions { get; }
         public CCBPathEmbed IfNoListElements { get; }
         public CommandContext Context { get; }
 
         private int index;
 
-        private string FId { get; }
-        private string BId { get; }
-
         public int ZeroBasedIndex
         {
-            get => this.index >= this.Embeds.Count && this.Embeds.Count > 0 ? this.Embeds.Count - 1 : this.index < 0 ? 0 : this.index;
+            get => this.index >= this.EmbedsAndOptions.Count && this.EmbedsAndOptions.Count > 0 ? this.EmbedsAndOptions.Count - 1 : this.index < 0 ? 0 : this.index;
             set => this.index = value;
         }
+
+        private string FId { get; }
+
+        private string BId { get; }
+
+        private ulong GlobalSelectMenuId { get; }
+
         public IEmote PageBack { get; }
+
         public IEmote PageForward { get; }
+
         public string Parent { get; }
+
         public string? Sub1 { get; }
+
         public string? Sub2 { get; }
+
         public Color? Override { get; }
 
         public delegate void PageChangeHandler(CCBPathEmbed Page, int ZeroBasedIndex);
 
         public event PageChangeHandler? OnPageChange;
+
+        public delegate void ItemSelectedHandler(CCBPathEmbed Page, int ZeroBasedIndex, IReadOnlyCollection<string> UserSelected);
+
+        public event ItemSelectedHandler? ItemSelected;
 
         private ComponentBuilder GetComponentBuilder()
         {
@@ -72,8 +86,14 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                                                      style: ButtonStyle.Secondary)
                                          .WithButton(emote: this.PageForward,
                                                      customId: this.FId,
-                                                     disabled: this.ZeroBasedIndex >= this.Embeds.Count - 1,
-                                                     style: ButtonStyle.Secondary);
+                                                     disabled: this.ZeroBasedIndex >= this.EmbedsAndOptions.Count - 1,
+                                                     style: ButtonStyle.Secondary)
+                                         .WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value));
+        }
+
+        private string GetIdFromIndex(int? IndexOverride = null)
+        {
+            return $"selmenuspg-{this.GlobalSelectMenuId}-{IndexOverride ?? this.ZeroBasedIndex}";
         }
 
         public async Task StartAsync()
@@ -87,10 +107,21 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                 SelfMessageAction.Content = Strings.EmbedStrings.Empty;
                 SelfMessageAction.Components = this.GetComponentBuilder().Build();
                 SelfMessageAction.Embed =
-                    this.Embeds.ElementAtOrDefault(this.ZeroBasedIndex) is CCBPathEmbed Embed ? Embed.Build() :
-                        this.Embeds.ElementAtOrDefault(this.ZeroBasedIndex >= this.Embeds.Count ? this.Embeds.Count - 1 : 0)?.Build() ?? this.IfNoListElements.Build();
+                    this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is CCBPathEmbed Embed ? Embed.Build() :
+                        this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
             });
             this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
+            this.Context.Reference.Client.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
+        }
+
+        private Task ClientSelectMenuExecutedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
+        {
+            if (Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
+            {
+                CCBPathEmbed EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
+                this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component.Data.Values);
+            }
+            return Task.CompletedTask;
         }
 
         private async Task ClientButtonPressedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
@@ -98,7 +129,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if ((Component.Data.CustomId == this.BId || Component.Data.CustomId == this.FId) && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 this.ZeroBasedIndex = Component.Data.CustomId == this.BId ? this.ZeroBasedIndex - 1 : this.ZeroBasedIndex + 1;
-                CCBPathEmbed EmbedOfThis = this.Embeds.ElementAt(this.ZeroBasedIndex);
+                CCBPathEmbed EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
                 await Component.UpdateAsync(M =>
                 {
                     M.Content = Strings.EmbedStrings.Empty;
@@ -113,6 +144,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             GC.SuppressFinalize(this);
             this.Context.Reference.Client.ButtonExecuted -= this.ClientButtonPressedAsync;
+            this.Context.Reference.Client.SelectMenuExecuted -= this.ClientSelectMenuExecutedAsync;
         }
     }
 }

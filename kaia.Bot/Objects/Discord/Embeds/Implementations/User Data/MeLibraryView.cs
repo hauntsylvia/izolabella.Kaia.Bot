@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
 {
-    internal class MeLibrary : CCBPathPaginatedEmbed
+    internal class MeLibraryView : CCBPathPaginatedEmbed
     {
-        public MeLibrary(CCBUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
+        public MeLibraryView(CCBUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username),
@@ -28,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
             List<KaiaBook> Books = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             IEnumerable<KaiaBook[]> BookChunked = Books.Chunk(LibraryChunkSize);
             LandingPage.WriteField($"{Emotes.Counting.Book} library", $"`{Books.Count}` {(Books.Count == 1 ? "book" : "books")}");
-            this.Embeds.Add(LandingPage);
+            this.EmbedsAndOptions.Add(LandingPage, null);
             foreach (KaiaBook[] Chunk in BookChunked)
             {
                 List<string> Display = new();
@@ -38,7 +38,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
                     Display.Add($"`{Item.Title}` by `{Item.Author}` - currently on page `{Item.CurrentPageIndex}` out of `{Item.Pages}`\n{Strings.Economy.CurrencyEmote} `{Item.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                 }
                 Embed.WriteListToOneField("library", Display, "\n\n");
-                this.Embeds.Add(Embed);
+                this.EmbedsAndOptions.Add(Embed, null);
             }
         }
     }

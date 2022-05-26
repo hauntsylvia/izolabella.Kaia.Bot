@@ -24,8 +24,7 @@ namespace Kaia.Bot.Objects.Clients
             this.Parameters = Parameters;
             this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
             this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceivedAsync;
-            this.Parameters.CommandHandler.Client.SlashCommandExecuted += this.SlashCommandReceivedAsync;
-            this.MessageReceivers =  InterfaceImplementationController.GetItems<IMessageReceiver>();
+            this.MessageReceivers = InterfaceImplementationController.GetItems<IMessageReceiver>();
         }
         public KaiaParams Parameters { get; }
 
@@ -40,36 +39,34 @@ namespace Kaia.Bot.Objects.Clients
             }
             Console.WriteLine("saved data");
         }
-        private async Task SlashCommandReceivedAsync(SocketSlashCommand Arg)
-        {
-            CCBUser User = new(Arg.User.Id);
-            await new BookTicker().RunAsync(User, null);
-            await User.SaveAsync();
-        }
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
             if(!Arg.Author.IsBot)
             {
                 CCBUser User = new(Arg.Author.Id);
-                IMessageReceiver? Receiver = this.MessageReceivers.FirstOrDefault((M) =>
+                IEnumerable<IMessageReceiver> Receivers = this.MessageReceivers.Where((M) =>
                 {
                     return M.CheckMessageValidityAsync(User, Arg).Result;
                 });
-                if (Receiver != null)
+                foreach(IMessageReceiver Receiver in Receivers)
                 {
-                    try
+                    if (Receiver != null)
                     {
-                        MessageReceiverResult Result = await Receiver.RunAsync(User, Arg);
-                        if(Result.ItemToUse != null && Result.ItemToUse is CountingRefresher CRef)
+                        try
                         {
-                            await Receiver.CallbackAsync(User, Arg, Result);
-                            User.Settings.Inventory.Items.Remove(CRef);
+                            MessageReceiverResult Result = await Receiver.RunAsync(User, Arg);
+                            if (Result.ItemToUse != null && Result.ItemToUse is CountingRefresher CRef)
+                            {
+                                await Receiver.CallbackAsync(User, Arg, Result);
+                                User.Settings.Inventory.Items.Remove(CRef);
+                            }
                         }
-                    }
-                    catch (Exception Ex)
-                    {
-                        await Receiver.OnErrorAsync(Ex);
+                        catch (Exception Ex)
+                        {
+                            Console.WriteLine($"message receiver {Receiver.Name} error => {Ex.Message}");
+                            await Receiver.OnErrorAsync(Ex);
+                        }
                     }
                 }
                 await User.SaveAsync();

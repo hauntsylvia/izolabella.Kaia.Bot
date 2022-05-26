@@ -54,11 +54,11 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                                 User.Settings.Inventory.Petals -= NewItem.Cost;
                             }
                         }
-                        List<CCBPathEmbed> Embeds = new();
+                        Dictionary<CCBPathEmbed, List<SelectMenuOptionBuilder>?> Embeds = new();
                         List<ICCBInventoryItem[]> ItemsBoughtChunked = ItemsBought.Chunk(10).ToList();
                         foreach (ICCBInventoryItem[] ItemArray in ItemsBoughtChunked)
                         {
-                            Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()));
+                            Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()), null);
                         }
                         await User.SaveAsync();
                         CCBPathPaginatedEmbed P = new(Embeds, new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
@@ -76,10 +76,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             }
             else
             {
-                CCBPathPaginatedEmbed E = new(new List<CCBPathEmbed>()
-                {
-                    new StorePage("1", new(Context.UserContext.User.Id), InterfaceImplementationController.GetItems<ICCBInventoryItem>()),
-                }, new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, "a");
+                StorePage E = new(Context, InterfaceImplementationController.GetItems<ICCBInventoryItem>(), 6);
                 await E.StartAsync();
             }
         }

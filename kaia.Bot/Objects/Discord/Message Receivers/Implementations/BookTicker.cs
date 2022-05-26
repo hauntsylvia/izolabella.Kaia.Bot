@@ -29,15 +29,15 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
         public async Task<MessageReceiverResult> RunAsync(CCBUser Author, SocketMessage? Message)
         {
             MessageReceiverResult Result = new();
-            List<KaiaBook> UserOwnedBooks = await Author.Settings.LibraryProcessor.GetUserBooksAsync();
-            double TotalToPay = 0.0;
-            foreach(KaiaBook Book in UserOwnedBooks)
-            {
-                double CyclesMissed = ((DateTime.UtcNow - Author.Settings.Inventory.LastBookUpdate) / TimeSpans.BookTickRate);
-                TotalToPay += Book.CurrentEarning * CyclesMissed;
-            }
-            Author.Settings.Inventory.LastBookUpdate = DateTime.UtcNow;
-            Author.Settings.Inventory.Petals += TotalToPay;
+            //List<KaiaBook> UserOwnedBooks = await Author.Settings.LibraryProcessor.GetUserBooksAsync();
+            //double TotalToPay = 0.0;
+            //foreach(KaiaBook Book in UserOwnedBooks)
+            //{
+            //    double CyclesMissed = ((DateTime.UtcNow - Author.Settings.Inventory.LastBookUpdate) / TimeSpans.BookTickRate);
+            //    TotalToPay += Book.CurrentEarning * CyclesMissed;
+            //}
+            //Author.Settings.Inventory.LastBookUpdate = DateTime.UtcNow;
+            //Author.Settings.Inventory.Petals += TotalToPay;
             return Result;
         }
 

@@ -17,27 +17,24 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
     {
         public string Name => "Me";
 
-        public string Description => "View my or another user's statistics.";
+        public string Description => "View my statistics and my inventory, or view another user's statistics.";
 
         public List<IzolabellaCommandParameter> Parameters => new()
         {
-            new("User", "The user I'd like to view.", ApplicationCommandOptionType.User, false),
-            new("Library", "If true, I'd like to view my library.", ApplicationCommandOptionType.Boolean, false)
+            Arguments.SomeoneOtherThanMeUser,
         };
 
         public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
         public string ForeverId => CommandForeverIds.MeCommand;
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Args)
         {
-            IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "user");
-            IzolabellaCommandArgument? LibraryViewArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "library");
-            bool ViewLibrary = LibraryViewArg != null && LibraryViewArg.Value is bool V && V;
+            IzolabellaCommandArgument? UserArg = Args.FirstOrDefault(A => A.Name.ToLower() == Arguments.SomeoneOtherThanMeUser.Name.ToLower());
             IUser U = UserArg != null && UserArg.Value is IUser DU ? DU : Context.UserContext.User;
             if(U.Id == Context.UserContext.User.Id)
             {
-                await (!ViewLibrary ? new MeInventory(new(U.Id), Context, 4).StartAsync() : new MeLibrary(new(U.Id), Context, 10).StartAsync());
+                await new MeInventoryView(new(U.Id), Context, 4).StartAsync();
             }
             else
             {

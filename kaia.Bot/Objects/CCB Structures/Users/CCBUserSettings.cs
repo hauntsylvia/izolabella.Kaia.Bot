@@ -14,8 +14,8 @@ namespace Kaia.Bot.Objects.CCB_Structures.Users
         [JsonConstructor]
         public CCBUserSettings(ulong U, ulong? HighestCountEver = null, ulong? NumbersCounted = null, UserInventory? Inv = null)
         {
-            this.HighestCountEver = HighestCountEver;
-            this.NumbersCounted = NumbersCounted;
+            this.HighestCountEver = HighestCountEver ?? 0;
+            this.NumbersCounted = NumbersCounted ?? 0;
             this.Inventory = Inv ?? new(0.0, DateTime.UtcNow);
             this.LibraryProcessor = new(U);
         }

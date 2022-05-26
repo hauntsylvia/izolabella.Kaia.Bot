@@ -16,7 +16,7 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class Library : ICCBCommand
+    public class KaiaLibrary : ICCBCommand
     {
         public string Name => "Library";
 
@@ -31,7 +31,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? BookArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "book");
-            if(BookArg != null && BookArg.Value is string BookId && KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
+            if(BookArg != null && BookArg.Value is string BookId && CCB_Structures.Books.Covers.Implementations.KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
             {
                 await new LibraryBookView(Context, Book.BookId, Emotes.Counting.Book).StartAsync(new(Context.UserContext.User.Id));
             }
@@ -48,7 +48,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
             List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (KaiaBook Book in KaiaLibrary.Books)
+            foreach (KaiaBook Book in CCB_Structures.Books.Covers.Implementations.KaiaLibrary.Books)
             {
                 Choices.Add(new(Book.Title, Book.BookId));
             }

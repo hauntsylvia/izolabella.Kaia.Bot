@@ -1,4 +1,7 @@
-﻿using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+﻿using Discord;
+using izolabella.Discord.Objects.Arguments;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +10,30 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class StorePage : CCBPathEmbed
+    public class StorePage : CCBPathPaginatedEmbed
     {
-        public StorePage(string UserName, CCB_Structures.CCBUser User, List<ICCBInventoryItem> Display) : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop)
+        public StorePage(CommandContext Context, List<ICCBInventoryItem> AllItems, int ChunkSize) : base(new(),
+                                                                                                         new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop),
+                                                                                                         Context,
+                                                                                                         0,
+                                                                                                         Emotes.Embeds.Back,
+                                                                                                         Emotes.Embeds.Forward,
+                                                                                                         Strings.EmbedStrings.PathIfNoGuild,
+                                                                                                         Strings.EmbedStrings.FakePaths.StoreOrShop)
         {
-            foreach (ICCBInventoryItem Item in Display)
+            Dictionary<CCBPathEmbed, List<SelectMenuOptionBuilder>> D = new();
+            IEnumerable<ICCBInventoryItem[]> ItemsChunked = AllItems.Chunk(ChunkSize);
+
+            foreach (ICCBInventoryItem[] Items in ItemsChunked)
             {
-                this.WriteField($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.Description);
+                CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
+                List<SelectMenuOptionBuilder> B = new();
+                foreach (ICCBInventoryItem Item in Items)
+                {
+                    Embed.WriteField($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.Description);
+                    B.Add(new($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.DisplayName, Item.Description, Item.DisplayEmote, false));
+                }
+                D.Add(Embed, B);
             }
         }
     }

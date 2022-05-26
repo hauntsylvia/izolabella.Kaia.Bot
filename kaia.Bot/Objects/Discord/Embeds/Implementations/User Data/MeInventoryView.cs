@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
 {
-    public class MeInventory : CCBPathPaginatedEmbed
+    public class MeInventoryView : CCBPathPaginatedEmbed
     {
-        public MeInventory(CCBUser User, CommandContext Context, int InventoryChunkSize) : base(new(),
+        public MeInventoryView(CCBUser User, CommandContext Context, int InventoryChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username),
@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
             MeView LandingPage = new(Context.UserContext.User.Username, User);
             IEnumerable<ICCBInventoryItem[]> InventoryChunked = User.Settings.Inventory.Items.Chunk(InventoryChunkSize);
             LandingPage.WriteField($"{Emotes.Counting.Inventory} inventory", $"`{User.Settings.Inventory.Items.Count}` {(User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
-            this.Embeds.Add(LandingPage);
+            this.EmbedsAndOptions.Add(LandingPage, null);
             List<KeyValuePair<ICCBInventoryItem, int>> ItemsAndTheirCounts = new();
             foreach (ICCBInventoryItem[] Chunk in InventoryChunked)
             {
@@ -49,7 +49,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
                 CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
                 Display.Add($"[{ItemCount.Key.DisplayEmote}] {ItemCount.Key.DisplayName} [x{ItemCount.Value}]");
                 Embed.WriteListToOneField("inventory", Display, "\n");
-                this.Embeds.Add(Embed);
+                this.EmbedsAndOptions.Add(Embed, null);
             }
         }
     }

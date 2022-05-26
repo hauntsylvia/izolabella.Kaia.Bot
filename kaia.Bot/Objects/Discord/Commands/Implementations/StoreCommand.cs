@@ -76,7 +76,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             }
             else
             {
-                StorePage E = new(Context, InterfaceImplementationController.GetItems<ICCBInventoryItem>(), 6);
+                List<ICCBInventoryItem> Items = InterfaceImplementationController.GetItems<ICCBInventoryItem>();
+                ItemsPage E = new(Context, Items, 6);
                 await E.StartAsync();
             }
         }

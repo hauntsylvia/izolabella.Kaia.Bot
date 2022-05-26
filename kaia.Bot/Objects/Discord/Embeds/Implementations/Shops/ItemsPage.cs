@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class StorePage : CCBPathPaginatedEmbed
+    public class ItemsPage : CCBPathPaginatedEmbed
     {
-        public StorePage(CommandContext Context, List<ICCBInventoryItem> AllItems, int ChunkSize) : base(new(),
+        public ItemsPage(CommandContext Context, List<ICCBInventoryItem> AllItems, int ChunkSize) : base(new(),
                                                                                                          new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop),
                                                                                                          Context,
                                                                                                          0,
@@ -21,7 +21,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                                                                                                          Strings.EmbedStrings.PathIfNoGuild,
                                                                                                          Strings.EmbedStrings.FakePaths.StoreOrShop)
         {
-            Dictionary<CCBPathEmbed, List<SelectMenuOptionBuilder>> D = new();
             IEnumerable<ICCBInventoryItem[]> ItemsChunked = AllItems.Chunk(ChunkSize);
 
             foreach (ICCBInventoryItem[] Items in ItemsChunked)
@@ -31,9 +30,23 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 foreach (ICCBInventoryItem Item in Items)
                 {
                     Embed.WriteField($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.Description);
-                    B.Add(new($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.DisplayName, Item.Description, Item.DisplayEmote, false));
+                    B.Add(new($"{Item.DisplayName}", Item.DisplayName, Item.Description, Item.DisplayEmote, false));
                 }
-                D.Add(Embed, B);
+                this.EmbedsAndOptions.Add(Embed, B);
+            }
+
+            this.ItemSelected += this.StoreItemSelectedAsync;
+        }
+
+        private async void StoreItemSelectedAsync(CCBPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        {
+            ICCBInventoryItem? Item = InterfaceImplementationController.GetItems<ICCBInventoryItem>().FirstOrDefault(X => X.DisplayName == (ItemsSelected.FirstOrDefault() ?? ""));
+            if(Item != null)
+            {
+                await Component.DeferAsync();
+                await new ItemView(this.Context, Item, Emotes.Counting.BuyItem).StartAsync(new(Component.User.Id));
+                this.Dispose();
+                this.ItemSelected -= this.StoreItemSelectedAsync;
             }
         }
     }

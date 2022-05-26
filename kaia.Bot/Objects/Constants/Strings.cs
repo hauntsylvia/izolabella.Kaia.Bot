@@ -36,6 +36,7 @@ namespace Kaia.Bot.Objects.Constants
                 internal static string Leaderboards => "leaderboards";
                 internal static string StoreOrShop => "store";
                 internal static string Library => "library";
+                internal static string Inventory => "inventory";
             }
         }
         internal static class Responses

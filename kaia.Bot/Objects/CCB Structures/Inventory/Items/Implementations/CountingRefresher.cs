@@ -22,9 +22,16 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations
 
         public DateTime ReceivedAt { get; private set; } = DateTime.UtcNow;
 
+        public bool CanInteractWithDirectly => false;
+
         public Task UserBoughtAsync(CommandContext Context, CCBUser User)
         {
             this.ReceivedAt = DateTime.UtcNow;
+            return Task.CompletedTask;
+        }
+
+        public Task UserInteractAsync(CommandContext Context, CCBUser User)
+        {
             return Task.CompletedTask;
         }
     }

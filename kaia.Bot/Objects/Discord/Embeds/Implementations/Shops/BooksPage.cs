@@ -1,4 +1,5 @@
-﻿using izolabella.Discord.Objects.Arguments;
+﻿using Discord;
+using izolabella.Discord.Objects.Arguments;
 using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
 using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Implementations;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class LibraryPage : CCBPathPaginatedEmbed
+    public class BooksPage : CCBPathPaginatedEmbed
     {
-        public LibraryPage(CommandContext Context, int BookChunkSize) : base(new(),
+        public BooksPage(CommandContext Context, int BookChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library),
                                                           Context,
                                                           0,
@@ -26,6 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             foreach (KaiaBook[] Chunk in InventoryChunked)
             {
                 CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library);
+                List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaBook Item in Chunk)
                 {
                     if(Item.AvailableUntil >= DateTime.UtcNow)
@@ -38,10 +40,21 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                             $"{Strings.Economy.CurrencyEmote} `{Item.NextPageTurnCost}` to read",
                             $"{Strings.Economy.CurrencyEmote} `{Item.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min."
                             }, "\n");
+                        B.Add(new(Item.Title, Item.BookId, $"by {Item.Author}", Emotes.Counting.Book, false));
                     }
                 }
-                this.EmbedsAndOptions.Add(Embed, null);
+                this.EmbedsAndOptions.Add(Embed, B);
             }
+
+            this.ItemSelected += this.ItemSelectedAsync;
+        }
+
+        private async void ItemSelectedAsync(CCBPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        {
+            await Component.DeferAsync();
+            await new BookView(this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book).StartAsync(new(Component.User.Id));
+            this.Dispose();
+            this.ItemSelected -= this.ItemSelectedAsync;
         }
     }
 }

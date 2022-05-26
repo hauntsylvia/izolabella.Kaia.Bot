@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Rest;
+using Discord.WebSocket;
 using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Clients;
 using Kaia.Bot.Objects.Util;
@@ -74,21 +75,28 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public event PageChangeHandler? OnPageChange;
 
-        public delegate void ItemSelectedHandler(CCBPathEmbed Page, int ZeroBasedIndex, IReadOnlyCollection<string> UserSelected);
+        public delegate void ItemSelectedHandler(CCBPathEmbed Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected);
 
         public event ItemSelectedHandler? ItemSelected;
 
         private ComponentBuilder GetComponentBuilder()
         {
-            return new ComponentBuilder().WithButton(emote: this.PageBack,
-                                                     customId: this.BId,
-                                                     disabled: this.ZeroBasedIndex <= 0, 
-                                                     style: ButtonStyle.Secondary)
-                                         .WithButton(emote: this.PageForward,
-                                                     customId: this.FId,
-                                                     disabled: this.ZeroBasedIndex >= this.EmbedsAndOptions.Count - 1,
-                                                     style: ButtonStyle.Secondary)
-                                         .WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value));
+            List<SelectMenuOptionBuilder>? B = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value;
+            ComponentBuilder CB = new();
+            if(B != null)
+            {
+                CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
+            }
+            CB.WithButton(emote: this.PageBack,
+                          customId: this.BId,
+                          disabled: this.ZeroBasedIndex <= 0,
+                          style: ButtonStyle.Secondary,
+                          row: 0).WithButton(emote: this.PageForward,
+                                             customId: this.FId,
+                                             disabled: this.ZeroBasedIndex >= this.EmbedsAndOptions.Count - 1,
+                                             style: ButtonStyle.Secondary,
+                                             row: 0);
+            return CB;
         }
 
         private string GetIdFromIndex(int? IndexOverride = null)
@@ -114,12 +122,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.Context.Reference.Client.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
         }
 
-        private Task ClientSelectMenuExecutedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
+        private Task ClientSelectMenuExecutedAsync(SocketMessageComponent Component)
         {
             if (Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 CCBPathEmbed EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
-                this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component.Data.Values);
+                this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component, Component.Data.Values);
             }
             return Task.CompletedTask;
         }

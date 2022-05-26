@@ -13,20 +13,20 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class LibraryBookView : CCBPathEmbed, IDisposable
+    public class BookView : ICCBItemContentView
     {
-        public LibraryBookView(CommandContext Context, string BookId, IEmote ReadPageEmote) : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library)
+        public BookView(CommandContext Context, string BookId, IEmote ReadPageEmote)
         {
             this.ReadNextPageId = $"readnextpage-lbv-{IdGenerator.CreateNewId()}";
             this.Context = Context;
             this.BookId = BookId;
-            this.ReadPageEmote = ReadPageEmote;
+            this.InteractionEmote = ReadPageEmote;
         }
 
         public string ReadNextPageId { get; }
         public CommandContext Context { get; }
         public string BookId { get; }
-        public IEmote ReadPageEmote { get; }
+        public IEmote InteractionEmote { get; }
 
         public void Dispose()
         {
@@ -42,13 +42,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             throw new NullReferenceException();
         }
 
-        private async Task<ComponentBuilder> GetComponentsAsync(CCBUser U)
+        public async Task<ComponentBuilder> GetComponentsAsync(CCBUser U)
         {
             KaiaBook Book = await this.GetUserBookAsync(U);
-            return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.ReadPageEmote, disabled: Book.CurrentPageIndex >= Book.Pages);
+            return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.InteractionEmote, disabled: Book.CurrentPageIndex >= Book.Pages);
         }
 
-        private async Task<CCBPathEmbed> GetEmbedAsync(CCBUser U)
+        public async Task<CCBPathEmbed> GetEmbedAsync(CCBUser U)
         {
             KaiaBook Book = await this.GetUserBookAsync(U);
             CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library, Book.Title);

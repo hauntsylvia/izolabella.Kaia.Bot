@@ -33,7 +33,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             IzolabellaCommandArgument? BookArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "book");
             if(BookArg != null && BookArg.Value is string BookId && CCB_Structures.Books.Covers.Implementations.KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
             {
-                await new LibraryBookView(Context, Book.BookId, Emotes.Counting.Book).StartAsync(new(Context.UserContext.User.Id));
+                await new BookView(Context, Book.BookId, Emotes.Counting.Book).StartAsync(new(Context.UserContext.User.Id));
             }
             else if(BookArg != null)
             {
@@ -41,7 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             }
             else
             {
-                await (new LibraryPage(Context, 5).StartAsync());
+                await (new BooksPage(Context, 5).StartAsync());
             }
         }
 

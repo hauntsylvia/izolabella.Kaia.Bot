@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
             return Task.FromResult(true);
         }
 
-        public async Task<MessageReceiverResult> RunAsync(CCBUser Author, SocketMessage? Message)
+        public Task<MessageReceiverResult> RunAsync(CCBUser Author, SocketMessage? Message)
         {
             MessageReceiverResult Result = new();
             //List<KaiaBook> UserOwnedBooks = await Author.Settings.LibraryProcessor.GetUserBooksAsync();
@@ -38,7 +38,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
             //}
             //Author.Settings.Inventory.LastBookUpdate = DateTime.UtcNow;
             //Author.Settings.Inventory.Petals += TotalToPay;
-            return Result;
+            return Task.FromResult(Result);
         }
 
         public Task CallbackAsync(CCBUser Author, SocketMessage Message, MessageReceiverResult CausedCallback)

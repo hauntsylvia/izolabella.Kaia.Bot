@@ -23,24 +23,32 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
             CCBUser User = new(Context.UserContext.User.Id);
-            IEnumerable<KaiaBook[]> InventoryChunked = KaiaLibrary.Books.Where(B => !User.Settings.LibraryProcessor.UserHasBookOfIdAsync(B.BookId).Result).Chunk(BookChunkSize);
+            IEnumerable<KaiaBook[]> InventoryChunked = KaiaLibrary.Books.Chunk(BookChunkSize);
+            List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             foreach (KaiaBook[] Chunk in InventoryChunked)
             {
                 CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaBook Item in Chunk)
                 {
-                    if(Item.AvailableUntil >= DateTime.UtcNow)
+                    KaiaBook PersonalBook = UserBooks.FirstOrDefault(PB => PB.BookId == Item.BookId) ?? Item;
+                    if(PersonalBook.AvailableUntil >= DateTime.UtcNow)
                     {
-                        Embed.WriteListToOneField(Item.Title + $" by {Item.Author}",
-                            new()
+                        List<string> Display = new()
                             {
-                            $"`{Item.Pages}` pages",
-                            $"no longer available after `{Item.AvailableUntil.ToShortDateString()}`",
-                            $"{Strings.Economy.CurrencyEmote} `{Item.NextPageTurnCost}` to read",
-                            $"{Strings.Economy.CurrencyEmote} `{Item.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min."
-                            }, "\n");
-                        B.Add(new(Item.Title, Item.BookId, $"by {Item.Author}", Emotes.Counting.Book, false));
+                                $"{Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageTurnCost}` to read page `{PersonalBook.CurrentPageIndex + 1}`",
+                            };
+                        if(PersonalBook.CurrentPageIndex > 0) 
+                        {
+                            Display.Add($"on page `{PersonalBook.CurrentPageIndex}` / `{PersonalBook.Pages}`");
+                            Display.Add($"currently earning - {Strings.Economy.CurrencyEmote} `{PersonalBook.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                        }
+                        else
+                        {
+                            Display.Add($"if u begin reading - {Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                        }
+                        Embed.WriteListToOneField(PersonalBook.Title + $" by {PersonalBook.Author} [until `{PersonalBook.AvailableUntil.ToShortDateString()}`]", Display, "\n");
+                        B.Add(new(PersonalBook.Title, PersonalBook.BookId, $"by {PersonalBook.Author}", Emotes.Counting.Book, false));
                     }
                 }
                 this.EmbedsAndOptions.Add(Embed, B);

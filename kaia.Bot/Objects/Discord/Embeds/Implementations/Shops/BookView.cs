@@ -20,13 +20,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.ReadNextPageId = $"readnextpage-lbv-{IdGenerator.CreateNewId()}";
             this.Context = Context;
             this.BookId = BookId;
-            this.InteractionEmote = ReadPageEmote;
+            this.BuyItemEmote = ReadPageEmote;
         }
 
         public string ReadNextPageId { get; }
         public CommandContext Context { get; }
         public string BookId { get; }
-        public IEmote InteractionEmote { get; }
+        public IEmote BuyItemEmote { get; }
 
         public void Dispose()
         {
@@ -45,7 +45,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         public async Task<ComponentBuilder> GetComponentsAsync(CCBUser U)
         {
             KaiaBook Book = await this.GetUserBookAsync(U);
-            return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.InteractionEmote, disabled: Book.CurrentPageIndex >= Book.Pages);
+            return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.BuyItemEmote, disabled: Book.CurrentPageIndex >= Book.Pages);
         }
 
         public async Task<CCBPathEmbed> GetEmbedAsync(CCBUser U)

@@ -10,7 +10,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
     public interface ICCBItemContentView : IDisposable
     {
-        public IEmote InteractionEmote { get; }
+        public IEmote BuyItemEmote { get; }
         public Task<CCBPathEmbed> GetEmbedAsync(CCBUser U);
         public Task<ComponentBuilder> GetComponentsAsync(CCBUser U);
         public Task StartAsync(CCBUser U);

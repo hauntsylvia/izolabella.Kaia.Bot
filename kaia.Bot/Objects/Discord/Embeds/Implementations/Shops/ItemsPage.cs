@@ -44,7 +44,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             if(Item != null)
             {
                 await Component.DeferAsync();
-                await new ItemView(this.Context, Item, Emotes.Counting.BuyItem).StartAsync(new(Component.User.Id));
+                await new ItemView(this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem).StartAsync(new(Component.User.Id));
                 this.Dispose();
                 this.ItemSelected -= this.StoreItemSelectedAsync;
             }

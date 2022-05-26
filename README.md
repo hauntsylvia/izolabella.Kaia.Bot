@@ -9,6 +9,6 @@ Kaia is still growing! New commands are added every week, and new items are curr
 
 Kaia offers the possibility to disable unwanted commands, or otherwise restrict certain commands to certain roles, permissions, or users.
 
-## Current Quality Rating
+# Current Quality Rating
 
 [![CodeFactor](https://www.codefactor.io/repository/github/izolabella/kaia.bot/badge)](https://www.codefactor.io/repository/github/izolabella/kaia.bot)

@@ -62,11 +62,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 Embed.WriteField($"author", $"`{Book.Author}`");
                 Embed.WriteField($"title", $"`{Book.Title}`");
                 Embed.WriteField($"current page", $"`{Book.CurrentPageIndex}` / `{Book.Pages}`");
-                Embed.WriteField($"{Strings.Economy.CurrencyEmote} current earnings", $"{Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                Embed.WriteField($"current earnings", $"{Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                 if (Book.CurrentPageIndex <= Book.Pages)
                 {
-                    Embed.WriteField($"{Strings.Economy.CurrencyEmote} cost to read next page", $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}`");
+                    Embed.WriteField($"cost to read next page", $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}`");
                 }
+                Embed.WriteField($"your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`");
             }
             return Embed;
         }

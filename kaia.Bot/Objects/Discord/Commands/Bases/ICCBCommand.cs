@@ -1,12 +1,4 @@
-﻿using Kaia.Bot.Objects.CCB_Structures.Derivations;
-using Kaia.Bot.Objects.Exceptions;
-using izolabella.Discord.Objects.Constraints.Interfaces;
-using izolabella.Discord.Objects.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using izolabella.Discord.Objects.Interfaces;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Bases
 {

@@ -4,11 +4,6 @@ using izolabella.Discord.Objects.Arguments;
 using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
 using Kaia.Bot.Objects.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
@@ -81,13 +76,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             if ((Arg.Data.CustomId == this.BuyId || Arg.Data.CustomId == this.InteractId) && Arg.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaUser U = new(Arg.User.Id);
-                if(Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
+                if (Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
                 {
                     U.Settings.Inventory.Petals -= this.Item.Cost;
                     U.Settings.Inventory.Items.Add(this.Item);
                     await this.Item.UserBoughtAsync(this.Context, U);
                 }
-                else if(Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
+                else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
                 {
                     U.Settings.Inventory.Items.RemoveAt(U.Settings.Inventory.Items.FindIndex(C => C.DisplayName == this.Item.DisplayName));
                     await this.Item.UserInteractAsync(this.Context, U);

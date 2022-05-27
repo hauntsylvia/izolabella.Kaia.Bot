@@ -1,14 +1,10 @@
-﻿using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations;
+﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Constants;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Discord.WebSocket;
-using Discord;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
@@ -32,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         {
             IzolabellaCommandArgument? UserArg = Args.FirstOrDefault(A => A.Name.ToLower() == Arguments.SomeoneOtherThanMeUser.Name.ToLower());
             IUser U = UserArg != null && UserArg.Value is IUser DU ? DU : Context.UserContext.User;
-            if(U.Id == Context.UserContext.User.Id)
+            if (U.Id == Context.UserContext.User.Id)
             {
                 await new MeInventoryView(new(U.Id), Context, 4).StartAsync();
             }

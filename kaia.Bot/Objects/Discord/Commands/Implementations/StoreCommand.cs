@@ -1,15 +1,11 @@
-﻿using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations;
+﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Constants;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Discord.WebSocket;
+using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
-using Discord;
+using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
@@ -36,7 +32,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             if (ItemArg != null && QuantityArg != null && ItemArg.Value is string ItemName && QuantityArg.Value is long Quantity)
             {
                 IKaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<IKaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
-                if(InventoryItem != null && Quantity > 0)
+                if (InventoryItem != null && Quantity > 0)
                 {
                     KaiaUser User = new(Context.UserContext.User.Id);
                     double TotalCost = InventoryItem.Cost * Quantity;

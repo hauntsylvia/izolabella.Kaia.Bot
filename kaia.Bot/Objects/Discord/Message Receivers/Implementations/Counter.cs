@@ -1,18 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.Discord.Events.Interfaces;
-using Kaia.Bot.Objects.Exceptions;
-using Kaia.Bot.Objects.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Kaia.Bot.Objects.CCB_Structures.Users;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Properties;
-using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations;
+using Kaia.Bot.Objects.Discord.Events.Interfaces;
+using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
 
 namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
 {
@@ -31,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
             string? Split = Message.Content.Split(' ').FirstOrDefault();
             if (Split != null && double.TryParse(Split, out double Num))
             {
-                if(Guild != null)
+                if (Guild != null)
                 {
                     MessageReference Ref = new(Message.Id, Message.Channel.Id, Guild.Id);
                     ulong LastSuccessfulNumber = Guild.Settings.LastSuccessfulNumber ?? 0;
@@ -48,12 +39,12 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
 
                         bool RareCheck = new Random().Next(100) < 2;
                         await Message.AddReactionAsync(RareCheck ? Emotes.Counting.CheckRare : Emotes.Counting.Check);
-                        if(RareCheck)
+                        if (RareCheck)
                         {
                             Author.Settings.Inventory.Petals += new Random().Next(10, 100) + (double)new Random().NextDouble();
                         }
                     }
-                    else if(NotSameUserAsLastTime)
+                    else if (NotSameUserAsLastTime)
                     {
                         if (Author.Settings.Inventory.Items.FirstOrDefault(InvI => InvI.GetType() == typeof(CountingRefresher)) is CountingRefresher UsersR)
                         {

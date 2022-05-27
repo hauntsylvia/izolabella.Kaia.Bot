@@ -2,11 +2,6 @@
 using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.CCB_Structures.Derivations;
 using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Events.Interfaces
 {

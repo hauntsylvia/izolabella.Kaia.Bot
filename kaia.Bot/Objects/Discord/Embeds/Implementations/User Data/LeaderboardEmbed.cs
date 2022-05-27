@@ -1,20 +1,13 @@
 ﻿using Discord.WebSocket;
 using izolabella.Discord.Objects.Clients;
 using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.Clients;
 using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.Discord.Embeds.Bases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
     internal class LeaderboardEmbed : CCBPathEmbed
     {
-        internal LeaderboardEmbed(LeaderboardTypes LType, IzolabellaDiscordCommandClient Reference, int NumberOfElements, string LeaderboardDisplayName) 
+        internal LeaderboardEmbed(LeaderboardTypes LType, IzolabellaDiscordCommandClient Reference, int NumberOfElements, string LeaderboardDisplayName)
             : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Leaderboards, LeaderboardDisplayName)
         {
             List<string> Displays = new();
@@ -72,7 +65,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
                 }
             }
 
-            this.WriteListToOneField(LType == LeaderboardTypes.GuildsHighestNumberCounted || LType == LeaderboardTypes.GuildsCurrentHighestNumber ? 
+            this.WriteListToOneField(LType == LeaderboardTypes.GuildsHighestNumberCounted || LType == LeaderboardTypes.GuildsCurrentHighestNumber ?
                 Strings.EmbedStrings.FakePaths.Guilds : Strings.EmbedStrings.FakePaths.Users, Displays, "\n");
         }
     }

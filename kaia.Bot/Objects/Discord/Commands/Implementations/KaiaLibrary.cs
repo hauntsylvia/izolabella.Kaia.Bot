@@ -1,17 +1,10 @@
-﻿using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations;
+﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Constants;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Discord.WebSocket;
-using Discord;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Implementations;
 using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
+using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
@@ -31,17 +24,17 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? BookArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "book");
-            if(BookArg != null && BookArg.Value is string BookId && CCB_Structures.Books.Covers.Implementations.KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
+            if (BookArg != null && BookArg.Value is string BookId && CCB_Structures.Books.Covers.Implementations.KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
             {
                 await new BookView(Context, Book.BookId, Emotes.Counting.Book).StartAsync(new(Context.UserContext.User.Id));
             }
-            else if(BookArg != null)
+            else if (BookArg != null)
             {
                 await Context.UserContext.RespondAsync(text: Strings.Responses.Commands.NoBookFound);
             }
             else
             {
-                await (new BooksPage(Context, 5).StartAsync());
+                await new BooksPage(Context, 5).StartAsync();
             }
         }
 

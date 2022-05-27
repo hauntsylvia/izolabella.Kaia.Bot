@@ -3,11 +3,6 @@ using izolabella.Discord.Objects.Arguments;
 using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
 using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
@@ -32,13 +27,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 foreach (KaiaBook Item in Chunk)
                 {
                     KaiaBook PersonalBook = UserBooks.FirstOrDefault(PB => PB.BookId == Item.BookId) ?? Item;
-                    if(PersonalBook.AvailableUntil >= DateTime.UtcNow)
+                    if (PersonalBook.AvailableUntil >= DateTime.UtcNow)
                     {
                         List<string> Display = new()
                             {
                                 $"{Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageTurnCost}` to read page `{PersonalBook.CurrentPageIndex + 1}`",
                             };
-                        if(PersonalBook.CurrentPageIndex > 0) 
+                        if (PersonalBook.CurrentPageIndex > 0)
                         {
                             Display.Add($"on page `{PersonalBook.CurrentPageIndex}` / `{PersonalBook.Pages}`");
                             Display.Add($"currently earning - {Strings.Economy.CurrencyEmote} `{PersonalBook.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");

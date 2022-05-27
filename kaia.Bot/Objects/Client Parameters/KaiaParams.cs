@@ -1,19 +1,5 @@
-﻿using Discord;
-using Discord.WebSocket;
-using Kaia.Bot.Objects.CCB_Structures;
-using izolabella.Discord.Objects.Arguments;
+﻿using Discord.WebSocket;
 using izolabella.Discord.Objects.Clients;
-using izolabella.Discord.Objects.Constraints.Implementations;
-using izolabella.Discord.Objects.Constraints.Interfaces;
-using izolabella.Discord.Objects.Interfaces;
-using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Kaia.Bot.Objects.Discord.Commands.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Client_Parameters
 {
@@ -32,7 +18,7 @@ namespace Kaia.Bot.Objects.Client_Parameters
         public async Task StartAsync(string? Token = null)
         {
             string? T = this.Token ?? Token;
-            if(T != null)
+            if (T != null)
             {
                 await this.CommandHandler.StartAsync(T, false);
             }

@@ -3,13 +3,7 @@ using izolabella.Discord.Objects.Arguments;
 using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
 using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Implementations;
-using Kaia.Bot.Objects.CCB_Structures.Books.Properties;
 using Kaia.Bot.Objects.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
@@ -58,7 +52,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 Embed.WriteField($"title", $"`{Book.Title}`");
                 Embed.WriteField($"current page", $"`{Book.CurrentPageIndex}` / `{Book.Pages}`");
                 Embed.WriteField($"{Strings.Economy.CurrencyEmote} current earnings", $"{Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
-                if(Book.CurrentPageIndex <= Book.Pages)
+                if (Book.CurrentPageIndex <= Book.Pages)
                 {
                     Embed.WriteField($"{Strings.Economy.CurrencyEmote} cost to read next page", $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}`");
                 }
@@ -85,13 +79,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async Task ButtonExecutedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
         {
-            if(Component.Data.CustomId == this.ReadNextPageId && Component.User.Id == this.Context.UserContext.User.Id)
+            if (Component.Data.CustomId == this.ReadNextPageId && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaUser U = new(Component.User.Id);
                 KaiaBook Book = await this.GetUserBookAsync(U);
                 if (U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
                 {
-                    if(!(await U.Settings.LibraryProcessor.UserHasBookOfIdAsync(this.BookId)) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
+                    if (!await U.Settings.LibraryProcessor.UserHasBookOfIdAsync(this.BookId) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
                     {
                         await U.Settings.LibraryProcessor.AddBookAsync(KBook);
                     }

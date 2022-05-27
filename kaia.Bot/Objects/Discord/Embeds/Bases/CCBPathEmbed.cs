@@ -1,10 +1,4 @@
 ﻿using Discord;
-using Kaia.Bot.Objects.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
@@ -33,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         internal void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")
         {
             string S = Strings.EmbedStrings.Empty;
-            for(int Index = 0; Index < Values.Count; Index++)
+            for (int Index = 0; Index < Values.Count; Index++)
             {
                 S += $"{(Index != 0 ? DelimBy : string.Empty)}{Values[Index]}";
             }

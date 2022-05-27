@@ -1,11 +1,6 @@
 ﻿using izolabella.Storage.Objects.DataStores;
 using izolabella.Storage.Objects.Structures;
 using Kaia.Bot.Objects.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.CCB_Structures.Derivations
 {

@@ -1,12 +1,6 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
-using Kaia.Bot.Objects.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations
 {

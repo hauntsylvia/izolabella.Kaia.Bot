@@ -1,14 +1,6 @@
 ﻿using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
 using Kaia.Bot.Objects.CCB_Structures.Derivations;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Properties;
 using Kaia.Bot.Objects.CCB_Structures.Users;
-using Kaia.Bot.Objects.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.CCB_Structures
 {
@@ -27,7 +19,7 @@ namespace Kaia.Bot.Objects.CCB_Structures
             double TotalToPay = 0.0;
             foreach (KaiaBook Book in UserOwnedBooks)
             {
-                double CyclesMissed = ((DateTime.UtcNow - this.Settings.Inventory.LastBookUpdate) / TimeSpans.BookTickRate);
+                double CyclesMissed = (DateTime.UtcNow - this.Settings.Inventory.LastBookUpdate) / TimeSpans.BookTickRate;
                 TotalToPay += Book.CurrentEarning * CyclesMissed;
             }
             this.Settings.Inventory.LastBookUpdate = DateTime.UtcNow;

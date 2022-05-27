@@ -1,25 +1,15 @@
-﻿using Kaia.Bot.Objects.Client_Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Discord;
 using Discord.WebSocket;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.Discord.Events.Interfaces;
-using System.Reflection;
-using Kaia.Bot.Objects.CCB_Controllers;
-using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
-using Kaia.Bot.Objects.Discord.Message_Receivers.Implementations;
-using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Clients;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Discord;
 using izolabella.Discord.Objects.Constraints.Implementations;
+using izolabella.Discord.Objects.Interfaces;
+using Kaia.Bot.Objects.CCB_Structures;
+using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations;
+using Kaia.Bot.Objects.Client_Parameters;
+using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Commands.Implementations;
+using Kaia.Bot.Objects.Discord.Events.Interfaces;
+using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
 
 namespace Kaia.Bot.Objects.Clients
 {
@@ -41,7 +31,7 @@ namespace Kaia.Bot.Objects.Clients
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
-            if(!Arg.Author.IsBot || this.Parameters.AllowBotsOnMessageReceivers)
+            if (!Arg.Author.IsBot || this.Parameters.AllowBotsOnMessageReceivers)
             {
                 KaiaUser User = new(Arg.Author.Id);
                 KaiaGuild? Guild = Arg.Author is SocketGuildUser GuildUser ? new(GuildUser.Guild.Id) : null;
@@ -49,7 +39,7 @@ namespace Kaia.Bot.Objects.Clients
                 {
                     return M.CheckMessageValidityAsync(User, Arg).Result;
                 });
-                foreach(IMessageReceiver Receiver in Receivers)
+                foreach (IMessageReceiver Receiver in Receivers)
                 {
                     if (Receiver != null)
                     {
@@ -61,11 +51,11 @@ namespace Kaia.Bot.Objects.Clients
                                 await Receiver.CallbackAsync(User, Arg, Result);
                                 User.Settings.Inventory.Items.Remove(CRef);
                             }
-                            if(Result.SaveUser)
+                            if (Result.SaveUser)
                             {
                                 await User.SaveAsync();
                             }
-                            if(Result.SaveUserGuild && Guild != null)
+                            if (Result.SaveUserGuild && Guild != null)
                             {
                                 await Guild.SaveAsync();
                             }

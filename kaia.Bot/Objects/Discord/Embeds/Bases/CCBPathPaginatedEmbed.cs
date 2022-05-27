@@ -1,14 +1,7 @@
 ﻿using Discord;
-using Discord.Rest;
 using Discord.WebSocket;
 using izolabella.Discord.Objects.Arguments;
-using izolabella.Discord.Objects.Clients;
 using Kaia.Bot.Objects.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
@@ -19,7 +12,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             CCBPathEmbed IfNoListElements,
             CommandContext Context,
             int StartingIndex,
-            IEmote PageBack, 
+            IEmote PageBack,
             IEmote PageForward,
             string Parent,
             string? Sub1 = null,
@@ -83,7 +76,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             List<SelectMenuOptionBuilder>? B = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value;
             ComponentBuilder CB = new();
-            if(B != null)
+            if (B != null)
             {
                 CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
             }
@@ -106,7 +99,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public async Task StartAsync()
         {
-            if(!this.Context.UserContext.HasResponded)
+            if (!this.Context.UserContext.HasResponded)
             {
                 await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }

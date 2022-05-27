@@ -1,12 +1,6 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
 using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
-using Kaia.Bot.Objects.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
@@ -41,7 +35,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         private async void StoreItemSelectedAsync(CCBPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             IKaiaInventoryItem? Item = InterfaceImplementationController.GetItems<IKaiaInventoryItem>().FirstOrDefault(X => X.DisplayName == (ItemsSelected.FirstOrDefault() ?? ""));
-            if(Item != null)
+            if (Item != null)
             {
                 await Component.DeferAsync();
                 await new ItemView(this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem).StartAsync(new(Component.User.Id));

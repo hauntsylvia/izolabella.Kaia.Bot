@@ -5,8 +5,6 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "izolabella.Storage", "..\izolabella.DataStore\izolabella.Storage.csproj", "{E6418BE4-70AA-4454-90F2-B6185632B362}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "izolabella.Discord", "..\izolabella.Discord\izolabella.Discord.csproj", "{D069A1D7-2F4A-4670-9EDC-D5EF87D96E44}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "izolabella.One", "..\izolabella.One\izolabella.One.csproj", "{774A346F-9AF2-4F29-AD4A-AF79D8B3B572}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaia.Bot", "Kaia.Bot.csproj", "{EA88C3DA-28B1-4B90-BBCF-E9590420AFEF}"
@@ -21,10 +19,6 @@ Global
 		{E6418BE4-70AA-4454-90F2-B6185632B362}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6418BE4-70AA-4454-90F2-B6185632B362}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6418BE4-70AA-4454-90F2-B6185632B362}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D069A1D7-2F4A-4670-9EDC-D5EF87D96E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D069A1D7-2F4A-4670-9EDC-D5EF87D96E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D069A1D7-2F4A-4670-9EDC-D5EF87D96E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D069A1D7-2F4A-4670-9EDC-D5EF87D96E44}.Release|Any CPU.Build.0 = Release|Any CPU
 		{774A346F-9AF2-4F29-AD4A-AF79D8B3B572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{774A346F-9AF2-4F29-AD4A-AF79D8B3B572}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{774A346F-9AF2-4F29-AD4A-AF79D8B3B572}.Release|Any CPU.ActiveCfg = Release|Any CPU

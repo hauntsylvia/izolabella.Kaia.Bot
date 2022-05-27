@@ -9,12 +9,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
     public class BooksPage : KaiaPathEmbedPaginated
     {
         public BooksPage(CommandContext Context, int BookChunkSize) : base(new(),
-                                                          new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library),
+                                                          new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library),
                                                           Context,
                                                           0,
                                                           Emotes.Embeds.Back,
                                                           Emotes.Embeds.Forward,
-                                                          Strings.EmbedStrings.PathIfNoGuild,
+                                                          Strings.EmbedStrings.FakePaths.Global,
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
             KaiaUser User = new(Context.UserContext.User.Id);
@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             foreach (KaiaBook[] Chunk in InventoryChunked)
             {
-                KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library);
+                KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaBook Item in Chunk)
                 {

@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Interfaces;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Users;
 using Kaia.Bot.Objects.Util;
 
@@ -9,7 +9,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class ItemView : IKaiaItemContentView
     {
-        public ItemView(CommandContext Context, IKaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote)
+        public ItemView(CommandContext Context, KaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote)
         {
             this.Context = Context;
             this.Item = Item;
@@ -19,7 +19,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         }
 
         public CommandContext Context { get; }
-        public IKaiaInventoryItem Item { get; }
+        public KaiaInventoryItem Item { get; }
         public IEmote BuyItemEmote { get; }
         public IEmote InteractWithItemEmote { get; }
         public ulong BId { get; } = IdGenerator.CreateNewId();
@@ -46,7 +46,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         public Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
         {
-            KaiaPathEmbed Em = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop, this.Item.DisplayName);
+            KaiaPathEmbed Em = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, this.Item.DisplayName);
 
             Em.WriteField($"[{Strings.Economy.CurrencyEmote} `{this.Item.Cost}`] {this.Item.DisplayName}  {this.Item.DisplayEmote}", this.Item.Description);
             Em.WriteField("your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`{(this.Refreshed ? "- balances may go up due to passive income from books every time it refreshes." : "")}");
@@ -79,9 +79,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 KaiaUser U = new(Arg.User.Id);
                 if (Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
                 {
-                    U.Settings.Inventory.Petals -= this.Item.Cost;
-                    U.Settings.Inventory.Items.Add(this.Item);
-                    await this.Item.UserBoughtAsync(this.Context, U);
+                    await this.Item.UserBoughtAsync(U);
                 }
                 else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
                 {

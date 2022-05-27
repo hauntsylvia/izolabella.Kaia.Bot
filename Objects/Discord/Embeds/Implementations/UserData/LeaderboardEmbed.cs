@@ -9,7 +9,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
     internal class LeaderboardEmbed : KaiaPathEmbed
     {
         internal LeaderboardEmbed(LeaderboardTypes LType, IzolabellaDiscordCommandClient Reference, int NumberOfElements, string LeaderboardDisplayName)
-            : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Leaderboards, LeaderboardDisplayName)
+            : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Leaderboards, LeaderboardDisplayName)
         {
             List<string> Displays = new();
 

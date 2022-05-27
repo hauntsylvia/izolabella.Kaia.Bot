@@ -3,6 +3,7 @@ using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            
+            await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new KaiaStatisticsEmbed().Build());
         }
     }
 }

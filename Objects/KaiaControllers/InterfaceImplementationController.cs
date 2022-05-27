@@ -9,7 +9,7 @@ namespace Kaia.Bot.Objects.KaiaControllers
             List<T> R = new();
             foreach (Type Ty in Assembly.GetCallingAssembly().GetTypes())
             {
-                if (typeof(T).IsAssignableFrom(Ty) && !Ty.IsInterface)
+                if (typeof(T).IsAssignableFrom(Ty) && !Ty.IsInterface && !Ty.IsAbstract && Ty.GetConstructor(Type.EmptyTypes) != null)
                 {
                     object? O = Activator.CreateInstance(Ty);
                     if (O != null && O is T M)

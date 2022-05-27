@@ -21,18 +21,19 @@ namespace Kaia.Bot.Objects.Constants
             internal static string Empty => "\u200b";
             internal static string UnknownUser => "unknown user";
             internal static string UnknownGuild => "unknown guild";
-            public static string PathIfNoGuild => "global";
-            internal static class FakePaths
+            public static class FakePaths
             {
                 internal static string NotFound => "not found";
                 internal static string Commands => "commands";
                 internal static string Users => "users";
+                public static string Global => "global";
                 internal static string Guilds => "guilds";
                 internal static string Settings => "settings";
                 internal static string Leaderboards => "leaderboards";
                 internal static string StoreOrShop => "store";
                 internal static string Library => "library";
                 internal static string Inventory => "inventory";
+                internal static string Kaia => "kaia";
             }
         }
         internal static class Responses

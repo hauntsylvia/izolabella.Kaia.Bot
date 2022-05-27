@@ -43,7 +43,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         public async Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
         {
             KaiaBook? Book = await this.GetUserBookAsync(U);
-            KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library, Book?.Title ?? Strings.EmbedStrings.FakePaths.NotFound);
+            KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library, Book?.Title ?? Strings.EmbedStrings.FakePaths.NotFound);
             if (Book != null)
             {
                 Embed.WriteField($"author", $"`{Book.Author}`");

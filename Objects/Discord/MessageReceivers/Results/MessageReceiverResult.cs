@@ -1,10 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Interfaces;
-
-namespace Kaia.Bot.Objects.Discord.MessageReceivers.Results
+﻿namespace Kaia.Bot.Objects.Discord.MessageReceivers.Results
 {
     public class MessageReceiverResult
     {
-        public MessageReceiverResult(bool SaveUser = true, bool SaveUserGuild = true, IKaiaInventoryItem? ItemToUse = null)
+        public MessageReceiverResult(bool SaveUser = true, bool SaveUserGuild = true, KaiaInventoryItem? ItemToUse = null)
         {
             this.SaveUser = SaveUser;
             this.SaveUserGuild = SaveUserGuild;
@@ -13,6 +11,6 @@ namespace Kaia.Bot.Objects.Discord.MessageReceivers.Results
 
         public bool SaveUser { get; }
         public bool SaveUserGuild { get; }
-        public IKaiaInventoryItem? ItemToUse { get; set; }
+        public KaiaInventoryItem? ItemToUse { get; set; }
     }
 }

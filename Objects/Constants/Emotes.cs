@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
 
 namespace Kaia.Bot.Objects.Constants
 {
@@ -17,7 +18,8 @@ namespace Kaia.Bot.Objects.Constants
         }
         internal static class Items
         {
-            internal static Emoji CountingRefresher => Emoji.Parse("🔄");
+            internal static KaiaItemEmote CountingRefresher => new("🔄");
+            internal static KaiaItemEmote NoEmote => new("❔");
         }
         internal static class Embeds
         {

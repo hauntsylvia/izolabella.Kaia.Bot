@@ -7,14 +7,14 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
     internal class MeLibraryView : KaiaPathEmbedPaginated
     {
         public MeLibraryView(KaiaUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
-                                                          new(Strings.EmbedStrings.PathIfNoGuild,
+                                                          new(Strings.EmbedStrings.FakePaths.Global,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username),
                                                           Context,
                                                           0,
                                                           Emotes.Embeds.Back,
                                                           Emotes.Embeds.Forward,
-                                                          Strings.EmbedStrings.PathIfNoGuild,
+                                                          Strings.EmbedStrings.FakePaths.Global,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username)
         {
@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             foreach (KaiaBook[] Chunk in BookChunked)
             {
                 List<string> Display = new();
-                KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
+                KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
                 foreach (KaiaBook Item in Chunk)
                 {
                     Display.Add($"`{Item.Title}` by `{Item.Author}` - currently on page `{Item.CurrentPageIndex}` out of `{Item.Pages}`\n{Strings.Economy.CurrencyEmote} `{Item.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");

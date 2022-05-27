@@ -23,7 +23,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Derivations
             await this.BelongsTo.SaveAsync(this);
         }
 
-        public async Task<T?> GetAsync<T>() where T : IDataStoreEntity
+        public async Task<T?> GetAsync<T>() where T : class, IDataStoreEntity
         {
             T? R = await this.BelongsTo.ReadAsync<T>(this.Id);
             return R;

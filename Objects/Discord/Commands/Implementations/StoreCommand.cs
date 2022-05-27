@@ -6,7 +6,7 @@ using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 using Kaia.Bot.Objects.KaiaStructures.Users;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Interfaces;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
@@ -32,33 +32,31 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "quantity");
             if (ItemArg != null && QuantityArg != null && ItemArg.Value is string ItemName && QuantityArg.Value is long Quantity)
             {
-                IKaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<IKaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
+                KaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<KaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
                 if (InventoryItem != null && Quantity > 0)
                 {
                     KaiaUser User = new(Context.UserContext.User.Id);
                     double TotalCost = InventoryItem.Cost * Quantity;
                     if (TotalCost <= User.Settings.Inventory.Petals)
                     {
-                        List<IKaiaInventoryItem> ItemsBought = new();
+                        List<KaiaInventoryItem> ItemsBought = new();
                         for (long Q = 0; Q < Quantity; Q++)
                         {
                             object? O = Activator.CreateInstance(InventoryItem.GetType());
-                            if (O != null && O is IKaiaInventoryItem NewItem)
+                            if (O != null && O is KaiaInventoryItem NewItem)
                             {
-                                await NewItem.UserBoughtAsync(Context, User);
-                                User.Settings.Inventory.Items.Add(NewItem);
+                                await NewItem.UserBoughtAsync(User);
                                 ItemsBought.Add(NewItem);
-                                User.Settings.Inventory.Petals -= NewItem.Cost;
                             }
                         }
                         Dictionary<KaiaPathEmbed, List<SelectMenuOptionBuilder>?> Embeds = new();
-                        List<IKaiaInventoryItem[]> ItemsBoughtChunked = ItemsBought.Chunk(10).ToList();
-                        foreach (IKaiaInventoryItem[] ItemArray in ItemsBoughtChunked)
+                        List<KaiaInventoryItem[]> ItemsBoughtChunked = ItemsBought.Chunk(10).ToList();
+                        foreach (KaiaInventoryItem[] ItemArray in ItemsBoughtChunked)
                         {
                             Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()), null);
                         }
                         await User.SaveAsync();
-                        KaiaPathEmbedPaginated P = new(Embeds, new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
+                        KaiaPathEmbedPaginated P = new(Embeds, new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop);
                         await P.StartAsync();
                     }
                     else
@@ -73,7 +71,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             }
             else
             {
-                List<IKaiaInventoryItem> Items = InterfaceImplementationController.GetItems<IKaiaInventoryItem>();
+                List<KaiaInventoryItem> Items = InterfaceImplementationController.GetItems<KaiaInventoryItem>();
                 ItemsPage E = new(Context, Items, 6);
                 await E.StartAsync();
             }
@@ -82,7 +80,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
             List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (IKaiaInventoryItem Item in InterfaceImplementationController.GetItems<IKaiaInventoryItem>())
+            foreach (KaiaInventoryItem Item in InterfaceImplementationController.GetItems<KaiaInventoryItem>())
             {
                 Choices.Add(new($"[{Item.DisplayEmote}] {Item.DisplayName}", Item.DisplayName));
             }

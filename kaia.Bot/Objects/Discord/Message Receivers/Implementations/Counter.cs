@@ -9,7 +9,7 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
 {
     internal class Counter : IMessageReceiver
     {
-        public string Name => "Counter"; // a
+        public string Name => "Counter";
 
         public Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message)
         {

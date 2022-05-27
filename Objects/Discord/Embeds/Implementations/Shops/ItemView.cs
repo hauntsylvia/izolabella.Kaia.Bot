@@ -9,20 +9,24 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class ItemView : IKaiaItemContentView
     {
-        public ItemView(CommandContext Context, KaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote)
+        public ItemView(CommandContext Context, KaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote, bool CanGoBack)
         {
             this.Context = Context;
             this.Item = Item;
             this.BuyItemEmote = BuyItemEmote;
             this.InteractWithItemEmote = InteractWithItemEmote;
             this.Refreshed = false;
+            if (!CanGoBack)
+            {
+                this.GoBackView = null;
+            }
         }
 
         public CommandContext Context { get; }
         public KaiaInventoryItem Item { get; }
         public IEmote BuyItemEmote { get; }
         public IEmote InteractWithItemEmote { get; }
-        public IEmote? GoBackView => Emotes.Embeds.Reverse;
+        public IEmote? GoBackView { get; } = Emotes.Embeds.Reverse;
         public ulong BId { get; } = IdGenerator.CreateNewId();
         public ulong IId { get; } = IdGenerator.CreateNewId();
         public ulong RId { get; } = IdGenerator.CreateNewId();

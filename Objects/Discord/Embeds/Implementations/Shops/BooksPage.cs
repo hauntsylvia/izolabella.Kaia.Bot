@@ -55,7 +55,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         private async void ItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
-            BookView V = new(this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book);
+            BookView V = new(this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book, true);
             await V.StartAsync(new(Component.User.Id));
             V.BackRequested += this.BackRequested;
             this.Dispose();

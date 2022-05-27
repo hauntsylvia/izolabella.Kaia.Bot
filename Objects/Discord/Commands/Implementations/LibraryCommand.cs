@@ -28,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             IzolabellaCommandArgument? BookArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "book");
             if (BookArg != null && BookArg.Value is string BookId && KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
             {
-                await new BookView(Context, Book.BookId, Emotes.Counting.Book).StartAsync(new(Context.UserContext.User.Id));
+                await new BookView(Context, Book.BookId, Emotes.Counting.Book, false).StartAsync(new(Context.UserContext.User.Id));
             }
             else if (BookArg != null)
             {

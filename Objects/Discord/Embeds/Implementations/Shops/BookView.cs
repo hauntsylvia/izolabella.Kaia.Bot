@@ -10,20 +10,24 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class BookView : IKaiaItemContentView
     {
-        public BookView(CommandContext Context, string BookId, IEmote ReadPageEmote)
+        public BookView(CommandContext Context, string BookId, IEmote ReadPageEmote, bool CanGoBack)
         {
             this.ReadNextPageId = $"readnextpage-lbv-{IdGenerator.CreateNewId()}";
             this.BackId = $"goback-{IdGenerator.CreateNewId()}";
             this.Context = Context;
             this.BookId = BookId;
             this.ReadPageEmote = ReadPageEmote;
+            if(!CanGoBack)
+            {
+                this.GoBackView = null;
+            }
         }
 
         public string ReadNextPageId { get; }
         public string BackId { get; }
         public CommandContext Context { get; }
         public string BookId { get; }
-        public IEmote? GoBackView => Emotes.Embeds.Reverse;
+        public IEmote? GoBackView { get; } = Emotes.Embeds.Reverse;
         public IEmote ReadPageEmote { get; }
 
         public event IKaiaItemContentView.GoBackHandler? BackRequested;

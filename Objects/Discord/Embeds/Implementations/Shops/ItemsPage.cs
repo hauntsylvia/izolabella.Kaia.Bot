@@ -42,7 +42,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             if (Item != null)
             {
                 await Component.DeferAsync();
-                ItemView V = new(this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem);
+                ItemView V = new(this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, true);
                 await V.StartAsync(new(Component.User.Id));
                 V.BackRequested += this.BackRequestedAsync;
                 this.Dispose();

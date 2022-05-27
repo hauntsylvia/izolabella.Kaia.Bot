@@ -8,9 +8,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             this.Description =
                 $"" +
-                $"*{Parent.ToLower()}* // " +
-                $"{(Sub1 != null ? $"{(Sub2 == null ? $"***{Sub1.ToLower()}***" : $"*{Sub1.ToLower()}*")}" : "")}" +
-                $"{(Sub2 != null ? $" // ***{Sub2.ToLower()}***" : "")}";
+                $"*{Parent.ToLower(CultureInfo.InvariantCulture)}* // " +
+                $"{(Sub1 != null ? $"{(Sub2 == null ? $"***{Sub1.ToLower(CultureInfo.InvariantCulture)}***" : $"*{Sub1.ToLower(CultureInfo.InvariantCulture)}*")}" : "")}" +
+                $"{(Sub2 != null ? $" // ***{Sub2.ToLower(CultureInfo.InvariantCulture)}***" : "")}";
             this.Color = Override ?? Colors.EmbedColor;
             this.Footer = new()
             {
@@ -21,7 +21,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         internal void WriteField(string Name, string Value)
         {
-            this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower()}*\n{Value.ToLower()}");
+            this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
         }
 
         internal void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")

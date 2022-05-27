@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.Constants
         internal static DataStore GetUserBookStore(ulong UserId)
         {
             DataStore DS = UserBookStore;
-            DS.MakeSubStore(UserId.ToString());
+            DS.MakeSubStore(UserId.ToString(CultureInfo.InvariantCulture));
             return DS;
         }
     }

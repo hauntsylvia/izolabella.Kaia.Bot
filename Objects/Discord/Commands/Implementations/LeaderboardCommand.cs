@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class Leaderboard : IKaiaCommand
+    public class LeaderboardCommand : IKaiaCommand
     {
         public string Name => "Leaderboard";
 
@@ -42,7 +42,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                     LType,
                     Context.Reference,
                     AmountToDisplay,
-                    Leaderboard.GetNameOfLeaderboardType(LType)).Build());
+                    LeaderboardCommand.GetNameOfLeaderboardType(LType)).Build());
             }
             else
             {
@@ -55,7 +55,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             List<IzolabellaCommandParameterChoices> Choices = new();
             foreach (LeaderboardTypes LType in Enum.GetValues(typeof(LeaderboardTypes)))
             {
-                Choices.Add(new(Leaderboard.GetNameOfLeaderboardType(LType), (long)LType));
+                Choices.Add(new(LeaderboardCommand.GetNameOfLeaderboardType(LType), (long)LType));
             }
             this.Parameters.Add(new("Leaderboard", "The leaderboard to view.", ApplicationCommandOptionType.Integer, true)
             {

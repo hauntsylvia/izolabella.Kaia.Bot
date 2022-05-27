@@ -14,6 +14,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public string Name => "Me";
 
         public string Description => "View my statistics and my inventory, or view another user's statistics.";
+       
         public bool GuildsOnly => false;
 
         public List<IzolabellaCommandParameter> Parameters => new()

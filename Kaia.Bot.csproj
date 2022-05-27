@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="izolabella.Discord" Version="6.0.0" />
+    <PackageReference Include="izolabella.Discord" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>

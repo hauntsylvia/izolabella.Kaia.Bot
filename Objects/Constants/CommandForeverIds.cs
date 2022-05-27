@@ -8,6 +8,6 @@
         internal static string ViewLeaderboard => "viewleaderboard-52320221727";
         internal static string StoreOrBuy => "storeorbuy-52420220324";
         internal static string BookLibrary => "library-52420222309";
-        internal static string MyLibrary => "mylibrary-52620220308";
+        internal static string BotDevelopmentInformation => "botinfo-52720220116";
     }
 }

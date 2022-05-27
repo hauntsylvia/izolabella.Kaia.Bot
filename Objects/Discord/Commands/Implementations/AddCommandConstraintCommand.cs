@@ -11,7 +11,7 @@ using Kaia.Bot.Objects.KaiaStructures;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class AddCommandConstraint : IKaiaCommand
+    public class AddCommandConstraintCommand : IKaiaCommand
     {
         public string Name => "Add Command Constraint";
 

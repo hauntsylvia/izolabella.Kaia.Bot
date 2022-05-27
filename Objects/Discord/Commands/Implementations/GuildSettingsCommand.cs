@@ -11,7 +11,7 @@ using Kaia.Bot.Objects.KaiaStructures;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class GuildSettings : IKaiaCommand
+    public class GuildSettingsCommand : IKaiaCommand
     {
         public string Name => "Guild Settings";
 

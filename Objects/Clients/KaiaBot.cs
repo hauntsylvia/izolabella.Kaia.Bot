@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using izolabella.Discord.Objects.Clients;
+using izolabella.Discord.Objects.Constants.Enums;
 using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Interfaces;
 using Kaia.Bot.Objects.ClientParameters;
@@ -73,7 +74,7 @@ namespace Kaia.Bot.Objects.Clients
 
         private async Task AfterCommandExecutedAsync(izolabella.Discord.Objects.Arguments.CommandContext Context, izolabella.Discord.Objects.Parameters.IzolabellaCommandArgument[] Arguments, izolabella.Discord.Objects.Interfaces.IIzolabellaCommand CommandInvoked)
         {
-            if (Context.UserContext.User is SocketGuildUser SUser && CommandInvoked is AddCommandConstraint)
+            if (Context.UserContext.User is SocketGuildUser SUser && CommandInvoked is AddCommandConstraintCommand)
             {
                 await this.RefreshCommandsAsync(new[] { SUser.Guild });
             }
@@ -108,7 +109,7 @@ namespace Kaia.Bot.Objects.Clients
                         GuildPermission[]? Permissions = Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Permissions != null)
                         {
-                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == izolabella.Discord.Objects.Enums.ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
+                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
                             CCBLevelCommand.Constraints.Add(new WhitelistPermissionsConstraint(true, Permissions)
                             {
                                 ConstrainToOneGuildOfThisId = Guild.Id
@@ -117,7 +118,7 @@ namespace Kaia.Bot.Objects.Clients
                         ulong[]? Roles = Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Roles != null)
                         {
-                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == izolabella.Discord.Objects.Enums.ConstraintTypes.WhitelistRoles && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
+                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistRoles && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
                             CCBLevelCommand.Constraints.Add(new WhitelistRolesConstraint(true, Roles)
                             {
                                 ConstrainToOneGuildOfThisId = Guild.Id

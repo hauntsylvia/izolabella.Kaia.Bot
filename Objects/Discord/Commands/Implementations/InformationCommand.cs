@@ -15,29 +15,29 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
     {
         public string ForeverId => CommandForeverIds.BotDevelopmentInformation;
 
-        public string Name => throw new NotImplementedException();
+        public string Name => "Information";
 
-        public string Description => throw new NotImplementedException();
+        public string Description => "View Kaia's statistics for this session.";
 
-        public bool GuildsOnly => throw new NotImplementedException();
+        public bool GuildsOnly => false;
 
-        public List<IzolabellaCommandParameter> Parameters => throw new NotImplementedException();
+        public List<IzolabellaCommandParameter> Parameters { get; } = new();
 
-        public List<IIzolabellaCommandConstraint> Constraints => throw new NotImplementedException();
+        public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
         public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        public Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

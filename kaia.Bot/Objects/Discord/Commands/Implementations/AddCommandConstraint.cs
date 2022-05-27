@@ -5,13 +5,13 @@ using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations;
+using Kaia.Bot.Objects.KaiaStructures;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class AddCommandConstraint : ICCBCommand
+    public class AddCommandConstraint : IKaiaCommand
     {
         public string Name => "Add Command Constraint";
 
@@ -88,7 +88,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                     Guild.Settings = Guild.Settings;
                     await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, this.AllCommands?.FirstOrDefault(C =>
                     {
-                        return C is ICCBCommand CCB && CCB.ForeverId == CommandId;
+                        return C is IKaiaCommand CCB && CCB.ForeverId == CommandId;
                     })?.Name ?? CommandId, Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CommandId), Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CommandId)).Build());
                 }
             }
@@ -99,7 +99,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             List<IzolabellaCommandParameterChoices> Choices = new();
             foreach (IIzolabellaCommand Command in AllCommands)
             {
-                if (Command is ICCBCommand CCBLevelCommand)
+                if (Command is IKaiaCommand CCBLevelCommand)
                 {
                     if (CCBLevelCommand.ForeverId != this.ForeverId)
                     {

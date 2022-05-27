@@ -1,10 +1,10 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class ItemsPage : CCBPathPaginatedEmbed
+    public class ItemsPage : KaiaPathEmbedPaginated
     {
         public ItemsPage(CommandContext Context, List<IKaiaInventoryItem> AllItems, int ChunkSize) : base(new(),
                                                                                                          new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop),
@@ -19,7 +19,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
             foreach (IKaiaInventoryItem[] Items in ItemsChunked)
             {
-                CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
+                KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (IKaiaInventoryItem Item in Items)
                 {
@@ -32,7 +32,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.ItemSelected += this.StoreItemSelectedAsync;
         }
 
-        private async void StoreItemSelectedAsync(CCBPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        private async void StoreItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             IKaiaInventoryItem? Item = InterfaceImplementationController.GetItems<IKaiaInventoryItem>().FirstOrDefault(X => X.DisplayName == (ItemsSelected.FirstOrDefault() ?? ""));
             if (Item != null)

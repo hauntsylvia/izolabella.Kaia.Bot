@@ -1,10 +1,10 @@
 ﻿using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
+using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
-    internal class MeLibraryView : CCBPathPaginatedEmbed
+    internal class MeLibraryView : KaiaPathEmbedPaginated
     {
         public MeLibraryView(KaiaUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild,
@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
             foreach (KaiaBook[] Chunk in BookChunked)
             {
                 List<string> Display = new();
-                CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
+                KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
                 foreach (KaiaBook Item in Chunk)
                 {
                     Display.Add($"`{Item.Title}` by `{Item.Author}` - currently on page `{Item.CurrentPageIndex}` out of `{Item.Pages}`\n{Strings.Economy.CurrencyEmote} `{Item.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");

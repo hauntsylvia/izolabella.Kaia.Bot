@@ -1,11 +1,11 @@
 ﻿using Discord.WebSocket;
 using izolabella.Discord.Objects.Clients;
-using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.Constants.Enums;
+using Kaia.Bot.Objects.KaiaStructures;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    internal class LeaderboardEmbed : CCBPathEmbed
+    internal class LeaderboardEmbed : KaiaPathEmbed
     {
         internal LeaderboardEmbed(LeaderboardTypes LType, IzolabellaDiscordCommandClient Reference, int NumberOfElements, string LeaderboardDisplayName)
             : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Leaderboards, LeaderboardDisplayName)

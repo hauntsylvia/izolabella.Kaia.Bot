@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    internal class CommandConstraintAdded : CCBPathEmbed
+    internal class CommandConstraintAdded : KaiaPathEmbed
     {
         public CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : base(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
         {
@@ -13,7 +13,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
                 List<string> PermsStrs = new();
                 foreach (GuildPermission P in Permissions)
                 {
-                    PermsStrs.Add(Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower());
+                    PermsStrs.Add(Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture));
                 }
                 this.WriteListToOneField("required permissions", PermsStrs, ", ");
             }

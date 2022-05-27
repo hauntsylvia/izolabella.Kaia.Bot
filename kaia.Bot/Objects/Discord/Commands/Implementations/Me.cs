@@ -5,11 +5,11 @@ using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class Me : ICCBCommand
+    public class Me : IKaiaCommand
     {
         public string Name => "Me";
 

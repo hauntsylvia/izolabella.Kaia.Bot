@@ -2,6 +2,10 @@
 {
     public class IdGenerator
     {
+        public IdGenerator()
+        {
+        }
+
         public static ulong LastGenerated { get; private set; }
         private static DateTime MakeFrom => new(2010, 1, 1);
         public static ulong CreateNewId()

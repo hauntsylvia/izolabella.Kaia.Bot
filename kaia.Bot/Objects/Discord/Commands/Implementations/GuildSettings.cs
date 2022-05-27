@@ -5,13 +5,13 @@ using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.CCB_Structures;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations;
+using Kaia.Bot.Objects.KaiaStructures;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class GuildSettings : ICCBCommand
+    public class GuildSettings : IKaiaCommand
     {
         public string Name => "Guild Settings";
 

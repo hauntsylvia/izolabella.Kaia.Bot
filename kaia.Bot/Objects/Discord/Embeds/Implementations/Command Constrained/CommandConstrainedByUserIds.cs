@@ -1,6 +1,6 @@
 ﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    public class CommandConstrainedByUserIds : CCBPathEmbed
+    public class CommandConstrainedByUserIds : KaiaPathEmbed
     {
         public CommandConstrainedByUserIds(string GuildName, string CommandName) : base(GuildName, Strings.EmbedStrings.FakePaths.Commands, CommandName)
         {

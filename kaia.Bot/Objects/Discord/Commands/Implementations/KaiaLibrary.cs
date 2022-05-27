@@ -3,13 +3,14 @@ using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Implementations;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class KaiaLibrary : ICCBCommand
+    public class KaiaLibraryCommand : IKaiaCommand
     {
         public string Name => "Library";
 
@@ -23,8 +24,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? BookArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "book");
-            if (BookArg != null && BookArg.Value is string BookId && CCB_Structures.Books.Covers.Implementations.KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
+            IzolabellaCommandArgument? BookArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "book");
+            if (BookArg != null && BookArg.Value is string BookId && KaiaLibrary.GetActiveBookById(BookId) is KaiaBook Book)
             {
                 await new BookView(Context, Book.BookId, Emotes.Counting.Book).StartAsync(new(Context.UserContext.User.Id));
             }
@@ -41,7 +42,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
             List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (KaiaBook Book in CCB_Structures.Books.Covers.Implementations.KaiaLibrary.Books)
+            foreach (KaiaBook Book in KaiaLibrary.Books)
             {
                 Choices.Add(new(Book.Title, Book.BookId));
             }

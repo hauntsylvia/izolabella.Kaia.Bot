@@ -1,12 +1,12 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Implementations;
+using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Implementations;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class BooksPage : CCBPathPaginatedEmbed
+    public class BooksPage : KaiaPathEmbedPaginated
     {
         public BooksPage(CommandContext Context, int BookChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library),
@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             foreach (KaiaBook[] Chunk in InventoryChunked)
             {
-                CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library);
+                KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaBook Item in Chunk)
                 {
@@ -52,7 +52,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.ItemSelected += this.ItemSelectedAsync;
         }
 
-        private async void ItemSelectedAsync(CCBPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        private async void ItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
             await new BookView(this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book).StartAsync(new(Component.User.Id));

@@ -1,13 +1,13 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class ItemView : ICCBItemContentView
+    public class ItemView : IKaiaItemContentView
     {
         public ItemView(CommandContext Context, IKaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote)
         {
@@ -15,6 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.Item = Item;
             this.BuyItemEmote = BuyItemEmote;
             this.InteractWithItemEmote = InteractWithItemEmote;
+            this.Refreshed = false;
         }
 
         public CommandContext Context { get; }
@@ -26,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         public string BuyId => $"{this.Item.DisplayName}-{this.BId}";
         public string InteractId => $"{this.Item.DisplayName}-{this.IId}";
 
-        private bool Refreshed { get; set; } = false;
+        private bool Refreshed { get; set; }
 
         public Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
@@ -43,9 +44,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                            disabled: !U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName) || !this.Item.CanInteractWithDirectly));
         }
 
-        public Task<CCBPathEmbed> GetEmbedAsync(KaiaUser U)
+        public Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
         {
-            CCBPathEmbed Em = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop, this.Item.DisplayName);
+            KaiaPathEmbed Em = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop, this.Item.DisplayName);
 
             Em.WriteField($"[{Strings.Economy.CurrencyEmote} `{this.Item.Cost}`] {this.Item.DisplayName}  {this.Item.DisplayEmote}", this.Item.Description);
             Em.WriteField("your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`{(this.Refreshed ? "- balances may go up due to passive income from books every time it refreshes." : "")}");
@@ -60,7 +61,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             {
                 await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            CCBPathEmbed E = await this.GetEmbedAsync(U);
+            KaiaPathEmbed E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
             await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
@@ -88,7 +89,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                     await this.Item.UserInteractAsync(this.Context, U);
                 }
                 await U.SaveAsync();
-                CCBPathEmbed E = await this.GetEmbedAsync(U);
+                KaiaPathEmbed E = await this.GetEmbedAsync(U);
                 ComponentBuilder Com = await this.GetComponentsAsync(U);
                 await Arg.UpdateAsync(C =>
                 {

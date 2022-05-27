@@ -1,13 +1,14 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Bases;
-using Kaia.Bot.Objects.CCB_Structures.Books.Covers.Implementations;
+using Kaia.Bot.Objects.Discord.Commands.Implementations;
+using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Implementations;
 using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class BookView : ICCBItemContentView
+    public class BookView : IKaiaItemContentView
     {
         public BookView(CommandContext Context, string BookId, IEmote ReadPageEmote)
         {
@@ -28,24 +29,21 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.Context.Reference.Client.ButtonExecuted -= this.ButtonExecutedAsync;
         }
 
-        private async Task<KaiaBook> GetUserBookAsync(KaiaUser U)
+        private async Task<KaiaBook?> GetUserBookAsync(KaiaUser U)
         {
-            return (await U.Settings.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == this.BookId) is KaiaBook KBookA
-                ? KBookA ?? throw new NullReferenceException()
-                : KaiaLibrary.GetActiveBookById(this.BookId) ?? throw new NullReferenceException();
-            throw new NullReferenceException();
+            return (await U.Settings.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == this.BookId) ?? KaiaLibrary.GetActiveBookById(this.BookId) ?? null;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
-            KaiaBook Book = await this.GetUserBookAsync(U);
-            return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.BuyItemEmote, disabled: Book.CurrentPageIndex >= Book.Pages);
+            KaiaBook? Book = await this.GetUserBookAsync(U);
+            return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.BuyItemEmote, disabled: Book != null && Book.CurrentPageIndex >= Book.Pages);
         }
 
-        public async Task<CCBPathEmbed> GetEmbedAsync(KaiaUser U)
+        public async Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
         {
-            KaiaBook Book = await this.GetUserBookAsync(U);
-            CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library, Book.Title);
+            KaiaBook? Book = await this.GetUserBookAsync(U);
+            KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library, Book?.Title ?? Strings.EmbedStrings.FakePaths.NotFound);
             if (Book != null)
             {
                 Embed.WriteField($"author", $"`{Book.Author}`");
@@ -66,7 +64,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             {
                 await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            CCBPathEmbed E = await this.GetEmbedAsync(U);
+            KaiaPathEmbed E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
             await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
@@ -82,8 +80,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             if (Component.Data.CustomId == this.ReadNextPageId && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaUser U = new(Component.User.Id);
-                KaiaBook Book = await this.GetUserBookAsync(U);
-                if (U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
+                KaiaBook? Book = await this.GetUserBookAsync(U);
+                if (Book != null && U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
                 {
                     if (!await U.Settings.LibraryProcessor.UserHasBookOfIdAsync(this.BookId) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
                     {
@@ -93,7 +91,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                     await U.Settings.LibraryProcessor.IncrementBookAsync(Book.BookId);
                     await U.SaveAsync();
                 }
-                CCBPathEmbed E = await this.GetEmbedAsync(U);
+                KaiaPathEmbed E = await this.GetEmbedAsync(U);
                 ComponentBuilder Com = await this.GetComponentsAsync(U);
                 await Component.UpdateAsync(C =>
                 {

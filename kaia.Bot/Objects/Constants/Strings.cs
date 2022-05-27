@@ -24,6 +24,7 @@ namespace Kaia.Bot.Objects.Constants
             public static string PathIfNoGuild => "global";
             internal static class FakePaths
             {
+                internal static string NotFound => "not found";
                 internal static string Commands => "commands";
                 internal static string Users => "users";
                 internal static string Guilds => "guilds";

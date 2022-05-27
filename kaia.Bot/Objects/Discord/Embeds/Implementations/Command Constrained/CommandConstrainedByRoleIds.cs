@@ -2,7 +2,7 @@
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
 {
-    public class CommandConstrainedByRoleIds : CCBPathEmbed
+    public class CommandConstrainedByRoleIds : KaiaPathEmbed
     {
         public CommandConstrainedByRoleIds(string CommandName, SocketGuild Guild, params ulong[] RoleIdsRequired) : base(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
         {

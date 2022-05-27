@@ -1,10 +1,10 @@
 ﻿using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
-    public class MeInventoryView : CCBPathPaginatedEmbed
+    public class MeInventoryView : KaiaPathEmbedPaginated
     {
         public MeInventoryView(KaiaUser User, CommandContext Context, int InventoryChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild,
@@ -41,7 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
             foreach (KeyValuePair<IKaiaInventoryItem, int> ItemCount in ItemsAndTheirCounts)
             {
                 List<string> Display = new();
-                CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
+                KaiaPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
                 Display.Add($"[{ItemCount.Key.DisplayEmote}] {ItemCount.Key.DisplayName} [x{ItemCount.Value}]");
                 Embed.WriteListToOneField("inventory", Display, "\n");
                 this.EmbedsAndOptions.Add(Embed, null);

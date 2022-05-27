@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class Leaderboard : ICCBCommand
+    public class Leaderboard : IKaiaCommand
     {
         public string Name => "Leaderboard";
 
@@ -30,8 +30,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? LeaderboardType = Arguments.FirstOrDefault(A => A.Name.ToLower() == "leaderboard");
-            IzolabellaCommandArgument? LeaderboardAmount = Arguments.FirstOrDefault(A => A.Name.ToLower() == "display-amount");
+            IzolabellaCommandArgument? LeaderboardType = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "leaderboard");
+            IzolabellaCommandArgument? LeaderboardAmount = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "display-amount");
             LeaderboardTypes LTypesMax = ((LeaderboardTypes[])Enum.GetValues(typeof(LeaderboardTypes))).Max();
             if (LeaderboardType != null && LeaderboardType.Value is long RawLType && (int)LTypesMax >= RawLType)
             {

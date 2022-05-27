@@ -3,14 +3,14 @@ using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class StoreCommand : ICCBCommand
+    public class StoreCommand : IKaiaCommand
     {
         public string Name => "Store";
 
@@ -27,8 +27,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? ItemArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "item");
-            IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "quantity");
+            IzolabellaCommandArgument? ItemArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "item");
+            IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "quantity");
             if (ItemArg != null && QuantityArg != null && ItemArg.Value is string ItemName && QuantityArg.Value is long Quantity)
             {
                 IKaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<IKaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
@@ -50,14 +50,14 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                                 User.Settings.Inventory.Petals -= NewItem.Cost;
                             }
                         }
-                        Dictionary<CCBPathEmbed, List<SelectMenuOptionBuilder>?> Embeds = new();
+                        Dictionary<KaiaPathEmbed, List<SelectMenuOptionBuilder>?> Embeds = new();
                         List<IKaiaInventoryItem[]> ItemsBoughtChunked = ItemsBought.Chunk(10).ToList();
                         foreach (IKaiaInventoryItem[] ItemArray in ItemsBoughtChunked)
                         {
                             Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()), null);
                         }
                         await User.SaveAsync();
-                        CCBPathPaginatedEmbed P = new(Embeds, new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
+                        KaiaPathEmbedPaginated P = new(Embeds, new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
                         await P.StartAsync();
                     }
                     else

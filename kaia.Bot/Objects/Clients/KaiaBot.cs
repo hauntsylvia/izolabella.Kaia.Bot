@@ -3,13 +3,13 @@ using Discord.WebSocket;
 using izolabella.Discord.Objects.Clients;
 using izolabella.Discord.Objects.Constraints.Implementations;
 using izolabella.Discord.Objects.Interfaces;
-using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations;
-using Kaia.Bot.Objects.Client_Parameters;
+using Kaia.Bot.Objects.ClientParameters;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Commands.Implementations;
 using Kaia.Bot.Objects.Discord.Events.Interfaces;
-using Kaia.Bot.Objects.Discord.Message_Receivers.Results;
+using Kaia.Bot.Objects.Discord.MessageReceivers.Results;
+using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
 
 namespace Kaia.Bot.Objects.Clients
 {
@@ -103,7 +103,7 @@ namespace Kaia.Bot.Objects.Clients
                 KaiaGuild Guild = new(DiscordGuild.Id);
                 foreach (IIzolabellaCommand Command in Commands)
                 {
-                    if (Command is ICCBCommand CCBLevelCommand)
+                    if (Command is IKaiaCommand CCBLevelCommand)
                     {
                         GuildPermission[]? Permissions = Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Permissions != null)

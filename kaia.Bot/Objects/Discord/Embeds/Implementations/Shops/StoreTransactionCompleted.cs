@@ -1,9 +1,9 @@
-﻿using Kaia.Bot.Objects.CCB_Structures;
-using Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases;
+﻿using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    internal class StoreTransactionCompleted : CCBPathEmbed
+    internal class StoreTransactionCompleted : KaiaPathEmbed
     {
         internal StoreTransactionCompleted(KaiaUser User, List<IKaiaInventoryItem> ItemsBuying) : base(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop)
         {

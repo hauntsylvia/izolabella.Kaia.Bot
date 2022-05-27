@@ -15,6 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public string Name => "Leaderboard";
 
         public string Description => "View a leaderboard.";
+        public bool GuildsOnly => false;
 
         public List<IzolabellaCommandParameter> Parameters { get; } = new()
         {

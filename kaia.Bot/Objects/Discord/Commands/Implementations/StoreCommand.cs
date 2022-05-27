@@ -15,6 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public string Name => "Store";
 
         public string Description => "Display the global store, or buy an item.";
+        public bool GuildsOnly => false;
 
         public List<IzolabellaCommandParameter> Parameters { get; } = new()
         {

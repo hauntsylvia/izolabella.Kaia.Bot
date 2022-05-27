@@ -9,24 +9,25 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
-    public class Me : IKaiaCommand
+    public class MeCommand : IKaiaCommand
     {
         public string Name => "Me";
 
         public string Description => "View my statistics and my inventory, or view another user's statistics.";
+        public bool GuildsOnly => false;
 
         public List<IzolabellaCommandParameter> Parameters => new()
         {
-            Arguments.SomeoneOtherThanMeUser,
+            CommonArguments.SomeoneOtherThanMeUser,
         };
 
         public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
         public string ForeverId => CommandForeverIds.MeCommand;
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Args)
+        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? UserArg = Args.FirstOrDefault(A => A.Name.ToLower() == Arguments.SomeoneOtherThanMeUser.Name.ToLower());
+            IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == CommonArguments.SomeoneOtherThanMeUser.Name.ToLower(CultureInfo.InvariantCulture));
             IUser U = UserArg != null && UserArg.Value is IUser DU ? DU : Context.UserContext.User;
             if (U.Id == Context.UserContext.User.Id)
             {

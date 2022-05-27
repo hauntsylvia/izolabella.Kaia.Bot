@@ -17,6 +17,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public string Description => "Change my guild's settings.";
 
+        public bool GuildsOnly => true;
+
         public List<IzolabellaCommandParameter> Parameters => new()
         {
             new IzolabellaCommandParameter("Counting Channel", "The channel used for counting.", ApplicationCommandOptionType.Channel, false),
@@ -40,11 +42,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                     Guild.Settings.CountingChannelId = NewCountingChannelId.Id;
                     Guild.Settings = Guild.Settings;
                 }
-                await Context.UserContext.RespondAsync(text: "", ephemeral: false, embed: new GuildSettingsView(SUser.Guild.Name, Guild).Build());
-
-            }
-            else
-            {
+                await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, ephemeral: false, embed: new GuildSettingsView(SUser.Guild.Name, Guild).Build());
             }
         }
 

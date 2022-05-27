@@ -15,6 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public string Name => "Library";
 
         public string Description => "View Kaia's library.";
+        public bool GuildsOnly => false;
 
         public List<IzolabellaCommandParameter> Parameters { get; } = new();
 

@@ -17,6 +17,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public string Description => "[Admin] Constrain a command in my guild to certain roles or permissions.";
 
+        public bool GuildsOnly => true;
+
         public List<IzolabellaCommandParameter> Parameters { get; } = new()
         {
             new("Allowed Role", "The role to add or overwrite to the list of allowed roles.", ApplicationCommandOptionType.Role, false),

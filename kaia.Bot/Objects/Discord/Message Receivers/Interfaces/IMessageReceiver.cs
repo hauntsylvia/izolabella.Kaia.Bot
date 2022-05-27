@@ -12,9 +12,9 @@ namespace Kaia.Bot.Objects.Discord.Events.Interfaces
 {
     public interface IMessageReceiver : ISelfHandler
     {
-        Task<bool> CheckMessageValidityAsync(CCBUser Author, SocketMessage Message);
-        Task<MessageReceiverResult> RunAsync(CCBUser Author, SocketMessage Message);
-        Task CallbackAsync(CCBUser Author, SocketMessage Message, MessageReceiverResult CausedCallback);
+        Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message);
+        Task<MessageReceiverResult> RunAsync(KaiaUser Author, KaiaGuild? Guild, SocketMessage Message);
+        Task CallbackAsync(KaiaUser Author, SocketMessage Message, MessageReceiverResult CausedCallback);
         string Name { get; }
     }
 }

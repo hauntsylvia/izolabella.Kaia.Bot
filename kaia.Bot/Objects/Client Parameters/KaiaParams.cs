@@ -19,9 +19,9 @@ namespace Kaia.Bot.Objects.Client_Parameters
 {
     public class KaiaParams
     {
-        public KaiaParams(DiscordSocketConfig Config, bool AllowBotsOnMessageReceivers, string? Token)
+        public KaiaParams(DiscordSocketConfig Config, bool AllowBotsOnMessageReceivers, bool GlobalCommands, string? Token)
         {
-            this.CommandHandler = new(Config);
+            this.CommandHandler = new(Config, GlobalCommands);
             this.AllowBotsOnMessageReceivers = AllowBotsOnMessageReceivers;
             this.Token = Token;
         }
@@ -34,57 +34,12 @@ namespace Kaia.Bot.Objects.Client_Parameters
             string? T = this.Token ?? Token;
             if(T != null)
             {
-                this.CommandHandler.Client.Ready += async () =>
-                {
-                    await this.RefreshCommandsAsync();
-                };
-                this.CommandHandler.CommandInvoked += async (Context, Args, CommandInvoked) =>
-                {
-                    if(Context.UserContext.User is SocketGuildUser SUser && CommandInvoked is AddCommandConstraint)
-                    {
-                        await this.RefreshCommandsAsync(SUser.Guild);
-                    }
-                };
                 await this.CommandHandler.StartAsync(T, false);
             }
             else
             {
                 throw new NullReferenceException(nameof(this.Token));
             }
-        }
-
-        public async Task RefreshCommandsAsync(params SocketGuild[] RefreshFor)
-        {
-            List<IIzolabellaCommand> Commands = await IzolabellaDiscordCommandClient.GetIzolabellaCommandsAsync();
-            foreach (SocketGuild DiscordGuild in RefreshFor)
-            {
-                CCBGuild Guild = new(DiscordGuild.Id);
-                foreach (IIzolabellaCommand Command in Commands)
-                {
-                    if (Command is ICCBCommand CCBLevelCommand)
-                    {
-                        GuildPermission[]? Permissions = Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
-                        if (Permissions != null)
-                        {
-                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == izolabella.Discord.Objects.Enums.ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
-                            CCBLevelCommand.Constraints.Add(new WhitelistPermissionsConstraint(true, Permissions)
-                            {
-                                ConstrainToOneGuildOfThisId = Guild.Id
-                            });
-                        }
-                        ulong[]? Roles = Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
-                        if (Roles != null)
-                        {
-                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == izolabella.Discord.Objects.Enums.ConstraintTypes.WhitelistRoles && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
-                            CCBLevelCommand.Constraints.Add(new WhitelistRolesConstraint(true, Roles)
-                            {
-                                ConstrainToOneGuildOfThisId = Guild.Id
-                            });
-                        }
-                    }
-                }
-            }
-            await this.CommandHandler.UpdateCommandsAsync(Commands.ToArray());
         }
     }
 }

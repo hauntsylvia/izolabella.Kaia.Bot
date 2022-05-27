@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace Kaia.Bot.Objects.CCB_Structures.Guilds
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class CCBGuildSettings
+    public class KaiaGuildSettings
     {
         [JsonConstructor]
-        public CCBGuildSettings(ulong? CountingChannelId = null, ulong? LastSuccessfulNumber = null, ulong? LastUserWhoCounted = null, ulong? HighestCountEver = null, IReadOnlyDictionary<string, GuildPermission[]>? OverrideCommandPermissionsConstraint = null)
+        public KaiaGuildSettings(ulong? CountingChannelId = null, ulong? LastSuccessfulNumber = null, ulong? LastUserWhoCounted = null, ulong? HighestCountEver = null, IReadOnlyDictionary<string, GuildPermission[]>? OverrideCommandPermissionsConstraint = null)
         {
             this.CountingChannelId = CountingChannelId;
             this.LastSuccessfulNumber = LastSuccessfulNumber;

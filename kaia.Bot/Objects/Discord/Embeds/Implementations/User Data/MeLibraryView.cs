@@ -12,7 +12,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
 {
     internal class MeLibraryView : CCBPathPaginatedEmbed
     {
-        public MeLibraryView(CCBUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
+        public MeLibraryView(KaiaUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username),

@@ -37,7 +37,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         {
             if (Context.UserContext.User is SocketGuildUser SUser)
             {
-                CCBGuild Guild = new(SUser.Guild.Id);
+                KaiaGuild Guild = new(SUser.Guild.Id);
                 IzolabellaCommandArgument? RoleAllowed = Arguments.FirstOrDefault(A => A.Name == "allowed-role");
                 IzolabellaCommandArgument? RoleToCopyPermissionsFrom = Arguments.FirstOrDefault(A => A.Name == "permissions-allowed");
                 IzolabellaCommandArgument? OverwriteArg = Arguments.FirstOrDefault(A => A.Name == "overwrite");

@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 namespace Kaia.Bot.Objects.CCB_Structures
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class CCBGuild : Unique
+    public class KaiaGuild : Unique
     {
         [JsonConstructor]
-        public CCBGuild(ulong Id, CCBGuildSettings? Settings = null) : base(DataStores.GuildStore, Id)
+        public KaiaGuild(ulong Id, KaiaGuildSettings? Settings = null) : base(DataStores.GuildStore, Id)
         {
             this.Id = Id;
-            this.settings = Settings ?? this.GetAsync<CCBGuild>().Result?.Settings ?? new();
+            this.settings = Settings ?? this.GetAsync<KaiaGuild>().Result?.Settings ?? new();
         }
 
         public new ulong Id { get; }
 
-        private CCBGuildSettings settings;
+        private KaiaGuildSettings settings;
         [JsonProperty("Settings", Required = Required.Always)]
-        public CCBGuildSettings Settings
+        public KaiaGuildSettings Settings
         {
             get => this.settings;
             set

@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 namespace Kaia.Bot.Objects.CCB_Structures
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
-    public class CCBUser : Unique
+    public class KaiaUser : Unique
     {
 
         [JsonConstructor]
-        public CCBUser(ulong Id, CCBUserSettings? Settings = null) : base(DataStores.UserStore, Id)
+        public KaiaUser(ulong Id, KaiaUserSettings? Settings = null) : base(DataStores.UserStore, Id)
         {
             this.Id = Id;
-            this.Settings = Settings ?? this.GetAsync<CCBUser>().Result?.Settings ?? new(Id);
+            this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
             this.Settings.LibraryProcessor = new(Id);
 
             List<KaiaBook> UserOwnedBooks = this.Settings.LibraryProcessor.GetUserBooksAsync().Result;
@@ -37,6 +37,6 @@ namespace Kaia.Bot.Objects.CCB_Structures
         public new ulong Id { get; }
 
         [JsonProperty("Settings", Required = Required.Always)]
-        public CCBUserSettings Settings { get; set; }
+        public KaiaUserSettings Settings { get; set; }
     }
 }

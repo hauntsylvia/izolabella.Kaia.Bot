@@ -41,7 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
             if (Context.UserContext.User is SocketGuildUser SUser)
             {
-                CCBGuild Guild = new(SUser.Guild.Id);
+                KaiaGuild Guild = new(SUser.Guild.Id);
                 if (CountingChannelArgument != null && CountingChannelArgument.Value is IGuildChannel NewCountingChannelId)
                 {
                     Guild.Settings.CountingChannelId = NewCountingChannelId.Id;

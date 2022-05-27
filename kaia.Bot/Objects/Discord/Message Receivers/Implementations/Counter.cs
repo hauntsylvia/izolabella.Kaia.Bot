@@ -20,27 +20,26 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
     {
         public string Name => "Counter";
 
-        public Task<bool> CheckMessageValidityAsync(CCBUser Author, SocketMessage Message)
+        public Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message)
         {
-            return Task.FromResult(Message.Author is SocketGuildUser SUser && new CCBGuild(SUser.Guild.Id).Settings.CountingChannelId == Message.Channel.Id);
+            return Task.FromResult(Message.Author is SocketGuildUser SUser && new KaiaGuild(SUser.Guild.Id).Settings.CountingChannelId == Message.Channel.Id);
         }
 
-        public async Task<MessageReceiverResult> RunAsync(CCBUser Author, SocketMessage Message)
+        public async Task<MessageReceiverResult> RunAsync(KaiaUser Author, KaiaGuild? Guild, SocketMessage Message)
         {
-            MessageReceiverResult Result = new();
+            MessageReceiverResult Result = new(false, false);
             string? Split = Message.Content.Split(' ').FirstOrDefault();
             if (Split != null && double.TryParse(Split, out double Num))
             {
-                if(Message.Author is SocketGuildUser SUser)
+                if(Guild != null)
                 {
-                    CCBGuild G = new(SUser.Guild.Id);
-                    MessageReference Ref = new(Message.Id, Message.Channel.Id, SUser.Guild.Id);
-                    ulong LastSuccessfulNumber = G.Settings.LastSuccessfulNumber ?? 0;
-                    ulong HighestGuildNumberCounted = G.Settings.HighestCountEver ?? 0;
+                    MessageReference Ref = new(Message.Id, Message.Channel.Id, Guild.Id);
+                    ulong LastSuccessfulNumber = Guild.Settings.LastSuccessfulNumber ?? 0;
+                    ulong HighestGuildNumberCounted = Guild.Settings.HighestCountEver ?? 0;
                     ulong UserHighestCounted = Author.Settings.HighestCountEver ?? 0;
                     ulong UserNumbersCounted = Author.Settings.NumbersCounted ?? 0;
-                    bool NotSameUserAsLastTime = G.Settings.LastUserWhoCounted == null || SUser.Id != G.Settings.LastUserWhoCounted || LastSuccessfulNumber == 0;
-                    if (Num - 1 == (G.Settings.LastSuccessfulNumber ?? 0) && NotSameUserAsLastTime)
+                    bool NotSameUserAsLastTime = Guild.Settings.LastUserWhoCounted == null || Author.Id != Guild.Settings.LastUserWhoCounted || LastSuccessfulNumber == 0;
+                    if (Num - 1 == (Guild.Settings.LastSuccessfulNumber ?? 0) && NotSameUserAsLastTime)
                     {
                         LastSuccessfulNumber++;
                         HighestGuildNumberCounted = HighestGuildNumberCounted > LastSuccessfulNumber ? HighestGuildNumberCounted : LastSuccessfulNumber;
@@ -74,19 +73,19 @@ namespace Kaia.Bot.Objects.Discord.Message_Receivers.Implementations
                         await Message.AddReactionAsync(Emotes.Counting.ThumbDown);
                         await Message.Channel.SendMessageAsync(Strings.Responses.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                     }
-                    G.Settings.LastSuccessfulNumber = LastSuccessfulNumber;
-                    G.Settings.HighestCountEver = HighestGuildNumberCounted;
-                    G.Settings.LastUserWhoCounted = Message.Author.Id;
-                    G.Settings = G.Settings;
+                    Guild.Settings.LastSuccessfulNumber = LastSuccessfulNumber;
+                    Guild.Settings.HighestCountEver = HighestGuildNumberCounted;
+                    Guild.Settings.LastUserWhoCounted = Message.Author.Id;
                     Author.Settings.HighestCountEver = UserHighestCounted;
                     Author.Settings.NumbersCounted = UserNumbersCounted;
+                    await Guild.SaveAsync();
                     await Author.SaveAsync();
                 }
             }
             return Result;
         }
 
-        public Task CallbackAsync(CCBUser Author, SocketMessage Message, MessageReceiverResult CausedCallback)
+        public Task CallbackAsync(KaiaUser Author, SocketMessage Message, MessageReceiverResult CausedCallback)
         {
             return Task.CompletedTask;
         }

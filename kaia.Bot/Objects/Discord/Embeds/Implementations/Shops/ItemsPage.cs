@@ -12,7 +12,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class ItemsPage : CCBPathPaginatedEmbed
     {
-        public ItemsPage(CommandContext Context, List<ICCBInventoryItem> AllItems, int ChunkSize) : base(new(),
+        public ItemsPage(CommandContext Context, List<IKaiaInventoryItem> AllItems, int ChunkSize) : base(new(),
                                                                                                          new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop),
                                                                                                          Context,
                                                                                                          0,
@@ -21,13 +21,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                                                                                                          Strings.EmbedStrings.PathIfNoGuild,
                                                                                                          Strings.EmbedStrings.FakePaths.StoreOrShop)
         {
-            IEnumerable<ICCBInventoryItem[]> ItemsChunked = AllItems.Chunk(ChunkSize);
+            IEnumerable<IKaiaInventoryItem[]> ItemsChunked = AllItems.Chunk(ChunkSize);
 
-            foreach (ICCBInventoryItem[] Items in ItemsChunked)
+            foreach (IKaiaInventoryItem[] Items in ItemsChunked)
             {
                 CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop);
                 List<SelectMenuOptionBuilder> B = new();
-                foreach (ICCBInventoryItem Item in Items)
+                foreach (IKaiaInventoryItem Item in Items)
                 {
                     Embed.WriteField($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.Description);
                     B.Add(new($"{Item.DisplayName}", Item.DisplayName, Item.Description, Item.DisplayEmote, false));
@@ -40,7 +40,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async void StoreItemSelectedAsync(CCBPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
-            ICCBInventoryItem? Item = InterfaceImplementationController.GetItems<ICCBInventoryItem>().FirstOrDefault(X => X.DisplayName == (ItemsSelected.FirstOrDefault() ?? ""));
+            IKaiaInventoryItem? Item = InterfaceImplementationController.GetItems<IKaiaInventoryItem>().FirstOrDefault(X => X.DisplayName == (ItemsSelected.FirstOrDefault() ?? ""));
             if(Item != null)
             {
                 await Component.DeferAsync();

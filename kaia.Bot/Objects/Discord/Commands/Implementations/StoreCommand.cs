@@ -35,18 +35,18 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A => A.Name.ToLower() == "quantity");
             if (ItemArg != null && QuantityArg != null && ItemArg.Value is string ItemName && QuantityArg.Value is long Quantity)
             {
-                ICCBInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<ICCBInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
+                IKaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<IKaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
                 if(InventoryItem != null && Quantity > 0)
                 {
-                    CCBUser User = new(Context.UserContext.User.Id);
+                    KaiaUser User = new(Context.UserContext.User.Id);
                     double TotalCost = InventoryItem.Cost * Quantity;
                     if (TotalCost <= User.Settings.Inventory.Petals)
                     {
-                        List<ICCBInventoryItem> ItemsBought = new();
+                        List<IKaiaInventoryItem> ItemsBought = new();
                         for (long Q = 0; Q < Quantity; Q++)
                         {
                             object? O = Activator.CreateInstance(InventoryItem.GetType());
-                            if (O != null && O is ICCBInventoryItem NewItem)
+                            if (O != null && O is IKaiaInventoryItem NewItem)
                             {
                                 await NewItem.UserBoughtAsync(Context, User);
                                 User.Settings.Inventory.Items.Add(NewItem);
@@ -55,8 +55,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                             }
                         }
                         Dictionary<CCBPathEmbed, List<SelectMenuOptionBuilder>?> Embeds = new();
-                        List<ICCBInventoryItem[]> ItemsBoughtChunked = ItemsBought.Chunk(10).ToList();
-                        foreach (ICCBInventoryItem[] ItemArray in ItemsBoughtChunked)
+                        List<IKaiaInventoryItem[]> ItemsBoughtChunked = ItemsBought.Chunk(10).ToList();
+                        foreach (IKaiaInventoryItem[] ItemArray in ItemsBoughtChunked)
                         {
                             Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()), null);
                         }
@@ -76,7 +76,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             }
             else
             {
-                List<ICCBInventoryItem> Items = InterfaceImplementationController.GetItems<ICCBInventoryItem>();
+                List<IKaiaInventoryItem> Items = InterfaceImplementationController.GetItems<IKaiaInventoryItem>();
                 ItemsPage E = new(Context, Items, 6);
                 await E.StartAsync();
             }
@@ -85,7 +85,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
             List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (ICCBInventoryItem Item in InterfaceImplementationController.GetItems<ICCBInventoryItem>())
+            foreach (IKaiaInventoryItem Item in InterfaceImplementationController.GetItems<IKaiaInventoryItem>())
             {
                 Choices.Add(new($"[{Item.DisplayEmote}] {Item.DisplayName}", Item.DisplayName));
             }

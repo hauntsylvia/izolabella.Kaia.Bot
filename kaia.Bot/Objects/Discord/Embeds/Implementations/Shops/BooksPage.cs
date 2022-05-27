@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                                                           Strings.EmbedStrings.PathIfNoGuild,
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
-            CCBUser User = new(Context.UserContext.User.Id);
+            KaiaUser User = new(Context.UserContext.User.Id);
             IEnumerable<KaiaBook[]> InventoryChunked = KaiaLibrary.Books.Chunk(BookChunkSize);
             List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             foreach (KaiaBook[] Chunk in InventoryChunked)

@@ -11,7 +11,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
 {
     public class MeInventoryView : CCBPathPaginatedEmbed
     {
-        public MeInventoryView(CCBUser User, CommandContext Context, int InventoryChunkSize) : base(new(),
+        public MeInventoryView(KaiaUser User, CommandContext Context, int InventoryChunkSize) : base(new(),
                                                           new(Strings.EmbedStrings.PathIfNoGuild,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username),
@@ -24,13 +24,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
                                                           Context.UserContext.User.Username)
         {
             MeView LandingPage = new(Context.UserContext.User.Username, User);
-            IEnumerable<ICCBInventoryItem[]> InventoryChunked = User.Settings.Inventory.Items.Chunk(InventoryChunkSize);
+            IEnumerable<IKaiaInventoryItem[]> InventoryChunked = User.Settings.Inventory.Items.Chunk(InventoryChunkSize);
             LandingPage.WriteField($"{Emotes.Counting.Inventory} inventory", $"`{User.Settings.Inventory.Items.Count}` {(User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
             this.EmbedsAndOptions.Add(LandingPage, null);
-            List<KeyValuePair<ICCBInventoryItem, int>> ItemsAndTheirCounts = new();
-            foreach (ICCBInventoryItem[] Chunk in InventoryChunked)
+            List<KeyValuePair<IKaiaInventoryItem, int>> ItemsAndTheirCounts = new();
+            foreach (IKaiaInventoryItem[] Chunk in InventoryChunked)
             {
-                foreach (ICCBInventoryItem Item in Chunk)
+                foreach (IKaiaInventoryItem Item in Chunk)
                 {
                     if (!ItemsAndTheirCounts.Exists(M => M.Key.DisplayName == M.Key.DisplayName))
                     {
@@ -43,7 +43,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.User_Data
                     }
                 }
             }
-            foreach (KeyValuePair<ICCBInventoryItem, int> ItemCount in ItemsAndTheirCounts)
+            foreach (KeyValuePair<IKaiaInventoryItem, int> ItemCount in ItemsAndTheirCounts)
             {
                 List<string> Display = new();
                 CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);

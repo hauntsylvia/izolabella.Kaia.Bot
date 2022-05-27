@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations
 {
-    public class CountingRefresher : ICCBInventoryItem
+    public class CountingRefresher : IKaiaInventoryItem
     {
         public string DisplayName => "Counting Refresher";
 
@@ -24,13 +24,13 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Implementations
 
         public bool CanInteractWithDirectly => false;
 
-        public Task UserBoughtAsync(CommandContext Context, CCBUser User)
+        public Task UserBoughtAsync(CommandContext Context, KaiaUser User)
         {
             this.ReceivedAt = DateTime.UtcNow;
             return Task.CompletedTask;
         }
 
-        public Task UserInteractAsync(CommandContext Context, CCBUser User)
+        public Task UserInteractAsync(CommandContext Context, KaiaUser User)
         {
             return Task.CompletedTask;
         }

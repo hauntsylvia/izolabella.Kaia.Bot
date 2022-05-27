@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class ItemView : ICCBItemContentView
     {
-        public ItemView(CommandContext Context, ICCBInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote)
+        public ItemView(CommandContext Context, IKaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote)
         {
             this.Context = Context;
             this.Item = Item;
@@ -23,7 +23,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         }
 
         public CommandContext Context { get; }
-        public ICCBInventoryItem Item { get; }
+        public IKaiaInventoryItem Item { get; }
         public IEmote BuyItemEmote { get; }
         public IEmote InteractWithItemEmote { get; }
         public ulong BId { get; } = IdGenerator.CreateNewId();
@@ -33,7 +33,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private bool Refreshed { get; set; } = false;
 
-        public Task<ComponentBuilder> GetComponentsAsync(CCBUser U)
+        public Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
             return Task.FromResult(new ComponentBuilder()
                 .WithButton("Buy",
@@ -48,7 +48,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                            disabled: !U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName) || !this.Item.CanInteractWithDirectly));
         }
 
-        public Task<CCBPathEmbed> GetEmbedAsync(CCBUser U)
+        public Task<CCBPathEmbed> GetEmbedAsync(KaiaUser U)
         {
             CCBPathEmbed Em = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.StoreOrShop, this.Item.DisplayName);
 
@@ -59,7 +59,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             return Task.FromResult(Em);
         }
 
-        public async Task StartAsync(CCBUser U)
+        public async Task StartAsync(KaiaUser U)
         {
             if (!this.Context.UserContext.HasResponded)
             {
@@ -80,7 +80,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         {
             if ((Arg.Data.CustomId == this.BuyId || Arg.Data.CustomId == this.InteractId) && Arg.User.Id == this.Context.UserContext.User.Id)
             {
-                CCBUser U = new(Arg.User.Id);
+                KaiaUser U = new(Arg.User.Id);
                 if(Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
                 {
                     U.Settings.Inventory.Petals -= this.Item.Cost;

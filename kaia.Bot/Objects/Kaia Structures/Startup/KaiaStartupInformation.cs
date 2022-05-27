@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace Kaia.Bot.Objects.CCB_Structures.Startup
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
-    public class CCBStartupInformation : Unique
+    public class KaiaStartupInformation : Unique
     {
         [JsonConstructor]
-        public CCBStartupInformation(DataStore Belongs, string Token) : base(Belongs)
+        public KaiaStartupInformation(DataStore Belongs, string Token) : base(Belongs)
         {
             this.Token = Token;
         }

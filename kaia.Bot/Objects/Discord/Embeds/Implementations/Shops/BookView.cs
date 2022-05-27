@@ -34,7 +34,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.Context.Reference.Client.ButtonExecuted -= this.ButtonExecutedAsync;
         }
 
-        private async Task<KaiaBook> GetUserBookAsync(CCBUser U)
+        private async Task<KaiaBook> GetUserBookAsync(KaiaUser U)
         {
             return (await U.Settings.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == this.BookId) is KaiaBook KBookA
                 ? KBookA ?? throw new NullReferenceException()
@@ -42,13 +42,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             throw new NullReferenceException();
         }
 
-        public async Task<ComponentBuilder> GetComponentsAsync(CCBUser U)
+        public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
             KaiaBook Book = await this.GetUserBookAsync(U);
             return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.BuyItemEmote, disabled: Book.CurrentPageIndex >= Book.Pages);
         }
 
-        public async Task<CCBPathEmbed> GetEmbedAsync(CCBUser U)
+        public async Task<CCBPathEmbed> GetEmbedAsync(KaiaUser U)
         {
             KaiaBook Book = await this.GetUserBookAsync(U);
             CCBPathEmbed Embed = new(Strings.EmbedStrings.PathIfNoGuild, Strings.EmbedStrings.FakePaths.Library, Book.Title);
@@ -66,7 +66,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             return Embed;
         }
 
-        public async Task StartAsync(CCBUser U)
+        public async Task StartAsync(KaiaUser U)
         {
             if (!this.Context.UserContext.HasResponded)
             {
@@ -87,7 +87,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         {
             if(Component.Data.CustomId == this.ReadNextPageId && Component.User.Id == this.Context.UserContext.User.Id)
             {
-                CCBUser U = new(Component.User.Id);
+                KaiaUser U = new(Component.User.Id);
                 KaiaBook Book = await this.GetUserBookAsync(U);
                 if (U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
                 {

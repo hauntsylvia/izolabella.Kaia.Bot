@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases
 {
-    public interface ICCBInventoryItem
+    public interface IKaiaInventoryItem
     {
         string DisplayName { get; }
         string Description { get; }
@@ -18,7 +18,7 @@ namespace Kaia.Bot.Objects.CCB_Structures.Inventory.Items.Bases
         bool CanInteractWithDirectly { get; }
         Emoji DisplayEmote { get; }
         DateTime ReceivedAt { get; }
-        Task UserBoughtAsync(CommandContext Context, CCBUser User);
-        Task UserInteractAsync(CommandContext Context, CCBUser User);
+        Task UserBoughtAsync(CommandContext Context, KaiaUser User);
+        Task UserInteractAsync(CommandContext Context, KaiaUser User);
     }
 }

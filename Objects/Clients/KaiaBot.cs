@@ -48,10 +48,10 @@ namespace Kaia.Bot.Objects.Clients
                         try
                         {
                             MessageReceiverResult Result = await Receiver.RunAsync(User, Guild, Arg);
-                            if (Result.ItemToUse != null && Result.ItemToUse is CountingRefresher CRef)
+                            if (Result.ItemToUse != null)
                             {
                                 await Receiver.CallbackAsync(User, Arg, Result);
-                                User.Settings.Inventory.Items.Remove(CRef);
+                                await User.Settings.Inventory.RemoveItemOfAsync(Result.ItemToUse);
                             }
                             if (Result.SaveUser)
                             {

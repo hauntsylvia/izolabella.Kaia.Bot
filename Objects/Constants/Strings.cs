@@ -48,19 +48,36 @@ namespace Kaia.Bot.Objects.Constants
                 internal static string InvalidCurrencyAmount => "u don't have enough to cover this transaction.";
                 internal static string NoBookFound => "oh no, there's no matching book.";
             }
-            internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
-            internal static string UserCountingSaved => "counting refreshed. don't fail next time.";
-            private static string[] UserFailedInCounting => new[]
+            internal static class Counting
             {
-                "oh my . . how unfortunate. time to start over!",
-                "one day.",
-                "yikes.",
-                "maybe u'll get it next time?",
-                "i feel sorta bad for this one.",
-            };
-            internal static string GetRandomCountingFailText()
+                internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
+                internal static string UserCountingSaved => "counting refreshed. don't fail next time.";
+                private static string[] UserFailedInCounting => new[]
+                {
+                    "oh my . . how unfortunate. time to start over!",
+                    "one day.",
+                    "yikes.",
+                    "maybe u'll get it next time?",
+                    "i feel sorta bad for this one.",
+                };
+                internal static string GetRandomCountingFailText()
+                {
+                    return UserFailedInCounting[new Random().Next(0, UserFailedInCounting.Length)];
+                }
+            }
+        }
+
+        internal static class ItemStrings
+        {
+            internal static class Rose
             {
-                return UserFailedInCounting[new Random().Next(0, UserFailedInCounting.Length)];
+                internal static string Name => "Rose";
+                internal static string RoseStab => "ouch! the rose stabbed u . .";
+                internal static string RosePretty => "u examine the rose, and find it peaceful.";
+            }
+            internal static class CountingRefresher
+            {
+                internal static string Name => "Counting Refresher";
             }
         }
         internal static class Economy

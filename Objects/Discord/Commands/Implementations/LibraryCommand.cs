@@ -36,7 +36,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             }
             else
             {
-                await new BooksPage(Context, 5).StartAsync();
+                await new BooksPage(Context, 3).StartAsync();
             }
         }
 

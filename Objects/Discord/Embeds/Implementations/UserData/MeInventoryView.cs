@@ -26,22 +26,25 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             {
                 foreach (KaiaInventoryItem Item in Chunk)
                 {
-                    if (!ItemsAndTheirCounts.Exists(M => M.Key.DisplayName == M.Key.DisplayName))
+                    if (!ItemsAndTheirCounts.Exists(M => M.Key.DisplayName == Item.DisplayName))
                     {
                         ItemsAndTheirCounts.Add(new(Item, 1));
                     }
                     else
                     {
-                        int Index = ItemsAndTheirCounts.FindIndex(M => M.Key.DisplayName == M.Key.DisplayName);
+                        int Index = ItemsAndTheirCounts.FindIndex(M => M.Key.DisplayName == Item.DisplayName);
                         ItemsAndTheirCounts[Index] = new(ItemsAndTheirCounts[Index].Key, ItemsAndTheirCounts[Index].Value + 1);
                     }
                 }
             }
-            foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in ItemsAndTheirCounts)
+            foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in ItemsAndTheirCounts.Chunk(InventoryChunkSize))
             {
-                List<string> Display = new();
+                List<string> Display = new(); 
                 KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
-                Display.Add($"[{ItemCount.Key.DisplayEmote}] {ItemCount.Key.DisplayName} [x{ItemCount.Value}]");
+                foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in ItemCountChunk)
+                {
+                    Display.Add($"[{ItemCount.Key.DisplayEmote}] {ItemCount.Key.DisplayName} [x{ItemCount.Value}]");
+                }
                 Embed.WriteListToOneField("inventory", Display, "\n");
                 this.EmbedsAndOptions.Add(Embed, null);
             }

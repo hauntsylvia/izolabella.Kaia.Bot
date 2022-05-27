@@ -11,10 +11,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds
     {
         internal KaiaStatisticsEmbed() : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Kaia)
         {
-            this.WriteField("handler", ProjectInformation.ProjectCreditDisplay);
-            this.WriteField("author", ProjectInformation.AuthorCreditDisplay);
-            this.WriteField("message receiver error count", $"{KaiaSessionStatistics.MessageReceiverFailureCount}");
-            this.WriteField("session startup", $"{KaiaSessionStatistics.SessionStartupAt.ToLongDateString()} - {KaiaSessionStatistics.SessionStartupAt.ToShortTimeString()} [UTC]");
+            this.WriteField("handler", $"`{ProjectInformation.ProjectCreditDisplay}`");
+            this.WriteField("kaia version", $"`{KaiaSessionStatistics.Version?.Major}.{KaiaSessionStatistics.Version?.Minor}.{KaiaSessionStatistics.Version?.Build}`");
+            this.WriteField("author", $"`{ProjectInformation.AuthorCreditDisplay}`");
+            this.WriteField("message receiver error count", $"`{KaiaSessionStatistics.MessageReceiverFailureCount}`");
+            this.WriteField("session startup", $"`{KaiaSessionStatistics.SessionStartupAt.ToLongDateString()} - {KaiaSessionStatistics.SessionStartupAt.ToShortTimeString()} [UTC]`");
         }
     }
 }

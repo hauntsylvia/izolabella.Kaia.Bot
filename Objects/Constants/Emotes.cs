@@ -19,6 +19,7 @@ namespace Kaia.Bot.Objects.Constants
         internal static class Items
         {
             internal static KaiaItemEmote CountingRefresher => new("🔄");
+            internal static KaiaItemEmote Rose => new("🌹");
             internal static KaiaItemEmote NoEmote => new("❔");
         }
         internal static class Embeds

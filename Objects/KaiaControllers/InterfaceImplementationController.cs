@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
+using System.Reflection;
 
 namespace Kaia.Bot.Objects.KaiaControllers
 {

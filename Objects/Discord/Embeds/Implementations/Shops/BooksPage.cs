@@ -1,8 +1,8 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Implementations;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
+using Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {

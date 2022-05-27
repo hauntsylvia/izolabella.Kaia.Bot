@@ -1,9 +1,10 @@
 ﻿using Discord.WebSocket;
 using izolabella.Discord.Objects.Clients;
 using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Guilds;
+using Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
     internal class LeaderboardEmbed : KaiaPathEmbed
     {

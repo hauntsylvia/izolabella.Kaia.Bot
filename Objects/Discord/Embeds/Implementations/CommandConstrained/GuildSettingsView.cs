@@ -1,6 +1,6 @@
-﻿using Kaia.Bot.Objects.KaiaStructures;
+﻿using Kaia.Bot.Objects.KaiaStructures.Guilds;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {
     internal class GuildSettingsView : KaiaPathEmbed
     {

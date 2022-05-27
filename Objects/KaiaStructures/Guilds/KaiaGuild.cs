@@ -1,7 +1,6 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Derivations;
-using Kaia.Bot.Objects.KaiaStructures.Guilds;
 
-namespace Kaia.Bot.Objects.KaiaStructures
+namespace Kaia.Bot.Objects.KaiaStructures.Guilds
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KaiaGuild : Unique

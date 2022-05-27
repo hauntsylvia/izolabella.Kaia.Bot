@@ -1,6 +1,6 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.Implementations
+namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
 {
     public class KaiaLibrary
     {
@@ -13,7 +13,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.Implementations
 
         public static KaiaBook? GetActiveBookById(string Id)
         {
-            return KaiaLibrary.Books.FirstOrDefault(B => B.BookId == Id);
+            return Books.FirstOrDefault(B => B.BookId == Id);
         }
     }
 }

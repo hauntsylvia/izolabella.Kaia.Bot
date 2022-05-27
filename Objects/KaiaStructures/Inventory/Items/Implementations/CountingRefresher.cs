@@ -1,6 +1,7 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Interfaces;
+using Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
 {

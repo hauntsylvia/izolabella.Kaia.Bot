@@ -6,7 +6,7 @@ using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Implementations;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {

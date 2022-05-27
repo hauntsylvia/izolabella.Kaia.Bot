@@ -1,5 +1,5 @@
 ﻿using Discord;
-using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {

@@ -1,9 +1,10 @@
 ﻿using Discord.WebSocket;
 using Kaia.Bot.Objects.Discord.MessageReceivers.Results;
 using Kaia.Bot.Objects.ErrorControl.Interfaces;
-using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Guilds;
+using Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Events.Interfaces
+namespace Kaia.Bot.Objects.Discord.MessageReceivers.Interfaces
 {
     public interface IMessageReceiver : ISelfHandler
     {

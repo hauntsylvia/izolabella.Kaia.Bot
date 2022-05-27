@@ -1,8 +1,7 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Derivations;
-using Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.KaiaStructures
+namespace Kaia.Bot.Objects.KaiaStructures.Users
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
     public class KaiaUser : Unique

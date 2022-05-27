@@ -7,10 +7,11 @@ using izolabella.Discord.Objects.Interfaces;
 using Kaia.Bot.Objects.ClientParameters;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Commands.Implementations;
-using Kaia.Bot.Objects.Discord.Events.Interfaces;
+using Kaia.Bot.Objects.Discord.MessageReceivers.Interfaces;
 using Kaia.Bot.Objects.Discord.MessageReceivers.Results;
-using Kaia.Bot.Objects.KaiaStructures;
+using Kaia.Bot.Objects.KaiaStructures.Guilds;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
+using Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace Kaia.Bot.Objects.Clients
 {

@@ -1,8 +1,8 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Interfaces;
+using Kaia.Bot.Objects.KaiaStructures.Users;
 using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops

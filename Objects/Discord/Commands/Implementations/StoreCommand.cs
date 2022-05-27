@@ -3,10 +3,10 @@ using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.KaiaStructures;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
+using Kaia.Bot.Objects.KaiaStructures.Users;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Interfaces;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {

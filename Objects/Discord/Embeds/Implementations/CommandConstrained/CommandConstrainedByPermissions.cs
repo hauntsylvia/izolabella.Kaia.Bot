@@ -1,7 +1,7 @@
 ﻿using Discord;
 using System.Text.RegularExpressions;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {
     public class CommandConstrainedByPermissions : KaiaPathEmbed
     {

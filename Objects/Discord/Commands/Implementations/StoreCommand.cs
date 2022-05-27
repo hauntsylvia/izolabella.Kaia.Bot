@@ -57,7 +57,14 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                             Embeds.Add(new StoreTransactionCompleted(User, ItemArray.ToList()), null);
                         }
                         await User.SaveAsync();
-                        KaiaPathEmbedPaginated P = new(Embeds, new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop), Context, 0, Emotes.Embeds.Back, Emotes.Embeds.Forward, Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop);
+                        KaiaPathEmbedPaginated P = new(Embeds,
+                                                       new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop),
+                                                       Context,
+                                                       0,
+                                                       Emotes.Embeds.Back,
+                                                       Emotes.Embeds.Forward,
+                                                       Strings.EmbedStrings.FakePaths.Global,
+                                                       Strings.EmbedStrings.FakePaths.StoreOrShop);
                         await P.StartAsync();
                     }
                     else

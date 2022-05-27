@@ -125,7 +125,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             return Task.CompletedTask;
         }
 
-        private async Task ClientButtonPressedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
+        private async Task ClientButtonPressedAsync(SocketMessageComponent Component)
         {
             if ((Component.Data.CustomId == this.BId || Component.Data.CustomId == this.FId) && Component.User.Id == this.Context.UserContext.User.Id)
             {

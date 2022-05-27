@@ -13,16 +13,20 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         public BookView(CommandContext Context, string BookId, IEmote ReadPageEmote)
         {
             this.ReadNextPageId = $"readnextpage-lbv-{IdGenerator.CreateNewId()}";
+            this.BackId = $"goback-{IdGenerator.CreateNewId()}";
             this.Context = Context;
             this.BookId = BookId;
-            this.BuyItemEmote = ReadPageEmote;
+            this.ReadPageEmote = ReadPageEmote;
         }
 
         public string ReadNextPageId { get; }
+        public string BackId { get; }
         public CommandContext Context { get; }
         public string BookId { get; }
-        public IEmote BuyItemEmote { get; }
+        public IEmote? GoBackView => Emotes.Embeds.Reverse;
+        public IEmote ReadPageEmote { get; }
 
+        public event IKaiaItemContentView.GoBackHandler? BackRequested;
         public void Dispose()
         {
             GC.SuppressFinalize(this);
@@ -37,7 +41,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
             KaiaBook? Book = await this.GetUserBookAsync(U);
-            return new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.BuyItemEmote, disabled: Book != null && Book.CurrentPageIndex >= Book.Pages);
+            ComponentBuilder CB = new ComponentBuilder().WithButton("Read", this.ReadNextPageId, ButtonStyle.Secondary, this.ReadPageEmote, disabled: Book != null && Book.CurrentPageIndex >= Book.Pages);
+            if(this.GoBackView != null)
+            {
+                CB.WithButton("Back", this.BackId, ButtonStyle.Secondary, disabled: false, emote: this.GoBackView);
+            }
+            return CB;
         }
 
         public async Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
@@ -77,27 +86,34 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async Task ButtonExecutedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
         {
-            if (Component.Data.CustomId == this.ReadNextPageId && Component.User.Id == this.Context.UserContext.User.Id)
+            if ((Component.Data.CustomId == this.ReadNextPageId || Component.Data.CustomId == this.BackId) && Component.User.Id == this.Context.UserContext.User.Id)
             {
-                KaiaUser U = new(Component.User.Id);
-                KaiaBook? Book = await this.GetUserBookAsync(U);
-                if (Book != null && U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
+                if(Component.Data.CustomId != this.BackId)
                 {
-                    if (!await U.Settings.LibraryProcessor.UserHasBookOfIdAsync(this.BookId) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
+                    KaiaUser U = new(Component.User.Id);
+                    KaiaBook? Book = await this.GetUserBookAsync(U);
+                    if (Book != null && U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
                     {
-                        await U.Settings.LibraryProcessor.AddBookAsync(KBook);
+                        if (!await U.Settings.LibraryProcessor.UserHasBookOfIdAsync(this.BookId) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
+                        {
+                            await U.Settings.LibraryProcessor.AddBookAsync(KBook);
+                        }
+                        U.Settings.Inventory.Petals -= Book.NextPageTurnCost;
+                        await U.Settings.LibraryProcessor.IncrementBookAsync(Book.BookId);
+                        await U.SaveAsync();
                     }
-                    U.Settings.Inventory.Petals -= Book.NextPageTurnCost;
-                    await U.Settings.LibraryProcessor.IncrementBookAsync(Book.BookId);
-                    await U.SaveAsync();
+                    KaiaPathEmbed E = await this.GetEmbedAsync(U);
+                    ComponentBuilder Com = await this.GetComponentsAsync(U);
+                    await Component.UpdateAsync(C =>
+                    {
+                        C.Embed = E.Build();
+                        C.Components = Com.Build();
+                    });
                 }
-                KaiaPathEmbed E = await this.GetEmbedAsync(U);
-                ComponentBuilder Com = await this.GetComponentsAsync(U);
-                await Component.UpdateAsync(C =>
+                else
                 {
-                    C.Embed = E.Build();
-                    C.Components = Com.Build();
-                });
+                    this.BackRequested?.Invoke(Component);
+                }
             }
         }
     }

@@ -30,7 +30,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             }
 
             this.ItemSelected += this.StoreItemSelectedAsync;
+            this.AllItems = AllItems;
+            this.ChunkSize = ChunkSize;
         }
+        public List<KaiaInventoryItem> AllItems { get; }
+        public int ChunkSize { get; }
 
         private async void StoreItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
@@ -38,10 +42,19 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             if (Item != null)
             {
                 await Component.DeferAsync();
-                await new ItemView(this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem).StartAsync(new(Component.User.Id));
+                ItemView V = new(this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem);
+                await V.StartAsync(new(Component.User.Id));
+                V.BackRequested += this.BackRequestedAsync;
                 this.Dispose();
                 this.ItemSelected -= this.StoreItemSelectedAsync;
             }
+        }
+
+        private async void BackRequestedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
+        {
+            this.Dispose();
+            await Component.DeferAsync();
+            await new ItemsPage(this.Context, this.AllItems, this.ChunkSize).StartAsync();
         }
     }
 }

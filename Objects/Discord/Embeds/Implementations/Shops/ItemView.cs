@@ -22,16 +22,21 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         public KaiaInventoryItem Item { get; }
         public IEmote BuyItemEmote { get; }
         public IEmote InteractWithItemEmote { get; }
+        public IEmote? GoBackView => Emotes.Embeds.Reverse;
         public ulong BId { get; } = IdGenerator.CreateNewId();
         public ulong IId { get; } = IdGenerator.CreateNewId();
+        public ulong RId { get; } = IdGenerator.CreateNewId();
         public string BuyId => $"{this.Item.DisplayName}-{this.BId}";
         public string InteractId => $"{this.Item.DisplayName}-{this.IId}";
+        public string BackId => $"{this.Item.DisplayName}-{this.RId}";
 
         private bool Refreshed { get; set; }
 
+        public event IKaiaItemContentView.GoBackHandler? BackRequested;
+
         public Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
-            return Task.FromResult(new ComponentBuilder()
+            ComponentBuilder CB = new ComponentBuilder()
                 .WithButton("Buy",
                            this.BuyId,
                            ButtonStyle.Secondary,
@@ -41,7 +46,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                            this.InteractId,
                            ButtonStyle.Secondary,
                            this.InteractWithItemEmote,
-                           disabled: !U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName) || !this.Item.CanInteractWithDirectly));
+                           disabled: !U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName) || !this.Item.CanInteractWithDirectly);
+            if(this.GoBackView != null)
+            {
+                CB.WithButton("Back", this.BackId, ButtonStyle.Secondary, this.GoBackView, disabled: false);
+            }
+            return Task.FromResult(CB);
         }
 
         public Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
@@ -74,26 +84,33 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async Task ButtonExecutedAsync(SocketMessageComponent Arg)
         {
-            if ((Arg.Data.CustomId == this.BuyId || Arg.Data.CustomId == this.InteractId) && Arg.User.Id == this.Context.UserContext.User.Id)
+            if ((Arg.Data.CustomId == this.BuyId || Arg.Data.CustomId == this.InteractId || Arg.Data.CustomId == this.BackId) && Arg.User.Id == this.Context.UserContext.User.Id)
             {
-                KaiaUser U = new(Arg.User.Id);
-                if (Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
+                if(Arg.Data.CustomId != this.BackId)
                 {
-                    await this.Item.UserBoughtAsync(U);
+                    KaiaUser U = new(Arg.User.Id);
+                    if (Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
+                    {
+                        await this.Item.UserBoughtAsync(U);
+                    }
+                    else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
+                    {
+                        U.Settings.Inventory.Items.RemoveAt(U.Settings.Inventory.Items.FindIndex(C => C.DisplayName == this.Item.DisplayName));
+                        await this.Item.UserInteractAsync(this.Context, U);
+                    }
+                    await U.SaveAsync();
+                    KaiaPathEmbed E = await this.GetEmbedAsync(U);
+                    ComponentBuilder Com = await this.GetComponentsAsync(U);
+                    await Arg.UpdateAsync(C =>
+                    {
+                        C.Embed = E.Build();
+                        C.Components = Com.Build();
+                    });
                 }
-                else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
+                else
                 {
-                    U.Settings.Inventory.Items.RemoveAt(U.Settings.Inventory.Items.FindIndex(C => C.DisplayName == this.Item.DisplayName));
-                    await this.Item.UserInteractAsync(this.Context, U);
+                    this.BackRequested?.Invoke(Arg);
                 }
-                await U.SaveAsync();
-                KaiaPathEmbed E = await this.GetEmbedAsync(U);
-                ComponentBuilder Com = await this.GetComponentsAsync(U);
-                await Arg.UpdateAsync(C =>
-                {
-                    C.Embed = E.Build();
-                    C.Components = Com.Build();
-                });
             }
         }
 

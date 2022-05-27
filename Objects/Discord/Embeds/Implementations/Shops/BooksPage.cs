@@ -8,7 +8,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class BooksPage : KaiaPathEmbedPaginated
     {
-        public BooksPage(CommandContext Context, int BookChunkSize) : base(new(),
+        public BooksPage(CommandContext Context) : base(new(),
                                                           new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library),
                                                           Context,
                                                           0,
@@ -18,7 +18,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
             KaiaUser User = new(Context.UserContext.User.Id);
-            IEnumerable<KaiaBook[]> InventoryChunked = KaiaLibrary.Books.Chunk(BookChunkSize);
+            IEnumerable<KaiaBook[]> InventoryChunked = KaiaLibrary.Books.Chunk(3);
             List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             foreach (KaiaBook[] Chunk in InventoryChunked)
             {
@@ -55,9 +55,18 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         private async void ItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
-            await new BookView(this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book).StartAsync(new(Component.User.Id));
+            BookView V = new(this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book);
+            await V.StartAsync(new(Component.User.Id));
+            V.BackRequested += this.BackRequested;
             this.Dispose();
             this.ItemSelected -= this.ItemSelectedAsync;
+        }
+
+        private async void BackRequested(global::Discord.WebSocket.SocketMessageComponent Component)
+        {
+            this.Dispose();
+            await Component.DeferAsync();
+            await new BooksPage(this.Context).StartAsync();
         }
     }
 }

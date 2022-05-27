@@ -26,6 +26,7 @@ namespace Kaia.Bot.Objects.Constants
         {
             internal static Emoji Back => Emoji.Parse("◀️");
             internal static Emoji Forward => Emoji.Parse("▶️");
+            internal static Emoji Reverse => Emoji.Parse("⏪");
         }
     }
 }

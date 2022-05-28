@@ -15,7 +15,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds
             this.WriteField("kaia version", $"`{KaiaSessionStatistics.Version?.Major}.{KaiaSessionStatistics.Version?.Minor}.{KaiaSessionStatistics.Version?.Build}`");
             this.WriteField("author", $"`{ProjectInformation.AuthorCreditDisplay}`");
             this.WriteField("message receiver error count", $"`{KaiaSessionStatistics.MessageReceiverFailureCount}`");
-            this.WriteField("session startup", $"`{KaiaSessionStatistics.SessionStartupAt.ToLongDateString()} - {KaiaSessionStatistics.SessionStartupAt.ToShortTimeString()} [UTC]`");
         }
     }
 }

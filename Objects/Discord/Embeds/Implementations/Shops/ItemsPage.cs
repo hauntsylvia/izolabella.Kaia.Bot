@@ -42,19 +42,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             if (Item != null)
             {
                 await Component.DeferAsync();
-                ItemView V = new(this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, true);
+                ItemView V = new(this, this.Context, Item, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, true);
                 await V.StartAsync(new(Component.User.Id));
-                V.BackRequested += this.BackRequestedAsync;
                 this.Dispose();
-                this.ItemSelected -= this.StoreItemSelectedAsync;
             }
-        }
-
-        private async void BackRequestedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
-        {
-            this.Dispose();
-            await Component.DeferAsync();
-            await new ItemsPage(this.Context, this.AllItems, this.ChunkSize).StartAsync();
         }
     }
 }

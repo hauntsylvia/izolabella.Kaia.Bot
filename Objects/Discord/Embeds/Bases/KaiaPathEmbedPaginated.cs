@@ -99,20 +99,23 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public async Task StartAsync()
         {
-            if (!this.Context.UserContext.HasResponded)
+            if(this.Context.UserContext.IsValidToken)
             {
-                await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
+                if (!this.Context.UserContext.HasResponded)
+                {
+                    await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
+                }
+                await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
+                {
+                    SelfMessageAction.Content = Strings.EmbedStrings.Empty;
+                    SelfMessageAction.Components = this.GetComponentBuilder().Build();
+                    SelfMessageAction.Embed =
+                        this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbed Embed ? Embed.Build() :
+                            this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
+                });
+                this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
+                this.Context.Reference.Client.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
             }
-            await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
-            {
-                SelfMessageAction.Content = Strings.EmbedStrings.Empty;
-                SelfMessageAction.Components = this.GetComponentBuilder().Build();
-                SelfMessageAction.Embed =
-                    this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbed Embed ? Embed.Build() :
-                        this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
-            });
-            this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
-            this.Context.Reference.Client.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
         }
 
         private Task ClientSelectMenuExecutedAsync(SocketMessageComponent Component)

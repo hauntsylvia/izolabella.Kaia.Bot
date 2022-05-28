@@ -55,18 +55,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         private async void ItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
-            BookView V = new(this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book, true);
+            BookView V = new(this, this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book, true);
             await V.StartAsync(new(Component.User.Id));
-            V.BackRequested += this.BackRequested;
             this.Dispose();
-            this.ItemSelected -= this.ItemSelectedAsync;
-        }
-
-        private async void BackRequested(global::Discord.WebSocket.SocketMessageComponent Component)
-        {
-            this.Dispose();
-            await Component.DeferAsync();
-            await new BooksPage(this.Context).StartAsync();
         }
     }
 }

@@ -25,9 +25,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             Inventory.AddRange(UserBooks);
             bool SetBal = false;
             foreach (KaiaBook[] Chunk in Inventory.Where(IB => 
-                                                         Filter == LibraryViewFilters.ShowFinished ? IB.IsFinished : 
-                                                         Filter == LibraryViewFilters.ShowUnfinished ? !IB.IsFinished : 
-                                                         Filter == LibraryViewFilters.ShowAll)
+                                                         Filter == LibraryViewFilters.Complete ? IB.IsFinished : 
+                                                         Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished : 
+                                                         Filter == LibraryViewFilters.All)
                                                          .OrderBy(IB => IB.AvailableUntil)
                                                          .Chunk(2))
             {

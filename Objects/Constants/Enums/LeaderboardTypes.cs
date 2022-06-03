@@ -2,9 +2,9 @@
 {
     public enum LeaderboardTypes
     {
+        GuildsHighestNumberCounted,
+        GuildsCurrentHighestNumber,
         UsersHighestNumberCounted,
         UsersMostNumbersCounted,
-        GuildsHighestNumberCounted,
-        GuildsCurrentHighestNumber
     }
 }

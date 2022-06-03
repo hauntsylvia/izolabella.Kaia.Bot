@@ -19,14 +19,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public string Description => "View a leaderboard.";
         public bool GuildsOnly => false;
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new()
-        {
-            new("Display Amount", "The number of elements in the leaderboard to display.", ApplicationCommandOptionType.Integer, false)
-            {
-                MaxValue = 30,
-                MinimumValue = 1
-            }
-        };
+        public List<IzolabellaCommandParameter> Parameters { get; } = new();
         public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
         public string ForeverId => CommandForeverIds.ViewLeaderboard;
@@ -34,35 +27,17 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? LeaderboardType = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "leaderboard");
-            IzolabellaCommandArgument? LeaderboardAmount = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "display-amount");
-            LeaderboardTypes LTypesMax = ((LeaderboardTypes[])Enum.GetValues(typeof(LeaderboardTypes))).Max();
-            if (LeaderboardType != null && LeaderboardType.Value is long RawLType && (int)LTypesMax >= RawLType)
-            {
-                LeaderboardTypes LType = (LeaderboardTypes)RawLType;
-                int AmountToDisplay = LeaderboardAmount != null && LeaderboardAmount.Value is long LVLong ? (int)LVLong : 10;
-                await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new LeaderboardEmbed(
-                    LType,
-                    Context.Reference,
-                    AmountToDisplay,
-                    EnumToReadable.GetNameOfEnumType(LType)).Build());
-            }
-            else
-            {
-                await Context.UserContext.RespondAsync(text: Strings.Responses.Commands.InvalidLeaderboardOption, ephemeral: true);
-            }
+            LeaderboardTypes LType = EnumToReadable.GetEnumFromArg<LeaderboardTypes>(LeaderboardType);
+            await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new LeaderboardEmbed(
+                LType,
+                Context.Reference,
+                10,
+                EnumToReadable.GetNameOfEnumType(LType)).Build());
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
-            List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (LeaderboardTypes LType in Enum.GetValues(typeof(LeaderboardTypes)))
-            {
-                Choices.Add(new(EnumToReadable.GetNameOfEnumType(LType), (long)LType));
-            }
-            this.Parameters.Add(new("Leaderboard", "The leaderboard to view.", ApplicationCommandOptionType.Integer, true)
-            {
-                Choices = Choices
-            });
+            this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Leaderboard", "The leaderboard to view.", typeof(LeaderboardTypes)));
             return Task.CompletedTask;
         }
 

@@ -30,26 +30,19 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? BookFilterArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "book-filter");
-            LibraryViewFilters LFilterMax = ((LibraryViewFilters[])Enum.GetValues(typeof(LibraryViewFilters))).Max();
-            LibraryViewFilters Result = LibraryViewFilters.ShowAll;
-            if(BookFilterArg != null && BookFilterArg.Value is long RawFilter && (int)LFilterMax >= RawFilter)
-            {
-                Result = (LibraryViewFilters)RawFilter;
-            }
+            //LibraryViewFilters LFilterMax = ((LibraryViewFilters[])Enum.GetValues(typeof(LibraryViewFilters))).Max();
+            //LibraryViewFilters Result = LibraryViewFilters.ShowAll;
+            //if(BookFilterArg != null && BookFilterArg.Value is long RawFilter && (int)LFilterMax >= RawFilter)
+            //{
+            //    Result = (LibraryViewFilters)RawFilter;
+            //}
+            LibraryViewFilters Result = EnumToReadable.GetEnumFromArg<LibraryViewFilters>(BookFilterArg);
             await new BooksPage(Context, Result).StartAsync();
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
-            List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (LibraryViewFilters Filter in Enum.GetValues(typeof(LibraryViewFilters)))
-            {
-                Choices.Add(new(EnumToReadable.GetNameOfEnumType(Filter), (long)Filter));
-            }
-            this.Parameters.Add(new("Book Filter", "How to filter the books.", ApplicationCommandOptionType.Integer, false)
-            {
-                Choices = Choices
-            });
+            this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Book Filter", "The filter to apply the books by.", typeof(LibraryViewFilters)));
             return Task.CompletedTask;
         }
 

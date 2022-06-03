@@ -1,6 +1,6 @@
 ﻿namespace Kaia.Bot.Objects.Constants.Enums
 {
-    public enum LibraryViewFilters
+    public enum AchievementFilter
     {
         Incomplete,
         Complete,

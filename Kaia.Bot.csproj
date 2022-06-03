@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-	<Version>0.5.4</Version>
+	<Version>0.6.0-rc</Version>
   </PropertyGroup>
 
   <ItemGroup>

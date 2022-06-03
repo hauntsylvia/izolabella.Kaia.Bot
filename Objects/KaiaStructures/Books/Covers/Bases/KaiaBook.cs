@@ -6,7 +6,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases
     public class KaiaBook : Unique
     {
         [JsonConstructor]
-        public KaiaBook(string Title, string Author, int Pages, double Starting, double ExponentToIncreaseBy, double CostPerPage, double CostPerPageExponent, DateTime AvailableUntil, ulong Id) : base(DataStores.UserBookStore, Id)
+        public KaiaBook(string Title, string Author, int Pages, double Starting, double ExponentToIncreaseBy, double CostPerPage, double CostPerPageExponent, DateTime AvailableUntil, ulong Id) : base(null, Id)
         {
             this.Title = Title;
             this.Author = Author;

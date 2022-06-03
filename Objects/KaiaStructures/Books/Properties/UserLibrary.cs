@@ -6,11 +6,11 @@ namespace Kaia.Bot.Objects.KaiaStructures.Books.Properties
     [JsonObject(MemberSerialization.OptIn)]
     public class UserLibrary
     {
-
         public UserLibrary(ulong U)
         {
             this.U = U;
         }
+
         public ulong U { get; }
 
         public async Task<List<KaiaBook>> GetUserBooksAsync()

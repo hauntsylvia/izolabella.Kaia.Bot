@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using izolabella.Discord.Objects.Arguments;
 using izolabella.Discord.Objects.Clients;
 using izolabella.Discord.Objects.Constants.Enums;
 using izolabella.Discord.Objects.Constraints.Implementations;
@@ -9,6 +10,7 @@ using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Commands.Implementations;
 using Kaia.Bot.Objects.Discord.MessageReceivers.Interfaces;
 using Kaia.Bot.Objects.Discord.MessageReceivers.Results;
+using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom;
 using Kaia.Bot.Objects.KaiaStructures.Guilds;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
 using Kaia.Bot.Objects.KaiaStructures.Users;
@@ -69,17 +71,20 @@ namespace Kaia.Bot.Objects.Clients
                         }
                     }
                 }
+                await User.Settings.AchievementProcessor.TryAwardAchievements(User, null, KaiaAchievementRoom.Achievements.ToArray());
                 await User.SaveAsync();
             }
         }
 
-        private async Task AfterCommandExecutedAsync(izolabella.Discord.Objects.Arguments.CommandContext Context, izolabella.Discord.Objects.Parameters.IzolabellaCommandArgument[] Arguments, izolabella.Discord.Objects.Interfaces.IIzolabellaCommand CommandInvoked)
+        private async Task AfterCommandExecutedAsync(CommandContext Context, izolabella.Discord.Objects.Parameters.IzolabellaCommandArgument[] Arguments, IIzolabellaCommand CommandInvoked)
         {
             if (Context.UserContext.User is SocketGuildUser SUser && CommandInvoked is AddCommandConstraintCommand)
             {
                 await this.RefreshCommandsAsync(new[] { SUser.Guild });
             }
-            await new KaiaUser(Context.UserContext.User.Id).SaveAsync();
+            KaiaUser U = new(Context.UserContext.User.Id);
+            await U.Settings.AchievementProcessor.TryAwardAchievements(U, Context, KaiaAchievementRoom.Achievements.ToArray());
+            await U.SaveAsync();
             if (Context.UserContext.User is SocketGuildUser SU)
             {
                 await new KaiaGuild(SU.Guild.Id).SaveAsync();

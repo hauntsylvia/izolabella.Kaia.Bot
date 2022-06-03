@@ -13,6 +13,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
             this.Id = Id;
             this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
             this.Settings.LibraryProcessor = new(Id);
+            this.Settings.AchievementProcessor = new(Id);
 
             List<KaiaBook> UserOwnedBooks = this.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             double TotalToPay = 0.0;

@@ -13,6 +13,7 @@ namespace Kaia.Bot.Objects.Constants
             internal static string UserStore => "CCBUsers";
             internal static string GuildStore => "CCBGuilds";
             internal static string BookStore => "Kaia Library";
+            internal static string AchievementStore => "Achievements";
         }
         public static class EmbedStrings
         {

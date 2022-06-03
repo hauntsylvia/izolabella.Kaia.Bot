@@ -29,10 +29,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                     KaiaBook PersonalBook = UserBooks.FirstOrDefault(PB => PB.BookId == Item.BookId) ?? Item;
                     if (PersonalBook.AvailableUntil >= DateTime.UtcNow)
                     {
-                        List<string> Display = new()
-                            {
-                                $"{Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageTurnCost}` to read page `{PersonalBook.CurrentPageIndex + 1}`",
-                            };
+                        List<string> Display = !PersonalBook.IsFinished ? new()
+                        {
+                            $"{Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageTurnCost}` to read page `{PersonalBook.CurrentPageIndex + 1}`",
+                        } : new();
                         if (PersonalBook.CurrentPageIndex > 0)
                         {
                             Display.Add($"on page `{PersonalBook.CurrentPageIndex}` / `{PersonalBook.Pages}`");

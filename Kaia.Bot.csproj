@@ -5,15 +5,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-	<Version>0.5.2</Version>
+	<Version>0.5.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="izolabella.Discord" Version="6.1.0" />
+    <PackageReference Include="izolabella.Storage" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\izolabella.DataStore\izolabella.Storage.csproj" />
+    <ProjectReference Include="..\izolabella.Discord\izolabella.Discord.csproj" />
   </ItemGroup>
 
 </Project>

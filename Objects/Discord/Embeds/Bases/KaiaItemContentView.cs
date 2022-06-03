@@ -33,7 +33,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         private async Task CheckForBackButtonAsync(SocketMessageComponent Arg)
         {
-            if (Arg.Data.CustomId == this.BackId && this.PreviousPage != null && this.CanGoBack)
+            if (Arg.Data.CustomId == this.BackId && this.PreviousPage != null && this.CanGoBack && this.Context.UserContext.User.Id == Arg.User.Id)
             {
                 await Arg.DeferAsync();
                 await this.PreviousPage.StartAsync();

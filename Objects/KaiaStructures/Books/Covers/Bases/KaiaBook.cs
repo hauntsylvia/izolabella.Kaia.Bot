@@ -42,5 +42,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases
         public double NextPageTurnCost => Math.Round(Math.Pow(this.CostPerPage * (this.CurrentPageIndex + 1), this.CostPerPageExponent), 2);
         [JsonProperty("BookId")]
         public string BookId => $"{this.Title}-{(this.AvailableUntil - new DateTime(1970, 1, 1)).TotalMilliseconds}";
+
+        public bool IsFinished => this.CurrentPageIndex >= this.Pages;
     }
 }

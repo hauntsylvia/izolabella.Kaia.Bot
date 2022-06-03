@@ -23,37 +23,46 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             List<KaiaBook> Inventory = KaiasBooks.Where(B => UserBooks.All(K => K.BookId != B.BookId)).ToList();
             Inventory.AddRange(UserBooks);
+            bool SetBal = false;
             foreach (KaiaBook[] Chunk in Inventory.Where(IB => 
                                                          Filter == LibraryViewFilters.ShowFinished ? IB.IsFinished : 
                                                          Filter == LibraryViewFilters.ShowUnfinished ? !IB.IsFinished : 
                                                          Filter == LibraryViewFilters.ShowAll)
                                                          .OrderBy(IB => IB.AvailableUntil)
-                                                         .Chunk(3))
+                                                         .Chunk(2))
             {
                 KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library);
+                if(!SetBal)
+                {
+                    SetBal = true;
+                    Embed.WriteField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round(Inventory.Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                }
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaBook Item in Chunk)
                 {
-                    KaiaBook PersonalBook = UserBooks.FirstOrDefault(PB => PB.BookId == Item.BookId) ?? Item;
-                    if (PersonalBook.AvailableUntil >= DateTime.UtcNow)
+                    if (Item.AvailableUntil >= DateTime.UtcNow || Item.IsFinished)
                     {
                         List<string> Display = new()
                         {
-                            !PersonalBook.IsFinished ? 
-                                $"{Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageTurnCost}` to read the next page" :
-                                $"u have finished this book",
+                            !Item.IsFinished ? 
+                                $"{Strings.Economy.CurrencyEmote} `{Item.NextPageTurnCost}` to read the next page" :
+                                $"u have finished this book"
                         };
-                        if (PersonalBook.CurrentPageIndex > 0)
+                        if(!Item.IsFinished)
                         {
-                            Display.Add($"on page `{PersonalBook.CurrentPageIndex}` / `{PersonalBook.Pages}`");
-                            Display.Add($"currently earning - {Strings.Economy.CurrencyEmote} `{PersonalBook.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                            Display.Add($"`{Math.Round((Item.AvailableUntil - DateTime.UtcNow).TotalDays, 0)}` days left");
+                        }
+                        if (Item.CurrentPageIndex > 0)
+                        {
+                            Display.Add(!Item.IsFinished ? $"on page `{Item.CurrentPageIndex}` / `{Item.Pages}`" : $"`{Item.Pages}` total pages");
+                            Display.Add($"currently earning - {Strings.Economy.CurrencyEmote} `{Item.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                         }
                         else
                         {
-                            Display.Add($"if u begin reading - {Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                            Display.Add($"if u begin reading - {Strings.Economy.CurrencyEmote} `{Item.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                         }
-                        Embed.WriteListToOneField(PersonalBook.Title + $" by {PersonalBook.Author} [until `{PersonalBook.AvailableUntil.ToShortDateString()}`]", Display, "\n");
-                        B.Add(new(PersonalBook.Title, PersonalBook.BookId, $"by {PersonalBook.Author}", Emotes.Counting.Book, false));
+                        Embed.WriteListToOneField(Item.Title, Display, "\n");
+                        B.Add(new(Item.Title, Item.BookId, $"by {Item.Author}", Emotes.Counting.Book, false));
                     }
                 }
                 this.EmbedsAndOptions.Add(Embed, B);

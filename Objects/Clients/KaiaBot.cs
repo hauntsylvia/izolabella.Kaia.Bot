@@ -84,7 +84,6 @@ namespace Kaia.Bot.Objects.Clients
             {
                 await new KaiaGuild(SU.Guild.Id).SaveAsync();
             }
-            Console.WriteLine("saved data");
         }
 
         private async Task ClientJoinedGuildAsync(SocketGuild Arg)

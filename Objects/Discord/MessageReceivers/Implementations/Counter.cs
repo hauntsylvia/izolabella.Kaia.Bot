@@ -26,12 +26,12 @@ namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
                 if (Guild != null)
                 {
                     MessageReference Ref = new(Message.Id, Message.Channel.Id, Guild.Id);
-                    ulong LastSuccessfulNumber = Guild.Settings.LastSuccessfulNumber ?? 0;
+                    ulong LastSuccessfulNumber = Guild.Settings.LastSuccessfulNumber;
                     ulong HighestGuildNumberCounted = Guild.Settings.HighestCountEver ?? 0;
                     ulong UserHighestCounted = Author.Settings.HighestCountEver ?? 0;
                     ulong UserNumbersCounted = Author.Settings.NumbersCounted ?? 0;
                     bool NotSameUserAsLastTime = Guild.Settings.LastUserWhoCounted == null || Author.Id != Guild.Settings.LastUserWhoCounted || LastSuccessfulNumber == 0;
-                    if (Num - 1 == (Guild.Settings.LastSuccessfulNumber ?? 0) && NotSameUserAsLastTime)
+                    if (Num - 1 == Guild.Settings.LastSuccessfulNumber && NotSameUserAsLastTime)
                     {
                         LastSuccessfulNumber++;
                         HighestGuildNumberCounted = HighestGuildNumberCounted > LastSuccessfulNumber ? HighestGuildNumberCounted : LastSuccessfulNumber;

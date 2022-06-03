@@ -9,9 +9,9 @@ namespace Kaia.Bot.Objects.KaiaStructures.Guilds
         public KaiaGuildSettings(ulong? CountingChannelId = null, ulong? LastSuccessfulNumber = null, ulong? LastUserWhoCounted = null, ulong? HighestCountEver = null, IReadOnlyDictionary<string, GuildPermission[]>? OverrideCommandPermissionsConstraint = null)
         {
             this.CountingChannelId = CountingChannelId;
-            this.LastSuccessfulNumber = LastSuccessfulNumber;
-            this.LastUserWhoCounted = LastUserWhoCounted ?? this.LastUserWhoCounted;
-            this.HighestCountEver = HighestCountEver ?? this.HighestCountEver;
+            this.lastSuccessfulNumber = LastSuccessfulNumber;
+            this.lastUserWhoCounted = LastUserWhoCounted ?? this.LastUserWhoCounted;
+            this.highestCountEver = HighestCountEver ?? this.HighestCountEver;
             this.OverrideCommandPermissionsConstraint = OverrideCommandPermissionsConstraint ?? this.OverrideCommandPermissionsConstraint;
         }
 
@@ -19,13 +19,16 @@ namespace Kaia.Bot.Objects.KaiaStructures.Guilds
         public ulong? CountingChannelId { get; set; }
 
         [JsonProperty("LastSuccessfulNumber", Required = Required.AllowNull)]
-        public ulong? LastSuccessfulNumber { get; set; }
+        private ulong? lastSuccessfulNumber;
+        public ulong LastSuccessfulNumber { get => this.lastSuccessfulNumber ?? 0; set => this.lastSuccessfulNumber = value; }
 
         [JsonProperty("LastUserWhoCounted", Required = Required.AllowNull)]
-        public ulong? LastUserWhoCounted { get; set; }
+        private ulong? lastUserWhoCounted;
+        public ulong? LastUserWhoCounted { get => this.lastUserWhoCounted ?? 0; set => this.lastUserWhoCounted = value; }
 
         [JsonProperty("HighestCountEver", Required = Required.Default)]
-        public ulong? HighestCountEver { get; set; }
+        private ulong? highestCountEver;
+        public ulong? HighestCountEver { get => this.highestCountEver ?? 0; set => this.highestCountEver = value; }
 
         [JsonProperty("OverrideCommandPermissionsConstraint", Required = Required.Default)]
         public IReadOnlyDictionary<string, GuildPermission[]> OverrideCommandPermissionsConstraint { get; set; } = new Dictionary<string, GuildPermission[]>();

@@ -1,5 +1,6 @@
 ﻿using Discord;
 using izolabella.Discord.Objects.Arguments;
+using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
 using Kaia.Bot.Objects.KaiaStructures.Users;
@@ -8,7 +9,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class BooksPage : KaiaPathEmbedPaginated
     {
-        public BooksPage(CommandContext Context) : base(new(),
+        public BooksPage(CommandContext Context, LibraryViewFilters Filter) : base(new(),
                                                           new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library),
                                                           Context,
                                                           0,
@@ -18,9 +19,16 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
             KaiaUser User = new(Context.UserContext.User.Id);
-            IEnumerable<KaiaBook[]> InventoryChunked = KaiaLibrary.Books.Chunk(3);
+            IEnumerable<KaiaBook> KaiasBooks = KaiaLibrary.Books;
             List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
-            foreach (KaiaBook[] Chunk in InventoryChunked)
+            List<KaiaBook> Inventory = KaiasBooks.Where(B => UserBooks.All(K => K.BookId != B.BookId)).ToList();
+            Inventory.AddRange(UserBooks);
+            foreach (KaiaBook[] Chunk in Inventory.Where(IB => 
+                                                         Filter == LibraryViewFilters.ShowFinished ? IB.IsFinished : 
+                                                         Filter == LibraryViewFilters.ShowUnfinished ? !IB.IsFinished : 
+                                                         Filter == LibraryViewFilters.ShowAll)
+                                                         .OrderBy(IB => IB.AvailableUntil)
+                                                         .Chunk(3))
             {
                 KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library);
                 List<SelectMenuOptionBuilder> B = new();
@@ -29,10 +37,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                     KaiaBook PersonalBook = UserBooks.FirstOrDefault(PB => PB.BookId == Item.BookId) ?? Item;
                     if (PersonalBook.AvailableUntil >= DateTime.UtcNow)
                     {
-                        List<string> Display = !PersonalBook.IsFinished ? new()
+                        List<string> Display = new()
                         {
-                            $"{Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageTurnCost}` to read page `{PersonalBook.CurrentPageIndex + 1}`",
-                        } : new();
+                            !PersonalBook.IsFinished ? 
+                                $"{Strings.Economy.CurrencyEmote} `{PersonalBook.NextPageTurnCost}` to read the next page" :
+                                $"u have finished this book",
+                        };
                         if (PersonalBook.CurrentPageIndex > 0)
                         {
                             Display.Add($"on page `{PersonalBook.CurrentPageIndex}` / `{PersonalBook.Pages}`");

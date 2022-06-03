@@ -7,6 +7,7 @@ using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
+using Kaia.Bot.Objects.Util;
 using System.Text.RegularExpressions;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
@@ -43,7 +44,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                     LType,
                     Context.Reference,
                     AmountToDisplay,
-                    LeaderboardCommand.GetNameOfLeaderboardType(LType)).Build());
+                    EnumToReadable.GetNameOfEnumType(LType)).Build());
             }
             else
             {
@@ -56,7 +57,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             List<IzolabellaCommandParameterChoices> Choices = new();
             foreach (LeaderboardTypes LType in Enum.GetValues(typeof(LeaderboardTypes)))
             {
-                Choices.Add(new(LeaderboardCommand.GetNameOfLeaderboardType(LType), (long)LType));
+                Choices.Add(new(EnumToReadable.GetNameOfEnumType(LType), (long)LType));
             }
             this.Parameters.Add(new("Leaderboard", "The leaderboard to view.", ApplicationCommandOptionType.Integer, true)
             {
@@ -68,15 +69,6 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
         {
             return Task.CompletedTask;
-        }
-
-        public static string GetNameOfLeaderboardType(LeaderboardTypes LType)
-        {
-            string DisplayAfter = Regex.Replace(LType.ToString(), "([A-Z])", " $1");
-            string CategoryDisplay = DisplayAfter.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries).First();
-            DisplayAfter = DisplayAfter.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries).Last();
-            string DisplayFull = $"[{CategoryDisplay}] {DisplayAfter}";
-            return DisplayFull;
         }
     }
 }

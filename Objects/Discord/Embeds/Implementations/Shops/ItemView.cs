@@ -32,7 +32,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                            this.InteractId,
                            ButtonStyle.Secondary,
                            this.InteractWithItemEmote,
-                           disabled: !U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName) || !this.Item.CanInteractWithDirectly);
+                           disabled: !U.Settings.Inventory.Items.Any(I =>
+                           {
+                               return I.DisplayName == this.Item.DisplayName;
+                           }) || !this.Item.CanInteractWithDirectly);
 
             return CB;
         }
@@ -43,7 +46,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
             Em.WriteField($"[{Strings.Economy.CurrencyEmote} `{this.Item.Cost}`] {this.Item.DisplayName}  {this.Item.DisplayEmote}", this.Item.Description);
             Em.WriteField("your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`{(this.Refreshed ? "- balances may go up due to passive income from books every time it refreshes." : "")}");
-            Em.WriteField($"number of {this.Item.DisplayName}s owned", $"`{U.Settings.Inventory.Items.Count(I => I.DisplayName == this.Item.DisplayName)}`");
+            Em.WriteField($"number of {this.Item.DisplayName}s owned", $"`{U.Settings.Inventory.Items.Count(I =>
+            {
+                return I.DisplayName == this.Item.DisplayName;
+            })}`");
             this.Refreshed = true;
             return Task.FromResult(Em);
         }
@@ -74,9 +80,15 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 {
                     await this.Item.UserBoughtAsync(U);
                 }
-                else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
+                else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I =>
                 {
-                    U.Settings.Inventory.Items.RemoveAt(U.Settings.Inventory.Items.FindIndex(C => C.DisplayName == this.Item.DisplayName));
+                    return I.DisplayName == this.Item.DisplayName;
+                }))
+                {
+                    U.Settings.Inventory.Items.RemoveAt(U.Settings.Inventory.Items.FindIndex(C =>
+                    {
+                        return C.DisplayName == this.Item.DisplayName;
+                    }));
                     await this.Item.UserInteractAsync(this.Context, U);
                 }
                 await U.SaveAsync();

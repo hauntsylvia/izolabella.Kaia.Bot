@@ -13,7 +13,7 @@
             string Message = (PetalsEarned < 0 ? Strings.ItemStrings.Rose.RoseStab : Strings.ItemStrings.Rose.RosePretty) + $" {Strings.Economy.CurrencyEmote} {(PetalsEarned < 0 ? "-" : "+")}`{Math.Abs(PetalsEarned)}`";
             if (Context.UserContext.HasResponded)
             {
-                global::Discord.Rest.RestFollowupMessage? unused = await Context.UserContext.FollowupAsync(Message);
+                _ = await Context.UserContext.FollowupAsync(Message);
             }
             else
             {

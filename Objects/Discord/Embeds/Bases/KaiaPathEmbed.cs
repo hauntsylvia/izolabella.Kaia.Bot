@@ -19,7 +19,7 @@
 
         internal void WriteField(string Name, string Value)
         {
-            EmbedBuilder? unused = this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
+            _ = this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
         }
 
         internal void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")

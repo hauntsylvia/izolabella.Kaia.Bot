@@ -23,13 +23,19 @@
             {
                 foreach (KaiaInventoryItem Item in Chunk)
                 {
-                    if (!ItemsAndTheirCounts.Exists(M => M.Key.DisplayName == Item.DisplayName))
+                    if (!ItemsAndTheirCounts.Exists(M =>
+                    {
+                        return M.Key.DisplayName == Item.DisplayName;
+                    }))
                     {
                         ItemsAndTheirCounts.Add(new(Item, 1));
                     }
                     else
                     {
-                        int Index = ItemsAndTheirCounts.FindIndex(M => M.Key.DisplayName == Item.DisplayName);
+                        int Index = ItemsAndTheirCounts.FindIndex(M =>
+                        {
+                            return M.Key.DisplayName == Item.DisplayName;
+                        });
                         ItemsAndTheirCounts[Index] = new(ItemsAndTheirCounts[Index].Key, ItemsAndTheirCounts[Index].Value + 1);
                     }
                 }

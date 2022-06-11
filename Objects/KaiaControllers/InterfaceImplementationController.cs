@@ -12,7 +12,7 @@ namespace Kaia.Bot.Objects.KaiaControllers
                 if (typeof(T).IsAssignableFrom(Ty) && !Ty.IsInterface && !Ty.IsAbstract && Ty.GetConstructor(Type.EmptyTypes) != null)
                 {
                     object? O = Activator.CreateInstance(Ty);
-                    if (O != null && O is T M)
+                    if (O is not null and T M)
                     {
                         R.Add(M);
                     }

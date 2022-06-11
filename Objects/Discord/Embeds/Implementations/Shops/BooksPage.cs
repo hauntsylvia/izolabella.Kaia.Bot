@@ -18,21 +18,35 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             KaiaUser User = new(Context.UserContext.User.Id);
             IEnumerable<KaiaBook> KaiasBooks = KaiaLibrary.Books;
             List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
-            List<KaiaBook> Inventory = KaiasBooks.Where(B => UserBooks.All(K => K.BookId != B.BookId)).ToList();
+            List<KaiaBook> Inventory = KaiasBooks.Where(B =>
+            {
+                return UserBooks.All(K =>
+                {
+                    return K.BookId != B.BookId;
+                });
+            }).ToList();
             Inventory.AddRange(UserBooks);
             bool SetBal = false;
             foreach (KaiaBook[] Chunk in Inventory.Where(IB =>
-                                                         Filter == LibraryViewFilters.Complete ? IB.IsFinished :
-                                                         Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
-                                                         Filter == LibraryViewFilters.All)
-                                                         .OrderBy(IB => IB.AvailableUntil)
+            {
+                return Filter == LibraryViewFilters.Complete ? IB.IsFinished :
+                                                                         Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
+                                                                         Filter == LibraryViewFilters.All;
+            })
+                                                         .OrderBy(IB =>
+                                                         {
+                                                             return IB.AvailableUntil;
+                                                         })
                                                          .Chunk(2))
             {
                 KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library);
                 if (!SetBal)
                 {
                     SetBal = true;
-                    Embed.WriteField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round(Inventory.Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                    Embed.WriteField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round(Inventory.Sum(B =>
+                    {
+                        return B.CurrentEarning;
+                    }), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                 }
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaBook Item in Chunk)

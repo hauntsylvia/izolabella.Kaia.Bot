@@ -75,9 +75,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             ComponentBuilder CB = new();
             if (B != null)
             {
-                ComponentBuilder? unused1 = CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
+                _ = CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
             }
-            ComponentBuilder? unused = CB.WithButton(emote: this.PageBack,
+
+            _ = CB.WithButton(emote: this.PageBack,
                           customId: this.BId,
                           disabled: this.ZeroBasedIndex <= 0,
                           style: ButtonStyle.Secondary,

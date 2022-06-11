@@ -23,11 +23,20 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? ItemArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "item");
-            IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "quantity");
+            IzolabellaCommandArgument? ItemArg = Arguments.FirstOrDefault(A =>
+            {
+                return A.Name.ToLower(CultureInfo.InvariantCulture) == "item";
+            });
+            IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A =>
+            {
+                return A.Name.ToLower(CultureInfo.InvariantCulture) == "quantity";
+            });
             if (ItemArg != null && QuantityArg != null && ItemArg.Value is string ItemName && QuantityArg.Value is long Quantity)
             {
-                KaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<KaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
+                KaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<KaiaInventoryItem>().FirstOrDefault(III =>
+                {
+                    return III.DisplayName == ItemName;
+                });
                 if (InventoryItem != null && Quantity > 0)
                 {
                     KaiaUser User = new(Context.UserContext.User.Id);
@@ -38,7 +47,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                         for (long Q = 0; Q < Quantity; Q++)
                         {
                             object? O = Activator.CreateInstance(InventoryItem.GetType());
-                            if (O != null && O is KaiaInventoryItem NewItem)
+                            if (O is not null and KaiaInventoryItem NewItem)
                             {
                                 await NewItem.UserBoughtAsync(User);
                                 ItemsBought.Add(NewItem);

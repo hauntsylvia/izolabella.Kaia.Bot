@@ -23,7 +23,10 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == CommandParameters.SomeoneOtherThanMeUser.Name.ToLower(CultureInfo.InvariantCulture));
+            IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A =>
+            {
+                return A.Name.ToLower(CultureInfo.InvariantCulture) == CommandParameters.SomeoneOtherThanMeUser.Name.ToLower(CultureInfo.InvariantCulture);
+            });
             IUser U = UserArg != null && UserArg.Value is IUser DU ? DU : Context.UserContext.User;
             if (U.Id == Context.UserContext.User.Id)
             {

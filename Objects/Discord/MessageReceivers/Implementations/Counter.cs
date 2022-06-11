@@ -39,7 +39,10 @@
                     }
                     else if (NotSameUserAsLastTime)
                     {
-                        KaiaInventoryItem? Refresh = Author.Settings.Inventory.Items.FirstOrDefault(InvI => InvI.DisplayName == Strings.ItemStrings.CountingRefresher.Name);
+                        KaiaInventoryItem? Refresh = Author.Settings.Inventory.Items.FirstOrDefault(InvI =>
+                        {
+                            return InvI.DisplayName == Strings.ItemStrings.CountingRefresher.Name;
+                        });
                         if (Refresh != null)
                         {
                             Result.ItemToUse = Refresh;

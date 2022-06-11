@@ -33,7 +33,10 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
                 if (await A.CanAwardAsync(User, CanRespondTo) && !await A.UserAlreadyOwns(User))
                 {
                     await this.Process.SaveAsync(A);
-                    User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
+                    User.Settings.Inventory.Petals += A.Rewards.Sum(AA =>
+                    {
+                        return AA.Petals;
+                    });
                     foreach (KaiaAchievementReward R in A.Rewards)
                     {
                         User.Settings.Inventory.Items.AddRange(R.Items);

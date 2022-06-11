@@ -98,7 +98,10 @@ namespace Kaia.Bot.Objects.Clients
                         GuildPermission[]? Permissions = Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Permissions != null)
                         {
-                            int unused1 = CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
+                            int unused1 = CCBLevelCommand.Constraints.RemoveAll(C =>
+                            {
+                                return C.Type == ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id);
+                            });
                             CCBLevelCommand.Constraints.Add(new WhitelistPermissionsConstraint(true, Permissions)
                             {
                                 ConstrainToOneGuildOfThisId = Guild.Id
@@ -107,7 +110,10 @@ namespace Kaia.Bot.Objects.Clients
                         ulong[]? Roles = Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Roles != null)
                         {
-                            int unused = CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistRoles && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
+                            int unused = CCBLevelCommand.Constraints.RemoveAll(C =>
+                            {
+                                return C.Type == ConstraintTypes.WhitelistRoles && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id);
+                            });
                             CCBLevelCommand.Constraints.Add(new WhitelistRolesConstraint(true, Roles)
                             {
                                 ConstrainToOneGuildOfThisId = Guild.Id

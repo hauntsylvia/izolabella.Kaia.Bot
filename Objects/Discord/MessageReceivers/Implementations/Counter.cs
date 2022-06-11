@@ -39,27 +39,24 @@
                     }
                     else if (NotSameUserAsLastTime)
                     {
-                        KaiaInventoryItem? Refresh = Author.Settings.Inventory.Items.FirstOrDefault(InvI =>
-                        {
-                            return InvI.DisplayName == Strings.ItemStrings.CountingRefresher.Name;
-                        });
+                        KaiaInventoryItem? Refresh = Author.Settings.Inventory.Items.FirstOrDefault(InvI => InvI.DisplayName == Strings.ItemStrings.CountingRefresher.Name);
                         if (Refresh != null)
                         {
                             Result.ItemToUse = Refresh;
                             await Message.AddReactionAsync(Refresh.DisplayEmote);
-                            global::Discord.Rest.RestUserMessage? unused2 = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.UserCountingSaved + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
+                            _ = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.UserCountingSaved + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                         }
                         else
                         {
                             LastSuccessfulNumber = 0;
                             await Message.AddReactionAsync(Emotes.Counting.Invalid);
-                            global::Discord.Rest.RestUserMessage? unused1 = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.GetRandomCountingFailText(), messageReference: Ref);
+                            _ = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.GetRandomCountingFailText(), messageReference: Ref);
                         }
                     }
                     else
                     {
                         await Message.AddReactionAsync(Emotes.Counting.ThumbDown);
-                        global::Discord.Rest.RestUserMessage? unused = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
+                        _ = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                     }
                     Guild.Settings.LastSuccessfulNumber = LastSuccessfulNumber;
                     Guild.Settings.HighestCountEver = HighestGuildNumberCounted;

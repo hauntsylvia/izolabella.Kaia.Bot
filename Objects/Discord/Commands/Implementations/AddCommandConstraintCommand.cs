@@ -32,22 +32,10 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             if (Context.UserContext.User is SocketGuildUser SUser)
             {
                 KaiaGuild Guild = new(SUser.Guild.Id);
-                IzolabellaCommandArgument? RoleAllowed = Arguments.FirstOrDefault(A =>
-                {
-                    return A.Name == "allowed-role";
-                });
-                IzolabellaCommandArgument? RoleToCopyPermissionsFrom = Arguments.FirstOrDefault(A =>
-                {
-                    return A.Name == "permissions-allowed";
-                });
-                IzolabellaCommandArgument? OverwriteArg = Arguments.FirstOrDefault(A =>
-                {
-                    return A.Name == "overwrite";
-                });
-                IzolabellaCommandArgument? CommandArg = Arguments.FirstOrDefault(A =>
-                {
-                    return A.IsRequired && A.Name == "command";
-                });
+                IzolabellaCommandArgument? RoleAllowed = Arguments.FirstOrDefault(A => A.Name == "allowed-role");
+                IzolabellaCommandArgument? RoleToCopyPermissionsFrom = Arguments.FirstOrDefault(A => A.Name == "permissions-allowed");
+                IzolabellaCommandArgument? OverwriteArg = Arguments.FirstOrDefault(A => A.Name == "overwrite");
+                IzolabellaCommandArgument? CommandArg = Arguments.FirstOrDefault(A => A.IsRequired && A.Name == "command");
                 bool Overwrite = OverwriteArg != null && (OverwriteArg.Value as bool? ?? false);
                 if (CommandArg != null && CommandArg.Value is string CommandId)
                 {
@@ -93,10 +81,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                     Guild.Settings.OverrideCommandPermissionsConstraint = PermissionsDict;
                     Guild.Settings.OverrideCommandRolesConstraint = RolesDict;
                     Guild.Settings = Guild.Settings;
-                    await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, this.AllCommands?.FirstOrDefault(C =>
-                    {
-                        return C is IKaiaCommand CCB && CCB.ForeverId == CommandId;
-                    })?.Name ?? CommandId, Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CommandId), Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CommandId)).Build());
+                    await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, this.AllCommands?.FirstOrDefault(C => C is IKaiaCommand CCB && CCB.ForeverId == CommandId)?.Name ?? CommandId, Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CommandId), Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CommandId)).Build());
                 }
             }
         }

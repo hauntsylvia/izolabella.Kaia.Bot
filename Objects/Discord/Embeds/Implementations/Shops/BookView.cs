@@ -25,10 +25,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async Task<KaiaBook?> GetUserBookAsync(KaiaUser U)
         {
-            return (await U.Settings.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B =>
-            {
-                return B.BookId == this.BookId;
-            }) ?? KaiaLibrary.GetActiveBookById(this.BookId) ?? null;
+            return (await U.Settings.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == this.BookId) ?? KaiaLibrary.GetActiveBookById(this.BookId) ?? null;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)

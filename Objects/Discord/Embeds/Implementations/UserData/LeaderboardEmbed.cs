@@ -12,10 +12,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             if (LType is LeaderboardTypes.UsersHighestNumberCounted or LeaderboardTypes.UsersMostNumbersCounted)
             {
                 List<KaiaUser> Users = DataStores.UserStore.ReadAllAsync<KaiaUser>().Result
-                    .OrderByDescending(U =>
-                    {
-                        return LType == LeaderboardTypes.UsersHighestNumberCounted ? U.Settings.HighestCountEver : U.Settings.NumbersCounted;
-                    })
+                    .OrderByDescending(U => LType == LeaderboardTypes.UsersHighestNumberCounted ? U.Settings.HighestCountEver : U.Settings.NumbersCounted)
                     .Take(NumberOfElements)
                     .ToList();
                 int LongestDisplayName = Strings.EmbedStrings.UnknownUser.Length;
@@ -41,10 +38,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             else
             {
                 List<KaiaGuild> Guilds = DataStores.GuildStore.ReadAllAsync<KaiaGuild>().Result
-                    .OrderByDescending(U =>
-                    {
-                        return LType == LeaderboardTypes.GuildsHighestNumberCounted ? U.Settings.HighestCountEver : U.Settings.LastSuccessfulNumber;
-                    })
+                    .OrderByDescending(U => LType == LeaderboardTypes.GuildsHighestNumberCounted ? U.Settings.HighestCountEver : U.Settings.LastSuccessfulNumber)
                     .Take(NumberOfElements)
                     .ToList();
                 int LongestDisplayName = Strings.EmbedStrings.UnknownGuild.Length;

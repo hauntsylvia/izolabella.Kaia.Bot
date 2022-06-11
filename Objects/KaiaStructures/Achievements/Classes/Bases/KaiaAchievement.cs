@@ -23,10 +23,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
         public abstract Task<bool> CanAwardAsync(KaiaUser U, CommandContext? Context);
         public async Task<bool> UserAlreadyOwns(KaiaUser U)
         {
-            return (await U.Settings.AchievementProcessor.GetUserAchievementsAsync()).Any(X =>
-            {
-                return X.Id == this.Id;
-            });
+            return (await U.Settings.AchievementProcessor.GetUserAchievementsAsync()).Any(X => X.Id == this.Id);
         }
     }
 }

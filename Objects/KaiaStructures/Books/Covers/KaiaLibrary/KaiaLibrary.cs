@@ -49,10 +49,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
 
         public static KaiaBook? GetActiveBookById(string Id)
         {
-            return Books.FirstOrDefault(B =>
-            {
-                return B.BookId == Id;
-            });
+            return Books.FirstOrDefault(B => B.BookId == Id);
         }
     }
 }

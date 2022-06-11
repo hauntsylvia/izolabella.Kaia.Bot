@@ -23,10 +23,7 @@
 
         public Task RemoveItemOfAsync(KaiaInventoryItem Item)
         {
-            this.Items.RemoveAt(this.Items.FindIndex(A =>
-            {
-                return A.DisplayName == Item.DisplayName;
-            }));
+            this.Items.RemoveAt(this.Items.FindIndex(A => A.DisplayName == Item.DisplayName));
             return Task.CompletedTask;
         }
     }

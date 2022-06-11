@@ -23,10 +23,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            IzolabellaCommandArgument? BookFilterArg = Arguments.FirstOrDefault(A =>
-            {
-                return A.Name.ToLower(CultureInfo.InvariantCulture) == "book-filter";
-            });
+            IzolabellaCommandArgument? BookFilterArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "book-filter");
             //LibraryViewFilters LFilterMax = ((LibraryViewFilters[])Enum.GetValues(typeof(LibraryViewFilters))).Max();
             //LibraryViewFilters Result = LibraryViewFilters.ShowAll;
             //if(BookFilterArg != null && BookFilterArg.Value is long RawFilter && (int)LFilterMax >= RawFilter)

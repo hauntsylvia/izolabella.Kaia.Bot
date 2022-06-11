@@ -16,28 +16,19 @@ namespace Kaia.Bot.Objects.KaiaStructures.Books.Properties
         public async Task<List<KaiaBook>> GetUserBooksAsync()
         {
             List<KaiaBook> Books = await DataStores.GetUserBookStore(this.U).ReadAllAsync<KaiaBook>();
-            Books.ForEach(B =>
-            {
-                B.BelongsTo = DataStores.GetUserBookStore(this.U);
-            });
+            Books.ForEach(B => B.BelongsTo = DataStores.GetUserBookStore(this.U));
             return Books;
         }
 
         public async Task<bool> UserHasBookOfIdAsync(string BookId)
         {
-            return (await this.GetUserBooksAsync()).Any(B =>
-            {
-                return B.BookId == BookId;
-            });
+            return (await this.GetUserBooksAsync()).Any(B => B.BookId == BookId);
         }
 
         public async Task AddBookAsync(KaiaBook Push)
         {
             DataStore DS = DataStores.GetUserBookStore(this.U);
-            if (!(await DS.ReadAllAsync<KaiaBook>()).Any(Book =>
-            {
-                return Book.BookId == Push.BookId;
-            }))
+            if (!(await DS.ReadAllAsync<KaiaBook>()).Any(Book => Book.BookId == Push.BookId))
             {
                 await DS.SaveAsync(Push);
             }
@@ -46,10 +37,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Books.Properties
         public async Task IncrementBookAsync(string BookId)
         {
             DataStore DS = DataStores.GetUserBookStore(this.U);
-            KaiaBook? Matching = (await this.GetUserBooksAsync()).FirstOrDefault(B =>
-            {
-                return B.BookId == BookId;
-            });
+            KaiaBook? Matching = (await this.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == BookId);
             if (Matching != null)
             {
                 Matching.CurrentPageIndex++;

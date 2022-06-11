@@ -55,7 +55,6 @@ namespace Kaia.Bot.Objects.Clients
                         }
                     }
                 }
-                await User.Settings.AchievementProcessor.TryAwardAchievements(User, null, KaiaAchievementRoom.Achievements.ToArray());
                 await User.SaveAsync();
             }
         }

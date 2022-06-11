@@ -4,10 +4,10 @@ using Kaia.Bot.Objects.KaiaStructures.Derivations;
 namespace Kaia.Bot.Objects.KaiaStructures.Startup
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
-    public class KaiaStartupInformation : Unique
+    public class StartupProfile : Unique
     {
         [JsonConstructor]
-        public KaiaStartupInformation(DataStore Belongs, string Token) : base(Belongs)
+        public StartupProfile(DataStore Belongs, string Token) : base(Belongs)
         {
             this.Token = Token;
         }

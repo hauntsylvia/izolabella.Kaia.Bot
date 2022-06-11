@@ -17,8 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="izolabella.Discord" Version="6.1.6" />
     <PackageReference Include="izolabella.Storage" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\izolabella.Discord\izolabella.Discord.csproj" />
   </ItemGroup>
 
 </Project>

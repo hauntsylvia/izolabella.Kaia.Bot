@@ -56,7 +56,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             }
             KaiaPathEmbed E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
-            global::Discord.Rest.RestInteractionMessage? unused = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+            _ = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
                 M.Content = Strings.EmbedStrings.Empty;
                 M.Components = Com.Build();

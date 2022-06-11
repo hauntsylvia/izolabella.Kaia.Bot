@@ -103,7 +103,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                 {
                     await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
                 }
-                global::Discord.Rest.RestInteractionMessage? unused = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
+                _ = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
                 {
                     SelfMessageAction.Content = Strings.EmbedStrings.Empty;
                     SelfMessageAction.Components = this.GetComponentBuilder().Build();

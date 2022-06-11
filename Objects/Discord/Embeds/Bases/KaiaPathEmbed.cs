@@ -17,12 +17,12 @@
             this.Timestamp = Strings.EmbedStrings.DefaultTimestamp;
         }
 
-        internal void WriteField(string Name, string Value)
+        public void WriteField(string Name, string Value)
         {
             _ = this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
         }
 
-        internal void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")
+        public void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")
         {
             string S = Strings.EmbedStrings.Empty;
             for (int Index = 0; Index < Values.Count; Index++)

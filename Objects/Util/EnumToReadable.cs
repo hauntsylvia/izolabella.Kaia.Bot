@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace Kaia.Bot.Objects.Util
 {
-    internal class EnumToReadable
+    public class EnumToReadable
     {
-        internal static string GetNameOfEnumType(Enum LType)
+        public static string GetNameOfEnumType(Enum LType)
         {
             string DisplayAfter = Regex.Replace(LType.ToString(), "([A-Z])", " $1");
             if (LType.GetType() == typeof(Constants.Enums.LeaderboardTypes))
@@ -21,7 +21,7 @@ namespace Kaia.Bot.Objects.Util
             }
         }
 
-        internal static IzolabellaCommandParameter MakeChoicesFromEnum(string ParamName, string ParamDescription, Type EnumType)
+        public static IzolabellaCommandParameter MakeChoicesFromEnum(string ParamName, string ParamDescription, Type EnumType)
         {
             List<IzolabellaCommandParameterChoices> Choices = new();
             foreach (Enum Filter in Enum.GetValues(EnumType))
@@ -34,7 +34,7 @@ namespace Kaia.Bot.Objects.Util
             };
         }
 
-        internal static TEnum? GetEnumFromArg<TEnum>(IzolabellaCommandArgument? Argument)
+        public static TEnum? GetEnumFromArg<TEnum>(IzolabellaCommandArgument? Argument)
         {
             if (Argument != null && Argument.Value is long RawFilter)
             {

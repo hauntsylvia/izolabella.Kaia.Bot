@@ -12,7 +12,6 @@ global using Kaia.Bot.Objects.Discord.Commands.Implementations;
 global using Kaia.Bot.Objects.Discord.Embeds.Bases;
 global using Kaia.Bot.Objects.Discord.MessageReceivers.Interfaces;
 global using Kaia.Bot.Objects.Discord.MessageReceivers.Results;
-global using Kaia.Bot.Objects.KaiaControllers;
 global using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom;
 global using Kaia.Bot.Objects.KaiaStructures.Guilds;
 global using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;

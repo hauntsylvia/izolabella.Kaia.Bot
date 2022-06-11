@@ -1,5 +1,4 @@
-﻿using Discord;
-using izolabella.Discord.Objects.Parameters;
+﻿using izolabella.Discord.Objects.Parameters;
 
 namespace Kaia.Bot.Objects.Constants
 {

@@ -1,9 +1,6 @@
-﻿using Discord;
-using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.Constants.Enums;
+﻿using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
-using Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
@@ -24,15 +21,15 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             List<KaiaBook> Inventory = KaiasBooks.Where(B => UserBooks.All(K => K.BookId != B.BookId)).ToList();
             Inventory.AddRange(UserBooks);
             bool SetBal = false;
-            foreach (KaiaBook[] Chunk in Inventory.Where(IB => 
-                                                         Filter == LibraryViewFilters.Complete ? IB.IsFinished : 
-                                                         Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished : 
+            foreach (KaiaBook[] Chunk in Inventory.Where(IB =>
+                                                         Filter == LibraryViewFilters.Complete ? IB.IsFinished :
+                                                         Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
                                                          Filter == LibraryViewFilters.All)
                                                          .OrderBy(IB => IB.AvailableUntil)
                                                          .Chunk(2))
             {
                 KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library);
-                if(!SetBal)
+                if (!SetBal)
                 {
                     SetBal = true;
                     Embed.WriteField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round(Inventory.Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
@@ -44,11 +41,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                     {
                         List<string> Display = new()
                         {
-                            !Item.IsFinished ? 
+                            !Item.IsFinished ?
                                 $"{Strings.Economy.CurrencyEmote} `{Item.NextPageTurnCost}` to read the next page" :
                                 $"u have finished this book"
                         };
-                        if(!Item.IsFinished)
+                        if (!Item.IsFinished)
                         {
                             Display.Add($"`{Math.Round((Item.AvailableUntil - DateTime.UtcNow).TotalDays, 0)}` days left");
                         }

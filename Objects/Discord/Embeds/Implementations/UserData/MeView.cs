@@ -1,6 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Users;
-
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
+﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
     internal class MeView : KaiaPathEmbed
     {

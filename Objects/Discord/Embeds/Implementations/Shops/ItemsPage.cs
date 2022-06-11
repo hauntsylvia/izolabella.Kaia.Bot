@@ -1,8 +1,4 @@
-﻿using Discord;
-using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
-
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
+﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class ItemsPage : KaiaPathEmbedPaginated
     {

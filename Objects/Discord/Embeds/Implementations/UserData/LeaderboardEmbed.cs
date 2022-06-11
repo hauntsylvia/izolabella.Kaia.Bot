@@ -1,8 +1,4 @@
-﻿using Discord.WebSocket;
-using izolabella.Discord.Objects.Clients;
-using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Guilds;
-using Kaia.Bot.Objects.KaiaStructures.Users;
+﻿using Kaia.Bot.Objects.Constants.Enums;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {

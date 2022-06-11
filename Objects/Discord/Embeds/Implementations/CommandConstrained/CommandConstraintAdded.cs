@@ -1,6 +1,4 @@
-﻿using Discord;
-using Discord.WebSocket;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {

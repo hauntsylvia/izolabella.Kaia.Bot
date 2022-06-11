@@ -1,9 +1,4 @@
-﻿using Discord;
-using Discord.WebSocket;
-using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Users;
-using Kaia.Bot.Objects.Util;
+﻿using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
@@ -38,7 +33,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                            ButtonStyle.Secondary,
                            this.InteractWithItemEmote,
                            disabled: !U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName) || !this.Item.CanInteractWithDirectly);
-            
+
             return CB;
         }
 
@@ -61,7 +56,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             }
             KaiaPathEmbed E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
-            await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+            global::Discord.Rest.RestInteractionMessage? unused = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
                 M.Content = Strings.EmbedStrings.Empty;
                 M.Components = Com.Build();

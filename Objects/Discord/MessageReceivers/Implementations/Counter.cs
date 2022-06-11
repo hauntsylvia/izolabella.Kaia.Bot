@@ -1,12 +1,4 @@
-﻿using Discord;
-using Discord.WebSocket;
-using Kaia.Bot.Objects.Discord.MessageReceivers.Interfaces;
-using Kaia.Bot.Objects.Discord.MessageReceivers.Results;
-using Kaia.Bot.Objects.KaiaStructures.Guilds;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
-using Kaia.Bot.Objects.KaiaStructures.Users;
-
-namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
+﻿namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
 {
     internal class Counter : IMessageReceiver
     {
@@ -52,19 +44,19 @@ namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
                         {
                             Result.ItemToUse = Refresh;
                             await Message.AddReactionAsync(Refresh.DisplayEmote);
-                            await Message.Channel.SendMessageAsync(Strings.Responses.Counting.UserCountingSaved + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
+                            global::Discord.Rest.RestUserMessage? unused2 = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.UserCountingSaved + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                         }
                         else
                         {
                             LastSuccessfulNumber = 0;
                             await Message.AddReactionAsync(Emotes.Counting.Invalid);
-                            await Message.Channel.SendMessageAsync(Strings.Responses.Counting.GetRandomCountingFailText(), messageReference: Ref);
+                            global::Discord.Rest.RestUserMessage? unused1 = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.GetRandomCountingFailText(), messageReference: Ref);
                         }
                     }
                     else
                     {
                         await Message.AddReactionAsync(Emotes.Counting.ThumbDown);
-                        await Message.Channel.SendMessageAsync(Strings.Responses.Counting.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
+                        global::Discord.Rest.RestUserMessage? unused = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.SameUserTriedCountingTwiceInARow + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                     }
                     Guild.Settings.LastSuccessfulNumber = LastSuccessfulNumber;
                     Guild.Settings.HighestCountEver = HighestGuildNumberCounted;

@@ -1,10 +1,5 @@
-﻿using Discord;
-using izolabella.Discord.Objects.Arguments;
-using izolabella.Discord.Objects.Constraints.Interfaces;
-using izolabella.Discord.Objects.Interfaces;
+﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
@@ -14,7 +9,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public string Name => "Me";
 
         public string Description => "View my statistics and my inventory, or view another user's statistics.";
-       
+
         public bool GuildsOnly => false;
 
         public List<IzolabellaCommandParameter> Parameters => new()

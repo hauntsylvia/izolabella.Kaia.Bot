@@ -1,14 +1,6 @@
-﻿using izolabella.Discord.Objects.Arguments;
-using izolabella.Discord.Objects.Constraints.Interfaces;
-using izolabella.Discord.Objects.Interfaces;
+﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {

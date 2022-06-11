@@ -1,6 +1,4 @@
-﻿using Discord;
-
-namespace Kaia.Bot.Objects.Discord.Embeds.Bases
+﻿namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
     public class KaiaPathEmbed : EmbedBuilder
     {
@@ -21,7 +19,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         internal void WriteField(string Name, string Value)
         {
-            this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
+            EmbedBuilder? unused = this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
         }
 
         internal void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")

@@ -1,7 +1,4 @@
-﻿using Discord;
-using Discord.WebSocket;
-using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.Util;
+﻿using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
@@ -78,9 +75,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             ComponentBuilder CB = new();
             if (B != null)
             {
-                CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
+                ComponentBuilder? unused1 = CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
             }
-            CB.WithButton(emote: this.PageBack,
+            ComponentBuilder? unused = CB.WithButton(emote: this.PageBack,
                           customId: this.BId,
                           disabled: this.ZeroBasedIndex <= 0,
                           style: ButtonStyle.Secondary,
@@ -99,13 +96,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public async Task StartAsync()
         {
-            if(this.Context.UserContext.IsValidToken)
+            if (this.Context.UserContext.IsValidToken)
             {
                 if (!this.Context.UserContext.HasResponded)
                 {
                     await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
                 }
-                await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
+                global::Discord.Rest.RestInteractionMessage? unused = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
                 {
                     SelfMessageAction.Content = Strings.EmbedStrings.Empty;
                     SelfMessageAction.Components = this.GetComponentBuilder().Build();

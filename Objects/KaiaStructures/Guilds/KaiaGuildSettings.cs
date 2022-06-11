@@ -1,6 +1,4 @@
-﻿using Discord;
-
-namespace Kaia.Bot.Objects.KaiaStructures.Guilds
+﻿namespace Kaia.Bot.Objects.KaiaStructures.Guilds
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KaiaGuildSettings

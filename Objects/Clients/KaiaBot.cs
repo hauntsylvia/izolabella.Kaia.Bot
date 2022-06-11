@@ -1,20 +1,4 @@
-﻿using Discord;
-using Discord.WebSocket;
-using izolabella.Discord.Objects.Arguments;
-using izolabella.Discord.Objects.Clients;
-using izolabella.Discord.Objects.Constants.Enums;
-using izolabella.Discord.Objects.Constraints.Implementations;
-using izolabella.Discord.Objects.Interfaces;
-using Kaia.Bot.Objects.ClientParameters;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Kaia.Bot.Objects.Discord.Commands.Implementations;
-using Kaia.Bot.Objects.Discord.MessageReceivers.Interfaces;
-using Kaia.Bot.Objects.Discord.MessageReceivers.Results;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom;
-using Kaia.Bot.Objects.KaiaStructures.Guilds;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
-using Kaia.Bot.Objects.KaiaStructures.Users;
-
+﻿
 namespace Kaia.Bot.Objects.Clients
 {
     public class KaiaBot
@@ -114,7 +98,7 @@ namespace Kaia.Bot.Objects.Clients
                         GuildPermission[]? Permissions = Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Permissions != null)
                         {
-                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
+                            int unused1 = CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistPermissions && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
                             CCBLevelCommand.Constraints.Add(new WhitelistPermissionsConstraint(true, Permissions)
                             {
                                 ConstrainToOneGuildOfThisId = Guild.Id
@@ -123,7 +107,7 @@ namespace Kaia.Bot.Objects.Clients
                         ulong[]? Roles = Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Roles != null)
                         {
-                            CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistRoles && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
+                            int unused = CCBLevelCommand.Constraints.RemoveAll(C => C.Type == ConstraintTypes.WhitelistRoles && (C.ConstrainToOneGuildOfThisId == null || C.ConstrainToOneGuildOfThisId == Guild.Id));
                             CCBLevelCommand.Constraints.Add(new WhitelistRolesConstraint(true, Roles)
                             {
                                 ConstrainToOneGuildOfThisId = Guild.Id

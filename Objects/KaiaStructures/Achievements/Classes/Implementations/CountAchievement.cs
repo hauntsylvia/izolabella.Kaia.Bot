@@ -1,17 +1,10 @@
-﻿using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 {
     public class CountAchievement : KaiaAchievement
     {
-        public CountAchievement(ulong Id, ulong CountTo, string Description, bool Highest) : base(Id, 
+        public CountAchievement(ulong Id, ulong CountTo, string Description, bool Highest) : base(Id,
                                                                                         $"{(Highest ? $"Highest Number Counted - " : $"Total Numbers Counted - ")}{CountTo.ToString(CultureInfo.InvariantCulture)}",
                                                                                         Description,
                                                                                         Constants.Enums.AchievementCategory.Counting, new KaiaAchievementReward[] { new(CountTo) })

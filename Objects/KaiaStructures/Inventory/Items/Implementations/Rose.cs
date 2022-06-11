@@ -1,12 +1,4 @@
-﻿using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
+﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
 {
     public class Rose : KaiaInventoryItem
     {
@@ -21,7 +13,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
             string Message = (PetalsEarned < 0 ? Strings.ItemStrings.Rose.RoseStab : Strings.ItemStrings.Rose.RosePretty) + $" {Strings.Economy.CurrencyEmote} {(PetalsEarned < 0 ? "-" : "+")}`{Math.Abs(PetalsEarned)}`";
             if (Context.UserContext.HasResponded)
             {
-                await Context.UserContext.FollowupAsync(Message);
+                global::Discord.Rest.RestFollowupMessage? unused = await Context.UserContext.FollowupAsync(Message);
             }
             else
             {

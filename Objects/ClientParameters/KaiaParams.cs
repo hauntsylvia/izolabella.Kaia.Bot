@@ -1,7 +1,4 @@
-﻿using Discord.WebSocket;
-using izolabella.Discord.Objects.Clients;
-
-namespace Kaia.Bot.Objects.ClientParameters
+﻿namespace Kaia.Bot.Objects.ClientParameters
 {
     public class KaiaParams
     {

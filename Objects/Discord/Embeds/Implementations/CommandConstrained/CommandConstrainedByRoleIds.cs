@@ -1,6 +1,4 @@
-﻿using Discord.WebSocket;
-
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
+﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {
     public class CommandConstrainedByRoleIds : KaiaPathEmbed
     {

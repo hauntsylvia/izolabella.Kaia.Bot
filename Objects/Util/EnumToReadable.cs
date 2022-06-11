@@ -1,11 +1,5 @@
-﻿using Discord;
-using izolabella.Discord.Objects.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using izolabella.Discord.Objects.Parameters;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Util
 {
@@ -14,7 +8,7 @@ namespace Kaia.Bot.Objects.Util
         internal static string GetNameOfEnumType(Enum LType)
         {
             string DisplayAfter = Regex.Replace(LType.ToString(), "([A-Z])", " $1");
-            if(LType.GetType() == typeof(Constants.Enums.LeaderboardTypes))
+            if (LType.GetType() == typeof(Constants.Enums.LeaderboardTypes))
             {
                 string CategoryDisplay = DisplayAfter.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries).First();
                 DisplayAfter = DisplayAfter.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries).Last();
@@ -44,9 +38,9 @@ namespace Kaia.Bot.Objects.Util
         {
             if (Argument != null && Argument.Value is long RawFilter)
             {
-                foreach(TEnum E in Enum.GetValues(typeof(TEnum)))
+                foreach (TEnum E in Enum.GetValues(typeof(TEnum)))
                 {
-                    if((int)(object)E == RawFilter)
+                    if ((int)(object)E == RawFilter)
                     {
                         return E;
                     }

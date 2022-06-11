@@ -1,6 +1,4 @@
-﻿using izolabella.Discord.Objects.Interfaces;
-
-namespace Kaia.Bot.Objects.Discord.Commands.Bases
+﻿namespace Kaia.Bot.Objects.Discord.Commands.Bases
 {
     public interface IKaiaCommand : IIzolabellaCommand
     {

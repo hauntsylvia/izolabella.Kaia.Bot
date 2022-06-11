@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Derivations
 
         public async Task SaveAsync()
         {
-            if(this.BelongsTo != null)
+            if (this.BelongsTo != null)
             {
                 await this.BelongsTo.SaveAsync(this);
             }

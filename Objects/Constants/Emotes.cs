@@ -1,5 +1,4 @@
-﻿using Discord;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
+﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
 
 namespace Kaia.Bot.Objects.Constants
 {

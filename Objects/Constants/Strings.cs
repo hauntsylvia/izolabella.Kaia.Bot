@@ -1,6 +1,4 @@
-﻿using Discord;
-
-namespace Kaia.Bot.Objects.Constants
+﻿namespace Kaia.Bot.Objects.Constants
 {
     public static class Strings
     {

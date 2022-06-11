@@ -1,7 +1,4 @@
-﻿using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Users;
-
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
+﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
     public class MeInventoryView : KaiaPathEmbedPaginated
     {
@@ -39,7 +36,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             }
             foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in ItemsAndTheirCounts.Chunk(InventoryChunkSize))
             {
-                List<string> Display = new(); 
+                List<string> Display = new();
                 KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
                 foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in ItemCountChunk)
                 {

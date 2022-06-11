@@ -1,9 +1,5 @@
-﻿using Discord;
-using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.Discord.Commands.Implementations;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
-using Kaia.Bot.Objects.KaiaStructures.Users;
 using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
@@ -66,7 +62,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             }
             KaiaPathEmbed E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
-            await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+            global::Discord.Rest.RestInteractionMessage? unused = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
                 M.Content = Strings.EmbedStrings.Empty;
                 M.Components = Com.Build();

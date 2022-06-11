@@ -1,12 +1,5 @@
-﻿using izolabella.Discord.Objects.Arguments;
-using izolabella.Storage.Objects.DataStores;
+﻿using izolabella.Storage.Objects.DataStores;
 using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
 {
@@ -35,13 +28,13 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
         public async Task TryAwardAchievements(KaiaUser User, CommandContext? CanRespondTo, params KaiaAchievement[] Achievements)
         {
             List<KaiaAchievement> Actual = new();
-            foreach(KaiaAchievement A in Achievements)
+            foreach (KaiaAchievement A in Achievements)
             {
-                if(await A.CanAwardAsync(User, CanRespondTo) && !await A.UserAlreadyOwns(User))
+                if (await A.CanAwardAsync(User, CanRespondTo) && !await A.UserAlreadyOwns(User))
                 {
                     await this.Process.SaveAsync(A);
                     User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
-                    foreach(KaiaAchievementReward R in A.Rewards)
+                    foreach (KaiaAchievementReward R in A.Rewards)
                     {
                         User.Settings.Inventory.Items.AddRange(R.Items);
                     }

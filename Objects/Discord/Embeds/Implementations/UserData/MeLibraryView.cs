@@ -1,6 +1,4 @@
-﻿using izolabella.Discord.Objects.Arguments;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Users;
+﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {

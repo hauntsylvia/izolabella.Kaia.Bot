@@ -1,5 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Properties;
+﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 

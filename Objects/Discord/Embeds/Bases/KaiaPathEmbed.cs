@@ -6,7 +6,7 @@
         {
             this.Description =
                 $"" +
-                $"*{Parent.ToLower(CultureInfo.InvariantCulture)}* // " +
+                $"*{Parent.ToLower(CultureInfo.InvariantCulture)}*{(Sub1 == null ? "" : " // ")}" +
                 $"{(Sub1 != null ? $"{(Sub2 == null ? $"***{Sub1.ToLower(CultureInfo.InvariantCulture)}***" : $"*{Sub1.ToLower(CultureInfo.InvariantCulture)}*")}" : "")}" +
                 $"{(Sub2 != null ? $" // ***{Sub2.ToLower(CultureInfo.InvariantCulture)}***" : "")}";
             this.Color = Override ?? Colors.EmbedColor;

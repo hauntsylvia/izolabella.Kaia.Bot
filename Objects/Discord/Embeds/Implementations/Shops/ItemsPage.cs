@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
+﻿using Kaia.Bot.Objects.Util;
+
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class ItemsPage : KaiaPathEmbedPaginated
     {
@@ -34,7 +36,7 @@
 
         private async void StoreItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
-            KaiaInventoryItem? Item = InterfaceImplementationController.GetItems<KaiaInventoryItem>().FirstOrDefault(X => X.DisplayName == (ItemsSelected.FirstOrDefault() ?? ""));
+            KaiaInventoryItem? Item = BaseImplementationUtil.GetItems<KaiaInventoryItem>().FirstOrDefault(X => X.DisplayName == (ItemsSelected.FirstOrDefault() ?? ""));
             if (Item != null)
             {
                 await Component.DeferAsync();

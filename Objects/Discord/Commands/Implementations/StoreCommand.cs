@@ -1,6 +1,7 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
+using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
@@ -27,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "quantity");
             if (ItemArg != null && QuantityArg != null && ItemArg.Value is string ItemName && QuantityArg.Value is long Quantity)
             {
-                KaiaInventoryItem? InventoryItem = InterfaceImplementationController.GetItems<KaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
+                KaiaInventoryItem? InventoryItem = BaseImplementationUtil.GetItems<KaiaInventoryItem>().FirstOrDefault(III => III.DisplayName == ItemName);
                 if (InventoryItem != null && Quantity > 0)
                 {
                     KaiaUser User = new(Context.UserContext.User.Id);
@@ -73,7 +74,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             }
             else
             {
-                List<KaiaInventoryItem> Items = InterfaceImplementationController.GetItems<KaiaInventoryItem>();
+                List<KaiaInventoryItem> Items = BaseImplementationUtil.GetItems<KaiaInventoryItem>();
                 ItemsPage E = new(Context, Items, 6);
                 await E.StartAsync();
             }
@@ -82,7 +83,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
         {
             List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (KaiaInventoryItem Item in InterfaceImplementationController.GetItems<KaiaInventoryItem>())
+            foreach (KaiaInventoryItem Item in BaseImplementationUtil.GetItems<KaiaInventoryItem>())
             {
                 Choices.Add(new($"[{Item.DisplayEmote}] {Item.DisplayName}", Item.DisplayName));
             }

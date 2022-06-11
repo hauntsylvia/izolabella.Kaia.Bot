@@ -1,4 +1,6 @@
 ﻿
+using Kaia.Bot.Objects.Util;
+
 namespace Kaia.Bot.Objects.Clients
 {
     public class KaiaBot
@@ -6,7 +8,7 @@ namespace Kaia.Bot.Objects.Clients
         public KaiaBot(KaiaParams Parameters)
         {
             this.Parameters = Parameters;
-            this.MessageReceivers = InterfaceImplementationController.GetItems<IMessageReceiver>();
+            this.MessageReceivers = BaseImplementationUtil.GetItems<IMessageReceiver>();
             this.Parameters.CommandHandler.AfterJoinedGuild += this.ClientJoinedGuildAsync;
             this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
             this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceivedAsync;

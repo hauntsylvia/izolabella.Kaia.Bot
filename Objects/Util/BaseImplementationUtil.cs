@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace Kaia.Bot.Objects.KaiaControllers
+namespace Kaia.Bot.Objects.Util
 {
-    internal class InterfaceImplementationController
+    internal class BaseImplementationUtil
     {
         internal static List<T> GetItems<T>()
         {

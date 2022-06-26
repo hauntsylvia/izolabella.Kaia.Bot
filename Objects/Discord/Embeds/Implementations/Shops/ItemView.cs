@@ -4,7 +4,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class ItemView : KaiaItemContentView
     {
-        public ItemView(ItemsPage? From, CommandContext Context, KaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote, bool CanGoBack) : base(From, Context, CanGoBack)
+        public ItemView(ItemsPaginated? From, CommandContext Context, KaiaInventoryItem Item, IEmote BuyItemEmote, IEmote InteractWithItemEmote, bool CanGoBack) : base(From, Context, CanGoBack)
         {
             this.Item = Item;
             this.BuyItemEmote = BuyItemEmote;
@@ -41,9 +41,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         {
             KaiaPathEmbed Em = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, this.Item.DisplayName);
 
-            Em.WriteField($"[{Strings.Economy.CurrencyEmote} `{this.Item.Cost}`] {this.Item.DisplayName}  {this.Item.DisplayEmote}", this.Item.Description);
-            Em.WriteField("your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`{(this.Refreshed ? "- balances may go up due to passive income from books every time it refreshes." : "")}");
-            Em.WriteField($"number of {this.Item.DisplayName}s owned", $"`{U.Settings.Inventory.Items.Count(I => I.DisplayName == this.Item.DisplayName)}`");
+            Em.WithField($"[{Strings.Economy.CurrencyEmote} `{this.Item.Cost}`] {this.Item.DisplayName}  {this.Item.DisplayEmote}", this.Item.Description);
+            Em.WithField("your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`{(this.Refreshed ? "- balances may go up due to passive income from books every time it refreshes." : "")}");
+            Em.WithField($"number of {this.Item.DisplayName}s owned", $"`{U.Settings.Inventory.Items.Count(I => I.DisplayName == this.Item.DisplayName)}`");
             this.Refreshed = true;
             return Task.FromResult(Em);
         }

@@ -4,7 +4,7 @@
     {
         public CountingRefresher() : base(DisplayName: Strings.ItemStrings.CountingRefresher.Name,
                                           Description: "allows u to keep counting even if u fail.",
-                                          Cost: 150,
+                                          Cost: 124.98,
                                           CanInteractWithDirectly: false,
                                           DisplayEmoteName: Emotes.Items.CountingRefresher)
         {

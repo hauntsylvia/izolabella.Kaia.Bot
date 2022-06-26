@@ -1,15 +1,14 @@
-﻿using Kaia.Bot.Objects.Util;
+﻿using Kaia.Bot.Objects.Constants.Embeds;
+using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class ItemsPage : KaiaPathEmbedPaginated
+    public class ItemsPaginated : KaiaPathEmbedPaginated
     {
-        public ItemsPage(CommandContext Context, List<KaiaInventoryItem> AllItems, int ChunkSize) : base(new(),
-                                                                                                         new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop),
+        public ItemsPaginated(CommandContext Context, List<KaiaInventoryItem> AllItems, int ChunkSize) : base(new(),
+                                                                                                         EmbedDefaults.DefaultEmbedForNoItemsPresent,
                                                                                                          Context,
                                                                                                          0,
-                                                                                                         Emotes.Embeds.Back,
-                                                                                                         Emotes.Embeds.Forward,
                                                                                                          Strings.EmbedStrings.FakePaths.Global,
                                                                                                          Strings.EmbedStrings.FakePaths.StoreOrShop)
         {
@@ -21,7 +20,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaInventoryItem Item in Items)
                 {
-                    Embed.WriteField($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.Description);
+                    Embed.WithField($"[{Strings.Economy.CurrencyEmote} `{Item.Cost}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.Description);
                     B.Add(new($"{Item.DisplayName}", Item.DisplayName, Item.Description, Item.DisplayEmote, false));
                 }
                 this.EmbedsAndOptions.Add(Embed, B);

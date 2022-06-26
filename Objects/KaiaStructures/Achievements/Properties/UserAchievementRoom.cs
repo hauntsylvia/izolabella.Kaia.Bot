@@ -1,5 +1,6 @@
 ﻿using izolabella.Storage.Objects.DataStores;
 using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
 {
@@ -9,39 +10,48 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
         public UserAchievementRoom(ulong U)
         {
             this.U = U;
-            this.Process = DataStores.GetUserAchievementStore(this.U);
+            if(this.U != default)
+            {
+                this.UserAchievementsStore = DataStores.GetUserAchievementStore(this.U);
+            }
         }
 
         public ulong U { get; }
 
-        public DataStore Process { get; }
+        private DataStore? UserAchievementsStore { get; }
 
         public delegate void AchievementAwardedHandler(KaiaUser User, CommandContext? CanRespondTo, List<KaiaAchievement> Achievements);
 
-        public event AchievementAwardedHandler? AchievementAwarded;
+        public event AchievementAwardedHandler? AchievementsRewarded;
 
-        public async Task<List<KaiaAchievement>> GetUserAchievementsAsync()
+        public async Task<IReadOnlyCollection<UserEarnedAchievement>> GetUserAchievementsAsync()
         {
-            return await this.Process.ReadAllAsync<KaiaAchievement>();
+            return await (this.UserAchievementsStore != null ? this.UserAchievementsStore.ReadAllAsync<UserEarnedAchievement>() : Task.FromResult(new List<UserEarnedAchievement>()));
         }
 
         public async Task TryAwardAchievements(KaiaUser User, CommandContext? CanRespondTo, params KaiaAchievement[] Achievements)
         {
-            List<KaiaAchievement> Actual = new();
-            foreach (KaiaAchievement A in Achievements)
+            if(this.UserAchievementsStore != null)
             {
-                if (await A.CanAwardAsync(User, CanRespondTo) && !await A.UserAlreadyOwns(User))
+                List<KaiaAchievement> Actual = new();
+                foreach (KaiaAchievement A in Achievements)
                 {
-                    await this.Process.SaveAsync(A);
-                    User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
-                    foreach (KaiaAchievementReward R in A.Rewards)
+                    if (await A.CanAwardAsync(User, CanRespondTo) && !await A.UserAlreadyOwns(User))
                     {
-                        User.Settings.Inventory.Items.AddRange(R.Items);
+                        await this.UserAchievementsStore.SaveAsync(A);
+                        User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
+                        foreach (KaiaAchievementReward R in A.Rewards)
+                        {
+                            User.Settings.Inventory.Items.AddRange(R.Items);
+                        }
+                        Actual.Add(A);
                     }
-                    Actual.Add(A);
+                }
+                if (Actual.Count > 0)
+                {
+                    this.AchievementsRewarded?.Invoke(User, CanRespondTo, Actual);
                 }
             }
-            this.AchievementAwarded?.Invoke(User, CanRespondTo, Actual);
         }
     }
 }

@@ -9,8 +9,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             KaiaPathEmbed IfNoListElements,
             CommandContext Context,
             int StartingIndex,
-            IEmote PageBack,
-            IEmote PageForward,
             string Parent,
             string? Sub1 = null,
             string? Sub2 = null,
@@ -49,9 +47,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         private ulong GlobalSelectMenuId { get; }
 
-        public IEmote PageBack { get; }
+        public Emoji PageBack { get; } = Emotes.Embeds.Back;
 
-        public IEmote PageForward { get; }
+        public Emoji PageForward { get; } = Emotes.Embeds.Forward;
 
         public string Parent { get; }
 
@@ -103,14 +101,21 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                 {
                     await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
                 }
-                _ = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
+                try
                 {
-                    SelfMessageAction.Content = Strings.EmbedStrings.Empty;
-                    SelfMessageAction.Components = this.GetComponentBuilder().Build();
-                    SelfMessageAction.Embed =
-                        this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbed Embed ? Embed.Build() :
-                            this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
-                });
+                    _ = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
+                    {
+                        SelfMessageAction.Content = Strings.EmbedStrings.Empty;
+                        SelfMessageAction.Components = this.GetComponentBuilder().Build();
+                        SelfMessageAction.Embed =
+                            this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbed Embed ? Embed.Build() :
+                                this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
+                    });
+                }
+                catch(Exception Ex)
+                {
+                    Console.WriteLine(Ex);
+                }
                 this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
                 this.Context.Reference.Client.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
             }

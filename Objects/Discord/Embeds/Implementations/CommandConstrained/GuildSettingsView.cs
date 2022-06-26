@@ -4,8 +4,8 @@
     {
         public GuildSettingsView(string GuildName, KaiaGuild Guild) : base(GuildName, Strings.EmbedStrings.FakePaths.Settings)
         {
-            this.WriteField("counting channel", $"<#{Guild.Settings.CountingChannelId}>");
-            this.WriteField("highest number counted", $"`{Guild.Settings.HighestCountEver ?? 0}`");
+            this.WithField("counting channel", $"<#{Guild.Settings.CountingChannelId}>");
+            this.WithField("highest number counted", $"`{Guild.Settings.HighestCountEver ?? 0}`");
         }
     }
 }

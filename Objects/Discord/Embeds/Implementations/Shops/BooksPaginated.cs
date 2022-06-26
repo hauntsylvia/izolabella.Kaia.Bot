@@ -1,17 +1,16 @@
-﻿using Kaia.Bot.Objects.Constants.Enums;
+﻿using Kaia.Bot.Objects.Constants.Embeds;
+using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
-    public class BooksPage : KaiaPathEmbedPaginated
+    public class BooksPaginated : KaiaPathEmbedPaginated
     {
-        public BooksPage(CommandContext Context, LibraryViewFilters Filter) : base(new(),
-                                                          new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library),
+        public BooksPaginated(CommandContext Context, LibraryViewFilters Filter) : base(new(),
+                                                          EmbedDefaults.DefaultEmbedForNoItemsPresent,
                                                           Context,
                                                           0,
-                                                          Emotes.Embeds.Back,
-                                                          Emotes.Embeds.Forward,
                                                           Strings.EmbedStrings.FakePaths.Global,
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
@@ -24,17 +23,15 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             foreach (KaiaBook[] Chunk in Inventory.Where(IB =>
             {
                 return Filter == LibraryViewFilters.Complete ? IB.IsFinished :
-                                                                         Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
-                                                                         Filter == LibraryViewFilters.All;
-            })
-                                                         .OrderBy(IB => IB.AvailableUntil)
-                                                         .Chunk(2))
+                       Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
+                       Filter == LibraryViewFilters.All;
+            }).OrderBy(IB => IB.AvailableUntil).Chunk(2))
             {
                 KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library);
                 if (!SetBal)
                 {
                     SetBal = true;
-                    Embed.WriteField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round(Inventory.Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                    Embed.WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round(Inventory.Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                 }
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaBook Item in Chunk)
@@ -60,7 +57,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                         {
                             Display.Add($"if u begin reading - {Strings.Economy.CurrencyEmote} `{Item.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                         }
-                        Embed.WriteListToOneField(Item.Title, Display, "\n");
+                        Embed.WithListWrittenToField(Item.Title, Display, "\n");
                         B.Add(new(Item.Title, Item.BookId, $"by {Item.Author}", Emotes.Counting.Book, false));
                     }
                 }

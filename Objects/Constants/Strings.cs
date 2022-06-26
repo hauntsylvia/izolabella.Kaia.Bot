@@ -33,6 +33,7 @@
                 internal static string Library => "library";
                 internal static string Inventory => "inventory";
                 internal static string Kaia => "kaia";
+                internal static string Achievements => "achievements";
             }
         }
         internal static class Responses

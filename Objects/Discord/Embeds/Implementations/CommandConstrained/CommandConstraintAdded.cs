@@ -13,7 +13,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
                 {
                     PermsStrs.Add(Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture));
                 }
-                this.WriteListToOneField("required permissions", PermsStrs, ", ");
+                this.WithListWrittenToField("required permissions", PermsStrs, ", ");
             }
             if (Roles != null)
             {
@@ -31,7 +31,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
                         MissingRolesCount++;
                     }
                 }
-                this.WriteField("required roles", $"{(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
+                this.WithField("required roles", $"{(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
             }
         }
     }

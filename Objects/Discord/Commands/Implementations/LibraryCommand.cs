@@ -31,7 +31,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             //    Result = (LibraryViewFilters)RawFilter;
             //}
             LibraryViewFilters Result = EnumToReadable.GetEnumFromArg<LibraryViewFilters>(BookFilterArg);
-            await new BooksPage(Context, Result).StartAsync();
+            await new BooksPaginated(Context, Result).StartAsync();
         }
 
         public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)

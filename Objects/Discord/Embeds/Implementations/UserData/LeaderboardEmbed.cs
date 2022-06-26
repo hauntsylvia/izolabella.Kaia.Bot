@@ -62,7 +62,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
                 }
             }
 
-            this.WriteListToOneField(LType is LeaderboardTypes.GuildsHighestNumberCounted or LeaderboardTypes.GuildsCurrentHighestNumber ?
+            this.WithListWrittenToField(LType is LeaderboardTypes.GuildsHighestNumberCounted or LeaderboardTypes.GuildsCurrentHighestNumber ?
                 Strings.EmbedStrings.FakePaths.Guilds : Strings.EmbedStrings.FakePaths.Users, Displays, "\n");
         }
     }

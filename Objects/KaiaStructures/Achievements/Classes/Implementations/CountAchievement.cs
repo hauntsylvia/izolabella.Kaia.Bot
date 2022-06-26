@@ -4,10 +4,17 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 {
     public class CountAchievement : KaiaAchievement
     {
-        public CountAchievement(ulong Id, ulong CountTo, string Description, bool Highest) : base(Id,
-                                                                                        $"{(Highest ? $"Highest Number Counted - " : $"Total Numbers Counted - ")}{CountTo.ToString(CultureInfo.InvariantCulture)}",
-                                                                                        Description,
-                                                                                        Constants.Enums.AchievementCategory.Counting, new KaiaAchievementReward[] { new(CountTo) })
+        public CountAchievement(ulong Id,
+                                ulong CountTo,
+                                string WhenAchieved,
+                                string WhenNotAchieved,
+                                bool Highest) : base(Id,
+                                                     $"{(Highest ? $"Highest Number Counted - " : $"Total Numbers Counted - ")}{CountTo.ToString(CultureInfo.InvariantCulture)}",
+                                                     WhenAchieved,
+                                                     WhenNotAchieved,
+                                                     Constants.Enums.AchievementCategory.Counting,
+                                                     Emotes.Achievements.Counting,
+                                                     new KaiaAchievementReward[] { new(CountTo) })
         {
             this.CountTo = CountTo;
             this.Highest = Highest;

@@ -9,5 +9,6 @@
         internal static string StoreOrBuy => "storeorbuy-52420220324";
         internal static string BookLibrary => "library-52420222309";
         internal static string BotDevelopmentInformation => "botinfo-52720220116";
+        internal static string ViewAchievements => "viewachievements-62320221727";
     }
 }

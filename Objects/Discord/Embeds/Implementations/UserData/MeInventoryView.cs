@@ -8,15 +8,13 @@
                                                           Context.UserContext.User.Username),
                                                           Context,
                                                           0,
-                                                          Emotes.Embeds.Back,
-                                                          Emotes.Embeds.Forward,
                                                           Strings.EmbedStrings.FakePaths.Global,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username)
         {
             MeView LandingPage = new(Context.UserContext.User.Username, User);
             IEnumerable<KaiaInventoryItem[]> InventoryChunked = User.Settings.Inventory.Items.Chunk(InventoryChunkSize);
-            LandingPage.WriteField($"{Emotes.Counting.Inventory} inventory", $"`{User.Settings.Inventory.Items.Count}` {(User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
+            LandingPage.WithField($"{Emotes.Counting.Inventory} inventory", $"`{User.Settings.Inventory.Items.Count}` {(User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
             this.EmbedsAndOptions.Add(LandingPage, null);
             List<KeyValuePair<KaiaInventoryItem, int>> ItemsAndTheirCounts = new();
             foreach (KaiaInventoryItem[] Chunk in InventoryChunked)
@@ -42,7 +40,7 @@
                 {
                     Display.Add($"[{ItemCount.Key.DisplayEmote}] {ItemCount.Key.DisplayName} [x{ItemCount.Value}]");
                 }
-                Embed.WriteListToOneField("inventory", Display, "\n");
+                Embed.WithListWrittenToField("inventory", Display, "\n");
                 this.EmbedsAndOptions.Add(Embed, null);
             }
         }

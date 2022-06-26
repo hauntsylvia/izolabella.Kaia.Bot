@@ -19,13 +19,17 @@ namespace Kaia.Bot.Objects.Constants
         {
             internal static KaiaItemEmote CountingRefresher => new("🔄");
             internal static KaiaItemEmote Rose => new("🌹");
-            internal static KaiaItemEmote NoEmote => new("❔");
+            internal static Emoji NoEmote => new("❔");
         }
         internal static class Embeds
         {
             internal static Emoji Back => Emoji.Parse("◀️");
             internal static Emoji Forward => Emoji.Parse("▶️");
             internal static Emoji Reverse => Emoji.Parse("⏪");
+        }
+        internal static class Achievements
+        {
+            internal static KaiaItemEmote Counting => new("🔢");
         }
     }
 }

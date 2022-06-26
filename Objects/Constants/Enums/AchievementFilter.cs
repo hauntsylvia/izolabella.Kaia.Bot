@@ -2,8 +2,8 @@
 {
     public enum AchievementFilter
     {
+        All,
         Incomplete,
-        Complete,
-        All
+        Complete
     }
 }

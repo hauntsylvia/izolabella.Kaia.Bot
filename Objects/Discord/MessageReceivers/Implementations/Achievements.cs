@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
+﻿namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
 {
     internal class Achievements : IMessageReceiver
     {
@@ -12,7 +6,7 @@ namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
 
         public Task CallbackAsync(KaiaUser Author, SocketMessage Message, MessageReceiverResult CausedCallback)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message)

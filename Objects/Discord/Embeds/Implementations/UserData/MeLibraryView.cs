@@ -10,8 +10,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
                                                           Context.UserContext.User.Username),
                                                           Context,
                                                           0,
-                                                          Emotes.Embeds.Back,
-                                                          Emotes.Embeds.Forward,
                                                           Strings.EmbedStrings.FakePaths.Global,
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username)
@@ -19,7 +17,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             MeView LandingPage = new(Context.UserContext.User.Username, User);
             List<KaiaBook> Books = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
             IEnumerable<KaiaBook[]> BookChunked = Books.Chunk(LibraryChunkSize);
-            LandingPage.WriteField($"{Emotes.Counting.Book} library", $"`{Books.Count}` {(Books.Count == 1 ? "book" : "books")}");
+            LandingPage.WithField($"{Emotes.Counting.Book} library", $"`{Books.Count}` {(Books.Count == 1 ? "book" : "books")}");
             this.EmbedsAndOptions.Add(LandingPage, null);
             foreach (KaiaBook[] Chunk in BookChunked)
             {
@@ -29,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
                 {
                     Display.Add($"`{Item.Title}` by `{Item.Author}` - currently on page `{Item.CurrentPageIndex}` out of `{Item.Pages}`\n{Strings.Economy.CurrencyEmote} `{Item.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                 }
-                Embed.WriteListToOneField("library", Display, "\n\n");
+                Embed.WithListWrittenToField("library", Display, "\n\n");
                 this.EmbedsAndOptions.Add(Embed, null);
             }
         }

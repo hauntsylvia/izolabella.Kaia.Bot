@@ -6,7 +6,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
     public class BookView : KaiaItemContentView
     {
-        public BookView(BooksPage? From, CommandContext Context, string BookId, IEmote ReadPageEmote, bool CanGoBack) : base(From, Context, CanGoBack)
+        public BookView(BooksPaginated? From, CommandContext Context, string BookId, IEmote ReadPageEmote, bool CanGoBack) : base(From, Context, CanGoBack)
         {
             this.ReadNextPageId = $"readnextpage-lbv-{IdGenerator.CreateNewId()}";
             this.BookId = BookId;
@@ -41,15 +41,15 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library, Book?.Title ?? Strings.EmbedStrings.FakePaths.NotFound);
             if (Book != null)
             {
-                Embed.WriteField($"author", $"`{Book.Author}`");
-                Embed.WriteField($"title", $"`{Book.Title}`");
-                Embed.WriteField($"current page", $"`{Book.CurrentPageIndex}` / `{Book.Pages}`");
-                Embed.WriteField($"current earnings", $"{Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                Embed.WithField($"author", $"`{Book.Author}`");
+                Embed.WithField($"title", $"`{Book.Title}`");
+                Embed.WithField($"current page", $"`{Book.CurrentPageIndex}` / `{Book.Pages}`");
+                Embed.WithField($"current earnings", $"{Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                 if (Book.CurrentPageIndex <= Book.Pages)
                 {
-                    Embed.WriteField($"cost to read next page", $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}`");
+                    Embed.WithField($"cost to read next page", $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}`");
                 }
-                Embed.WriteField($"your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`");
+                Embed.WithField($"your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`");
             }
             return Embed;
         }

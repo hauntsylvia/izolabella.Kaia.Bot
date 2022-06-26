@@ -17,19 +17,21 @@
             this.Timestamp = Strings.EmbedStrings.DefaultTimestamp;
         }
 
-        public void WriteField(string Name, string Value)
+        public KaiaPathEmbed WithField(string Name, string Value)
         {
             _ = this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
+            return this;
         }
 
-        public void WriteListToOneField(string Name, List<string> Values, string DelimBy = ", ")
+        public KaiaPathEmbed WithListWrittenToField(string Name, List<string> Values, string DelimBy = ", ")
         {
             string S = Strings.EmbedStrings.Empty;
             for (int Index = 0; Index < Values.Count; Index++)
             {
                 S += $"{(Index != 0 ? DelimBy : string.Empty)}{Values[Index]}";
             }
-            this.WriteField(Name, S);
+            this.WithField(Name, S);
+            return this;
         }
     }
 }

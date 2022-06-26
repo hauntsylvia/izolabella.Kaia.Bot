@@ -12,10 +12,15 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
         {
             this.HighestCountEver = HighestCountEver ?? 0;
             this.NumbersCounted = NumbersCounted ?? 0;
-            this.Inventory = Inv ?? new(0.0, DateTime.UtcNow);
+            this.Inventory = Inv ?? new(30, DateTime.UtcNow);
             this.AchievementProcessor = new(U);
             this.LibraryProcessor = new(U);
+
+            this.U = U;
         }
+
+        [JsonProperty("ParentId", Required = Required.DisallowNull)]
+        public ulong U { get; }
 
         [JsonProperty("HighestCountEver", Required = Required.Default)]
         public ulong? HighestCountEver { get; set; }

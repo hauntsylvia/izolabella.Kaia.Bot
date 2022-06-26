@@ -56,8 +56,6 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
                                                        new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop),
                                                        Context,
                                                        0,
-                                                       Emotes.Embeds.Back,
-                                                       Emotes.Embeds.Forward,
                                                        Strings.EmbedStrings.FakePaths.Global,
                                                        Strings.EmbedStrings.FakePaths.StoreOrShop);
                         await P.StartAsync();
@@ -75,7 +73,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             else
             {
                 List<KaiaInventoryItem> Items = BaseImplementationUtil.GetItems<KaiaInventoryItem>();
-                ItemsPage E = new(Context, Items, 6);
+                ItemsPaginated E = new(Context, Items, 6);
                 await E.StartAsync();
             }
         }

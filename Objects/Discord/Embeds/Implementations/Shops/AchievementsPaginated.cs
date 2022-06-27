@@ -48,18 +48,28 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async void AchievementSelected(KaiaPathEmbed Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
-            await Component.DeferAsync();
-            KaiaAchievement? Selected = (await this.U.Settings.AchievementProcessor.GetUserAchievementsAsync()).FirstOrDefault(Ach => (ItemsSelected.FirstOrDefault() ?? "") == Ach.Id.ToString(CultureInfo.InvariantCulture)); 
-            if(Selected != null)
+            if (this.Context.UserContext.IsValidToken)
             {
-                AchievementView V = new(this, Selected, this.Context);
-                await V.StartAsync(new(Component.User.Id));
+                await Component.DeferAsync();
+                List<KaiaAchievement> UserEarned = (await this.U.Settings.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
+                UserEarned.AddRange(KaiaAchievementRoom.Achievements.Where(KaiaAch => UserEarned.All(UserAch => UserAch.Id != KaiaAch.Id)));
+                KaiaAchievement? Selected = UserEarned.FirstOrDefault(Ach => (ItemsSelected.FirstOrDefault() ?? "") == Ach.Id.ToString(CultureInfo.InvariantCulture));
+                if (Selected != null)
+                {
+                    AchievementView V = new(this, Selected, this.Context);
+                    await V.StartAsync(new(Component.User.Id));
+                }
+                else
+                {
+                    await this.Context.UserContext.ModifyOriginalResponseAsync(A =>
+                    {
+                        A.Embed = EmbedDefaults.DefaultEmbedForNoItemsPresent.Build();
+                        A.Components = new ComponentBuilder().Build();
+                        A.Content = null;
+                    });
+                }
+                this.Dispose();
             }
-            else if(this.Context.UserContext.IsValidToken)
-            {
-                await this.Context.UserContext.ModifyOriginalResponseAsync(A => A.Embed = EmbedDefaults.DefaultEmbedForNoItemsPresent.Build());
-            }
-            this.Dispose();
         }
     }
 }

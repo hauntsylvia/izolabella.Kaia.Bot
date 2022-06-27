@@ -13,8 +13,8 @@ namespace Kaia.Bot.Objects.Clients
         {
             this.Parameters = Parameters;
             this.MessageReceivers = BaseImplementationUtil.GetItems<IMessageReceiver>();
-            DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(3));
-            DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(3));
+            DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(4));
+            DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
             this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Context) =>
             {
                 if(await Limiter.CheckIfPassesAsync(Context.UserContext.User.Id))

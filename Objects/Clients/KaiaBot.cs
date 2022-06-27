@@ -1,5 +1,8 @@
 ﻿
-using Kaia.Bot.Objects.Util;
+using izolabella.Util;
+using izolabella.Util.RateLimits.Limiters;
+using Kaia.Bot.Objects.Constants.Embeds;
+using Kaia.Bot.Objects.Constants.Responses;
 using System.Reflection;
 
 namespace Kaia.Bot.Objects.Clients
@@ -10,6 +13,24 @@ namespace Kaia.Bot.Objects.Clients
         {
             this.Parameters = Parameters;
             this.MessageReceivers = BaseImplementationUtil.GetItems<IMessageReceiver>();
+            DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(3));
+            DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(3));
+            this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Context) =>
+            {
+                if(await Limiter.CheckIfPassesAsync(Context.UserContext.User.Id))
+                {
+                    return true;
+                }
+                else
+                {
+                    if(await LimiterForLimiter.CheckIfPassesAsync(Context.UserContext.User.Id))
+                    {
+                        await Responses.PipeErrors(Context, EmbedDefaults.RateLimitEmbed);
+                    }
+                    return false;
+                }
+            };
+;
             this.Parameters.CommandHandler.AfterJoinedGuild += this.ClientJoinedGuildAsync;
             this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
             this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceivedAsync;

@@ -1,4 +1,4 @@
-﻿using Kaia.Bot.Objects.Util;
+﻿using izolabella.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {

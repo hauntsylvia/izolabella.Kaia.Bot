@@ -1,4 +1,8 @@
-﻿using Kaia.Bot.Objects.Util;
+﻿using izolabella.Storage.Objects.DataStores;
+using izolabella.Util;
+using izolabella.Util.RateLimits.Limiters;
+using Kaia.Bot.Objects.Constants.Embeds;
+using Kaia.Bot.Objects.Constants.Responses;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {
@@ -19,6 +23,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         public string BuyId => $"{this.Item.DisplayName}-{this.BId}";
         public string InteractId => $"{this.Item.DisplayName}-{this.IId}";
         private bool Refreshed { get; set; }
+        public DateRateLimiter RateLimiter { get; } = new(DataStores.RateLimitsStore, "Kaia Item", TimeSpan.FromSeconds(8), 3, TimeSpan.FromSeconds(4));
+        public DateRateLimiter SecondaryRateLimiter { get; } = new(DataStores.RateLimitsStore, "Secondary Kaia Item", TimeSpan.FromSeconds(2));
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
@@ -67,26 +73,33 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async Task ButtonExecutedAsync(SocketMessageComponent Arg)
         {
-            if ((Arg.Data.CustomId == this.BuyId || Arg.Data.CustomId == this.InteractId) && Arg.User.Id == this.Context.UserContext.User.Id)
+            if (Arg.IsValidToken && (Arg.Data.CustomId == this.BuyId || Arg.Data.CustomId == this.InteractId) && Arg.User.Id == this.Context.UserContext.User.Id)
             {
-                KaiaUser U = new(Arg.User.Id);
-                if (Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
+                if(await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id) || Arg.Data.CustomId == this.BuyId)
                 {
-                    await this.Item.UserBoughtAsync(U);
+                    KaiaUser U = new(Arg.User.Id);
+                    if (Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Item.Cost)
+                    {
+                        await this.Item.UserBoughtAsync(U);
+                    }
+                    else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
+                    {
+                        U.Settings.Inventory.Items.RemoveAt(U.Settings.Inventory.Items.FindIndex(C => C.DisplayName == this.Item.DisplayName));
+                        await this.Item.UserInteractAsync(this.Context, U);
+                    }
+                    await U.SaveAsync();
+                    KaiaPathEmbed E = await this.GetEmbedAsync(U);
+                    ComponentBuilder Com = await this.GetComponentsAsync(U);
+                    await Arg.UpdateAsync(C =>
+                    {
+                        C.Embed = E.Build();
+                        C.Components = Com.Build();
+                    });
                 }
-                else if (Arg.Data.CustomId == this.InteractId && U.Settings.Inventory.Items.Any(I => I.DisplayName == this.Item.DisplayName))
+                else if(await this.SecondaryRateLimiter.CheckIfPassesAsync(Arg.User.Id) && this.Context.UserContext.IsValidToken)
                 {
-                    U.Settings.Inventory.Items.RemoveAt(U.Settings.Inventory.Items.FindIndex(C => C.DisplayName == this.Item.DisplayName));
-                    await this.Item.UserInteractAsync(this.Context, U);
+                    await Responses.PipeErrors(this.Context, EmbedDefaults.RateLimitEmbed);
                 }
-                await U.SaveAsync();
-                KaiaPathEmbed E = await this.GetEmbedAsync(U);
-                ComponentBuilder Com = await this.GetComponentsAsync(U);
-                await Arg.UpdateAsync(C =>
-                {
-                    C.Embed = E.Build();
-                    C.Components = Com.Build();
-                });
             }
         }
 

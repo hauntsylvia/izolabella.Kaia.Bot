@@ -12,6 +12,7 @@
             internal static string GuildStore => "CCBGuilds";
             internal static string BookStore => "Kaia Library";
             internal static string AchievementStore => "Achievements";
+            internal static string RateLimitStore => "Rate Limits";
         }
         public static class EmbedStrings
         {

@@ -4,8 +4,8 @@
     {
         public Rose() : base(Strings.ItemStrings.Rose.Name,
                              "a rose!",
-                             29.98,
-                             true,
+                             34.98,
+                             true, 
                              Emotes.Items.Rose)
         {
 

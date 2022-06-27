@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.Util
             List<IzolabellaCommandParameterChoices> Choices = new();
             foreach (Enum Filter in Enum.GetValues(EnumType))
             {
-                Choices.Add(new(EnumToReadable.GetNameOfEnumType(Filter), (int)(object)Filter));
+                Choices.Add(new(GetNameOfEnumType(Filter), (int)(object)Filter));
             }
             return new(ParamName, ParamDescription, ApplicationCommandOptionType.Integer, false)
             {

@@ -1,4 +1,4 @@
-﻿using Kaia.Bot.Objects.Util;
+﻿using izolabella.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
@@ -18,8 +18,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.IfNoListElements = IfNoListElements;
             this.Context = Context;
             this.ZeroBasedIndex = StartingIndex;
-            this.PageBack = PageBack;
-            this.PageForward = PageForward;
             this.Parent = Parent;
             this.Sub1 = Sub1;
             this.Sub2 = Sub2;
@@ -97,24 +95,22 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             if (this.Context.UserContext.IsValidToken)
             {
+                MessageComponent Comps = this.GetComponentBuilder().Build();
+                Embed Emb = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbed Embed ? Embed.Build() :
+                            this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
                 if (!this.Context.UserContext.HasResponded)
                 {
-                    await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
+                    await this.Context.UserContext.RespondAsync(
+                        components: Comps,
+                        embed: Emb);
                 }
-                try
+                else
                 {
                     _ = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
                     {
-                        SelfMessageAction.Content = Strings.EmbedStrings.Empty;
-                        SelfMessageAction.Components = this.GetComponentBuilder().Build();
-                        SelfMessageAction.Embed =
-                            this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbed Embed ? Embed.Build() :
-                                this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
+                        SelfMessageAction.Components = Comps;
+                        SelfMessageAction.Embed = Emb;
                     });
-                }
-                catch(Exception Ex)
-                {
-                    Console.WriteLine(Ex);
                 }
                 this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
                 this.Context.Reference.Client.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
@@ -123,7 +119,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         private Task ClientSelectMenuExecutedAsync(SocketMessageComponent Component)
         {
-            if (Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
+            if (Component.IsValidToken && Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaPathEmbed EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
                 this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component, Component.Data.Values);

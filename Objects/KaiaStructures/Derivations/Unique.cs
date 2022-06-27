@@ -1,6 +1,6 @@
 ﻿using izolabella.Storage.Objects.DataStores;
 using izolabella.Storage.Objects.Structures;
-using Kaia.Bot.Objects.Util;
+using izolabella.Util;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Derivations
 {

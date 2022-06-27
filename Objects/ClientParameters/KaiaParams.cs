@@ -16,5 +16,9 @@
         {
             await this.CommandHandler.StartAsync(this.Token, false);
         }
+        public async Task StopAsync()
+        {
+            await this.CommandHandler.StopAsync();
+        }
     }
 }

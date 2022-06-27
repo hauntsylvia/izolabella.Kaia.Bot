@@ -1,5 +1,5 @@
 ﻿using Kaia.Bot.Objects.Constants.Embeds;
-using Kaia.Bot.Objects.Util;
+using izolabella.Util;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 {

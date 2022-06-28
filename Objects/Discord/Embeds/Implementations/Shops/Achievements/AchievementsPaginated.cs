@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
     public class AchievementsPaginated : KaiaPathEmbedPaginated
     {
@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                                                                     Context.UserContext.User.Username)
         {
             this.U = new(Context.UserContext.User.Id);
-            List<KaiaAchievement>? R = this.U.Settings.AchievementProcessor.GetUserAchievementsAsync().Result.Cast<KaiaAchievement>().ToList();
+            List<KaiaAchievement>? R = this.U.AchievementProcessor.GetUserAchievementsAsync().Result.Cast<KaiaAchievement>().ToList();
             R.AddRange(KaiaAchievementRoom.Achievements.Where(KaiaAch => !R.Any(RR => RR.Id == KaiaAch.Id)));
             IEnumerable<KaiaAchievement[]> Relevant = R.Where(Ach =>
             {
@@ -36,7 +36,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 foreach (KaiaAchievement Ach in AchievementChunk)
                 {
                     Embed.WithField($"{Ach.DisplayEmote} {Ach.Title} : `earned: {(Ach.UserAlreadyOwns(this.U).Result ? Emotes.Counting.Check : Emotes.Counting.Invalid)}`", $"{Ach.GetDescriptionAsync(this.U).Result}");
-                    B.Add(new ($"{Ach.Title}", Ach.Id.ToString(CultureInfo.InvariantCulture), Ach.GetDescriptionAsync(this.U).Result, Ach.DisplayEmote));
+                    B.Add(new($"{Ach.Title}", Ach.Id.ToString(CultureInfo.InvariantCulture), Ach.GetDescriptionAsync(this.U).Result, Ach.DisplayEmote));
                 }
                 this.EmbedsAndOptions.Add(Embed, B);
             }
@@ -51,7 +51,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             if (this.Context.UserContext.IsValidToken)
             {
                 await Component.DeferAsync();
-                List<KaiaAchievement> UserEarned = (await this.U.Settings.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
+                List<KaiaAchievement> UserEarned = (await this.U.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
                 UserEarned.AddRange(KaiaAchievementRoom.Achievements.Where(KaiaAch => UserEarned.All(UserAch => UserAch.Id != KaiaAch.Id)));
                 KaiaAchievement? Selected = UserEarned.FirstOrDefault(Ach => (ItemsSelected.FirstOrDefault() ?? "") == Ach.Id.ToString(CultureInfo.InvariantCulture));
                 if (Selected != null)

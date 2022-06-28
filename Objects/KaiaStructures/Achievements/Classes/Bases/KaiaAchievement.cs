@@ -39,7 +39,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 
         public async Task<bool> UserAlreadyOwns(KaiaUser U)
         {
-            return (await U.Settings.AchievementProcessor.GetUserAchievementsAsync()).Any(X => X.Id == this.Id);
+            return (await U.AchievementProcessor.GetUserAchievementsAsync()).Any(X => X.Id == this.Id);
         }
 
         public async Task<string> GetDescriptionAsync(KaiaUser U)

@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
+﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
+
+namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
 {
     internal class Counter : IMessageReceiver
     {
@@ -39,7 +41,7 @@
                     }
                     else if (NotSameUserAsLastTime)
                     {
-                        KaiaInventoryItem? Refresh = Author.Settings.Inventory.Items.FirstOrDefault(InvI => InvI.DisplayName == Strings.ItemStrings.CountingRefresher.Name);
+                        KaiaInventoryItem? Refresh = await Author.Settings.Inventory.GetItemOfDisplayName(new CountingRefresher());
                         if (Refresh != null)
                         {
                             Result.ItemToUse = Refresh;

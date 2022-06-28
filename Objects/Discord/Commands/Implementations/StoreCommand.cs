@@ -1,7 +1,9 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 using izolabella.Util;
+using System.Collections.Generic;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {
@@ -13,7 +15,11 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public bool GuildsOnly => false;
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new();
+        public List<IzolabellaCommandParameter> Parameters { get; } = new()
+        {            
+            new("User Listings", "Whether to include user listings or not.", ApplicationCommandOptionType.Boolean, false),
+            new("Lister", "Filters all listings by this user.", ApplicationCommandOptionType.User, false)
+        };
 
         public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
@@ -21,8 +27,14 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 
         public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            List<KaiaInventoryItem> Items = BaseImplementationUtil.GetItems<KaiaInventoryItem>();
-            ItemsPaginated E = new(Context, Items, 6);
+            IzolabellaCommandArgument? IncludeUserListings = Arguments.FirstOrDefault(A => A.Name == "user-listings");
+            IzolabellaCommandArgument? Lister = Arguments.FirstOrDefault(A => A.Name == "lister");
+            IUser? User = null;
+            if(Lister != null && Lister.Value is IUser U)
+            {
+                User = U;
+            }
+            ItemsPaginated E = new(Context, User, IncludeUserListings?.Value is not bool B || B);
             await E.StartAsync();
         }
 

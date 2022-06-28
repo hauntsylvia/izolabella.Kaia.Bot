@@ -58,7 +58,7 @@ namespace Kaia.Bot.Objects.Clients
                             if (Result.ItemToUse != null)
                             {
                                 await Receiver.CallbackAsync(User, Arg, Result);
-                                await User.Settings.Inventory.RemoveItemOfAsync(Result.ItemToUse);
+                                await User.Settings.Inventory.RemoveItemOfIdAsync(Result.ItemToUse);
                             }
                             if (Result.SaveUser)
                             {
@@ -87,7 +87,7 @@ namespace Kaia.Bot.Objects.Clients
                 await this.RefreshCommandsAsync(new[] { SUser.Guild });
             }
             KaiaUser U = new(Context.UserContext.User.Id);
-            await U.Settings.AchievementProcessor.TryAwardAchievements(U, Context, KaiaAchievementRoom.Achievements.ToArray());
+            await U.AchievementProcessor.TryAwardAchievements(U, Context, KaiaAchievementRoom.Achievements.ToArray());
             await U.SaveAsync();
             if (Context.UserContext.User is SocketGuildUser SU)
             {

@@ -13,8 +13,6 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
             this.HighestCountEver = HighestCountEver ?? 0;
             this.NumbersCounted = NumbersCounted ?? 0;
             this.Inventory = Inv ?? new(30, DateTime.UtcNow);
-            this.AchievementProcessor = new(U);
-            this.LibraryProcessor = new(U);
 
             this.U = U;
         }
@@ -30,9 +28,5 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
 
         [JsonProperty("Inventory", Required = Required.Default)]
         public UserInventory Inventory { get; set; }
-
-        public UserAchievementRoom AchievementProcessor { get; set; }
-
-        public UserLibrary LibraryProcessor { get; set; }
     }
 }

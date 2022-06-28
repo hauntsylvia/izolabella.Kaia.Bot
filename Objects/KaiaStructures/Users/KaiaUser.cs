@@ -1,4 +1,6 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Properties;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Derivations;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
@@ -14,16 +16,17 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
             {
                 this.Id = Id;
                 this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
-                this.Settings.LibraryProcessor = new(Id);
-                this.Settings.AchievementProcessor = new(Id);
+                this.LibraryProcessor = new(Id);
+                this.AchievementProcessor = new(Id);
 
-                List<KaiaBook> UserOwnedBooks = this.Settings.LibraryProcessor.GetUserBooksAsync().Result;
+                List<KaiaBook> UserOwnedBooks = this.LibraryProcessor.GetUserBooksAsync().Result;
                 double TotalToPay = 0.0;
                 foreach (KaiaBook Book in UserOwnedBooks)
                 {
                     double CyclesMissed = (DateTime.UtcNow - this.Settings.Inventory.LastBookUpdate) / TimeSpans.BookTickRate;
                     TotalToPay += Book.CurrentEarning * CyclesMissed;
                 }
+
                 this.Settings.Inventory.LastBookUpdate = DateTime.UtcNow;
                 this.Settings.Inventory.Petals += TotalToPay;
             }
@@ -38,5 +41,9 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
 
         [JsonProperty("Settings", Required = Required.Always)]
         public KaiaUserSettings Settings { get; set; }
+
+        public UserAchievementRoom AchievementProcessor { get; set; }
+
+        public UserLibrary LibraryProcessor { get; set; }
     }
 }

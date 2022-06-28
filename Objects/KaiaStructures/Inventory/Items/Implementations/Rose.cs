@@ -2,11 +2,13 @@
 {
     public class Rose : KaiaInventoryItem
     {
-        public Rose() : base(Strings.ItemStrings.Rose.Name,
-                             "a rose!",
-                             34.98,
-                             true, 
-                             Emotes.Items.Rose)
+        public Rose() : base(DisplayName: Strings.ItemStrings.Rose.Name,
+                             Description: "a rose!",
+                             MarketCost: 34.98,
+                             CanInteractWithDirectly: true, 
+                             KaiaDisplaysThisOnTheStore: true,
+                             UsersCanSellThis: true,
+                             DisplayEmoteName: Emotes.Items.Rose)
         {
 
         }

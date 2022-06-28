@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
     public class AchievementView : KaiaItemContentView
     {

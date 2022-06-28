@@ -4,8 +4,10 @@
     {
         public CountingRefresher() : base(DisplayName: Strings.ItemStrings.CountingRefresher.Name,
                                           Description: "allows u to keep counting even if u fail.",
-                                          Cost: 124.98,
+                                          MarketCost: 124.98,
                                           CanInteractWithDirectly: false,
+                                          KaiaDisplaysThisOnTheStore: true,
+                                          UsersCanSellThis: false,
                                           DisplayEmoteName: Emotes.Items.CountingRefresher)
         {
 

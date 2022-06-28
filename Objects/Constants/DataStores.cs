@@ -24,7 +24,7 @@ namespace Kaia.Bot.Objects.Constants
             DS.MakeSubStore(UserId.ToString(CultureInfo.InvariantCulture));
             return DS;
         }
-
         internal static DataStore RateLimitsStore => new(Strings.App.Name, Strings.DataStoreNames.RateLimitStore, SerializerSettings);
+        internal static DataStore SaleListingsStore => new(Strings.App.Name, Strings.DataStoreNames.SaleListingsStore, SerializerSettings);
     }
 }

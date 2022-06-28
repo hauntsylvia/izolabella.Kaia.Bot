@@ -6,7 +6,16 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
     {
         public KaiaItemContentView(KaiaPathEmbedPaginated? PreviousPage, CommandContext Context, bool CanGoBack = false)
         {
-            this.PreviousPage = PreviousPage;
+            this.PreviousPageIf = PreviousPage;
+            this.BackId = $"goback-{IdGenerator.CreateNewId()}";
+            this.CanGoBack = CanGoBack;
+            this.Context = Context;
+            this.Context.Reference.Client.ButtonExecuted += this.CheckForBackButtonAsync;
+        }
+
+        public KaiaItemContentView(KaiaItemContentView? PreviousPage, CommandContext Context, bool CanGoBack = false)
+        {
+            this.PreviousPageElse = PreviousPage;
             this.BackId = $"goback-{IdGenerator.CreateNewId()}";
             this.CanGoBack = CanGoBack;
             this.Context = Context;
@@ -21,7 +30,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public CommandContext Context { get; }
 
-        public KaiaPathEmbedPaginated? PreviousPage { get; }
+        public KaiaPathEmbedPaginated? PreviousPageIf { get; }
+
+        public KaiaItemContentView? PreviousPageElse { get; }
 
         //public delegate void GoBackHandler(SocketMessageComponent Component);
 
@@ -29,17 +40,30 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         private async Task CheckForBackButtonAsync(SocketMessageComponent Arg)
         {
-            if (Arg.Data.CustomId == this.BackId && this.PreviousPage != null && this.CanGoBack && this.Context.UserContext.User.Id == Arg.User.Id)
+            if (Arg.IsValidToken && Arg.Data.CustomId == this.BackId && (this.PreviousPageIf != null || this.PreviousPageElse != null) && this.CanGoBack && this.Context.UserContext.User.Id == Arg.User.Id)
             {
                 await Arg.DeferAsync();
-                await this.PreviousPage.StartAsync();
-                this.Dispose();
+                await this.ForceBack(this.Context);
             }
+        }
+
+        public async Task ForceBack(CommandContext Context)
+        {
+            if (this.PreviousPageIf != null)
+            {
+                await this.PreviousPageIf.StartAsync();
+            }
+            else if (this.PreviousPageElse != null)
+            {
+                await this.PreviousPageElse.StartAsync(new(Context.UserContext.User.Id));
+            }
+            this.Dispose();
         }
 
         public Task<ComponentBuilder> GetDefaultComponents()
         {
-            return Task.FromResult(new ComponentBuilder().WithButton("Back", this.BackId, ButtonStyle.Secondary, this.GoBackEmote, disabled: !this.CanGoBack || (this.CanGoBack && this.PreviousPage == null)));
+            return Task.FromResult(new ComponentBuilder().WithButton("Back", this.BackId, ButtonStyle.Secondary, this.GoBackEmote, 
+                disabled: !this.CanGoBack || (this.CanGoBack && this.PreviousPageElse == null && this.PreviousPageIf == null)));
         }
 
         public abstract Task StartAsync(KaiaUser U);

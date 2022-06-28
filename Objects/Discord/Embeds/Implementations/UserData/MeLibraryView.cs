@@ -15,7 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
                                                           Context.UserContext.User.Username)
         {
             MeView LandingPage = new(Context.UserContext.User.Username, User);
-            List<KaiaBook> Books = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
+            List<KaiaBook> Books = User.LibraryProcessor.GetUserBooksAsync().Result;
             IEnumerable<KaiaBook[]> BookChunked = Books.Chunk(LibraryChunkSize);
             LandingPage.WithField($"{Emotes.Counting.Book} library", $"`{Books.Count}` {(Books.Count == 1 ? "book" : "books")}");
             this.EmbedsAndOptions.Add(LandingPage, null);

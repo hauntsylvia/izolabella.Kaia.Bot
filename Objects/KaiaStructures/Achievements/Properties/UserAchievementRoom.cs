@@ -42,7 +42,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
                         User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
                         foreach (KaiaAchievementReward R in A.Rewards)
                         {
-                            User.Settings.Inventory.Items.AddRange(R.Items);
+                            await User.Settings.Inventory.AddItemsToInventoryAndSave(User, R.Items);
                         }
                         Actual.Add(A);
                     }

@@ -21,7 +21,7 @@
 
         public async Task<MessageReceiverResult> RunAsync(KaiaUser Author, KaiaGuild? Guild, SocketMessage Message)
         {
-            await Author.Settings.AchievementProcessor.TryAwardAchievements(Author, null, KaiaAchievementRoom.Achievements.ToArray());
+            await Author.AchievementProcessor.TryAwardAchievements(Author, null, KaiaAchievementRoom.Achievements.ToArray());
             return new MessageReceiverResult(true, true, null);
         }
     }

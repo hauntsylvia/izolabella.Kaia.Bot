@@ -2,7 +2,7 @@
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
 using izolabella.Util;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
     public class BookView : KaiaItemContentView
     {
@@ -25,7 +25,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
 
         private async Task<KaiaBook?> GetUserBookAsync(KaiaUser U)
         {
-            return (await U.Settings.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == this.BookId) ?? KaiaLibrary.GetActiveBookById(this.BookId) ?? null;
+            return (await U.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == this.BookId) ?? KaiaLibrary.GetActiveBookById(this.BookId) ?? null;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
@@ -45,7 +45,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                 Embed.WithField($"title", $"`{Book.Title}`");
                 Embed.WithField($"current page", $"`{Book.CurrentPageIndex}` / `{Book.Pages}`");
                 Embed.WithField($"current earnings", $"{Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
-                if (Book.CurrentPageIndex <= Book.Pages)
+                if (Book.CurrentPageIndex < Book.Pages)
                 {
                     Embed.WithField($"cost to read next page", $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}`");
                 }
@@ -71,20 +71,20 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.Context.Reference.Client.ButtonExecuted += this.ButtonExecutedAsync;
         }
 
-        private async Task ButtonExecutedAsync(global::Discord.WebSocket.SocketMessageComponent Component)
+        private async Task ButtonExecutedAsync(SocketMessageComponent Component)
         {
-            if ((Component.Data.CustomId == this.ReadNextPageId) && Component.User.Id == this.Context.UserContext.User.Id)
+            if (Component.Data.CustomId == this.ReadNextPageId && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaUser U = new(Component.User.Id);
                 KaiaBook? Book = await this.GetUserBookAsync(U);
                 if (Book != null && U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
                 {
-                    if (!await U.Settings.LibraryProcessor.UserHasBookOfIdAsync(this.BookId) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
+                    if (!await U.LibraryProcessor.UserHasBookOfIdAsync(this.BookId) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
                     {
-                        await U.Settings.LibraryProcessor.AddBookAsync(KBook);
+                        await U.LibraryProcessor.AddBookAsync(KBook);
                     }
                     U.Settings.Inventory.Petals -= Book.NextPageTurnCost;
-                    await U.Settings.LibraryProcessor.IncrementBookAsync(Book.BookId);
+                    await U.LibraryProcessor.IncrementBookAsync(Book.BookId);
                     await U.SaveAsync();
                 }
                 KaiaPathEmbed E = await this.GetEmbedAsync(U);

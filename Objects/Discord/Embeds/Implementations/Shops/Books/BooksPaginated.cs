@@ -3,7 +3,7 @@ using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
     public class BooksPaginated : KaiaPathEmbedPaginated
     {
@@ -16,7 +16,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
         {
             KaiaUser User = new(Context.UserContext.User.Id);
             IEnumerable<KaiaBook> KaiasBooks = KaiaLibrary.Books;
-            List<KaiaBook> UserBooks = User.Settings.LibraryProcessor.GetUserBooksAsync().Result;
+            List<KaiaBook> UserBooks = User.LibraryProcessor.GetUserBooksAsync().Result;
             List<KaiaBook> Inventory = KaiasBooks.Where(B => UserBooks.All(K => K.BookId != B.BookId)).ToList();
             Inventory.AddRange(UserBooks);
             bool SetBal = false;
@@ -41,7 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
                         List<string> Display = new()
                         {
                             !Item.IsFinished ?
-                                $"{Strings.Economy.CurrencyEmote} `{Item.NextPageTurnCost}` to read the next page" :
+                                $"{Strings.Economy.CurrencyEmote} `{Item.NextPageTurnCost}` {(Item.CurrentPageIndex == 0 ? $"to begin reading" : $"to read the next page")}" :
                                 $"u have finished this book"
                         };
                         if (!Item.IsFinished)
@@ -67,7 +67,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops
             this.ItemSelected += this.ItemSelectedAsync;
         }
 
-        private async void ItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, global::Discord.WebSocket.SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        private async void ItemSelectedAsync(KaiaPathEmbed Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
             BookView V = new(this, this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book, true);

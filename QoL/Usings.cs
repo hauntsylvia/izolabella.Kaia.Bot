@@ -16,5 +16,6 @@ global using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievemen
 global using Kaia.Bot.Objects.KaiaStructures.Guilds;
 global using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 global using Kaia.Bot.Objects.KaiaStructures.Users;
+global using Kaia.Bot.Objects.Util;
 global using Newtonsoft.Json;
 global using System.Globalization;

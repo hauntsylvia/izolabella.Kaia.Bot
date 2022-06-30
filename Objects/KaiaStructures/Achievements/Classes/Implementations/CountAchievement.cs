@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
                                                      WhenNotAchieved,
                                                      Constants.Enums.AchievementCategory.Counting,
                                                      Emotes.Achievements.Counting,
-                                                     new KaiaAchievementReward[] { new(CountTo) })
+                                                     new KaiaUserReward[] { new(CountTo) })
         {
             this.CountTo = CountTo;
             this.Highest = Highest;

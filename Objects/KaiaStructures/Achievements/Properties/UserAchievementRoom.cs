@@ -40,7 +40,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
                     {
                         await this.UserAchievementsStore.SaveAsync(A);
                         User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
-                        foreach (KaiaAchievementReward R in A.Rewards)
+                        foreach (KaiaUserReward R in A.Rewards)
                         {
                             await User.Settings.Inventory.AddItemsToInventoryAndSave(User, R.Items);
                         }

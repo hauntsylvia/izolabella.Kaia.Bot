@@ -17,7 +17,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
         /// <param name="DisplayEmote"></param>
         /// <param name="Rewards"></param>
         [JsonConstructor]
-        public UserEarnedAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaItemEmote DisplayEmote, params KaiaAchievementReward[] Rewards) : base(Id, Title, DescriptionWhenAchieved, DescriptionWhenNotAchieved, Category, DisplayEmote, Rewards)
+        public UserEarnedAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaItemEmote DisplayEmote, params KaiaUserReward[] Rewards) : base(Id, Title, DescriptionWhenAchieved, DescriptionWhenNotAchieved, Category, DisplayEmote, Rewards)
         {
         }
 

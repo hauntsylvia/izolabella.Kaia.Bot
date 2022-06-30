@@ -8,7 +8,6 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
     public class KaiaUser : Unique
     {
-
         [JsonConstructor]
         public KaiaUser(ulong Id, KaiaUserSettings? Settings = null) : base(DataStores.UserStore, Id)
         {

@@ -32,7 +32,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
                 $"{Strings.Economy.CurrencyEmote} `{TotalCurrencyEarned}`",
                 Strings.EmbedStrings.Empty,
             };
-            foreach (KaiaAchievementReward Reward in this.KaiaAchievement.Rewards)
+            foreach (KaiaUserReward Reward in this.KaiaAchievement.Rewards)
             {
                 foreach (KaiaInventoryItem Item in Reward.Items)
                 {

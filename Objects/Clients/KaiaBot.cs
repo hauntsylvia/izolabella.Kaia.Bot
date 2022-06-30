@@ -1,5 +1,4 @@
-﻿
-using izolabella.Util;
+﻿using izolabella.Util;
 using izolabella.Util.RateLimits.Limiters;
 using Kaia.Bot.Objects.Constants.Responses;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
@@ -30,7 +29,6 @@ namespace Kaia.Bot.Objects.Clients
                     return false;
                 }
             };
-;
             this.Parameters.CommandHandler.AfterJoinedGuild += this.ClientJoinedGuildAsync;
             this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
             this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceivedAsync;

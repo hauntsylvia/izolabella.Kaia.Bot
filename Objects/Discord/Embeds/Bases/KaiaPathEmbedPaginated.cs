@@ -113,7 +113,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                 }
                 else
                 {
-                    _ = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
+                    await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
                     {
                         SelfMessageAction.Components = Comps;
                         SelfMessageAction.Embed = BuiltEmbed;
@@ -124,7 +124,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             }
         }
 
-        private async Task ClientSelectMenuExecutedAsync(SocketMessageComponent Component)
+        private Task ClientSelectMenuExecutedAsync(SocketMessageComponent Component)
         {
             if (Component.IsValidToken && Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
             {
@@ -132,6 +132,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                 //await EmbedOfThis.RefreshAsync();
                 this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component, Component.Data.Values);
             }
+            return Task.CompletedTask;
         }
 
         private async Task ClientButtonPressedAsync(SocketMessageComponent Component)

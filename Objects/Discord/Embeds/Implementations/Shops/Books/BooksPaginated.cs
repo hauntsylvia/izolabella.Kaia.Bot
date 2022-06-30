@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
         {
             KaiaUser User = new(Context.UserContext.User.Id);
 
-            IEnumerable<KaiaBook> KaiasBooks = KaiaLibrary.Books;
+            IEnumerable<KaiaBook> KaiasBooks = KaiaLibrary.Books.Where(KB => KB.AvailableUntil >= DateTime.UtcNow);
             IEnumerable<KaiaBook> UserBooks = User.LibraryProcessor.GetUserBooksAsync().Result;
             List<KaiaBook> Inventory = KaiasBooks.Where(B => UserBooks.All(K => K.BookId != B.BookId)).ToList();
 

@@ -10,12 +10,16 @@
         }
 
         public IzolabellaDiscordCommandClient CommandHandler { get; }
+
         public bool AllowBotsOnMessageReceivers { get; }
+
         private string Token { get; set; }
+
         public async Task StartAsync()
         {
             await this.CommandHandler.StartAsync(this.Token, false);
         }
+
         public async Task StopAsync()
         {
             await this.CommandHandler.StopAsync();

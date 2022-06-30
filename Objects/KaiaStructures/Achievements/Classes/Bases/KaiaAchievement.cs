@@ -6,7 +6,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 {
     public abstract class KaiaAchievement : IDataStoreEntity
     {
-        public KaiaAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaItemEmote DisplayEmote, params KaiaAchievementReward[] Rewards)
+        public KaiaAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaItemEmote DisplayEmote, params KaiaUserReward[] Rewards)
         {
             this.Id = Id;
             this.Title = Title;
@@ -29,7 +29,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 
         public AchievementCategory Category { get; }
 
-        public KaiaAchievementReward[] Rewards { get; }
+        public KaiaUserReward[] Rewards { get; }
 
         public DateTime InitializedAt { get; } = DateTime.UtcNow;
 

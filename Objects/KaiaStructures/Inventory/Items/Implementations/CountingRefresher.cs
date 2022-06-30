@@ -10,7 +10,6 @@
                                           UsersCanSellThis: false,
                                           DisplayEmoteName: Emotes.Items.CountingRefresher)
         {
-
         }
 
         public override Task UserInteractAsync(CommandContext Context, KaiaUser User)

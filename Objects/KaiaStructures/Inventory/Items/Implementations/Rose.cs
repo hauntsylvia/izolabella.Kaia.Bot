@@ -10,7 +10,6 @@
                              UsersCanSellThis: true,
                              DisplayEmoteName: Emotes.Items.Rose)
         {
-
         }
 
         public override async Task UserInteractAsync(CommandContext Context, KaiaUser User)

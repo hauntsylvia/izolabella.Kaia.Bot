@@ -4,11 +4,11 @@
     {
         public RateLimited() : base(Strings.EmbedStrings.FakePaths.Global)
         {
+            this.WithField("Slow down", "Wait.");
         }
 
         public override Task ClientRefreshAsync()
         {
-            this.WithField("Slow down", "Wait.");
             return Task.CompletedTask;
         }
     }

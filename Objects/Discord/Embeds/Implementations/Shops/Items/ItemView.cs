@@ -16,13 +16,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.InteractWithButton = new(Context, "Interact", InteractWithItemEmote);
             this.PutUpForSaleButton = new(Context, "Sell", PutUpForSaleEmote);
             this.Refreshed = false;
-
-            this.BuyButton.OnButtonPush += this.BuyAsync;
-            this.InteractWithButton.OnButtonPush += this.InteractAsync;
-            this.PutUpForSaleButton.OnButtonPush += this.SellAsync;
-
-            this.BuyButton.OnButtonPush += this.UpdateEmbedAsync;
-            this.InteractWithButton.OnButtonPush += this.UpdateEmbedAsync;
         }
 
         #region properties
@@ -39,7 +32,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private bool Refreshed { get; set; }
 
-        public DateRateLimiter RateLimiter { get; } = new(DataStores.RateLimitsStore, "Kaia Item", TimeSpan.FromSeconds(8), 3, TimeSpan.FromSeconds(4));
+        public DateRateLimiter RateLimiter { get; } = new(DataStores.RateLimitsStore, "Kaia Item", TimeSpan.FromSeconds(8), 6, TimeSpan.FromSeconds(4));
         
         public DateRateLimiter SecondaryRateLimiter { get; } = new(DataStores.RateLimitsStore, "Secondary Kaia Item", TimeSpan.FromSeconds(2));
         
@@ -48,18 +41,18 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         #endregion
 
         #region button events
+
         private async Task SellAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            this.Dispose();
             if (this.ListingInteraction == null)
             {
-                await new ItemCreateSaleListing(this, this.Context, this.Listing).StartAsync(U);
+                this.ListingInteraction = new ItemCreateSaleListing(this, this.Context, this.Listing);
             }
             else
             {
                 this.ListingInteraction.Dispose();
-                await this.ListingInteraction.StartAsync(U);
             }
+            await this.ListingInteraction.StartAsync(U);
         }
 
         private async Task BuyAsync(SocketMessageComponent Arg, KaiaUser U)
@@ -79,44 +72,50 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private async Task UpdateEmbedAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id) && Arg.Data.CustomId != this.PutUpForSaleButton.Id)
+            if (await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id))
             {
-                await U.SaveAsync();
-                KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
-                ComponentBuilder Com = await this.GetComponentsAsync(U);
-                if (this.Listing.Items.Count <= 0)
+                if(Arg.Data.CustomId != this.PutUpForSaleButton.Id)
                 {
-                    await Arg.DeferAsync();
-                    this.Dispose();
-                    if (this.From != null)
+                    await U.SaveAsync();
+                    KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
+                    ComponentBuilder Com = await this.GetComponentsAsync(U);
+                    if (this.Listing.Items.Count <= 0)
                     {
-                        this.From.Dispose();
-                        await new ItemsPaginated(this.Context, this.From.FilterBy, this.From.IncludeUserListings, this.From.ChunkSize).StartAsync();
+                        await Arg.DeferAsync();
+                        this.Dispose();
+                        if (this.From != null)
+                        {
+                            this.From.Dispose();
+                            await new ItemsPaginated(this.Context, this.From.FilterBy, this.From.IncludeUserListings, this.From.ChunkSize).StartAsync();
+                        }
+                        else
+                        {
+                            await new ItemsPaginated(this.Context).StartAsync();
+                        }
                     }
                     else
                     {
-                        await new ItemsPaginated(this.Context).StartAsync();
+                        await Arg.UpdateAsync(A =>
+                        {
+                            A.Embed = E.Build();
+                            A.Components = Com.Build();
+                        });
                     }
                 }
                 else
                 {
-                    await Arg.UpdateAsync(A =>
-                    {
-                        A.Embed = E.Build();
-                        A.Components = Com.Build();
-                    });
+                    await Arg.DeferAsync(true);
                 }
             }
             else if (await this.SecondaryRateLimiter.CheckIfPassesAsync(Arg.User.Id) && this.Context.UserContext.IsValidToken)
             {
                 await Responses.PipeErrors(this.Context, new RateLimited());
             }
-            else
-            {
-                await Arg.DeferAsync(true);
-            }
         }
+
         #endregion
+
+        #region get message stuff
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
@@ -134,8 +133,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             return CB;
         }
 
-        #region overrides
-
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
             KaiaInventoryItem? Item = this.Listing.Items.FirstOrDefault();
@@ -147,19 +144,35 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public override async Task StartAsync(KaiaUser U)
         {
+
+            this.BuyButton.OnButtonPush += this.BuyAsync;
+            this.InteractWithButton.OnButtonPush += this.InteractAsync;
+            this.PutUpForSaleButton.OnButtonPush += this.SellAsync;
+
+            this.BuyButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.InteractWithButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.PutUpForSaleButton.OnButtonPush += this.UpdateEmbedAsync;
+
+            Embed E = (await this.GetEmbedAsync(U)).Build();
+            MessageComponent Com = (await this.GetComponentsAsync(U)).Build();
             if (!this.Context.UserContext.HasResponded)
             {
-                await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
+                await this.Context.UserContext.RespondAsync(components: Com, embed: E);
             }
-            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
-            ComponentBuilder Com = await this.GetComponentsAsync(U);
-            await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+            else
             {
-                M.Content = Strings.EmbedStrings.Empty;
-                M.Components = Com.Build();
-                M.Embed = E.Build();
-            });
+                await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+                {
+                    M.Content = Strings.EmbedStrings.Empty;
+                    M.Components = Com;
+                    M.Embed = E;
+                });
+            }
         }
+
+        #endregion
+
+        #region dispose
 
         public override void Dispose()
         {

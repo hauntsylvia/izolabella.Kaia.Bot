@@ -44,7 +44,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             return this;
         }
 
-        private KaiaPathEmbed MakeNaked()
+        public KaiaPathEmbed MakeNaked()
         {
             this.Inner = new();
             return this;
@@ -52,7 +52,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         private KaiaPathEmbed Populate()
         {
-            this.MakeNaked();
             this.Inner.Description =
                 $"" +
                 $"*{this.Parent.ToLower(CultureInfo.InvariantCulture)}*{(this.Sub1 == null ? "" : " // ")}" +
@@ -70,6 +69,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         public Embed Build()
         {
             Embed Pre = this.Inner.Build();
+            this.MakeNaked();
             this.Populate();
             return Pre;
         }

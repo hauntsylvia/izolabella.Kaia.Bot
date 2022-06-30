@@ -11,8 +11,8 @@
             if (!this.IsRefreshed)
             {
                 this.IsRefreshed = true;
-                await this.ClientRefreshAsync();
             }
+            await this.ClientRefreshAsync();
         }
 
         public bool IsRefreshed { get; private set; }

@@ -129,7 +129,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if (Component.IsValidToken && Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaPathEmbedRefreshable EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
-                await EmbedOfThis.RefreshAsync();
+                //await EmbedOfThis.RefreshAsync();
                 this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component, Component.Data.Values);
             }
         }

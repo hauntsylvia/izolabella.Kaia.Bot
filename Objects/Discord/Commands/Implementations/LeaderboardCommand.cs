@@ -2,7 +2,6 @@
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
-using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {

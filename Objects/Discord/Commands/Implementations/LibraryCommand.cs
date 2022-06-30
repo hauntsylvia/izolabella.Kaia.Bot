@@ -1,9 +1,7 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
-using Kaia.Bot.Objects.Util;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations
 {

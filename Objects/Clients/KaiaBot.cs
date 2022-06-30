@@ -1,8 +1,8 @@
 ﻿
 using izolabella.Util;
 using izolabella.Util.RateLimits.Limiters;
-using Kaia.Bot.Objects.Constants.Embeds;
 using Kaia.Bot.Objects.Constants.Responses;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using System.Reflection;
 
 namespace Kaia.Bot.Objects.Clients
@@ -25,7 +25,7 @@ namespace Kaia.Bot.Objects.Clients
                 {
                     if(await LimiterForLimiter.CheckIfPassesAsync(Context.UserContext.User.Id))
                     {
-                        await Responses.PipeErrors(Context, EmbedDefaults.RateLimitEmbed);
+                        await Responses.PipeErrors(Context, new RateLimited());
                     }
                     return false;
                 }

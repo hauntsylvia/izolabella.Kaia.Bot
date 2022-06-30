@@ -1,12 +1,12 @@
 ﻿using izolabella.Util;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
     public class KaiaPathEmbedPaginated : IDisposable
     {
         public KaiaPathEmbedPaginated(
-            Dictionary<KaiaPathEmbed, List<SelectMenuOptionBuilder>?> EmbedsAndOptions,
-            KaiaPathEmbed IfNoListElements,
+            Dictionary<KaiaPathEmbedRefreshable, List<SelectMenuOptionBuilder>?> EmbedsAndOptions,
             CommandContext Context,
             int StartingIndex,
             string Parent,
@@ -15,7 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             Color? Override = null)
         {
             this.EmbedsAndOptions = EmbedsAndOptions;
-            this.IfNoListElements = IfNoListElements;
+            this.IfNoListElements = new ListOfItemsNotFound();
             this.Context = Context;
             this.ZeroBasedIndex = StartingIndex;
             this.Parent = Parent;
@@ -27,8 +27,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.GlobalSelectMenuId = IdGenerator.CreateNewId();
         }
 
-        public Dictionary<KaiaPathEmbed, List<SelectMenuOptionBuilder>?> EmbedsAndOptions { get; }
-        public KaiaPathEmbed IfNoListElements { get; }
+        public Dictionary<KaiaPathEmbedRefreshable, List<SelectMenuOptionBuilder>?> EmbedsAndOptions { get; }
+        public KaiaPathEmbedRefreshable IfNoListElements { get; }
         public CommandContext Context { get; }
 
         private int index;
@@ -57,11 +57,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public Color? Override { get; }
 
-        public delegate void PageChangeHandler(KaiaPathEmbed Page, int ZeroBasedIndex);
+        public delegate void PageChangeHandler(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex);
 
         public event PageChangeHandler? OnPageChange;
 
-        public delegate void ItemSelectedHandler(KaiaPathEmbed Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected);
+        public delegate void ItemSelectedHandler(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected);
 
         public event ItemSelectedHandler? ItemSelected;
 
@@ -96,7 +96,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if (this.Context.UserContext.IsValidToken)
             {
                 MessageComponent Comps = this.GetComponentBuilder().Build();
-                Embed Emb = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbed Embed ? Embed.Build() :
+                Embed Emb = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbedRefreshable Embed ? Embed.Build() :
                             this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
                 if (!this.Context.UserContext.HasResponded)
                 {
@@ -121,7 +121,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             if (Component.IsValidToken && Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
             {
-                KaiaPathEmbed EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
+                KaiaPathEmbedRefreshable EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
                 this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component, Component.Data.Values);
             }
             return Task.CompletedTask;
@@ -132,7 +132,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if ((Component.Data.CustomId == this.BId || Component.Data.CustomId == this.FId) && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 this.ZeroBasedIndex = Component.Data.CustomId == this.BId ? this.ZeroBasedIndex - 1 : this.ZeroBasedIndex + 1;
-                KaiaPathEmbed EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
+                KaiaPathEmbedRefreshable EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
                 await Component.UpdateAsync(M =>
                 {
                     M.Content = Strings.EmbedStrings.Empty;

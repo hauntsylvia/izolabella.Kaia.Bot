@@ -1,15 +1,8 @@
-﻿using Kaia.Bot.Objects.Constants.Embeds;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kaia.Bot.Objects.Constants.Responses
+﻿namespace Kaia.Bot.Objects.Constants.Responses
 {
     internal class Responses
     {
-        internal static async Task PipeErrors(CommandContext Context, KaiaPathEmbed E)
+        internal static async Task PipeErrors(CommandContext Context, KaiaPathEmbedRefreshable E)
         {
             if (Context.UserContext.HasResponded)
             {

@@ -1,8 +1,7 @@
-﻿using izolabella.Storage.Objects.DataStores;
-using izolabella.Util;
+﻿using izolabella.Util;
 using izolabella.Util.RateLimits.Limiters;
-using Kaia.Bot.Objects.Constants.Embeds;
 using Kaia.Bot.Objects.Constants.Responses;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
@@ -59,25 +58,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             return CB;
         }
 
-        public override async Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
+        public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
             KaiaInventoryItem? Item = this.Listing.Items.FirstOrDefault();
-            bool IsKaiaListing = !(this.Listing.ListerId != null && this.Listing.ListerId != this.Context.Reference.Client.CurrentUser.Id);
-            KaiaPathEmbed Em = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, Item?.DisplayName ?? "none");
-            if(Item != null)
-            {
-                Em.WithField($"[{Strings.Economy.CurrencyEmote} `{this.Listing.CostPerItem}`] {Item.DisplayName} {Item.DisplayEmote}", Item.Description);
-                Em.WithField("your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`{(this.Refreshed ? "- balances may go up due to passive income from books every time it refreshes." : "")}");
-                Em.WithField($"number of {Item.DisplayName}s owned", $"`{(await U.Settings.Inventory.GetItemsOfDisplayName(Item)).Count()}`");
-                if (!IsKaiaListing)
-                {
-                    Em.WithField($"number of {Item.DisplayName}s left in this listing", $"`{this.Listing.Items.Count}`");
-                }
-            }
-            else
-            {
-                Em.WithField("empty!", "there's nothing here! u have to re-run the command to refresh all listings.");
-            }
+            KaiaPathEmbedRefreshable Em = Item != null ? new ItemRawView(this.Context, Item, U, this.Listing, this.Refreshed) : new SingleItemNotFound();
             this.Refreshed = true;
             return Em;
         }
@@ -88,7 +72,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             {
                 await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            KaiaPathEmbed E = await this.GetEmbedAsync(U);
+            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
             _ = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
@@ -136,7 +120,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                     if (Arg.Data.CustomId != this.PutUpForSaleId)
                     {
                         await U.SaveAsync();
-                        KaiaPathEmbed E = await this.GetEmbedAsync(U);
+                        KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
                         ComponentBuilder Com = await this.GetComponentsAsync(U);
                         if(this.Listing.Items.Count <= 0)
                         {
@@ -168,7 +152,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 }
                 else if (await this.SecondaryRateLimiter.CheckIfPassesAsync(Arg.User.Id) && this.Context.UserContext.IsValidToken)
                 {
-                    await Responses.PipeErrors(this.Context, EmbedDefaults.RateLimitEmbed);
+                    await Responses.PipeErrors(this.Context, new RateLimited());
                 }
             }
         }

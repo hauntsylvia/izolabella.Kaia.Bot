@@ -1,12 +1,23 @@
 ﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
-    internal class MeView : KaiaPathEmbed
+    public class MeView : KaiaPathEmbedRefreshable
     {
         public MeView(string UserName, KaiaUser User) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, UserName)
         {
-            this.WithField("highest number counted", $"`{User.Settings.HighestCountEver ?? 0}`");
-            this.WithField("total numbers counted", $"`{User.Settings.NumbersCounted ?? 0}`");
-            this.WithField($"{Strings.Economy.CurrencyEmote} current {Strings.Economy.CurrencyName}", $"`{User.Settings.Inventory.Petals}`");
+            this.UserName = UserName;
+            this.User = User;
+        }
+
+        public string UserName { get; }
+
+        public KaiaUser User { get; }
+
+        public override Task RefreshAsync()
+        {
+            this.WithField("highest number counted", $"`{this.User.Settings.HighestCountEver ?? 0}`");
+            this.WithField("total numbers counted", $"`{this.User.Settings.NumbersCounted ?? 0}`");
+            this.WithField($"{Strings.Economy.CurrencyEmote} current {Strings.Economy.CurrencyName}", $"`{this.User.Settings.Inventory.Petals}`");
+            return Task.CompletedTask;
         }
     }
 }

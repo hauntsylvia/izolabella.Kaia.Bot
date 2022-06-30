@@ -68,7 +68,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public abstract Task StartAsync(KaiaUser U);
 
-        public abstract Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U);
+        public abstract Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U);
 
         public abstract void Dispose();
     }

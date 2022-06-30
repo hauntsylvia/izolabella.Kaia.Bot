@@ -1,13 +1,11 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
+using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
-    internal class MeLibraryView : KaiaPathEmbedPaginated
+    public class MeLibraryView : KaiaPathEmbedPaginated
     {
         public MeLibraryView(KaiaUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
-                                                          new(Strings.EmbedStrings.FakePaths.Global,
-                                                          Strings.EmbedStrings.FakePaths.Users,
-                                                          Context.UserContext.User.Username),
                                                           Context,
                                                           0,
                                                           Strings.EmbedStrings.FakePaths.Global,
@@ -21,13 +19,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             this.EmbedsAndOptions.Add(LandingPage, null);
             foreach (KaiaBook[] Chunk in BookChunked)
             {
-                List<string> Display = new();
-                KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
-                foreach (KaiaBook Item in Chunk)
-                {
-                    Display.Add($"`{Item.Title}` by `{Item.Author}` - currently on page `{Item.CurrentPageIndex}` out of `{Item.Pages}`\n{Strings.Economy.CurrencyEmote} `{Item.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
-                }
-                Embed.WithListWrittenToField("library", Display, "\n\n");
+                LibraryPage Embed = new(Chunk, User, false);
                 this.EmbedsAndOptions.Add(Embed, null);
             }
         }

@@ -1,11 +1,10 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
+﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
+
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 {
     public class MeInventoryView : KaiaPathEmbedPaginated
     {
         public MeInventoryView(KaiaUser User, CommandContext Context, int InventoryChunkSize) : base(new(),
-                                                          new(Strings.EmbedStrings.FakePaths.Global,
-                                                          Strings.EmbedStrings.FakePaths.Users,
-                                                          Context.UserContext.User.Username),
                                                           Context,
                                                           0,
                                                           Strings.EmbedStrings.FakePaths.Global,
@@ -34,13 +33,7 @@
             }
             foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in ItemsAndTheirCounts.Chunk(InventoryChunkSize))
             {
-                List<string> Display = new();
-                KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username);
-                foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in ItemCountChunk)
-                {
-                    Display.Add($"[{ItemCount.Key.DisplayEmote}] {ItemCount.Key.DisplayName} [x{ItemCount.Value}]");
-                }
-                Embed.WithListWrittenToField("inventory", Display, "\n");
+                KaiaPathEmbedRefreshable Embed = new ItemsPaginatedPage(Context, ItemCountChunk);
                 this.EmbedsAndOptions.Add(Embed, null);
             }
         }

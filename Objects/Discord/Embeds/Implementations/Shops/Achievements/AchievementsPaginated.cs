@@ -1,19 +1,12 @@
-﻿using Kaia.Bot.Objects.Constants.Embeds;
-using Kaia.Bot.Objects.Constants.Enums;
+﻿using Kaia.Bot.Objects.Constants.Enums;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
     public class AchievementsPaginated : KaiaPathEmbedPaginated
     {
         public AchievementsPaginated(CommandContext Context, AchievementFilter Filter, int ChunkSize) : base(new(),
-                                                                    EmbedDefaults.DefaultEmbedForNoItemsPresent,
                                                                     Context,
                                                                     0,
                                                                     Strings.EmbedStrings.FakePaths.Users,
@@ -31,14 +24,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 
             foreach (KaiaAchievement[] AchievementChunk in Relevant)
             {
-                KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Achievements);
-                List<SelectMenuOptionBuilder> B = new();
+                AchievementPaginatedPage Embed = new(AchievementChunk, this.Context, this.U);
+                List<SelectMenuOptionBuilder> SelectMenu = new();
                 foreach (KaiaAchievement Ach in AchievementChunk)
                 {
-                    Embed.WithField($"{Ach.DisplayEmote} {Ach.Title} : `earned: {(Ach.UserAlreadyOwns(this.U).Result ? Emotes.Counting.Check : Emotes.Counting.Invalid)}`", $"{Ach.GetDescriptionAsync(this.U).Result}");
-                    B.Add(new($"{Ach.Title}", Ach.Id.ToString(CultureInfo.InvariantCulture), Ach.GetDescriptionAsync(this.U).Result, Ach.DisplayEmote));
+                    SelectMenu.Add(new($"{Ach.Title}", Ach.Id.ToString(CultureInfo.InvariantCulture), Ach.GetDescriptionAsync(this.U).Result, Ach.DisplayEmote));
                 }
-                this.EmbedsAndOptions.Add(Embed, B);
+                this.EmbedsAndOptions.Add(Embed, SelectMenu);
             }
 
             this.ItemSelected += this.AchievementSelected;
@@ -46,7 +38,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 
         KaiaUser U { get; }
 
-        private async void AchievementSelected(KaiaPathEmbed Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        private async void AchievementSelected(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             if (this.Context.UserContext.IsValidToken)
             {
@@ -63,7 +55,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
                 {
                     await this.Context.UserContext.ModifyOriginalResponseAsync(A =>
                     {
-                        A.Embed = EmbedDefaults.DefaultEmbedForNoItemsPresent.Build();
+                        A.Embed = new ListOfItemsNotFound().Build();
                         A.Components = new ComponentBuilder().Build();
                         A.Content = null;
                     });

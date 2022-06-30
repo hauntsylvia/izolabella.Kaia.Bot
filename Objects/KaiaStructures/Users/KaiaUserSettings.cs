@@ -1,6 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
 {

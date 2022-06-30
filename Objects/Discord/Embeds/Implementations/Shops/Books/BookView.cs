@@ -1,6 +1,7 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
 using izolabella.Util;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
@@ -35,22 +36,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
             return CB;
         }
 
-        public override async Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
+        public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
             KaiaBook? Book = await this.GetUserBookAsync(U);
-            KaiaPathEmbed Embed = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library, Book?.Title ?? Strings.EmbedStrings.FakePaths.NotFound);
-            if (Book != null)
-            {
-                Embed.WithField($"author", $"`{Book.Author}`");
-                Embed.WithField($"title", $"`{Book.Title}`");
-                Embed.WithField($"current page", $"`{Book.CurrentPageIndex}` / `{Book.Pages}`");
-                Embed.WithField($"current earnings", $"{Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
-                if (Book.CurrentPageIndex < Book.Pages)
-                {
-                    Embed.WithField($"cost to read next page", $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}`");
-                }
-                Embed.WithField($"your balance", $"{Strings.Economy.CurrencyEmote} `{U.Settings.Inventory.Petals}`");
-            }
+            KaiaPathEmbedRefreshable Embed = Book != null ? new BookRawView(Book, U) : new SingleItemNotFound();
             return Embed;
         }
 
@@ -60,7 +49,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
             {
                 await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            KaiaPathEmbed E = await this.GetEmbedAsync(U);
+            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
             _ = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
@@ -87,7 +76,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
                     await U.LibraryProcessor.IncrementBookAsync(Book.BookId);
                     await U.SaveAsync();
                 }
-                KaiaPathEmbed E = await this.GetEmbedAsync(U);
+                KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
                 ComponentBuilder Com = await this.GetComponentsAsync(U);
                 await Component.UpdateAsync(C =>
                 {

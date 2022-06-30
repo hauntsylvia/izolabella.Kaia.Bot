@@ -1,10 +1,5 @@
 ﻿using izolabella.Util;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
@@ -64,7 +59,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             {
                 await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            KaiaPathEmbed E = await this.GetEmbedAsync(U);
+            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
             _ = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
@@ -108,7 +103,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 if(!(Arg.Data.CustomId == this.SubmitButtonId && this.PreviousPageElse != null))
                 {
                     await U.SaveAsync();
-                    KaiaPathEmbed E = await this.GetEmbedAsync(U);
+                    KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
                     ComponentBuilder Com = await this.GetComponentsAsync(U);
                     await Arg.UpdateAsync(C =>
                     {
@@ -120,12 +115,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             }
         }
 
-        public override Task<KaiaPathEmbed> GetEmbedAsync(KaiaUser U)
+        public override Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            KaiaPathEmbed Em = new(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop);
-            SaleListing Listing = this.Listing;
-            Em.WithField($"[{Strings.Economy.CurrencyEmote} `{Listing.CostPerItem}`] {Listing.Items.First().DisplayName} {Listing.Items.First().DisplayEmote} [x{this.Listing.Items.Count}]", Listing.Items.First().Description);
-            return Task.FromResult(Em);
+            ItemCreateSaleListingRaw Em = new(this.Listing);
+            return Task.FromResult<KaiaPathEmbedRefreshable>(Em);
         }
 
         public override void Dispose()

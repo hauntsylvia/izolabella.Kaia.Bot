@@ -19,8 +19,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             }
             PreviousPage.ListingInteraction = this;
             this.PreviousPage = PreviousPage;
-            this.SubmitButton = new(Context, "Submit", Emotes.Counting.SellItem);
-            this.AddOneMoreButton = new(Context, "Add", Emotes.Counting.Add);
+            this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
+            this.AddOneMoreButton = new(this.Context, "+1", Emotes.Counting.Add);
+            this.RemoveOneMoreButton = new(this.Context, "-1", Emotes.Counting.Sub);
         }
 
         #region properties
@@ -29,9 +30,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public ItemView PreviousPage { get; }
 
-        public KaiaButton SubmitButton { get; }
+        public KaiaButton SubmitButton { get; private set; }
 
-        public KaiaButton AddOneMoreButton { get; }
+        public KaiaButton AddOneMoreButton { get; private set; }
+
+        public KaiaButton RemoveOneMoreButton { get; private set; }
 
         #endregion
 
@@ -45,6 +48,15 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             {
                 this.Listing.Items.Add(RelevantItem);
             }
+        }
+
+        private Task RemoveOneAsync(SocketMessageComponent Arg, KaiaUser U)
+        {
+            if(this.Listing.Items.Count > 0)
+            {
+                this.Listing.Items.RemoveAt(0);
+            }
+            return Task.CompletedTask;
         }
 
         private async Task SubmitAsync(SocketMessageComponent Arg, KaiaUser U)
@@ -85,8 +97,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
             ComponentBuilder CB = (await this.GetDefaultComponents())
-                .WithButton(this.SubmitButton.WithDisabled(this.Listing.CostPerItem <= 0 || !this.Listing.Items.All(I => I.UsersCanSellThis)))
-                .WithButton(this.AddOneMoreButton.WithDisabled(U.Settings.Inventory.GetItemsOfDisplayName(this.Listing.Items.First()).Result.Count() <= this.Listing.Items.Count));
+                .WithButton(this.SubmitButton.WithDisabled(
+                    this.Listing.CostPerItem <= 0 || !this.Listing.Items.All(I => I.UsersCanSellThis) || (await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == this.Listing.ListerId)))
+                .WithButton(this.AddOneMoreButton.WithDisabled(U.Settings.Inventory.GetItemsOfDisplayName(this.Listing.Items.First()).Result.Count() <= this.Listing.Items.Count))
+                .WithButton(this.RemoveOneMoreButton.WithDisabled(this.Listing.Items.Count <= 1));
             return CB;
         }
 
@@ -107,9 +121,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
             this.SubmitButton.OnButtonPush += this.SubmitAsync;
             this.AddOneMoreButton.OnButtonPush += this.AddOneAsync;
+            this.RemoveOneMoreButton.OnButtonPush += this.RemoveOneAsync;
 
             this.SubmitButton.OnButtonPush += this.UpdateEmbedAsync;
             this.AddOneMoreButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.RemoveOneMoreButton.OnButtonPush += this.UpdateEmbedAsync;
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
@@ -122,8 +138,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.AddOneMoreButton.Dispose();
             this.SubmitButton.Dispose();
+            this.AddOneMoreButton.Dispose();
+            this.RemoveOneMoreButton.Dispose();
         }
     }
 }

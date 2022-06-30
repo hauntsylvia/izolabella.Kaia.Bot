@@ -29,7 +29,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
             this.IsListed = IsListed;
         }
 
-        public List<KaiaInventoryItem> Items { get; }
+        public List<KaiaInventoryItem> Items { get; private set; }
 
         public ulong? ListerId { get; }
 
@@ -44,22 +44,30 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
 
         public async Task StartSellingAsync()
         {
-            this.IsListed = true; 
-            KaiaUser? Lister = this.Lister;
-            if (Lister != null && this.ListerId != null)
+            if(!(await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(SaleListing => SaleListing.ListerId == this.ListerId))
             {
-                // we put lister as its own variable bc otherwise the getter just creates
-                // a new kaiauser object. this means that each time I type "this.Lister" a new
-                // instance is used.
-
-                // this can be changed by just changing it to a field, or otherwise only assigning
-                // it a value on construction. but no point.
-                foreach(KaiaInventoryItem Item in this.Items)
+                this.IsListed = true;
+                KaiaUser? Lister = this.Lister;
+                List<KaiaInventoryItem> ActualItems = new();
+                if (Lister != null && this.ListerId != null)
                 {
-                    await Lister.Settings.Inventory.RemoveItemOfIdAsync(Item);
+                    // we put lister as its own variable bc otherwise the getter just creates
+                    // a new kaiauser object. this means that each time I type "this.Lister" a new
+                    // instance is used.
+
+                    // this can be changed by just changing it to a field, or otherwise only assigning
+                    // it a value on construction. but no point.
+                    foreach (KaiaInventoryItem Item in this.Items)
+                    {
+                        if (await Lister.Settings.Inventory.RemoveItemOfIdAsync(Item))
+                        {
+                            ActualItems.Add(Item);
+                        }
+                    }
+                    this.Items = ActualItems;
+                    await Lister.SaveAsync();
+                    await DataStores.SaleListingsStore.SaveAsync(this);
                 }
-                await Lister.SaveAsync();
-                await DataStores.SaleListingsStore.SaveAsync(this);
             }
         }
 

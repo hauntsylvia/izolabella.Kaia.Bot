@@ -16,10 +16,18 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public SaleListing SingleListing { get; }
 
-        public override Task ClientRefreshAsync()
+        public override async Task ClientRefreshAsync()
         {
             this.WithField($"[{Strings.Economy.CurrencyEmote} `{this.SingleListing.CostPerItem}`] {this.SingleListing.Items.First().DisplayName} {this.SingleListing.Items.First().DisplayEmote} [x{this.SingleListing.Items.Count}]", this.SingleListing.Items.First().Description);
-            return Task.CompletedTask;
+            this.WithListWrittenToField("notices", new()
+            {
+                "items will be validated when submitted",
+                "buying back items from ur own listing does not grant a refund"
+            }, ",\n");
+            if((await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == this.SingleListing.ListerId))
+            {
+                this.WithField("warning", "users may only submit up to one active listing at a time");
+            }
         }
     }
 }

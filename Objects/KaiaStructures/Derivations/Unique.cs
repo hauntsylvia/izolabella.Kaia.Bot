@@ -18,12 +18,16 @@ namespace Kaia.Bot.Objects.KaiaStructures.Derivations
         [JsonProperty("Id", Required = Required.Always)]
         public ulong Id { get; }
 
-        public async Task SaveAsync()
+        public Task SaveAsync()
         {
             if (this.BelongsTo != null)
             {
-                await this.BelongsTo.SaveAsync(this);
+                lock(this)
+                {
+                    this.BelongsTo.SaveAsync(this).Wait();
+                }
             }
+            return Task.CompletedTask;
         }
 
         public async Task<T?> GetAsync<T>() where T : class, IDataStoreEntity

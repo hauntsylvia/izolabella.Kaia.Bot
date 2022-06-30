@@ -16,6 +16,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.InteractWithButton = new(Context, "Interact", InteractWithItemEmote);
             this.PutUpForSaleButton = new(Context, "Sell", PutUpForSaleEmote);
             this.Refreshed = false;
+            this.BuyButton.OnButtonPush += this.BuyAsync;
+            this.InteractWithButton.OnButtonPush += this.InteractAsync;
+            this.PutUpForSaleButton.OnButtonPush += this.SellAsync;
+
+            this.BuyButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.InteractWithButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.PutUpForSaleButton.OnButtonPush += this.UpdateEmbedAsync;
         }
 
         #region properties
@@ -102,7 +109,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                         });
                     }
                 }
-                else
+                else if(!Arg.HasResponded)
                 {
                     await Arg.DeferAsync(true);
                 }
@@ -144,15 +151,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public override async Task StartAsync(KaiaUser U)
         {
-
-            this.BuyButton.OnButtonPush += this.BuyAsync;
-            this.InteractWithButton.OnButtonPush += this.InteractAsync;
-            this.PutUpForSaleButton.OnButtonPush += this.SellAsync;
-
-            this.BuyButton.OnButtonPush += this.UpdateEmbedAsync;
-            this.InteractWithButton.OnButtonPush += this.UpdateEmbedAsync;
-            this.PutUpForSaleButton.OnButtonPush += this.UpdateEmbedAsync;
-
             Embed E = (await this.GetEmbedAsync(U)).Build();
             MessageComponent Com = (await this.GetComponentsAsync(U)).Build();
             if (!this.Context.UserContext.HasResponded)

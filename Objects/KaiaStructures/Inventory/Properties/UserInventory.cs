@@ -28,14 +28,18 @@
         /// </summary>
         /// <param name="Item"></param>
         /// <returns></returns>
-        public Task RemoveItemOfIdAsync(KaiaInventoryItem Item)
+        public Task<bool> RemoveItemOfIdAsync(KaiaInventoryItem Item)
         {
             int I = this.items.FindIndex(A => A.Id == Item.Id);
             if(I >= 0)
             {
                 this.items.RemoveAt(I);
+                return Task.FromResult(true);
             }
-            return Task.CompletedTask;
+            else
+            {
+                return Task.FromResult(false);
+            }
         }
 
         /// <summary>

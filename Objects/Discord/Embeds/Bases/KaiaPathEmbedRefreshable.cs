@@ -6,11 +6,17 @@
         {
         }
 
-        public void Refresh()
+        public async Task RefreshAsync()
         {
-            this.RefreshAsync().Wait();
+            if (!this.IsRefreshed)
+            {
+                this.IsRefreshed = true;
+                await this.ClientRefreshAsync();
+            }
         }
 
-        public abstract Task RefreshAsync();
+        public bool IsRefreshed { get; private set; }
+
+        public abstract Task ClientRefreshAsync();
     }
 }

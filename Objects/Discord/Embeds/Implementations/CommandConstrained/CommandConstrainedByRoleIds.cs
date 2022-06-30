@@ -13,7 +13,7 @@
         public SocketGuild Guild { get; }
         public ulong[] RoleIdsRequired { get; }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             int MissingRolesCount = 0;
             string RoleStr = Strings.EmbedStrings.Empty;
@@ -29,11 +29,7 @@
                     MissingRolesCount++;
                 }
             }
-            this.Fields.Add(new()
-            {
-                Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *missing roles*\n {(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}",
-            });
+            this.WithField(Strings.EmbedStrings.Empty, $"// *missing roles*\n {(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
             return Task.CompletedTask;
         }
     }

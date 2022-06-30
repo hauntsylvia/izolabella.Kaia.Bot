@@ -7,7 +7,7 @@
 
         }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             this.WithField("404", "Nothing is here.");
             return Task.CompletedTask;

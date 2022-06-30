@@ -9,10 +9,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class ItemRawView : KaiaPathEmbedRefreshable
     {
-        public ItemRawView(CommandContext Context, KaiaInventoryItem Item, KaiaUser U, SaleListing Listing, bool DisplayBalancesMayGoUpMessage) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, Item?.DisplayName ?? "none")
+        public ItemRawView(CommandContext Context, KaiaInventoryItem ItemA, KaiaUser U, SaleListing Listing, bool DisplayBalancesMayGoUpMessage) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, ItemA?.DisplayName ?? "none")
         {
             this.Context = Context;
-            this.Item = Item;
+            this.Item = ItemA ?? throw new NullReferenceException("A");
             this.U = U;
             this.Listing = Listing;
             this.DisplayBalancesMayGoUpMessage = DisplayBalancesMayGoUpMessage;
@@ -28,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public bool DisplayBalancesMayGoUpMessage { get; }
 
-        public override async Task RefreshAsync()
+        public override async Task ClientRefreshAsync()
         {
             bool IsKaiaListing = !(this.Listing.ListerId != null && this.Listing.ListerId != this.Context.Reference.Client.CurrentUser.Id);
             this.WithField($"[{Strings.Economy.CurrencyEmote} `{this.Listing.CostPerItem}`] {this.Item.DisplayName} {this.Item.DisplayEmote}", this.Item.Description);

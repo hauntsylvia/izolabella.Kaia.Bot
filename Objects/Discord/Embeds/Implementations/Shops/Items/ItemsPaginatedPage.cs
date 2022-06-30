@@ -27,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public IEnumerable<SaleListing>? Listings { get; }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             if(this.Listings != null)
             {

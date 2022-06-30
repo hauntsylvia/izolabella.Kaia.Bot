@@ -16,10 +16,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
             GC.SuppressFinalize(this);
         }
 
-        public override Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
+        public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            KaiaPathEmbedRefreshable Em = new AchievementRawView(this.Context, this.Achievement, U);
-            return Task.FromResult(Em);
+            KaiaPathEmbedRefreshable Embed = new AchievementRawView(this.Context, this.Achievement, U);
+            await Embed.RefreshAsync();
+            return Embed;
         }
 
         public override async Task StartAsync(KaiaUser U)

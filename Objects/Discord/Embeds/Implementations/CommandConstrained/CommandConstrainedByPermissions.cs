@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 
         public GuildPermission[] Required { get; }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             string MissingStr = Strings.EmbedStrings.Empty;
             GuildPermission[] MissingGP = this.Required.Where(P => !this.UserHas.Has(P)).ToArray();
@@ -28,11 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
             {
                 MissingStr += $"{(MissingStr != Strings.EmbedStrings.Empty ? ", " : "")}{Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture)}";
             }
-            this.Fields.Add(new()
-            {
-                Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *missing permissions*\n {MissingStr}",
-            });
+            this.WithField(Strings.EmbedStrings.Empty, $"// *missing permissions*\n {MissingStr}");
             return Task.CompletedTask;
         }
     }

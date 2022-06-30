@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 
         public KaiaUser User { get; }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             foreach(KaiaAchievement Ach in this.Chunk)
             {

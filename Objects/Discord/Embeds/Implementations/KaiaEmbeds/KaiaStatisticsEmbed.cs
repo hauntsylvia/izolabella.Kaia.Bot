@@ -8,7 +8,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds
         {
         }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             this.WithField("handler", $"`{ProjectInformation.ProjectCreditDisplay}`");
             this.WithField("kaia version", $"`{KaiaSessionStatistics.Version?.Major}.{KaiaSessionStatistics.Version?.Minor}.{KaiaSessionStatistics.Version?.Build}`");

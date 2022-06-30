@@ -6,26 +6,30 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
-    public class KaiaPathEmbed : EmbedBuilder
+    public class KaiaPathEmbed
     {
         public KaiaPathEmbed(string Parent, string? Sub1 = null, string? Sub2 = null, Color? Override = null)
         {
-            this.Description =
-                $"" +
-                $"*{Parent.ToLower(CultureInfo.InvariantCulture)}*{(Sub1 == null ? "" : " // ")}" +
-                $"{(Sub1 != null ? $"{(Sub2 == null ? $"***{Sub1.ToLower(CultureInfo.InvariantCulture)}***" : $"*{Sub1.ToLower(CultureInfo.InvariantCulture)}*")}" : "")}" +
-                $"{(Sub2 != null ? $" // ***{Sub2.ToLower(CultureInfo.InvariantCulture)}***" : "")}";
-            this.Color = Override ?? Colors.EmbedColor;
-            this.Footer = new()
-            {
-                Text = Strings.EmbedStrings.FooterString,
-            };
-            this.Timestamp = Strings.EmbedStrings.DefaultTimestamp;
+            this.Parent = Parent;
+            this.Sub1 = Sub1;
+            this.Sub2 = Sub2;
+            this.Override = Override;
+            this.Populate();
         }
+
+        private EmbedBuilder Inner { get; set; } = new();
+
+        public string Parent { get; }
+
+        public string? Sub1 { get; }
+
+        public string? Sub2 { get; }
+
+        public Color? Override { get; }
 
         public KaiaPathEmbed WithField(string Name, string Value)
         {
-            _ = this.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
+            this.Inner.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
             return this;
         }
 
@@ -38,6 +42,36 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             }
             this.WithField(Name, S);
             return this;
+        }
+
+        private KaiaPathEmbed MakeNaked()
+        {
+            this.Inner = new();
+            return this;
+        }
+
+        private KaiaPathEmbed Populate()
+        {
+            this.MakeNaked();
+            this.Inner.Description =
+                $"" +
+                $"*{this.Parent.ToLower(CultureInfo.InvariantCulture)}*{(this.Sub1 == null ? "" : " // ")}" +
+                $"{(this.Sub1 != null ? $"{(this.Sub2 == null ? $"***{this.Sub1.ToLower(CultureInfo.InvariantCulture)}***" : $"*{this.Sub1.ToLower(CultureInfo.InvariantCulture)}*")}" : "")}" +
+                $"{(this.Sub2 != null ? $" // ***{this.Sub2.ToLower(CultureInfo.InvariantCulture)}***" : "")}";
+            this.Inner.Color = this.Override ?? Colors.EmbedColor;
+            this.Inner.Footer = new()
+            {
+                Text = Strings.EmbedStrings.FooterString,
+            };
+            this.Inner.Timestamp = Strings.EmbedStrings.DefaultTimestamp;
+            return this;
+        }
+
+        public Embed Build()
+        {
+            Embed Pre = this.Inner.Build();
+            this.Populate();
+            return Pre;
         }
     }
 }

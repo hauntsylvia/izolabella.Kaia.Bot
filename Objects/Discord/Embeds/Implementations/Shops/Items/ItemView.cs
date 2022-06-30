@@ -61,9 +61,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
             KaiaInventoryItem? Item = this.Listing.Items.FirstOrDefault();
-            KaiaPathEmbedRefreshable Em = Item != null ? new ItemRawView(this.Context, Item, U, this.Listing, this.Refreshed) : new SingleItemNotFound();
+            KaiaPathEmbedRefreshable Embed = Item != null ? new ItemRawView(this.Context, Item, U, this.Listing, this.Refreshed) : new SingleItemNotFound();
             this.Refreshed = true;
-            return Em;
+            await Embed.RefreshAsync();
+            return Embed;
         }
 
         public override async Task StartAsync(KaiaUser U)

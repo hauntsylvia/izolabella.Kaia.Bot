@@ -12,7 +12,7 @@
 
         public KaiaUser User { get; }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             this.WithField("highest number counted", $"`{this.User.Settings.HighestCountEver ?? 0}`");
             this.WithField("total numbers counted", $"`{this.User.Settings.NumbersCounted ?? 0}`");

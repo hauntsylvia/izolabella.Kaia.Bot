@@ -40,6 +40,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
         {
             KaiaBook? Book = await this.GetUserBookAsync(U);
             KaiaPathEmbedRefreshable Embed = Book != null ? new BookRawView(Book, U) : new SingleItemNotFound();
+            await Embed.RefreshAsync();
             return Embed;
         }
 

@@ -86,6 +86,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             return CB;
         }
 
+        private static async Task<Embed> GetEmbedAsync(KaiaPathEmbedRefreshable RefreshableEmbed)
+        {
+            await RefreshableEmbed.RefreshAsync();
+            return RefreshableEmbed.Build();
+        }
+
         private string GetIdFromIndex(int? IndexOverride = null)
         {
             return $"selmenuspg-{this.GlobalSelectMenuId}-{IndexOverride ?? this.ZeroBasedIndex}";
@@ -96,20 +102,21 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if (this.Context.UserContext.IsValidToken)
             {
                 MessageComponent Comps = this.GetComponentBuilder().Build();
-                Embed Emb = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbedRefreshable Embed ? Embed.Build() :
-                            this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key?.Build() ?? this.IfNoListElements.Build();
+                KaiaPathEmbedRefreshable RefreshableEmbed = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbedRefreshable Embed ? Embed :
+                            this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key ?? this.IfNoListElements;
+                Embed BuiltEmbed = await GetEmbedAsync(RefreshableEmbed);
                 if (!this.Context.UserContext.HasResponded)
                 {
                     await this.Context.UserContext.RespondAsync(
                         components: Comps,
-                        embed: Emb);
+                        embed: BuiltEmbed);
                 }
                 else
                 {
                     _ = await this.Context.UserContext.ModifyOriginalResponseAsync(SelfMessageAction =>
                     {
                         SelfMessageAction.Components = Comps;
-                        SelfMessageAction.Embed = Emb;
+                        SelfMessageAction.Embed = BuiltEmbed;
                     });
                 }
                 this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
@@ -117,14 +124,14 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             }
         }
 
-        private Task ClientSelectMenuExecutedAsync(SocketMessageComponent Component)
+        private async Task ClientSelectMenuExecutedAsync(SocketMessageComponent Component)
         {
             if (Component.IsValidToken && Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaPathEmbedRefreshable EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
+                await EmbedOfThis.RefreshAsync();
                 this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component, Component.Data.Values);
             }
-            return Task.CompletedTask;
         }
 
         private async Task ClientButtonPressedAsync(SocketMessageComponent Component)
@@ -132,14 +139,15 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if ((Component.Data.CustomId == this.BId || Component.Data.CustomId == this.FId) && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 this.ZeroBasedIndex = Component.Data.CustomId == this.BId ? this.ZeroBasedIndex - 1 : this.ZeroBasedIndex + 1;
-                KaiaPathEmbedRefreshable EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
+                KaiaPathEmbedRefreshable RefreshableEmbed = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
+                Embed BuiltEmbed = await GetEmbedAsync(RefreshableEmbed);
                 await Component.UpdateAsync(M =>
                 {
                     M.Content = Strings.EmbedStrings.Empty;
-                    M.Embed = EmbedOfThis.Build();
+                    M.Embed = BuiltEmbed;
                     M.Components = this.GetComponentBuilder().Build();
                 });
-                this.OnPageChange?.Invoke(EmbedOfThis, this.ZeroBasedIndex);
+                this.OnPageChange?.Invoke(RefreshableEmbed, this.ZeroBasedIndex);
             }
         }
 

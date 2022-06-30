@@ -35,7 +35,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
             foreach (SaleListing[] ListingsChunk in ListingsChunked)
             {
-                ItemsPaginatedPage Embed = new ItemsPaginatedPage(this.Context, ListingsChunk);
+                ItemsPaginatedPage Embed = new(this.Context, ListingsChunk);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (SaleListing Listing in ListingsChunk)
                 {

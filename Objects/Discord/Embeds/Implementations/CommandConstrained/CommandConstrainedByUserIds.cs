@@ -12,13 +12,9 @@
 
         public string CommandName { get; }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
-            this.Fields.Add(new()
-            {
-                Name = $"{Strings.EmbedStrings.Empty}",
-                Value = $"// *access*\nYou do not have access to this command.",
-            });
+            this.WithField(Strings.EmbedStrings.Empty, $"// *access*\nYou do not have access to this command.");
             return Task.CompletedTask;
         }
     }

@@ -21,7 +21,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 
         public string LeaderboardDisplayName { get; }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             List<string> Displays = new();
 

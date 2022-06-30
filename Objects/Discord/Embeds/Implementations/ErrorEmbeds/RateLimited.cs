@@ -7,7 +7,7 @@
 
         }
 
-        public override Task RefreshAsync()
+        public override Task ClientRefreshAsync()
         {
             this.WithField("Slow down", "Wait.");
             return Task.CompletedTask;

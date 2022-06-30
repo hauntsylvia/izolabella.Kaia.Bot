@@ -18,7 +18,7 @@
             string Message = (PetalsEarned < 0 ? Strings.ItemStrings.Rose.RoseStab : Strings.ItemStrings.Rose.RosePretty) + $" {Strings.Economy.CurrencyEmote} {(PetalsEarned < 0 ? "-" : "+")}`{Math.Abs(PetalsEarned)}`";
             if (Context.UserContext.HasResponded)
             {
-                _ = await Context.UserContext.FollowupAsync(Message);
+                await Context.UserContext.FollowupAsync(Message);
             }
             else
             {

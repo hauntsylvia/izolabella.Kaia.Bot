@@ -67,25 +67,27 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         {
             if(this.Items.Count > 0)
             {
-                KaiaUser? Lister = this.Lister;
-                KaiaInventoryItem Item = this.Items.First();
-
-                await UserBuying.Settings.Inventory.AddItemsToInventoryAndSave(UserBuying, Item);
-                Item.ReceivedAt = DateTime.UtcNow;
-                UserBuying.Settings.Inventory.Petals -= this.CostPerItem;
-
-                if (Lister != null && this.ListerId != null)
+                if(UserBuying.Settings.Inventory.Petals >= this.CostPerItem)
                 {
-                    Lister.Settings.Inventory.Petals += this.CostPerItem;
-                    await Lister.SaveAsync();
-                    this.Items.Remove(Item);
-                    await DataStores.SaleListingsStore.SaveAsync(this);
-                }
-                else
-                {
-                    foreach(KaiaInventoryItem I in this.Items)
+                    KaiaUser? Lister = this.Lister;
+                    KaiaInventoryItem Item = this.Items.First();
+                    await UserBuying.Settings.Inventory.AddItemsToInventoryAndSave(UserBuying, Item);
+                    Item.ReceivedAt = DateTime.UtcNow;
+                    UserBuying.Settings.Inventory.Petals -= this.CostPerItem;
+
+                    if (Lister != null && this.ListerId != null)
                     {
-                        I.Id = IdGenerator.CreateNewId();
+                        Lister.Settings.Inventory.Petals += this.CostPerItem;
+                        await Lister.SaveAsync();
+                        this.Items.Remove(Item);
+                        await DataStores.SaleListingsStore.SaveAsync(this);
+                    }
+                    else
+                    {
+                        foreach (KaiaInventoryItem I in this.Items)
+                        {
+                            I.Id = IdGenerator.CreateNewId();
+                        }
                     }
                 }
             }

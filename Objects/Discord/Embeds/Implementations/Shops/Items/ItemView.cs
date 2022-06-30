@@ -12,51 +12,129 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         {
             this.From = From;
             this.Listing = Listing;
-            this.BuyItemEmote = BuyItemEmote;
-            this.InteractWithItemEmote = InteractWithItemEmote;
-            this.PutUpForSaleEmote = PutUpForSaleEmote;
+            this.BuyButton = new(Context, "Buy", BuyItemEmote);
+            this.InteractWithButton = new(Context, "Interact", InteractWithItemEmote);
+            this.PutUpForSaleButton = new(Context, "Sell", PutUpForSaleEmote);
             this.Refreshed = false;
+
+            this.BuyButton.OnButtonPush += this.BuyAsync;
+            this.InteractWithButton.OnButtonPush += this.InteractAsync;
+            this.PutUpForSaleButton.OnButtonPush += this.SellAsync;
+
+            this.BuyButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.InteractWithButton.OnButtonPush += this.UpdateEmbedAsync;
         }
 
+        #region properties
+
         public ItemsPaginated? From { get; }
+
         public SaleListing Listing { get; }
-        public IEmote BuyItemEmote { get; }
-        public IEmote InteractWithItemEmote { get; }
-        public IEmote PutUpForSaleEmote { get; }
-        public ulong BId { get; } = IdGenerator.CreateNewId();
-        public ulong IId { get; } = IdGenerator.CreateNewId();
-        public ulong SId { get; } = IdGenerator.CreateNewId();
-        public string BuyId => $"{this.Listing.Id}-{this.BId}";
-        public string InteractId => $"{this.Listing.Id}-{this.IId}";
-        public string PutUpForSaleId => $"{this.Listing.Id}-{this.SId}";
+
+        public KaiaButton BuyButton { get; }
+
+        public KaiaButton InteractWithButton { get; }
+
+        public KaiaButton PutUpForSaleButton { get; }
+
         private bool Refreshed { get; set; }
+
         public DateRateLimiter RateLimiter { get; } = new(DataStores.RateLimitsStore, "Kaia Item", TimeSpan.FromSeconds(8), 3, TimeSpan.FromSeconds(4));
+        
         public DateRateLimiter SecondaryRateLimiter { get; } = new(DataStores.RateLimitsStore, "Secondary Kaia Item", TimeSpan.FromSeconds(2));
+        
         public ItemCreateSaleListing? ListingInteraction { get; set; }
+
+        #endregion
+
+        #region button events
+        private async Task SellAsync(SocketMessageComponent Arg, KaiaUser U)
+        {
+            this.Dispose();
+            if (this.ListingInteraction == null)
+            {
+                await new ItemCreateSaleListing(this, this.Context, this.Listing).StartAsync(U);
+            }
+            else
+            {
+                this.ListingInteraction.Dispose();
+                await this.ListingInteraction.StartAsync(U);
+            }
+        }
+
+        private async Task BuyAsync(SocketMessageComponent Arg, KaiaUser U)
+        {
+            await this.Listing.UserBoughtAsync(U);
+        }
+
+        private async Task InteractAsync(SocketMessageComponent Arg, KaiaUser U)
+        {
+            KaiaInventoryItem? Item = this.Listing.Items.FirstOrDefault();
+            if(Item != null && await U.Settings.Inventory.ItemOfDisplayNameExists(Item))
+            {
+                await U.Settings.Inventory.RemoveItemOfNameAsync(Item);
+                await Item.UserInteractAsync(this.Context, U);
+            }
+        }
+
+        private async Task UpdateEmbedAsync(SocketMessageComponent Arg, KaiaUser U)
+        {
+            if (await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id) && Arg.Data.CustomId != this.PutUpForSaleButton.Id)
+            {
+                await U.SaveAsync();
+                KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
+                ComponentBuilder Com = await this.GetComponentsAsync(U);
+                if (this.Listing.Items.Count <= 0)
+                {
+                    await Arg.DeferAsync();
+                    this.Dispose();
+                    if (this.From != null)
+                    {
+                        this.From.Dispose();
+                        await new ItemsPaginated(this.Context, this.From.FilterBy, this.From.IncludeUserListings, this.From.ChunkSize).StartAsync();
+                    }
+                    else
+                    {
+                        await new ItemsPaginated(this.Context).StartAsync();
+                    }
+                }
+                else
+                {
+                    await Arg.UpdateAsync(A =>
+                    {
+                        A.Embed = E.Build();
+                        A.Components = Com.Build();
+                    });
+                }
+            }
+            else if (await this.SecondaryRateLimiter.CheckIfPassesAsync(Arg.User.Id) && this.Context.UserContext.IsValidToken)
+            {
+                await Responses.PipeErrors(this.Context, new RateLimited());
+            }
+            else
+            {
+                await Arg.DeferAsync(true);
+            }
+        }
+        #endregion
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
             KaiaInventoryItem? Item = this.Listing.Items.FirstOrDefault();
             ComponentBuilder CB = (await this.GetDefaultComponents())
-                .WithButton("Buy",
-                           this.BuyId,
-                           ButtonStyle.Secondary,
-                           this.BuyItemEmote,
-                           disabled: U.Settings.Inventory.Petals < this.Listing.CostPerItem || this.Listing.Items.Count <= 0);
+                .WithButton(this.BuyButton.WithDisabled(U.Settings.Inventory.Petals < this.Listing.CostPerItem || this.Listing.Items.Count <= 0));
+            if (this.Listing.ListerId == null)
+            {
+                CB.WithButton(this.InteractWithButton.WithDisabled(Item == null || !await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || !Item.CanInteractWithDirectly));
+            }
             if (this.Listing.Items.All(I => I.UsersCanSellThis) && Item != null)
             {
-                CB.WithButton("Sell", this.PutUpForSaleId, ButtonStyle.Secondary, this.PutUpForSaleEmote, disabled: !await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || !Item.UsersCanSellThis);
-            }
-            if(this.Listing.ListerId == null)
-            {
-                CB.WithButton("Interact",
-                           this.InteractId,
-                           ButtonStyle.Secondary,
-                           this.InteractWithItemEmote,
-                           disabled: Item == null || !await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || !Item.CanInteractWithDirectly);
+                CB.WithButton(this.PutUpForSaleButton.WithDisabled(!await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || !Item.UsersCanSellThis));
             }
             return CB;
         }
+
+        #region overrides
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
@@ -75,93 +153,22 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             }
             KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
             ComponentBuilder Com = await this.GetComponentsAsync(U);
-            _ = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+            await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
                 M.Content = Strings.EmbedStrings.Empty;
                 M.Components = Com.Build();
                 M.Embed = E.Build();
             });
-            this.Context.Reference.Client.ButtonExecuted += this.ButtonExecutedAsync;
-        }
-
-        private async Task ButtonExecutedAsync(SocketMessageComponent Arg)
-        {
-            if (Arg.IsValidToken
-                && (Arg.Data.CustomId == this.BuyId
-                    || Arg.Data.CustomId == this.InteractId
-                    || Arg.Data.CustomId == this.PutUpForSaleId)
-                && Arg.User.Id == this.Context.UserContext.User.Id)
-            {
-                if (await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id) || Arg.Data.CustomId == this.BuyId || Arg.Data.CustomId == this.PutUpForSaleId)
-                {
-                    KaiaUser U = new(Arg.User.Id);
-                    KaiaInventoryItem? Item = this.Listing.Items.FirstOrDefault();
-                    if (Item != null && Arg.Data.CustomId == this.BuyId && U.Settings.Inventory.Petals >= this.Listing.CostPerItem)
-                    {
-                        await this.Listing.UserBoughtAsync(U);
-                    }
-                    else if (Item != null && Arg.Data.CustomId == this.InteractId && await U.Settings.Inventory.ItemOfDisplayNameExists(Item))
-                    {
-                        await U.Settings.Inventory.RemoveItemOfNameAsync(Item);
-                        await Item.UserInteractAsync(this.Context, U);
-                    }
-                    else if (Item != null && Arg.Data.CustomId == this.PutUpForSaleId)
-                    {
-                        this.Dispose();
-                        if (this.ListingInteraction == null)
-                        {
-                            await new ItemCreateSaleListing(this, this.Context, this.Listing).StartAsync(U);
-                        }
-                        else
-                        {
-                            this.ListingInteraction.Dispose();
-                            await this.ListingInteraction.StartAsync(U);
-                        }
-                    }
-                    if (Arg.Data.CustomId != this.PutUpForSaleId)
-                    {
-                        await U.SaveAsync();
-                        KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
-                        ComponentBuilder Com = await this.GetComponentsAsync(U);
-                        if(this.Listing.Items.Count <= 0)
-                        {
-                            await Arg.DeferAsync();
-                            this.Dispose();
-                            if(this.From != null)
-                            {
-                                this.From.Dispose();
-                                await new ItemsPaginated(this.Context, this.From.FilterBy, this.From.IncludeUserListings, this.From.ChunkSize).StartAsync();
-                            }
-                            else
-                            {
-                                await new ItemsPaginated(this.Context).StartAsync();
-                            }
-                        }
-                        else
-                        {
-                            await Arg.UpdateAsync(A =>
-                            {
-                                A.Embed = E.Build();
-                                A.Components = Com.Build();
-                            });
-                        }
-                    }
-                    else
-                    {
-                        await Arg.DeferAsync(true);
-                    }
-                }
-                else if (await this.SecondaryRateLimiter.CheckIfPassesAsync(Arg.User.Id) && this.Context.UserContext.IsValidToken)
-                {
-                    await Responses.PipeErrors(this.Context, new RateLimited());
-                }
-            }
         }
 
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.Context.Reference.Client.ButtonExecuted -= this.ButtonExecutedAsync;
+            this.BuyButton.Dispose();
+            this.InteractWithButton.Dispose();
+            this.PutUpForSaleButton.Dispose();
         }
+
+        #endregion
     }
 }

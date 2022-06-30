@@ -4,7 +4,6 @@
     {
         public ListOfItemsNotFound() : base(Strings.EmbedStrings.FakePaths.Global)
         {
-
         }
 
         public override Task ClientRefreshAsync()

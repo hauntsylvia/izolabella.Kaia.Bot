@@ -4,7 +4,6 @@
     {
         public RateLimited() : base(Strings.EmbedStrings.FakePaths.Global)
         {
-
         }
 
         public override Task ClientRefreshAsync()

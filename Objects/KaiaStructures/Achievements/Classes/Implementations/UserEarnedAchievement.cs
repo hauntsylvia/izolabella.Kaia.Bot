@@ -6,7 +6,6 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 {
     public class UserEarnedAchievement : KaiaAchievement
     {
-
         /// <summary>
         /// An achievement already earned by the user.
         /// </summary>

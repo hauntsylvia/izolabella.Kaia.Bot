@@ -24,6 +24,13 @@ namespace Kaia.Bot.Objects.Constants
             DS.MakeSubStore(UserId.ToString(CultureInfo.InvariantCulture));
             return DS;
         }
+        private static DataStore UserLocationsMainDirectory => new(Strings.App.Name, Strings.DataStoreNames.LocationStore, SerializerSettings);
+        internal static DataStore GetUserLocationsStore(ulong UserId)
+        {
+            DataStore DS = UserLocationsMainDirectory;
+            DS.MakeSubStore(UserId.ToString(CultureInfo.InvariantCulture));
+            return DS;
+        }
         internal static DataStore RateLimitsStore => new(Strings.App.Name, Strings.DataStoreNames.RateLimitStore, SerializerSettings);
         internal static DataStore SaleListingsStore => new(Strings.App.Name, Strings.DataStoreNames.SaleListingsStore, SerializerSettings);
     }

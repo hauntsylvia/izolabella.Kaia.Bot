@@ -20,8 +20,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             PreviousPage.ListingInteraction = this;
             this.PreviousPage = PreviousPage;
             this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
-            this.AddOneMoreButton = new(this.Context, "+1", Emotes.Counting.Add);
-            this.RemoveOneMoreButton = new(this.Context, "-1", Emotes.Counting.Sub);
+            this.AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
+            this.RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
+            Context.Reference.Client.MessageReceived += this.MessageReceivedAsync;
         }
 
         #region properties
@@ -76,19 +77,44 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             }
         }
 
-        private async Task UpdateEmbedAsync(SocketMessageComponent Arg, KaiaUser U)
+        private async Task UpdateEmbedAsync(SocketMessageComponent? Arg, KaiaUser U)
         {
-            if (!(Arg.Data.CustomId == this.SubmitButton.Id && this.PreviousPageElse != null))
+            if (Arg == null || !(Arg.Data.CustomId == this.SubmitButton.Id && this.PreviousPageElse != null))
             {
                 await U.SaveAsync();
                 KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
                 ComponentBuilder Com = await this.GetComponentsAsync(U);
-                await Arg.UpdateAsync(C =>
+                if(Arg != null)
                 {
-                    C.Embed = E.Build();
-                    C.Components = Com.Build();
-                    C.Content = null;
-                });
+                    await Arg.UpdateAsync(C =>
+                    {
+                        C.Embed = E.Build();
+                        C.Components = Com.Build();
+                        C.Content = null;
+                    });
+                }
+                else
+                {
+                    await this.Context.UserContext.ModifyOriginalResponseAsync(C =>
+                    {
+                        C.Embed = E.Build();
+                        C.Components = Com.Build();
+                        C.Content = null;
+                    });
+                }
+            }
+        }
+
+        #endregion
+
+        #region other events
+
+        private async Task MessageReceivedAsync(SocketMessage Arg)
+        {
+            if(Arg.Author.Id == this.Context.UserContext.User.Id && double.TryParse(Arg.Content, out double NewPricePerItem))
+            {
+                this.Listing.CostPerItem = NewPricePerItem;
+                await this.UpdateEmbedAsync(null, new(Arg.Author.Id));
             }
         }
 
@@ -138,6 +164,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
+            this.Context.Reference.Client.MessageReceived -= this.MessageReceivedAsync;
             this.SubmitButton.Dispose();
             this.AddOneMoreButton.Dispose();
             this.RemoveOneMoreButton.Dispose();

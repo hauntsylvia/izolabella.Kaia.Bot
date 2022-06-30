@@ -6,6 +6,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds
     {
         public KaiaStatisticsEmbed() : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Kaia)
         {
+            this.ClientRefreshAsync().Wait();
         }
 
         public override Task ClientRefreshAsync()

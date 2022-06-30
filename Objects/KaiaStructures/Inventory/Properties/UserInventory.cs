@@ -110,7 +110,7 @@
         /// <param name="Parent">The user whom of which should be saved.</param>
         /// <param name="Items">The items to add.</param>
         /// <returns></returns>
-        public async Task AddItemsToInventoryAndSave(KaiaUser Parent, params KaiaInventoryItem[] Items)
+        public async Task AddItemsToInventoryAndSaveAsync(KaiaUser Parent, params KaiaInventoryItem[] Items)
         {
             this.items.AddRange(Items);
             await Parent.SaveAsync();

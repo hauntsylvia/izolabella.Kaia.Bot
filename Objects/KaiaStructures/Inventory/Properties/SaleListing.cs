@@ -25,7 +25,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
             this.Items = Items;
             this.ListerId = ListerId ?? Lister?.Id;
             this.Id = Id ?? IdGenerator.CreateNewId();
-            this.CostPerItem = this.Lister != null ? CostPerItem : Items.Sum(I => I.MarketCost);
+            this.costPerItem = this.Lister != null ? CostPerItem : Items.Sum(I => I.MarketCost);
             this.IsListed = IsListed;
         }
 
@@ -38,7 +38,13 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
 
         public ulong Id { get; }
 
-        public double CostPerItem { get; }
+        private double costPerItem;
+
+        public double CostPerItem
+        {
+            get => Math.Round(this.costPerItem, 2);
+            set => this.costPerItem = value;
+        }
 
         public bool IsListed { get; private set; }
 
@@ -79,7 +85,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
                 {
                     KaiaUser? Lister = this.Lister;
                     KaiaInventoryItem Item = this.Items.First();
-                    await UserBuying.Settings.Inventory.AddItemsToInventoryAndSave(UserBuying, Item);
+                    await UserBuying.Settings.Inventory.AddItemsToInventoryAndSaveAsync(UserBuying, Item);
                     Item.ReceivedAt = DateTime.UtcNow;
                     UserBuying.Settings.Inventory.Petals -= this.CostPerItem;
 

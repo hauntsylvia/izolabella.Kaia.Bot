@@ -6,6 +6,7 @@
         {
             this.UserName = UserName;
             this.User = User;
+            this.ClientRefreshAsync().Wait();
         }
 
         public string UserName { get; }

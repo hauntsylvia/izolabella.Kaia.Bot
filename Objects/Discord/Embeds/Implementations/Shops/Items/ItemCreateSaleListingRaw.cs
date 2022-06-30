@@ -21,6 +21,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.WithField($"[{Strings.Economy.CurrencyEmote} `{this.SingleListing.CostPerItem}`] {this.SingleListing.Items.First().DisplayName} {this.SingleListing.Items.First().DisplayEmote} [x{this.SingleListing.Items.Count}]", this.SingleListing.Items.First().Description);
             this.WithListWrittenToField("notices", new()
             {
+                "**type a number in the channel this embed was sent in to set the price per item**",
                 "items will be validated when submitted",
                 "buying back items from ur own listing does not grant a refund"
             }, ",\n");

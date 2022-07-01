@@ -12,7 +12,7 @@
 
         public KaiaGuild Guild { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             this.WithField("counting channel", $"<#{this.Guild.Settings.CountingChannelId}>");
             this.WithField("highest number counted", $"`{this.Guild.Settings.HighestCountEver ?? 0}`");

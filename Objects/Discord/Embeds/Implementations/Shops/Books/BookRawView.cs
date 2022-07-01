@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         public KaiaUser U { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             if (this.Book != null)
             {

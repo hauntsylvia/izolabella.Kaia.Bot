@@ -2,7 +2,7 @@
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
 {
     public class StoreCommand : IKaiaCommand
     {
@@ -13,7 +13,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
         public bool GuildsOnly => false;
 
         public List<IzolabellaCommandParameter> Parameters { get; } = new()
-        {            
+        {
             new("User Listings", "Whether to include user listings or not.", ApplicationCommandOptionType.Boolean, false),
             new("Lister", "Filters all listings by this user.", ApplicationCommandOptionType.User, false)
         };
@@ -27,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations
             IzolabellaCommandArgument? IncludeUserListings = Arguments.FirstOrDefault(A => A.Name == "user-listings");
             IzolabellaCommandArgument? Lister = Arguments.FirstOrDefault(A => A.Name == "lister");
             IUser? User = null;
-            if(Lister != null && Lister.Value is IUser U)
+            if (Lister != null && Lister.Value is IUser U)
             {
                 User = U;
             }

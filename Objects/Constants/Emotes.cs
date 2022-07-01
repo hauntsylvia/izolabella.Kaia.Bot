@@ -10,19 +10,22 @@ namespace Kaia.Bot.Objects.Constants
             internal static Emoji CheckRare => Emoji.Parse("💮");
             internal static Emoji ThumbDown => Emoji.Parse("👎");
             internal static Emoji Invalid => Emoji.Parse("❌");
-            internal static Emoji Cancel => Emoji.Parse("🔁");
+            internal static Emoji Cancel => Emoji.Parse("◀️");
             internal static Emoji Book => Emoji.Parse("📖");
             internal static Emoji Inventory => Emoji.Parse("🎀");
+            internal static Emoji Location => Emoji.Parse("☁️");
             internal static Emoji BuyItem => Emoji.Parse("🛒");
             internal static Emoji InteractItem => Emoji.Parse("🖋️");
             internal static Emoji SellItem => Emoji.Parse("🧧");
             internal static Emoji Add => Emoji.Parse("➕");
             internal static Emoji Sub => Emoji.Parse("➖");
+            internal static Emoji Explore => Emoji.Parse("☁️");
         }
         internal static class Items
         {
             internal static KaiaItemEmote CountingRefresher => new("🔄");
             internal static KaiaItemEmote Rose => new("🌹");
+            internal static KaiaItemEmote Notebook => new("📒");
             internal static Emoji NoEmote => new("❔");
         }
         internal static class Embeds

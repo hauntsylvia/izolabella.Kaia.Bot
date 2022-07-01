@@ -14,6 +14,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
                                  bool KaiaDisplaysThisOnTheStore,
                                  bool UsersCanSellThis,
                                  KaiaItemEmote DisplayEmoteName,
+                                 KaiaItemReturnContext? OnInteract = null,
                                  ulong? Id = null)
         {
             this.DisplayName = DisplayName;
@@ -23,11 +24,17 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
             this.KaiaDisplaysThisOnTheStore = KaiaDisplaysThisOnTheStore;
             this.UsersCanSellThis = UsersCanSellThis;
             this.DisplayEmote = DisplayEmoteName;
+            this.OnInteract = OnInteract;
             this.Id = Id ?? IdGenerator.CreateNewId();
         }
 
         [JsonProperty("DisplayName")]
         public string DisplayName { get; }
+
+        /// <summary>
+        /// $"[{Strings.Economy.CurrencyEmote} {ItemChunk.Key.MarketCost}] {ItemChunk.Key.DisplayName}"
+        /// </summary>
+        public string DisplayString => $"[{Strings.Economy.CurrencyEmote} `{this.MarketCost}`] {this.DisplayName}";
 
         [JsonProperty("Description")]
         public string Description { get; }
@@ -47,13 +54,16 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
         [JsonProperty("DisplayEmote")]
         public KaiaItemEmote DisplayEmote { get; set; }
 
+        [JsonProperty("OnInteract")]
+        public KaiaItemReturnContext? OnInteract { get; protected set; }
+
         [JsonProperty("Id")]
         public ulong Id { get; set; }
 
         [JsonProperty("ReceivedAt")]
         public DateTime? ReceivedAt { get; set; }
 
-        public virtual Task UserInteractAsync(CommandContext Context, KaiaUser User)
+        public virtual Task OnKaiaStoreRefresh()
         {
             return Task.CompletedTask;
         }

@@ -27,6 +27,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public Color? Override { get; }
 
+        #region upper level customizations
+
         public KaiaPathEmbed WithField(string Name, string Value)
         {
             this.Inner.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{Value.ToLower(CultureInfo.InvariantCulture)}");
@@ -44,6 +46,14 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             return this;
         }
 
+        public KaiaPathEmbed WithImage(Uri Url)
+        {
+            this.Inner.WithImageUrl(Url.ToString());
+            return this;
+        }
+
+        #endregion
+
         public KaiaPathEmbed MakeNaked()
         {
             this.Inner = new();
@@ -52,9 +62,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         private KaiaPathEmbed Populate()
         {
+            string Parent = this.Parent.ToLower(CultureInfo.InvariantCulture);
             this.Inner.Description =
                 $"" +
-                $"*{this.Parent.ToLower(CultureInfo.InvariantCulture)}*{(this.Sub1 == null ? "" : " // ")}" +
+                $"{(this.Sub1 != null ? $"*{Parent}*" : $"***{Parent}***")}{(this.Sub1 == null ? "" : " // ")}" +
                 $"{(this.Sub1 != null ? $"{(this.Sub2 == null ? $"***{this.Sub1.ToLower(CultureInfo.InvariantCulture)}***" : $"*{this.Sub1.ToLower(CultureInfo.InvariantCulture)}*")}" : "")}" +
                 $"{(this.Sub2 != null ? $" // ***{this.Sub2.ToLower(CultureInfo.InvariantCulture)}***" : "")}";
             this.Inner.Color = this.Override ?? Colors.EmbedColor;

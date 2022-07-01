@@ -12,19 +12,27 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
                                                           Strings.EmbedStrings.FakePaths.Global,
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
-            KaiaUser User = new(Context.UserContext.User.Id);
+            this.Filter = Filter;
+            this.ItemSelected += this.ItemSelectedAsync;
+        }
+
+        public LibraryViewFilters Filter { get; }
+
+        public override async Task RefreshAsync()
+        {
+            KaiaUser User = new(this.Context.UserContext.User.Id);
 
             IEnumerable<KaiaBook> KaiasBooks = KaiaLibrary.Books.Where(KB => KB.AvailableUntil >= DateTime.UtcNow);
-            IEnumerable<KaiaBook> UserBooks = User.LibraryProcessor.GetUserBooksAsync().Result;
+            IEnumerable<KaiaBook> UserBooks = await User.LibraryProcessor.GetUserBooksAsync();
             List<KaiaBook> Inventory = KaiasBooks.Where(B => UserBooks.All(K => K.BookId != B.BookId)).ToList();
 
             Inventory.AddRange(UserBooks);
             bool FirstPage = true;
             foreach (KaiaBook[] Chunk in Inventory.Where(IB =>
             {
-                return Filter == LibraryViewFilters.Complete ? IB.IsFinished :
-                       Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
-                       Filter == LibraryViewFilters.All;
+                return this.Filter == LibraryViewFilters.Complete ? IB.IsFinished :
+                       this.Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
+                       this.Filter == LibraryViewFilters.All;
             }).OrderBy(IB => IB.AvailableUntil).Chunk(2))
             {
                 LibraryPage Embed = new(Chunk, User, FirstPage);
@@ -39,8 +47,6 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
                 }
                 this.EmbedsAndOptions.Add(Embed, B);
             }
-
-            this.ItemSelected += this.ItemSelectedAsync;
         }
 
         private async void ItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)

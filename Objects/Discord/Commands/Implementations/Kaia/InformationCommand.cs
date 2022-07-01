@@ -2,7 +2,7 @@
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 {
     internal class InformationCommand : IKaiaCommand
     {

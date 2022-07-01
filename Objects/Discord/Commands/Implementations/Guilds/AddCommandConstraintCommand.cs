@@ -2,7 +2,7 @@
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 {
     public class AddCommandConstraintCommand : IKaiaCommand
     {

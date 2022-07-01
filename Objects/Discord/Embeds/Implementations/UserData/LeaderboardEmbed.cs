@@ -27,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             return A.Length >= 17 ? A[..20] + ".." : A;
         }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             List<string> Displays = new();
 

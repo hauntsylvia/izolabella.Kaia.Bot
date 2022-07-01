@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 
         public GuildPermission[] Required { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             string MissingStr = Strings.EmbedStrings.Empty;
             GuildPermission[] MissingGP = this.Required.Where(P => !this.UserHas.Has(P)).ToArray();

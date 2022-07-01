@@ -16,17 +16,16 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// either Kaia not being able to sell the item, or users not being able to sell the item.</exception>
         public SaleListing(List<KaiaInventoryItem> Items, KaiaUser? Lister, double CostPerItem, ulong? Id = null, bool IsListed = false, ulong? ListerId = null)
         {
+            this.Items = Items;
+            this.Id = Id ?? IdGenerator.CreateNewId(); 
+            this.ListerId = ListerId ?? Lister?.Id;
+            this.costPerItem = this.Lister != null || this.ListerId != null ? CostPerItem : Items.First().MarketCost;
+            this.IsListed = IsListed;
             // implies an actual user is attempting to sell the item when they can't
-            if((!Items.All(I => I.UsersCanSellThis) && Lister != null) || !Items.All(I => I.KaiaDisplaysThisOnTheStore))
+            if ((this.ListerId == null && Items.Any(I => !I.KaiaDisplaysThisOnTheStore)) || (this.ListerId != null && Items.Any(I => !I.UsersCanSellThis)))
             {
                 throw new KaiaSaleListingInvalidException(Items, Lister);
             }
-
-            this.Items = Items;
-            this.ListerId = ListerId ?? Lister?.Id;
-            this.Id = Id ?? IdGenerator.CreateNewId();
-            this.costPerItem = this.Lister != null ? CostPerItem : Items.Sum(I => I.MarketCost);
-            this.IsListed = IsListed;
         }
 
         public List<KaiaInventoryItem> Items { get; private set; }
@@ -101,6 +100,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
                         foreach (KaiaInventoryItem I in this.Items)
                         {
                             I.Id = IdGenerator.CreateNewId();
+                            await I.OnKaiaStoreRefresh();
                         }
                     }
                 }
@@ -109,6 +109,17 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
             {
                 await DataStores.SaleListingsStore.DeleteAsync(this.Id);
             }
+        }
+
+        public async Task StopSellingAsync()
+        {
+            this.IsListed = false;
+            KaiaUser? U = this.Lister;
+            if (U != null)
+            {
+                await U.Settings.Inventory.AddItemsToInventoryAndSaveAsync(U, this.Items.ToArray());
+            }
+            await DataStores.SaleListingsStore.DeleteAsync(this.Id);
         }
     }
 }

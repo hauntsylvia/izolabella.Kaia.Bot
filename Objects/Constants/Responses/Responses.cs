@@ -4,6 +4,7 @@
     {
         internal static async Task PipeErrors(CommandContext Context, KaiaPathEmbedRefreshable E)
         {
+            await E.RefreshAsync();
             if (Context.UserContext.HasResponded)
             {
                 await Context.UserContext.FollowupAsync(embed: E.Build(), ephemeral: true);

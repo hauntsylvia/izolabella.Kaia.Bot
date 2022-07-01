@@ -15,14 +15,17 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.BuyButton = new(Context, "Buy", BuyItemEmote);
             this.InteractWithButton = new(Context, "Interact", InteractWithItemEmote);
             this.PutUpForSaleButton = new(Context, "Sell", PutUpForSaleEmote);
+            this.RemoveListingButton = new(Context, "Remove", Emotes.Counting.Cancel);
             this.Refreshed = false;
             this.BuyButton.OnButtonPush += this.BuyAsync;
             this.InteractWithButton.OnButtonPush += this.InteractAsync;
             this.PutUpForSaleButton.OnButtonPush += this.SellAsync;
+            this.RemoveListingButton.OnButtonPush += this.RemoveListingAsync;
 
             this.BuyButton.OnButtonPush += this.UpdateEmbedAsync;
             this.InteractWithButton.OnButtonPush += this.UpdateEmbedAsync;
             this.PutUpForSaleButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.RemoveListingButton.OnButtonPush += this.UpdateEmbedAsync;
         }
 
         #region properties
@@ -37,6 +40,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public KaiaButton PutUpForSaleButton { get; }
 
+        public KaiaButton RemoveListingButton { get; }
+
         private bool Refreshed { get; set; }
 
         public DateRateLimiter RateLimiter { get; } = new(DataStores.RateLimitsStore, "Kaia Item", TimeSpan.FromSeconds(8), 6, TimeSpan.FromSeconds(4));
@@ -48,6 +53,16 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         #endregion
 
         #region button events
+
+        private async Task RemoveListingAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
+        {
+            if(UserWhoPressed.Id == this.Listing.ListerId)
+            {
+                await this.Listing.StopSellingAsync();
+                this.Dispose();
+                await this.ForceBackAsync(this.Context);
+            }
+        }
 
         private async Task SellAsync(SocketMessageComponent Arg, KaiaUser U)
         {
@@ -69,11 +84,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private async Task InteractAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            KaiaInventoryItem? Item = this.Listing.Items.FirstOrDefault();
-            if(Item != null && await U.Settings.Inventory.ItemOfDisplayNameExists(Item))
+            KaiaInventoryItem? I = await U.Settings.Inventory.GetItemOfDisplayName(this.Listing.Items.FirstOrDefault());
+            if (I != null)
             {
-                await U.Settings.Inventory.RemoveItemOfNameAsync(Item);
-                await Item.UserInteractAsync(this.Context, U);
+                await this.Context.UserContext.FollowupAsync(embed: new InteractWithItemEmbed(I, U).Build());
             }
         }
 
@@ -81,7 +95,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         {
             if (await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id))
             {
-                if(Arg.Data.CustomId != this.PutUpForSaleButton.Id)
+                if(Arg.Data.CustomId != this.PutUpForSaleButton.Id && Arg.Data.CustomId != this.RemoveListingButton.Id)
                 {
                     await U.SaveAsync();
                     KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
@@ -136,6 +150,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             if (this.Listing.Items.All(I => I.UsersCanSellThis) && Item != null)
             {
                 CB.WithButton(this.PutUpForSaleButton.WithDisabled(!await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || !Item.UsersCanSellThis));
+            }
+            if(this.Listing.ListerId == U.Id)
+            {
+                CB.WithButton(this.RemoveListingButton.WithDisabled(false));
             }
             return CB;
         }

@@ -2,6 +2,7 @@
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Derivations;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
 {
@@ -17,6 +18,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
                 this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
                 this.LibraryProcessor = new(Id);
                 this.AchievementProcessor = new(Id);
+                this.LocationProcessor = new(Id);
 
                 List<KaiaBook> UserOwnedBooks = this.LibraryProcessor.GetUserBooksAsync().Result;
                 double TotalToPay = 0.0;
@@ -44,5 +46,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
         public UserAchievementRoom AchievementProcessor { get; set; }
 
         public UserLibrary LibraryProcessor { get; set; }
+
+        public UserLocationRoom LocationProcessor { get; set; }
     }
 }

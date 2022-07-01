@@ -6,14 +6,13 @@
         {
             this.UserName = UserName;
             this.User = User;
-            this.ClientRefreshAsync().Wait();
         }
 
         public string UserName { get; }
 
         public KaiaUser User { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             this.WithField("highest number counted", $"`{this.User.Settings.HighestCountEver ?? 0}`");
             this.WithField("total numbers counted", $"`{this.User.Settings.NumbersCounted ?? 0}`");

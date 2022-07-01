@@ -8,8 +8,10 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums
 {
     public enum KaiaLocationExplorationStatus
     {
-        AttemptedExploreBeforeTimeoutWasOver,
+        Timeout,
         LocationUnavailable,
-        Successful
+        IncorrectLocationTime,
+        Successful,
+        NotDoneYet
     }
 }

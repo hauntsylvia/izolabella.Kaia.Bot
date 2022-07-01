@@ -47,14 +47,14 @@
         /// </summary>
         /// <param name="Item"></param>
         /// <returns></returns>
-        public Task RemoveItemOfNameAsync(KaiaInventoryItem Item)
+        public async Task RemoveItemOfNameAsync(KaiaUser Parent, KaiaInventoryItem Item)
         {
             int I = this.items.FindIndex(A => A.DisplayName == Item.DisplayName);
             if(I >= 0)
             {
                 this.items.RemoveAt(I);
             }
-            return Task.CompletedTask;
+            await Parent.SaveAsync();
         }
 
         /// <summary>
@@ -70,9 +70,18 @@
         /// Gets all items from the user's inventory by a specific display name.
         /// </summary>
         /// <returns></returns>
-        public Task<IEnumerable<KaiaInventoryItem>> GetItemsOfDisplayName(KaiaInventoryItem? Item)
+        public Task<IEnumerable<KaiaInventoryItem>> GetItemsOfDisplayNameFromItem(KaiaInventoryItem? Item)
         {
             return Task.FromResult(this.Items.Where(I => I.DisplayName == Item?.DisplayName));
+        }
+
+        /// <summary>
+        /// Gets all items from the user's inventory by a specific display name.
+        /// </summary>
+        /// <returns></returns>
+        public Task<IEnumerable<KaiaInventoryItem>> GetItemsOfDisplayName(string DisplayName)
+        {
+            return Task.FromResult(this.Items.Where(I => I.DisplayName == DisplayName));
         }
 
         /// <summary>
@@ -99,9 +108,9 @@
         /// Returns true when the user has an item of a display name.
         /// </summary>
         /// <returns></returns>
-        public Task<bool> ItemOfDisplayNameExists(KaiaInventoryItem Item)
+        public Task<bool> ItemOfDisplayNameExists(KaiaInventoryItem? Item)
         {
-            return Task.FromResult(this.Items.Any(I => I.DisplayName == Item.DisplayName));
+            return Task.FromResult(this.Items.Any(I => I.DisplayName == Item?.DisplayName));
         }
 
         /// <summary>
@@ -112,6 +121,11 @@
         /// <returns></returns>
         public async Task AddItemsToInventoryAndSaveAsync(KaiaUser Parent, params KaiaInventoryItem[] Items)
         {
+            foreach(KaiaInventoryItem Item in Items)
+            {
+                await Item.OnKaiaStoreRefresh();
+                Item.ReceivedAt = DateTime.UtcNow;
+            }
             this.items.AddRange(Items);
             await Parent.SaveAsync();
         }

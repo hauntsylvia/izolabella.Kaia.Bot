@@ -3,7 +3,7 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
-    public class KaiaPathEmbedPaginated : IDisposable
+    public abstract class KaiaPathEmbedPaginated : IDisposable
     {
         public KaiaPathEmbedPaginated(
             Dictionary<KaiaPathEmbedRefreshable, List<SelectMenuOptionBuilder>?> EmbedsAndOptions,
@@ -101,6 +101,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             if (this.Context.UserContext.IsValidToken)
             {
+                await this.RefreshAsync();
                 MessageComponent Comps = this.GetComponentBuilder().Build();
                 KaiaPathEmbedRefreshable RefreshableEmbed = this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Key is KaiaPathEmbedRefreshable Embed ? Embed :
                             this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex >= this.EmbedsAndOptions.Count ? this.EmbedsAndOptions.Count - 1 : 0).Key ?? this.IfNoListElements;
@@ -158,5 +159,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.Context.Reference.Client.ButtonExecuted -= this.ClientButtonPressedAsync;
             this.Context.Reference.Client.SelectMenuExecuted -= this.ClientSelectMenuExecutedAsync;
         }
+
+        public abstract Task RefreshAsync();
     }
 }

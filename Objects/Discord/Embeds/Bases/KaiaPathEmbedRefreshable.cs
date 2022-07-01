@@ -17,6 +17,6 @@
 
         public bool IsRefreshed { get; private set; }
 
-        public abstract Task ClientRefreshAsync();
+        protected abstract Task ClientRefreshAsync();
     }
 }

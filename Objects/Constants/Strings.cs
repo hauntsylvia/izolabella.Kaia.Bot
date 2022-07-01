@@ -29,6 +29,7 @@
                 internal static string Commands => "commands";
                 internal static string Users => "users";
                 public static string Global => "global";
+                public static string Outside => new Random().Next(0, 1000) == 50 ? "desolation" : "outside";
                 internal static string Guilds => "guilds";
                 internal static string Settings => "settings";
                 internal static string Leaderboards => "leaderboards";
@@ -37,6 +38,7 @@
                 internal static string Inventory => "inventory";
                 internal static string Kaia => "kaia";
                 internal static string Achievements => "achievements";
+                internal static string Locations => "locations";
             }
         }
         internal static class Responses
@@ -81,6 +83,20 @@
             internal static class CountingRefresher
             {
                 internal static string Name => "Counting Refresher";
+            }
+            internal static class Notebook
+            {
+                internal static string Name => "Notebook";
+                private static string[] Messages => new[]
+                {
+                    "u write down ur experiences after a long, tiring day.",
+                    "writing down 5 things u r grateful for can be difficult, but u did it.",
+                    "ur mind is jumbled, so u decide to doodle."
+                };
+                internal static string GetMessage()
+                {
+                    return Messages[new Random().Next(0, Messages.Length)];
+                }
             }
         }
         internal static class Economy

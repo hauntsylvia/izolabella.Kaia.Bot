@@ -1,4 +1,5 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.Listings = Listings;
         }
 
-        public ItemsPaginatedPage(CommandContext Context, IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop)
+        public ItemsPaginatedPage(CommandContext Context, IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk) : base(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Inventory)
         {
             this.Context = Context;
             this.ItemCountChunk = ItemCountChunk;
@@ -23,23 +24,24 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public CommandContext Context { get; }
 
-        public IEnumerable<KeyValuePair<KaiaInventoryItem, int>>? ItemCountChunk { get; }
+        public IEnumerable<KeyValuePair<KaiaInventoryItem, int>>? ItemCountChunk { get; private set; }
 
         public IEnumerable<SaleListing>? Listings { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             if(this.Listings != null)
             {
-                foreach (SaleListing Listing in this.Listings)
+                foreach (SaleListing Listing in this.Listings.Where(L => L.IsListed))
                 {
                     KaiaInventoryItem Item = Listing.Items.First();
 
-                    this.WithField($"[{Strings.Economy.CurrencyEmote} `{Listing.CostPerItem}`] {Item.DisplayName}  {Item.DisplayEmote}", Item.Description);
+                    this.WithField($"[{Strings.Economy.CurrencyEmote} `{Listing.CostPerItem}`] {Item.DisplayName} {Item.DisplayEmote}", Item.Description);
                 }
             }
             else if(this.ItemCountChunk != null)
             {
+                this.ItemCountChunk = MeInventoryView.GetItemsAndCounts(this.Context, new(this.Context.UserContext.User.Id));
                 List<string> Display = new();
                 foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in this.ItemCountChunk)
                 {

@@ -2,7 +2,7 @@
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {
     public class MeCommand : IKaiaCommand
     {

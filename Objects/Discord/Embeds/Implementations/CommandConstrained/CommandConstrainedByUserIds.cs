@@ -12,7 +12,7 @@
 
         public string CommandName { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             this.WithField(Strings.EmbedStrings.Empty, $"// *access*\nYou do not have access to this command.");
             return Task.CompletedTask;

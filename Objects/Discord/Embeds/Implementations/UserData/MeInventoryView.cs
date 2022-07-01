@@ -11,31 +11,63 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
                                                           Strings.EmbedStrings.FakePaths.Users,
                                                           Context.UserContext.User.Username)
         {
-            MeView LandingPage = new(Context.UserContext.User.Username, User);
-            IEnumerable<KaiaInventoryItem[]> InventoryChunked = User.Settings.Inventory.Items.Chunk(InventoryChunkSize);
-            LandingPage.WithField($"{Emotes.Counting.Inventory} inventory", $"`{User.Settings.Inventory.Items.Count}` {(User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
-            this.EmbedsAndOptions.Add(LandingPage, null);
+            this.User = User;
+            this.InventoryChunkSize = InventoryChunkSize;
+        }
+
+        public static IEnumerable<KeyValuePair<KaiaInventoryItem, int>> GetItemsAndCounts(CommandContext Context, KaiaUser User)
+        {
             List<KeyValuePair<KaiaInventoryItem, int>> ItemsAndTheirCounts = new();
-            foreach (KaiaInventoryItem[] Chunk in InventoryChunked)
+            foreach (KaiaInventoryItem Item in User.Settings.Inventory.Items)
             {
-                foreach (KaiaInventoryItem Item in Chunk)
+                if (!ItemsAndTheirCounts.Exists(M => M.Key.DisplayName == Item.DisplayName))
                 {
-                    if (!ItemsAndTheirCounts.Exists(M => M.Key.DisplayName == Item.DisplayName))
-                    {
-                        ItemsAndTheirCounts.Add(new(Item, 1));
-                    }
-                    else
-                    {
-                        int Index = ItemsAndTheirCounts.FindIndex(M => M.Key.DisplayName == Item.DisplayName);
-                        ItemsAndTheirCounts[Index] = new(ItemsAndTheirCounts[Index].Key, ItemsAndTheirCounts[Index].Value + 1);
-                    }
+                    ItemsAndTheirCounts.Add(new(Item, 1));
+                }
+                else
+                {
+                    int Index = ItemsAndTheirCounts.FindIndex(M => M.Key.DisplayName == Item.DisplayName);
+                    ItemsAndTheirCounts[Index] = new(ItemsAndTheirCounts[Index].Key, ItemsAndTheirCounts[Index].Value + 1);
                 }
             }
-            foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in ItemsAndTheirCounts.Chunk(InventoryChunkSize))
+            return ItemsAndTheirCounts;
+        }
+
+        public KaiaUser User { get; }
+
+        public int InventoryChunkSize { get; }
+
+        private async void ItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        {
+            await Component.DeferAsync();
+            KaiaInventoryItem? Listing = (await this.User.Settings.Inventory.GetItemsOfDisplayName(ItemsSelected.FirstOrDefault() ?? "")).FirstOrDefault();
+            if (Listing != null)
             {
-                KaiaPathEmbedRefreshable Embed = new ItemsPaginatedPage(Context, ItemCountChunk);
-                this.EmbedsAndOptions.Add(Embed, null);
+                InventoryItemView V = new(this, Listing, this.Context, this.User);
+                await V.StartAsync(new(Component.User.Id));
+                this.Dispose();
             }
+        }
+
+        public override Task RefreshAsync()
+        {
+            MeView LandingPage = new(this.Context.UserContext.User.Username, this.User);
+            IEnumerable<KaiaInventoryItem[]> InventoryChunked = this.User.Settings.Inventory.Items.Chunk(this.InventoryChunkSize);
+            LandingPage.WithField($"{Emotes.Counting.Inventory} inventory", $"`{this.User.Settings.Inventory.Items.Count}` {(this.User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
+            this.EmbedsAndOptions.Add(LandingPage, null);
+            this.ItemSelected += this.ItemSelectedAsync;
+
+            foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in GetItemsAndCounts(this.Context, this.User).Chunk(this.InventoryChunkSize))
+            {
+                ItemsPaginatedPage Embed = new(this.Context, ItemCountChunk);
+                List<SelectMenuOptionBuilder> B = new();
+                foreach (KeyValuePair<KaiaInventoryItem, int> ItemChunk in ItemCountChunk)
+                {
+                    B.Add(new($"[{Strings.Economy.CurrencyEmote} {ItemChunk.Key.MarketCost}] {ItemChunk.Key.DisplayName}", ItemChunk.Key.DisplayName, ItemChunk.Key.Description, ItemChunk.Key.DisplayEmote));
+                }
+                this.EmbedsAndOptions.Add(Embed, B);
+            }
+            return Task.CompletedTask;
         }
     }
 }

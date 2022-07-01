@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 
         public GuildPermission[]? Permissions { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             if (this.Permissions != null)
             {

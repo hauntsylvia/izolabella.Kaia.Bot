@@ -17,7 +17,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         public bool IsFirstPage { get; }
 
-        public override async Task ClientRefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
             if(this.IsFirstPage)
             {

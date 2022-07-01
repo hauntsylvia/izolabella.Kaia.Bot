@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 
         public KaiaUser User { get; }
 
-        public override async Task ClientRefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
             this.WithField("description", $"`{await this.KaiaAchievement.GetDescriptionAsync(this.User)}`");
             this.WithField("achieved?", $"`{(await this.KaiaAchievement.UserAlreadyOwns(this.User) ? "yes" : "no")}`");

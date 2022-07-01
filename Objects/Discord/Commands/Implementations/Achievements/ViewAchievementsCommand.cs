@@ -3,7 +3,7 @@ using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Achievements
 {
     internal class ViewAchievementsCommand : IKaiaCommand
     {

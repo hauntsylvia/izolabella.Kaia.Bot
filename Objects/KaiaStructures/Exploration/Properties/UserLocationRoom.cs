@@ -16,7 +16,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
             this.U = U;
             if (this.U != default)
             {
-                this.UserLocationStore = DataStores.GetUserAchievementStore(this.U);
+                this.UserLocationStore = DataStores.GetUserLocationsStore(this.U);
             }
         }
 
@@ -27,6 +27,11 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
         public async Task<IReadOnlyCollection<KaiaLocation>> GetUserLocationsExploredAsync()
         {
             return await (this.UserLocationStore != null ? this.UserLocationStore.ReadAllAsync<KaiaLocation>() : Task.FromResult(new List<KaiaLocation>()));
+        }
+
+        public async Task AddLocationExploredAsync(KaiaLocation L)
+        {
+            await ( this.UserLocationStore != null ? this.UserLocationStore.SaveAsync(L) : Task.CompletedTask );
         }
     }
 }

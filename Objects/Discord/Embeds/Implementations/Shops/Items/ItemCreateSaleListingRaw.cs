@@ -16,7 +16,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public SaleListing SingleListing { get; }
 
-        public override async Task ClientRefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
             this.WithField($"[{Strings.Economy.CurrencyEmote} `{this.SingleListing.CostPerItem}`] {this.SingleListing.Items.First().DisplayName} {this.SingleListing.Items.First().DisplayEmote} [x{this.SingleListing.Items.Count}]", this.SingleListing.Items.First().Description);
             this.WithListWrittenToField("notices", new()

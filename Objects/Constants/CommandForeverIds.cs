@@ -10,5 +10,7 @@
         internal static string BookLibrary => "library-52420222309";
         internal static string BotDevelopmentInformation => "botinfo-52720220116";
         internal static string ViewAchievements => "viewachievements-62320221727";
+        internal static string ViewActiveLocations => "viewactvlocs-63020221755";
+        internal static string CreateItemListing => "createitmlstng-63020222121";
     }
 }

@@ -13,7 +13,7 @@
         public SocketGuild Guild { get; }
         public ulong[] RoleIdsRequired { get; }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             int MissingRolesCount = 0;
             string RoleStr = Strings.EmbedStrings.Empty;

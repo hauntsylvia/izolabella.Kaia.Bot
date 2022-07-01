@@ -43,11 +43,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if (Arg.IsValidToken && Arg.Data.CustomId == this.BackId && (this.PreviousPageIf != null || this.PreviousPageElse != null) && this.CanGoBack && this.Context.UserContext.User.Id == Arg.User.Id)
             {
                 await Arg.DeferAsync();
-                await this.ForceBack(this.Context);
+                await this.ForceBackAsync(this.Context);
             }
         }
 
-        public async Task ForceBack(CommandContext Context)
+        public async Task ForceBackAsync(CommandContext Context)
         {
             if (this.PreviousPageIf != null)
             {

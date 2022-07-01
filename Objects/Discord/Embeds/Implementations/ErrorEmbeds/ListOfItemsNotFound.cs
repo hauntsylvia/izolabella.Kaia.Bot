@@ -8,7 +8,7 @@
             this.WithField("204", "Yup, u just got an HTTP code from a Discord bot.");
         }
 
-        public override Task ClientRefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             return Task.CompletedTask;
         }

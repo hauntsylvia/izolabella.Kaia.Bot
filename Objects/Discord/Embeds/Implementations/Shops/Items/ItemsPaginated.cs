@@ -11,27 +11,43 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                                                                                                          Strings.EmbedStrings.FakePaths.Global,
                                                                                                          Strings.EmbedStrings.FakePaths.StoreOrShop)
         {
+            this.FilterBy = FilterBy;
+            this.IncludeUserListings = IncludeUserListings;
+            this.ChunkSize = ChunkSize;
+            this.ItemSelected += this.StoreItemSelectedAsync;
+        }
+
+        public List<SaleListing> AllListings { get; } = new();
+
+        public IUser? FilterBy { get; }
+
+        public bool IncludeUserListings { get; }
+
+        public int ChunkSize { get; }
+
+        public override async Task RefreshAsync()
+        {
             List<KaiaInventoryItem> AllItems = BaseImplementationUtil.GetItems<KaiaInventoryItem>()
                                                                   .Where(Item => Item.KaiaDisplaysThisOnTheStore)
                                                                   .ToList();
             List<SaleListing> Listings = new();
-            if(FilterBy == null || FilterBy.Id == Context.Reference.Client.CurrentUser.Id)
+            if (this.FilterBy == null || this.FilterBy.Id == this.Context.Reference.Client.CurrentUser.Id)
             {
                 foreach (KaiaInventoryItem Item in AllItems)
                 {
                     SaleListing L = new(new() { Item }, null, Item.MarketCost);
-                    L.StartSellingAsync().Wait();
+                    await L.StartSellingAsync();
                     Listings.Add(L);
                 }
             }
 
-            if(IncludeUserListings)
+            if (this.IncludeUserListings)
             {
-                List<SaleListing> CurrentUserListings = DataStores.SaleListingsStore.ReadAllAsync<SaleListing>().Result;
-                Listings.AddRange(CurrentUserListings.Where(L => FilterBy == null || L.ListerId == FilterBy.Id));
+                List<SaleListing> CurrentUserListings = await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>();
+                Listings.AddRange(CurrentUserListings.Where(L => this.FilterBy == null || L.ListerId == this.FilterBy.Id));
             }
 
-            IEnumerable<SaleListing[]> ListingsChunked = Listings.Where(A => A.IsListed).OrderBy(K => K.CostPerItem).OrderBy(K => K.Items.First().DisplayName).OrderBy(K => K.ListerId).Chunk(ChunkSize);
+            IEnumerable<SaleListing[]> ListingsChunked = Listings.Where(A => A.IsListed).OrderBy(K => K.CostPerItem).OrderBy(K => K.Items.First().DisplayName).OrderBy(K => K.ListerId).Chunk(this.ChunkSize);
 
             foreach (SaleListing[] ListingsChunk in ListingsChunked)
             {
@@ -40,26 +56,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 foreach (SaleListing Listing in ListingsChunk)
                 {
                     KaiaInventoryItem Item = Listing.Items.First();
-                    string Description = $"[Sold By {(Listing.Lister != null ? Context.Reference.Client.GetUser(Listing.Lister.Id).Username : "Kaia")}] {Item.Description}";
+                    string Description = $"[Sold By {(Listing.Lister != null ? this.Context.Reference.Client.GetUser(Listing.Lister.Id)?.Username : "Kaia")}] {Item.Description}";
                     B.Add(new($"{Item.DisplayName}", Listing.Id.ToString(CultureInfo.InvariantCulture), Description.Length > 100 ? Description[..97] + "..." : Description, Item.DisplayEmote, false));
                 }
                 this.EmbedsAndOptions.Add(Embed, B);
             }
-
-            this.ItemSelected += this.StoreItemSelectedAsync;
-            this.AllListings = Listings;
-            this.FilterBy = FilterBy;
-            this.IncludeUserListings = IncludeUserListings;
-            this.ChunkSize = ChunkSize;
         }
-
-        public List<SaleListing> AllListings { get; }
-
-        public IUser? FilterBy { get; }
-
-        public bool IncludeUserListings { get; }
-
-        public int ChunkSize { get; }
 
         private async void StoreItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {

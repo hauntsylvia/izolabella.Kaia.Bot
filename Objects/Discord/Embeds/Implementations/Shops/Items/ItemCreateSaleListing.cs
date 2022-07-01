@@ -1,4 +1,5 @@
 ﻿using izolabella.Util;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
@@ -18,7 +19,27 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 }
             }
             PreviousPage.ListingInteraction = this;
-            this.PreviousPage = PreviousPage;
+            this.PreviousPageStore = PreviousPage;
+            this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
+            this.AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
+            this.RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
+            Context.Reference.Client.MessageReceived += this.MessageReceivedAsync;
+        }
+
+        public ItemCreateSaleListing(InventoryItemView PreviousPage, CommandContext Context, SaleListing FromListing) : base(PreviousPage, Context, true)
+        {
+            KaiaUser U = new(Context.UserContext.User.Id);
+            this.Listing = new(new(), U, FromListing.CostPerItem);
+            foreach(KaiaInventoryItem Item in FromListing.Items.ToList())
+            {
+                KaiaInventoryItem? RelevantItem = U.Settings.Inventory.GetItemOfDisplayName(Item).Result;
+                if (RelevantItem != null)
+                {
+                    this.Listing.Items.Add(RelevantItem);
+                }
+            }
+            PreviousPage.ListingInteraction = this;
+            this.PreviousPageInventory = PreviousPage;
             this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
             this.AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
             this.RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
@@ -29,7 +50,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public SaleListing Listing { get; }
 
-        public ItemView PreviousPage { get; }
+        public ItemView? PreviousPageStore { get; }
+
+        public InventoryItemView? PreviousPageInventory { get; }
 
         public KaiaButton SubmitButton { get; private set; }
 
@@ -43,7 +66,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private async Task AddOneAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            IEnumerable<KaiaInventoryItem> ItemsMinusExistingIdsInThisListing = U.Settings.Inventory.Items.Where(I => I.UsersCanSellThis && !this.Listing.Items.Any(ListingItem => ListingItem.Id == I.Id));
+            IEnumerable<KaiaInventoryItem> ItemsMinusExistingIdsInThisListing = U.Settings.Inventory.Items
+                .Where(I => I.UsersCanSellThis && !this.Listing.Items.Any(ListingItem => ListingItem.Id == I.Id) && I.DisplayName == this.Listing.Items.First().DisplayName);
             KaiaInventoryItem? RelevantItem = await U.Settings.Inventory.GetItemOfId(ItemsMinusExistingIdsInThisListing.FirstOrDefault()?.Id ?? 0);
             if(RelevantItem != null)
             {
@@ -65,11 +89,25 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             await Arg.DeferAsync();
             await this.Listing.StartSellingAsync();
             this.Dispose();
-            this.PreviousPage.Dispose();
-            if (this.PreviousPage.From != null)
+            if(this.PreviousPageStore != null)
             {
-                this.PreviousPage.From.Dispose();
-                await new ItemsPaginated(this.Context, this.PreviousPage.From.FilterBy, this.PreviousPage.From.IncludeUserListings, this.PreviousPage.From.ChunkSize).StartAsync();
+                this.PreviousPageStore.Dispose();
+            }
+            if(this.PreviousPageInventory != null)
+            {
+                this.PreviousPageInventory.Dispose();
+            }
+            if (this.PreviousPageStore?.From != null || this.PreviousPageInventory?.From != null)
+            {
+                this.PreviousPageStore?.From?.Dispose();
+                if(this.PreviousPageStore != null)
+                {
+                    await new ItemsPaginated(this.Context, this.PreviousPageStore?.From?.FilterBy, this.PreviousPageStore?.From?.IncludeUserListings ?? true, this.PreviousPageStore?.From?.ChunkSize ?? 2).StartAsync();
+                }
+                else
+                {
+                    await new MeInventoryView(U, this.Context, this.PreviousPageInventory?.From?.InventoryChunkSize ?? 4).StartAsync();
+                }
             }
             else
             {
@@ -125,7 +163,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             ComponentBuilder CB = (await this.GetDefaultComponents())
                 .WithButton(this.SubmitButton.WithDisabled(
                     this.Listing.CostPerItem <= 0 || !this.Listing.Items.All(I => I.UsersCanSellThis) || (await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == this.Listing.ListerId)))
-                .WithButton(this.AddOneMoreButton.WithDisabled(U.Settings.Inventory.GetItemsOfDisplayName(this.Listing.Items.First()).Result.Count() <= this.Listing.Items.Count))
+                .WithButton(this.AddOneMoreButton.WithDisabled(U.Settings.Inventory.GetItemsOfDisplayNameFromItem(this.Listing.Items.First()).Result.Count() <= this.Listing.Items.Count))
                 .WithButton(this.RemoveOneMoreButton.WithDisabled(this.Listing.Items.Count <= 1));
             return CB;
         }

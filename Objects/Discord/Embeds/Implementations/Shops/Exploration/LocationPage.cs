@@ -26,17 +26,18 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
             {
                 List<string> Display = new()
                 {
-                    Location.Status == KaiaLocationExplorationStatus.LocationUnavailable ?
-                        $"this location is not available for exploration" :
+                    $"```{(Location.StatusNoTimeout == KaiaLocationExplorationStatus.LocationUnavailable ?
+                        $"this location is not available for exploration anymore" :
                         Location.Status == KaiaLocationExplorationStatus.Timeout ?
                             $"u must wait before exploring this location again" :
-                            Location.ShortDescription
+                            Location.ShortDescription)}```"
                 };
-                if (Location.AvailableUntil.HasValue && Location.StatusNoTimeout == KaiaLocationExplorationStatus.IncorrectLocationTime)
+                if (Location.AvailableUntil.HasValue && Location.StatusNoTimeout != KaiaLocationExplorationStatus.LocationUnavailable)
                 {
                     Display.Add($"`{Math.Round((Location.AvailableUntil.Value - DateTime.UtcNow).TotalDays, 0)}` days left");
                 }
-                this.WithListWrittenToField(Location.Name, Display, "\n");
+                Display.Add(Strings.EmbedStrings.Empty);
+                this.WithListWrittenToField($"{Location.Name}", Display, "\n");
             }
             return Task.CompletedTask;
         }

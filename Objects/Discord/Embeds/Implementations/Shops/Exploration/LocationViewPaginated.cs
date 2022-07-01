@@ -24,13 +24,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
         {
             IEnumerable<KaiaLocation> Inventory = KaiaLocationRoom.Locations;
 
-            foreach (KaiaLocation[] Chunk in Inventory.Where(IB => IB.StatusNoTimeout == KaiaStructures.Exploration.Locations.Enums.KaiaLocationExplorationStatus.Successful).OrderBy(IB => IB.AvailableUntil).Chunk(4))
+            foreach (KaiaLocation[] Chunk in Inventory.Where(IB => IB.StatusNoTimeout == KaiaStructures.Exploration.Locations.Enums.KaiaLocationExplorationStatus.Successful).OrderBy(IB => IB.AvailableUntil.HasValue ? IB.AvailableUntil : IB.End).Chunk(4))
             {
                 LocationPage Embed = new(Chunk, this.U);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaLocation Location in Chunk)
                 {
-                    B.Add(new(Location.Name, Location.Id.ToString(CultureInfo.InvariantCulture), null, Emotes.Counting.Location, false));
+                    B.Add(new(Location.Name, Location.Id.ToString(CultureInfo.InvariantCulture), null, Location.Emote, false));
                 }
                 this.EmbedsAndOptions.Add(Embed, B);
             }

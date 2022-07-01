@@ -1,6 +1,6 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;

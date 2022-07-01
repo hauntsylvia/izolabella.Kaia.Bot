@@ -1,7 +1,7 @@
 ﻿using izolabella.Storage.Objects.Structures;
 using izolabella.Util;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 {
@@ -16,18 +16,20 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                             TimeSpan AvailableAt,
                             TimeSpan AvailableTo,
                             TimeSpan MinimumTimeBetweenExplorations,
-                            Uri CoverUrl,
+                            KaiaEmote Emote,
+                            Uri? CoverUrl = null,
                             DateTime? ExploredAt = null)
         {
             this.Name = Name;
             this.Description = Description;
             this.ShortDescription = ShortDescription;
-            this.DisplayRewards = DisplayRewards;
+            this.displayRewards = DisplayRewards;
             this.Id = SuperSecretSelfId;
             this.Events = Events;
             this.AvailableAt = AvailableAt;
             this.AvailableTo = AvailableTo;
             this.MinimumTimeBetweenExplorations = MinimumTimeBetweenExplorations;
+            this.Emote = Emote;
             this.CoverUrl = CoverUrl;
             this.ExploredAt = ExploredAt;
         }
@@ -38,7 +40,9 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
         public string ShortDescription { get; }
 
-        public bool DisplayRewards { get; }
+        private readonly bool displayRewards;
+
+        public bool DisplayRewards => this.displayRewards && this.Events.Count() > 0;
 
         public IEnumerable<KaiaLocationEvent> Events { get; }
 
@@ -50,22 +54,29 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
         public TimeSpan MinimumTimeBetweenExplorations { get; }
 
+        public KaiaEmote Emote { get; }
+
         public DateTime? ExploredAt { get; private set; }
 
         public DateTime? MustWaitUntil => this.ExploredAt.HasValue ? this.ExploredAt.Value.Add(this.MinimumTimeBetweenExplorations) : null;
 
-        public Uri CoverUrl { get; }
+        public Uri? CoverUrl { get; }
 
-        public bool Overnight { get; set; }
+        public bool Overnight => this.AvailableAt > this.AvailableTo;
+
+        public DateTime InnerClock { get; } = DateTime.UtcNow;
+
+        public DateTime Start => this.InnerClock.Date.Add(this.AvailableAt);
+
+        public DateTime End => this.Overnight ? this.InnerClock.Date.AddDays(1).Add(this.AvailableTo) : this.InnerClock.Date.Add(this.AvailableAt);
 
         [JsonProperty("SuperSecretSelfId")]
         public ulong Id { get; }
 
         public KaiaLocationExplorationStatus Status =>
-            !this.Overnight && (DateTime.UtcNow.TimeOfDay < this.AvailableAt || DateTime.UtcNow.TimeOfDay > this.AvailableTo) ? KaiaLocationExplorationStatus.IncorrectLocationTime :
-            this.Overnight && (DateTime.UtcNow.TimeOfDay > this.AvailableAt || DateTime.UtcNow.Add(this.AvailableTo).TimeOfDay < this.AvailableTo) ? KaiaLocationExplorationStatus.IncorrectLocationTime :
-            this.AvailableUntil.HasValue && DateTime.UtcNow < this.AvailableUntil.Value ? KaiaLocationExplorationStatus.LocationUnavailable :
-            this.MustWaitUntil.HasValue && (this.MustWaitUntil.Value > DateTime.UtcNow) ? KaiaLocationExplorationStatus.Timeout :
+            this.InnerClock < this.Start || this.InnerClock > this.End ? KaiaLocationExplorationStatus.IncorrectLocationTime :
+            this.AvailableUntil.HasValue && this.InnerClock < this.AvailableUntil.Value ? KaiaLocationExplorationStatus.LocationUnavailable :
+            this.MustWaitUntil.HasValue && (this.MustWaitUntil.Value > this.InnerClock) ? KaiaLocationExplorationStatus.Timeout :
             KaiaLocationExplorationStatus.Successful;
 
         public KaiaLocationExplorationStatus StatusNoTimeout => this.Status == KaiaLocationExplorationStatus.Timeout ? KaiaLocationExplorationStatus.Successful : this.Status;

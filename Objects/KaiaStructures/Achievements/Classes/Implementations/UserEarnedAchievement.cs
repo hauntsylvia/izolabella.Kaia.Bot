@@ -1,6 +1,5 @@
 ﻿using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 {
@@ -16,7 +15,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
         /// <param name="DisplayEmote"></param>
         /// <param name="Rewards"></param>
         [JsonConstructor]
-        public UserEarnedAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaItemEmote DisplayEmote, params KaiaUserReward[] Rewards) : base(Id, Title, DescriptionWhenAchieved, DescriptionWhenNotAchieved, Category, DisplayEmote, Rewards)
+        public UserEarnedAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaEmote DisplayEmote, params KaiaUserReward[] Rewards) : base(Id, Title, DescriptionWhenAchieved, DescriptionWhenNotAchieved, Category, DisplayEmote, Rewards)
         {
         }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
+namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 {
     public class KaiaLocationEvent
     {
@@ -16,11 +16,11 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
             this.RewardResult = RewardResult;
         }
 
-        public string Message { get; }
+        public string Message { get; protected set; }
 
         public int Weight { get; }
 
-        public KaiaUserReward RewardResult { get; }
+        public KaiaUserReward RewardResult { get; protected set; }
 
         public KaiaLocationExplorationStatus Status { get; set; } = KaiaLocationExplorationStatus.NotDoneYet;
     }

@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Constants.Exploration
+namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
 {
-    public class Strings
+    public class Spell
     {
-        public static string D => "abc";
+        public Spell()
+        {
+
+        }
     }
 }

@@ -104,6 +104,16 @@
                     return Messages[new Random().Next(0, Messages.Length)];
                 }
             }
+            internal static class DeadFinger
+            {
+                internal static string Name => "Dead Finger";
+                private static string[] PossibleMessages => new string[]
+                {
+                    ""
+                };
+
+                public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
+            }
         }
         internal static class Economy
         {

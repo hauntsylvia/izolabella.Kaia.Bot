@@ -1,9 +1,9 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties
+﻿namespace Kaia.Bot.Objects.Util
 {
-    public class KaiaItemEmote : IEmote
+    public class KaiaEmote : IEmote
     {
         [JsonConstructor]
-        public KaiaItemEmote(string Name)
+        public KaiaEmote(string Name)
         {
             this.Name = Name;
         }

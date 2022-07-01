@@ -1,6 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
-
-namespace Kaia.Bot.Objects.Constants
+﻿namespace Kaia.Bot.Objects.Constants
 {
     internal static class Emotes
     {
@@ -23,9 +21,10 @@ namespace Kaia.Bot.Objects.Constants
         }
         internal static class Items
         {
-            internal static KaiaItemEmote CountingRefresher => new("🔄");
-            internal static KaiaItemEmote Rose => new("🌹");
-            internal static KaiaItemEmote Notebook => new("📒");
+            internal static KaiaEmote CountingRefresher => new("🔄");
+            internal static KaiaEmote Rose => new("🌹");
+            internal static KaiaEmote Notebook => new("📒");
+            internal static KaiaEmote DeadFinger => new("☠️");
             internal static Emoji NoEmote => new("❔");
         }
         internal static class Embeds
@@ -36,7 +35,7 @@ namespace Kaia.Bot.Objects.Constants
         }
         internal static class Achievements
         {
-            internal static KaiaItemEmote Counting => new("🔢");
+            internal static KaiaEmote Counting => new("🔢");
         }
     }
 }

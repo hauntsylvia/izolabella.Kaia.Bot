@@ -13,7 +13,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
                                  bool CanInteractWithDirectly,
                                  bool KaiaDisplaysThisOnTheStore,
                                  bool UsersCanSellThis,
-                                 KaiaItemEmote DisplayEmoteName,
+                                 KaiaEmote DisplayEmoteName,
                                  KaiaItemReturnContext? OnInteract = null,
                                  ulong? Id = null)
         {
@@ -32,7 +32,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
         public string DisplayName { get; }
 
         /// <summary>
-        /// $"[{Strings.Economy.CurrencyEmote} {ItemChunk.Key.MarketCost}] {ItemChunk.Key.DisplayName}"
+        /// $"[{ExplorationStrings.Economy.CurrencyEmote} {ItemChunk.Key.MarketCost}] {ItemChunk.Key.DisplayName}"
         /// </summary>
         public string DisplayString => $"[{Strings.Economy.CurrencyEmote} `{this.MarketCost}`] {this.DisplayName}";
 
@@ -52,7 +52,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
         public bool UsersCanSellThis { get; }
 
         [JsonProperty("DisplayEmote")]
-        public KaiaItemEmote DisplayEmote { get; set; }
+        public KaiaEmote DisplayEmote { get; set; }
 
         [JsonProperty("OnInteract")]
         public KaiaItemReturnContext? OnInteract { get; protected set; }

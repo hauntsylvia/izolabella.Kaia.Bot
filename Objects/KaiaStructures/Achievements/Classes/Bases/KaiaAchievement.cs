@@ -1,12 +1,11 @@
 ﻿using izolabella.Storage.Objects.Structures;
 using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 {
     public abstract class KaiaAchievement : IDataStoreEntity
     {
-        public KaiaAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaItemEmote DisplayEmote, params KaiaUserReward[] Rewards)
+        public KaiaAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaEmote DisplayEmote, params KaiaUserReward[] Rewards)
         {
             this.Id = Id;
             this.Title = Title;
@@ -33,7 +32,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 
         public DateTime InitializedAt { get; } = DateTime.UtcNow;
 
-        public KaiaItemEmote DisplayEmote { get; }
+        public KaiaEmote DisplayEmote { get; }
 
         public abstract Task<bool> CanAwardAsync(KaiaUser U, CommandContext? Context);
 

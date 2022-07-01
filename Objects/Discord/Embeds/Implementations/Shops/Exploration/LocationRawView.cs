@@ -1,5 +1,5 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 
         protected override Task ClientRefreshAsync()
         {
-            this.WithImage(this.Location.CoverUrl);
+            if(this.Location.CoverUrl != null)
+            {
+                this.WithImage(this.Location.CoverUrl);
+            }
             this.WithField("description", $"```{this.Location.Description}```");
             if(this.Location.DisplayRewards)
             {

@@ -18,7 +18,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         public LibraryViewFilters Filter { get; }
 
-        public override async Task RefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
             KaiaUser User = new(this.Context.UserContext.User.Id);
 

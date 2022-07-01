@@ -13,9 +13,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
         {
             this.User = User;
             this.InventoryChunkSize = InventoryChunkSize;
+            this.ItemSelected += this.ItemSelectedAsync;
         }
 
-        public static IEnumerable<KeyValuePair<KaiaInventoryItem, int>> GetItemsAndCounts(CommandContext Context, KaiaUser User)
+        public static IEnumerable<KeyValuePair<KaiaInventoryItem, int>> GetItemsAndCounts(KaiaUser User)
         {
             List<KeyValuePair<KaiaInventoryItem, int>> ItemsAndTheirCounts = new();
             foreach (KaiaInventoryItem Item in User.Settings.Inventory.Items)
@@ -49,15 +50,14 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             }
         }
 
-        public override Task RefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             MeView LandingPage = new(this.Context.UserContext.User.Username, this.User);
             IEnumerable<KaiaInventoryItem[]> InventoryChunked = this.User.Settings.Inventory.Items.Chunk(this.InventoryChunkSize);
             LandingPage.WithField($"{Emotes.Counting.Inventory} inventory", $"`{this.User.Settings.Inventory.Items.Count}` {(this.User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
             this.EmbedsAndOptions.Add(LandingPage, null);
-            this.ItemSelected += this.ItemSelectedAsync;
 
-            foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in GetItemsAndCounts(this.Context, this.User).Chunk(this.InventoryChunkSize))
+            foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in GetItemsAndCounts(this.User).Chunk(this.InventoryChunkSize))
             {
                 ItemsPaginatedPage Embed = new(this.Context, ItemCountChunk);
                 List<SelectMenuOptionBuilder> B = new();

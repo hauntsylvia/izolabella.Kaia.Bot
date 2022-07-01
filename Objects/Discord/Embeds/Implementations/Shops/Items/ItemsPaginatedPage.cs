@@ -41,7 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             }
             else if(this.ItemCountChunk != null)
             {
-                this.ItemCountChunk = MeInventoryView.GetItemsAndCounts(this.Context, new(this.Context.UserContext.User.Id));
+                this.ItemCountChunk = MeInventoryView.GetItemsAndCounts(new(this.Context.UserContext.User.Id));
                 List<string> Display = new();
                 foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in this.ItemCountChunk)
                 {

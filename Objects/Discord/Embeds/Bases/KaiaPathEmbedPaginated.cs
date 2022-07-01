@@ -130,7 +130,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             if (Component.IsValidToken && Component.Data.CustomId == this.GetIdFromIndex() && Component.User.Id == this.Context.UserContext.User.Id)
             {
                 KaiaPathEmbedRefreshable EmbedOfThis = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
-                //await EmbedOfThis.RefreshAsync();
+                //await EmbedOfThis.ClientRefreshAsync();
                 this.ItemSelected?.Invoke(EmbedOfThis, this.ZeroBasedIndex, Component, Component.Data.Values);
             }
             return Task.CompletedTask;
@@ -140,6 +140,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             if ((Component.Data.CustomId == this.BId || Component.Data.CustomId == this.FId) && Component.User.Id == this.Context.UserContext.User.Id)
             {
+                await this.RefreshAsync();
                 this.ZeroBasedIndex = Component.Data.CustomId == this.BId ? this.ZeroBasedIndex - 1 : this.ZeroBasedIndex + 1;
                 KaiaPathEmbedRefreshable RefreshableEmbed = this.EmbedsAndOptions.ElementAt(this.ZeroBasedIndex).Key;
                 Embed BuiltEmbed = await GetEmbedAsync(RefreshableEmbed);
@@ -160,6 +161,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.Context.Reference.Client.SelectMenuExecuted -= this.ClientSelectMenuExecutedAsync;
         }
 
-        public abstract Task RefreshAsync();
+        public async Task RefreshAsync()
+        {
+            this.EmbedsAndOptions.Clear();
+            await this.ClientRefreshAsync();
+        }
+
+        protected abstract Task ClientRefreshAsync();
     }
 }

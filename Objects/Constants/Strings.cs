@@ -87,11 +87,17 @@
             internal static class Notebook
             {
                 internal static string Name => "Notebook";
-                private static string[] Messages => new[]
+                private static string[] Messages { get; } = new[]
                 {
                     "u write down ur experiences after a long, tiring day.",
                     "writing down 5 things u r grateful for can be difficult, but u did it.",
-                    "ur mind is jumbled, so u decide to doodle."
+                    "ur mind is jumbled, so u decide to doodle.",
+                    "u allow ur thoughts to flow from ur brain and onto the page. it's disorganized, but u feel somewhat better.",
+                    "women's rights to abortions r important. u decide to write down the dates for the next protest u r going to.",
+                    "the paper becomes ur canvas. u r more creative than u realize.",
+                    "u've written 3 reasons to keep going. u decide assigning an arbitrary value to urself is . . ironically, meaningless.",
+                    "ur thoughts flow through the pen and onto paper.",
+                    "r u tired? u haven't written a whole lot. that's okay, get some rest if u need it."
                 };
                 internal static string GetMessage()
                 {

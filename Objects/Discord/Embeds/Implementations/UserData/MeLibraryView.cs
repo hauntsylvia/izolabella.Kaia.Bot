@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 
         public int LibraryChunkSize { get; }
 
-        public override async Task RefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
             MeView LandingPage = new(this.Context.UserContext.User.Username, this.User);
             List<KaiaBook> Books = await this.User.LibraryProcessor.GetUserBooksAsync();

@@ -17,7 +17,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.ItemSelected += this.StoreItemSelectedAsync;
         }
 
-        public List<SaleListing> AllListings { get; } = new();
+        public List<SaleListing> Listings { get; private set; } = new();
 
         public IUser? FilterBy { get; }
 
@@ -25,29 +25,30 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public int ChunkSize { get; }
 
-        public override async Task RefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
+            this.Listings = new();
             List<KaiaInventoryItem> AllItems = BaseImplementationUtil.GetItems<KaiaInventoryItem>()
                                                                   .Where(Item => Item.KaiaDisplaysThisOnTheStore)
                                                                   .ToList();
-            List<SaleListing> Listings = new();
+
             if (this.FilterBy == null || this.FilterBy.Id == this.Context.Reference.Client.CurrentUser.Id)
             {
                 foreach (KaiaInventoryItem Item in AllItems)
                 {
                     SaleListing L = new(new() { Item }, null, Item.MarketCost);
                     await L.StartSellingAsync();
-                    Listings.Add(L);
+                    this.Listings.Add(L);
                 }
             }
 
             if (this.IncludeUserListings)
             {
                 List<SaleListing> CurrentUserListings = await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>();
-                Listings.AddRange(CurrentUserListings.Where(L => this.FilterBy == null || L.ListerId == this.FilterBy.Id));
+                this.Listings.AddRange(CurrentUserListings.Where(L => this.FilterBy == null || L.ListerId == this.FilterBy.Id));
             }
 
-            IEnumerable<SaleListing[]> ListingsChunked = Listings.Where(A => A.IsListed).OrderBy(K => K.CostPerItem).OrderBy(K => K.Items.First().DisplayName).OrderBy(K => K.ListerId).Chunk(this.ChunkSize);
+            IEnumerable<SaleListing[]> ListingsChunked = this.Listings.Where(A => A.IsListed).OrderBy(K => K.CostPerItem).OrderBy(K => K.Items.First().DisplayName).OrderBy(K => K.ListerId).Chunk(this.ChunkSize);
 
             foreach (SaleListing[] ListingsChunk in ListingsChunked)
             {
@@ -66,7 +67,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         private async void StoreItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
-            SaleListing? Listing = this.AllListings.FirstOrDefault(Listing => Listing.Id.ToString(CultureInfo.InvariantCulture) == (ItemsSelected.FirstOrDefault() ?? ""));
+            SaleListing? Listing = this.Listings.FirstOrDefault(Listing => Listing.Id.ToString(CultureInfo.InvariantCulture) == (ItemsSelected.FirstOrDefault() ?? ""));
             if (Listing != null)
             {
                 ItemView V = new(this, this.Context, Listing, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, Emotes.Counting.SellItem, true);

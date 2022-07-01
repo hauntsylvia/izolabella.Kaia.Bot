@@ -24,7 +24,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 
         KaiaUser U { get; }
 
-        public override async Task RefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
             List<KaiaAchievement>? R = (await this.U.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
             R.AddRange(KaiaAchievementRoom.Achievements.Where(KaiaAch => !R.Any(RR => RR.Id == KaiaAch.Id)));
@@ -45,9 +45,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
                 }
                 this.EmbedsAndOptions.Add(Embed, SelectMenu);
             }
-
         }
-
         private async void AchievementSelected(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             if (this.Context.UserContext.IsValidToken)

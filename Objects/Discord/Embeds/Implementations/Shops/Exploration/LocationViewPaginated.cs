@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 
         KaiaUser U { get; }
 
-        public override Task RefreshAsync()
+        protected override Task ClientRefreshAsync()
         {
             IEnumerable<KaiaLocation> Inventory = KaiaLocationRoom.Locations;
 

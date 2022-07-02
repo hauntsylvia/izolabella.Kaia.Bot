@@ -34,7 +34,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             return ItemsAndTheirCounts;
         }
 
-        public KaiaUser User { get; }
+        public KaiaUser User { get; private set; }
 
         public int InventoryChunkSize { get; }
 
@@ -52,8 +52,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 
         protected override Task ClientRefreshAsync()
         {
+            this.User = new(this.Context.UserContext.User.Id);
+
             MeView LandingPage = new(this.Context.UserContext.User.Username, this.User);
-            IEnumerable<KaiaInventoryItem[]> InventoryChunked = this.User.Settings.Inventory.Items.Chunk(this.InventoryChunkSize);
             LandingPage.WithField($"{Emotes.Counting.Inventory} inventory", $"`{this.User.Settings.Inventory.Items.Count}` {(this.User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
             this.EmbedsAndOptions.Add(LandingPage, null);
 

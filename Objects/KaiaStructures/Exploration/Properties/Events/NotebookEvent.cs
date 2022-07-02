@@ -10,11 +10,10 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 {
     public class NotebookEvent : KaiaLocationEvent
     {
-        public NotebookEvent(int Weight) : base("a butterfly! . . oh, u've killed it. at least now u have a notebook to write down ur regrets.", 
+        public NotebookEvent(int Weight) : base(ExplorationStrings.NotebookEvent.Message, 
             Weight, 
             new(0, new Notebook()))
         {
-            this.Message = ExplorationStrings.NotebookEvent.Message;
         }
     }
 }

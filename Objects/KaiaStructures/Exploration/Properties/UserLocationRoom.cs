@@ -24,14 +24,30 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
 
         private DataStore? UserLocationStore { get; }
 
-        public async Task<IReadOnlyCollection<KaiaLocation>> GetUserLocationsExploredAsync()
+        public async Task<IEnumerable<KaiaLocation>> GetUserLocationsExploredAsync()
         {
-            return await (this.UserLocationStore != null ? this.UserLocationStore.ReadAllAsync<KaiaLocation>() : Task.FromResult(new List<KaiaLocation>()));
+            List<KaiaLocation> Locs = await (this.UserLocationStore != null ? this.UserLocationStore.ReadAllAsync<KaiaLocation>() : Task.FromResult(new List<KaiaLocation>()));
+            if(this.UserLocationStore != null)
+            {
+                foreach (KaiaLocation Loc in Locs.Where(L => L.MustWaitUntil < DateTime.UtcNow))
+                {
+                    await this.UserLocationStore.DeleteAsync(Loc.Id);
+                }
+            }
+            return Locs.Where(L => L.MustWaitUntil >= DateTime.UtcNow);
         }
 
         public async Task AddLocationExploredAsync(KaiaLocation L)
         {
             await ( this.UserLocationStore != null ? this.UserLocationStore.SaveAsync(L) : Task.CompletedTask );
+        }
+
+        public async Task RemoveAllLocationsExploredAsync()
+        {
+            if(this.UserLocationStore != null)
+            {
+                await this.UserLocationStore.DeleteAllAsync();
+            }
         }
     }
 }

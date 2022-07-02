@@ -42,7 +42,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
         private readonly bool displayRewards;
 
-        public bool DisplayRewards => this.displayRewards && this.Events.Count() > 0;
+        public bool DisplayRewards => this.displayRewards && this.Events.Any();
 
         public IEnumerable<KaiaLocationEvent> Events { get; }
 
@@ -68,13 +68,14 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
         public DateTime Start => this.InnerClock.Date.Add(this.AvailableAt);
 
-        public DateTime End => this.Overnight ? this.InnerClock.Date.AddDays(1).Add(this.AvailableTo) : this.InnerClock.Date.Add(this.AvailableAt);
+        public DateTime End => this.Overnight ? this.InnerClock.Date.AddDays(1).Add(this.AvailableTo) : this.InnerClock.Date.Add(this.AvailableTo);
 
         [JsonProperty("SuperSecretSelfId")]
         public ulong Id { get; }
 
         public KaiaLocationExplorationStatus Status =>
-            this.InnerClock < this.Start || this.InnerClock > this.End ? KaiaLocationExplorationStatus.IncorrectLocationTime :
+            this.Overnight && this.InnerClock.TimeOfDay > this.AvailableTo && this.InnerClock.TimeOfDay < this.AvailableAt ? KaiaLocationExplorationStatus.IncorrectLocationTime :
+            !this.Overnight && (this.InnerClock < this.Start || this.InnerClock > this.End) ? KaiaLocationExplorationStatus.IncorrectLocationTime :
             this.AvailableUntil.HasValue && this.InnerClock < this.AvailableUntil.Value ? KaiaLocationExplorationStatus.LocationUnavailable :
             this.MustWaitUntil.HasValue && (this.MustWaitUntil.Value > this.InnerClock) ? KaiaLocationExplorationStatus.Timeout :
             KaiaLocationExplorationStatus.Successful;

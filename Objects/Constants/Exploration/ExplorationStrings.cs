@@ -31,5 +31,15 @@ namespace Kaia.Bot.Objects.Constants.Exploration
 
             public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
         }
+
+        public static class DeadFingerEvent
+        {
+            private static string[] PossibleMessages => new string[]
+            {
+                ". . . let's not ask too many questions."
+            };
+
+            public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
+        }
     }
 }

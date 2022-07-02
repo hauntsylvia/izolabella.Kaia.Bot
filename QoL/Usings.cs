@@ -18,5 +18,6 @@ global using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 global using Kaia.Bot.Objects.KaiaStructures.Users;
 global using Kaia.Bot.Objects.Util;
 global using Kaia.Bot.Objects.Discord.Components;
+global using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
 global using Newtonsoft.Json;
 global using System.Globalization;

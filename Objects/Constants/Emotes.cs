@@ -18,6 +18,8 @@
             internal static Emoji Add => Emoji.Parse("➕");
             internal static Emoji Sub => Emoji.Parse("➖");
             internal static Emoji Explore => Emoji.Parse("☁️");
+            internal static KaiaEmote Blessings => new("❤️‍🩹");
+            internal static KaiaEmote Curses => new("☠️");
         }
         internal static class Items
         {

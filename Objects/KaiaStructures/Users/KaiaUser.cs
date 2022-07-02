@@ -3,6 +3,8 @@ using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Derivations;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
 {
@@ -19,6 +21,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
                 this.LibraryProcessor = new(Id);
                 this.AchievementProcessor = new(Id);
                 this.LocationProcessor = new(Id);
+                this.SpellsProcessor = new(Id);
 
                 List<KaiaBook> UserOwnedBooks = this.LibraryProcessor.GetUserBooksAsync().Result;
                 double TotalToPay = 0.0;
@@ -43,10 +46,16 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
         [JsonProperty("Settings", Required = Required.Always)]
         public KaiaUserSettings Settings { get; set; }
 
+        [JsonIgnore]
         public UserAchievementRoom AchievementProcessor { get; set; }
 
+        [JsonIgnore]
         public UserLibrary LibraryProcessor { get; set; }
 
+        [JsonIgnore]
         public UserLocationRoom LocationProcessor { get; set; }
+
+        [JsonIgnore]
+        public SpellsProcessor SpellsProcessor { get; set; }
     }
 }

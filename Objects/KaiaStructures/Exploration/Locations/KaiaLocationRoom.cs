@@ -33,7 +33,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
             new("Factory", "A long forgotten vessel of machinery, boasting massive towers and numerous floors. Whether or not you are the only one here is up for debate, but maybe you'll find something useful enough that it was worth your time.",
                 "An abandoned facility once used to create wonders of machines.", true, 7120221753, new List<KaiaLocationEvent>()
                 {
-
+                    new DeadFingerEvent(1),
                 }, TimeSpan.FromHours(22.5), TimeSpan.FromHours(6), TimeSpan.FromHours(36), new("🏭"), null)
             #endregion
         };

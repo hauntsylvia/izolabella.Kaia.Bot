@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
+﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+
+namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
 {
     public class DeadFinger : KaiaInventoryItem
     {
@@ -10,12 +12,12 @@
                              UsersCanSellThis: true,
                              DisplayEmoteName: Emotes.Items.DeadFinger)
         {
-            this.OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new());
+            this.OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new(0, KaiaSpellsRoom.Spells[new Random().Next(0, KaiaSpellsRoom.Spells.Count)]));
         }
 
         public override Task OnKaiaStoreRefresh()
         {
-            this.OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new(new Random().Next(1, 10)));
+            this.OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new(0, KaiaSpellsRoom.Spells[new Random().Next(0, KaiaSpellsRoom.Spells.Count)]));
             return Task.CompletedTask;
         }
     }

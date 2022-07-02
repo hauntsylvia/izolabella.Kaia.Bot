@@ -21,7 +21,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
         {
             if(this.IsFirstPage)
             {
-                this.WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round((await this.U.LibraryProcessor.GetUserBooksAsync()).Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                this.WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round((await this.U.LibraryProcessor.GetUserBooksAsync()).Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min. " +
+                    $"{(this.U.TotalMultiplierOnBooks != 1 ? $"[* `{this.U.TotalMultiplierOnBooks}`]" : "")}");
             }
             foreach (KaiaBook Book in this.BookChunk)
             {

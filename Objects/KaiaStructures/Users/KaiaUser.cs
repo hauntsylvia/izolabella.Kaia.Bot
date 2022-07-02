@@ -4,6 +4,7 @@ using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Derivations;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
@@ -17,18 +18,18 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
             if(Id > 0)
             {
                 this.Id = Id;
-                this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
                 this.LibraryProcessor = new(Id);
                 this.AchievementProcessor = new(Id);
                 this.LocationProcessor = new(Id);
                 this.SpellsProcessor = new(Id);
+                this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
 
                 List<KaiaBook> UserOwnedBooks = this.LibraryProcessor.GetUserBooksAsync().Result;
                 double TotalToPay = 0.0;
                 foreach (KaiaBook Book in UserOwnedBooks)
                 {
                     double CyclesMissed = (DateTime.UtcNow - this.Settings.Inventory.LastBookUpdate) / TimeSpans.BookTickRate;
-                    TotalToPay += Book.CurrentEarning * CyclesMissed;
+                    TotalToPay += Book.CurrentEarning * CyclesMissed * this.TotalMultiplierOnBooks;
                 }
 
                 this.Settings.Inventory.LastBookUpdate = DateTime.UtcNow;
@@ -45,6 +46,10 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
 
         [JsonProperty("Settings", Required = Required.Always)]
         public KaiaUserSettings Settings { get; set; }
+
+        public double TotalMultiplierOnBooks => Math.Round(this.SpellsProcessor.GetActiveSpellsAsync().Result
+                                                                         .Count(A => A.GetType() == typeof(BookIncomeIncrease))
+                                                                         * BookIncomeIncrease.MultiplyBy, 2);
 
         [JsonIgnore]
         public UserAchievementRoom AchievementProcessor { get; set; }

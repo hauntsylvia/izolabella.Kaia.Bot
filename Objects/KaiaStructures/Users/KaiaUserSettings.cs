@@ -1,4 +1,6 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings;
+using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
 {

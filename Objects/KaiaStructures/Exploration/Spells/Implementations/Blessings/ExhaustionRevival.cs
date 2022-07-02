@@ -13,7 +13,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Ble
                                           "Resets the timeouts for all locations.",
                                           true,
                                           Emotes.Counting.Blessings,
-                                          new(DateTime.UtcNow, 7120221947))
+                                          new(TimeSpan.FromHours(4), 7120221947))
         {
 
         }

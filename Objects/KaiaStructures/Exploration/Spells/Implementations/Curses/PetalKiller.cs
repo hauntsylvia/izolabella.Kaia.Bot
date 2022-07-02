@@ -13,7 +13,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Cur
                                     $"Halves your {Strings.Economy.CurrencyName}.",
                                     true,
                                     Emotes.Counting.Curses,
-                                    new(DateTime.UtcNow, 7120222142))
+                                    new(TimeSpan.FromHours(4), 7120222142))
         {
         }
 

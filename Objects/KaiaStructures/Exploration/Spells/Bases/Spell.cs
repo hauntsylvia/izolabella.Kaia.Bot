@@ -30,6 +30,9 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
 
         public SpellId Id { get; }
 
-        public abstract Task ApplyAsync(SpellsProcessor From, KaiaUser ApplyTo);
+        public virtual Task ApplyAsync(SpellsProcessor From, KaiaUser ApplyTo)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

@@ -27,6 +27,8 @@
             internal static KaiaEmote Rose => new("🌹");
             internal static KaiaEmote Notebook => new("📒");
             internal static KaiaEmote DeadFinger => new("☠️");
+            internal static KaiaEmote NutAndBolt => new("🔩");
+            internal static KaiaEmote Cigarette => new("🚬");
             internal static Emoji NoEmote => new("❔");
         }
         internal static class Embeds

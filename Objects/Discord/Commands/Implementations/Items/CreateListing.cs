@@ -49,11 +49,18 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
             IzolabellaCommandArgument? ItemArg = Arguments.FirstOrDefault(A => A.Name == "item");
             if (QuantityArg != null && CPIArg != null && ItemArg != null && QuantityArg.Value is double Quantity && CPIArg.Value is double CPI && ItemArg.Value is string DisplayName)
             {
-                KaiaUser U = new(Context.UserContext.User.Id);
-                List<KaiaInventoryItem> ItemsFromUserInv = (await U.Settings.Inventory.GetItemsOfDisplayName(DisplayName)).Take((int)Quantity).ToList();
-                SaleListing SListing = new(ItemsFromUserInv, U, CPI);
-                await SListing.StartSellingAsync();
-                await new ItemView(new ItemsPaginated(Context, null, true), Context, SListing, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, Emotes.Counting.SellItem, true).StartAsync(U);
+                if(!(await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == Context.UserContext.User.Id && S.IsListed))
+                {
+                    KaiaUser U = new(Context.UserContext.User.Id);
+                    List<KaiaInventoryItem> ItemsFromUserInv = (await U.Settings.Inventory.GetItemsOfDisplayName(DisplayName)).Take((int)Quantity).ToList();
+                    SaleListing SListing = new(ItemsFromUserInv, U, CPI);
+                    await SListing.StartSellingAsync();
+                    await new ItemView(new ItemsPaginated(Context, null, true), Context, SListing, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, Emotes.Counting.SellItem, true).StartAsync(U);
+                }
+                else
+                {
+                    await Context.UserContext.RespondAsync(text: "Users can only have a single listing.");
+                }
             }
         }
     }

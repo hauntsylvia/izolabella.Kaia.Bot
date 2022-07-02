@@ -34,6 +34,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                 "An abandoned facility once used to create wonders of machines.", true, 7120221753, new List<KaiaLocationEvent>()
                 {
                     new DeadFingerEvent(1),
+                    new CigaretteKickNutAndBoltEvent(5),
                 }, TimeSpan.FromHours(22.5), TimeSpan.FromHours(6), TimeSpan.FromHours(36), new("🏭"), null)
             #endregion
         };

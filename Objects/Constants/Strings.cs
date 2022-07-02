@@ -110,7 +110,23 @@
                 internal static string Name => "Dead Finger";
                 private static string[] PossibleMessages => new string[]
                 {
-                    ""
+                    ". . . ick",
+                    "that's . . gross."
+                };
+
+                public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
+            }
+            internal static class NutAndBolt
+            {
+                internal static string Name => "Nut And Bolt";
+            }
+            internal static class Cigarette
+            {
+                internal static string Name => "Cigarette";
+                private static string[] PossibleMessages => new string[]
+                {
+                    "is this actually worth it to u?",
+                    "I hope this relieves ur stress."
                 };
 
                 public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];

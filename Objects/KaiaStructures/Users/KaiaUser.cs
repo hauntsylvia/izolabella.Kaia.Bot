@@ -47,7 +47,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
         [JsonProperty("Settings", Required = Required.Always)]
         public KaiaUserSettings Settings { get; set; }
 
-        public double TotalMultiplierOnBooks => Math.Round(this.SpellsProcessor.GetActiveSpellsAsync().Result
+        public double TotalMultiplierOnBooks => 1 + Math.Round(this.SpellsProcessor.GetActiveSpellsAsync().Result
                                                                          .Count(A => A.GetType() == typeof(BookIncomeIncrease))
                                                                          * BookIncomeIncrease.MultiplyBy, 2);
 

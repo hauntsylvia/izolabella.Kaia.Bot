@@ -131,6 +131,10 @@
 
                 public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
             }
+            internal static class Candle
+            {
+                internal static string Name => "Candle";
+            }
         }
         internal static class Economy
         {

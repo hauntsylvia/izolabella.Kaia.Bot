@@ -17,7 +17,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                 true, 63020222001, new List<KaiaLocationEvent>()
                 {
                     new NotebookEvent(10),
-                }, TimeSpan.FromHours(6), TimeSpan.FromHours(16), TimeSpan.FromHours(24), new("💮"), new("https://i.pinimg.com/originals/1d/89/6a/1d896ab3d33457c4b50befc3a2a342b9.gif")),
+                }, TimeSpan.FromHours(6), TimeSpan.FromHours(16), TimeSpan.FromHours(16), new("💮"), new("https://i.pinimg.com/originals/1d/89/6a/1d896ab3d33457c4b50befc3a2a342b9.gif")),
             #endregion
 
             #region dark meadow
@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                 {
                     new NotebookEvent(10),
                     new RoseEvent(5),
-                }, AvailableAt: TimeSpan.FromHours(16), AvailableTo: TimeSpan.FromHours(7), TimeSpan.FromHours(24), new("🌙"), new("https://i.pinimg.com/originals/33/4e/a1/334ea17c92dfccd6418b3ebe9206aaa7.gif")),
+                }, AvailableAt: TimeSpan.FromHours(16), AvailableTo: TimeSpan.FromHours(7), TimeSpan.FromHours(16), new("🌙"), new("https://i.pinimg.com/originals/33/4e/a1/334ea17c92dfccd6418b3ebe9206aaa7.gif")),
             #endregion
 
             #region factory
@@ -35,7 +35,42 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                 {
                     new DeadFingerEvent(1),
                     new CigaretteKickNutAndBoltEvent(5),
-                }, TimeSpan.FromHours(22.5), TimeSpan.FromHours(6), TimeSpan.FromHours(36), new("🏭"), null)
+                }, TimeSpan.FromHours(13), TimeSpan.FromHours(24), TimeSpan.FromHours(6), new("🏭"), null),
+            #endregion
+
+            #region quiet town
+            new("Quiet Town", "A cute and quiet town. Everything here is oddly still.",
+                "A cute little town; home to many.", true, 7220220406, new List<KaiaLocationEvent>()
+                {
+                    new DeadFingerEvent(0.01),
+                    new NotebookEvent(0.15),
+                    new CandleEvent(0.7),
+                }, TimeSpan.FromHours(15), TimeSpan.FromHours(22.25), TimeSpan.FromHours(9), new("🕯️"), 
+                CoverUrl: new("https://i.pinimg.com/originals/c0/36/28/c03628e7339e0d492cdd077acb6a9e8f.gif"), 
+                CoverUrlCredit: new("https://steamcommunity.com/sharedfiles/filedetails/?id=1624054751&searchtext=")),
+            #endregion
+
+            #region autumn cottage
+            new("Autumn Cottage", "A small cottage planted deep within the woods. The location is unknown.",
+                "A small cottage planted deep within the woods. The location is unknown.", true, 7220220500, new List<KaiaLocationEvent>()
+                {
+                    new CandleEvent(0.3, false),
+                    new RoseEvent(0.6),
+                    new NotebookEvent(1),
+                }, TimeSpan.FromHours(2.5), TimeSpan.FromHours(11), TimeSpan.FromHours(9), new("🍂"), 
+                CoverUrl: new("https://i.pinimg.com/564x/d9/e3/f3/d9e3f308a0908fedff694bf3b23627e2.jpg"), 
+                CoverUrlCredit: new("https://old.reddit.com/r/PixelArt/comments/di68y1/autumn_scenery/")),
+            #endregion
+
+            #region empty street
+            new("Empty Street", "An empty street late at night. What awaits anyone here that's important enough to be out so late and alone?",
+                "An empty street late at night.", true, 7220220514, new List<KaiaLocationEvent>()
+                {
+                    new CandleEvent(0.9, false),
+                    new CigaretteKickNutAndBoltEvent(0.25)
+                }, TimeSpan.FromHours(19), TimeSpan.FromHours(4), TimeSpan.FromHours(4), new("🌙"), 
+                CoverUrl: new("https://i.pinimg.com/originals/7a/f8/ce/7af8ced6fc14a1f2840b72187ba19248.gif"), 
+                CoverUrlCredit: new("https://guttykreum.tumblr.com/post/182656493636/%E7%AA%93-1am-tama-tokyo")),
             #endregion
         };
     }

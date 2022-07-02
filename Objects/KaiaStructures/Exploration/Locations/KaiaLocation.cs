@@ -18,6 +18,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                             TimeSpan MinimumTimeBetweenExplorations,
                             KaiaEmote Emote,
                             Uri? CoverUrl = null,
+                            Uri? CoverUrlCredit = null,
                             DateTime? ExploredAt = null)
         {
             this.Name = Name;
@@ -31,6 +32,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
             this.MinimumTimeBetweenExplorations = MinimumTimeBetweenExplorations;
             this.Emote = Emote;
             this.CoverUrl = CoverUrl;
+            this.CoverUrlCredit = CoverUrlCredit;
             this.ExploredAt = ExploredAt;
         }
 
@@ -62,6 +64,8 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
         public Uri? CoverUrl { get; }
 
+        public Uri? CoverUrlCredit { get; }
+
         public bool Overnight => this.AvailableAt > this.AvailableTo;
 
         public DateTime InnerClock { get; } = DateTime.UtcNow;
@@ -84,8 +88,8 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
         private KaiaLocationEvent GetEvent()
         {
-            int TotalWeight = this.Events.Sum(A => A.Weight);
-            int Random = new Random().Next(0, TotalWeight);
+            double TotalWeight = this.Events.Sum(A => A.Weight);
+            double Random = new Random().Next(0, (int)TotalWeight) + TotalWeight - (int)TotalWeight;
             foreach(KaiaLocationEvent Event in this.Events)
             {
                 Random -= Event.Weight;

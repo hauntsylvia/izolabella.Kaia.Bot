@@ -9,7 +9,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 {
     public class KaiaLocationEvent
     {
-        public KaiaLocationEvent(string Message, int Weight, KaiaUserReward RewardResult)
+        public KaiaLocationEvent(string Message, double Weight, KaiaUserReward RewardResult)
         {
             this.Message = Message;
             this.Weight = Weight;
@@ -18,7 +18,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 
         public string Message { get; protected set; }
 
-        public int Weight { get; }
+        public double Weight { get; }
 
         public KaiaUserReward RewardResult { get; protected set; }
 

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 {
-    public class DeadFingerEvent : KaiaLocationEvent
+    public class CandleEvent : KaiaLocationEvent
     {
-        public DeadFingerEvent(double Weight) : base(ExplorationStrings.DeadFingerEvent.Message,
+        public CandleEvent(double Weight, bool Ominous = true) : base(Ominous ? ExplorationStrings.CandleEvent.OminousMessage : ExplorationStrings.CandleEvent.Message,
             Weight,
-            new(0, new DeadFinger()))
+            new(0, new Candle(), new Candle(), new Candle()))
         {
         }
     }

@@ -10,7 +10,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 {
     public class RoseEvent : KaiaLocationEvent
     {
-        public RoseEvent(int Weight) : base(ExplorationStrings.NotebookEvent.Message,
+        public RoseEvent(double Weight) : base(ExplorationStrings.RoseEvent.Message,
             Weight,
             new(0, new Rose()))
         {

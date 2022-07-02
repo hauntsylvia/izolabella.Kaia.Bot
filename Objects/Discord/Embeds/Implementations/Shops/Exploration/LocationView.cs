@@ -26,20 +26,31 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 
         public KaiaButton ExploreButton { get; }
 
+        public static async Task<KaiaLocation?> GetKaiaLocationAsync(ulong FromId, KaiaUser U)
+        {
+            KaiaLocation? UserLocation = (await U.LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(X => X.Id == FromId) ?? KaiaLocationRoom.Locations.FirstOrDefault(X => X.Id == FromId);
+            if (UserLocation != null)
+            {
+                KaiaLocation? KaiaLocation = KaiaLocationRoom.Locations.FirstOrDefault(KL => KL.Id == UserLocation.Id);
+                return KaiaLocation;
+            }
+            return null;
+        }
+
         private async Task ExploreAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            KaiaLocation? Loc = (await UserWhoPressed.LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(X => X.Id == this.Location.Id) ?? KaiaLocationRoom.Locations.FirstOrDefault(X => X.Id == this.Location.Id);
-            if (Loc != null)
+            KaiaLocation? Location = await GetKaiaLocationAsync(this.Location.Id, UserWhoPressed);
+            if (Location != null)
             {
                 await Arg.DeferAsync(true);
-                KaiaLocationEvent Result = await Loc.ExploreAsync(UserWhoPressed);
-                await UserWhoPressed.LocationProcessor.AddLocationExploredAsync(Loc);
+                KaiaLocationEvent Result = await Location.ExploreAsync(UserWhoPressed);
+                await UserWhoPressed.LocationProcessor.AddLocationExploredAsync(Location);
 
                 KaiaButton OK = new(this.Context, "Ok", null, false);
                 ButtonExecHandler? A = null;
                 A = async (Arg, P) =>
                 {
-                    if(A != null)
+                    if (A != null)
                     {
                         OK.OnButtonPush -= A;
                     }
@@ -90,6 +101,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
+            this.ExploreButton.Dispose();
         }
     }
 }

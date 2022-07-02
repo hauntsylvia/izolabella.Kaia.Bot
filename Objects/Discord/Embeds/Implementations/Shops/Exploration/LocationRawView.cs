@@ -13,44 +13,53 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
         public LocationRawView(CommandContext Context, KaiaLocation Location) : base(Strings.EmbedStrings.FakePaths.Outside, Location.Name)
         {
             this.Context = Context;
-            this.Location = Location;
+            this.UserLocation = Location;
         }
 
         public CommandContext Context { get; }
 
-        public KaiaLocation Location { get; set; }
+        public KaiaLocation UserLocation { get; set; }
+
+        private KaiaUser User => new(this.Context.UserContext.User.Id);
+
+        private KaiaLocation? KaiaLocation { get; set; }
 
         protected override async Task ClientRefreshAsync()
         {
-            this.Location = (await new KaiaUser(this.Context.UserContext.User.Id).LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(A => A.Id == this.Location.Id) ?? this.Location;
-            if (this.Location.CoverUrl != null)
+            this.UserLocation = (await new KaiaUser(this.Context.UserContext.User.Id).LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(A => A.Id == this.UserLocation.Id) ?? this.UserLocation;
+            this.KaiaLocation = await LocationView.GetKaiaLocationAsync(this.UserLocation.Id, this.User);
+            if (this.KaiaLocation != null)
             {
-                this.WithImage(this.Location.CoverUrl);
-            }
-            this.WithField("description", $"```{this.Location.Description}```");
-            if(this.Location.MustWaitUntil != null && this.Location.Status == KaiaStructures.Exploration.Locations.Enums.KaiaLocationExplorationStatus.Timeout)
-            {
-                this.WithField("timeout!", $"please wait for `{(this.Location.MustWaitUntil - DateTime.UtcNow).Value.Hours}` hours before exploring this place again!");
-            }
-            if(this.Location.DisplayRewards)
-            {
-                List<string> Display = new();
-                int TotalWeight = this.Location.Events.Sum(KV => KV.Weight);
-                foreach(KaiaLocationEvent A in this.Location.Events.OrderBy(KV => KV.Weight).Take(3))
+                if (this.KaiaLocation.CoverUrl != null)
                 {
-                    string SubDisplay = string.Empty;
-                    double Chance = (double)((double)((double)A.Weight / (double)TotalWeight) * 100f);
-                    foreach (KaiaInventoryItem Item in A.RewardResult.Items)
+                    this.WithImage(this.KaiaLocation.CoverUrl);
+                }
+                this.WithField("description", $"```{this.KaiaLocation.Description}```");
+                if (this.UserLocation.MustWaitUntil != null && this.UserLocation.Status == KaiaStructures.Exploration.Locations.Enums.KaiaLocationExplorationStatus.Timeout)
+                {
+                    double Hours = Math.Round((this.UserLocation.MustWaitUntil - DateTime.UtcNow).Value.TotalHours, 2);
+                    this.WithField("timeout!", $"please wait for `{Hours}` {(Hours != 1 ? "hours" : "hour")} before exploring this place again!");
+                }
+                if (this.KaiaLocation.DisplayRewards)
+                {
+                    List<string> Display = new();
+                    double TotalWeight = this.KaiaLocation.Events.Sum(KV => KV.Weight);
+                    foreach (KaiaLocationEvent A in this.KaiaLocation.Events.OrderBy(KV => KV.Weight).Take(3))
                     {
-                        SubDisplay += $"→ {Item.DisplayEmote} {Item.DisplayName} [{Math.Round(Chance, 2)}%]";
-                        if(Item != A.RewardResult.Items.Last())
+                        string SubDisplay = string.Empty;
+                        double Chance = A.Weight / TotalWeight * 100.0;
+                        IEnumerable<KaiaInventoryItem> ItemsWithoutDuplicates = A.RewardResult.Items.GroupBy(X => X.DisplayName).Select(X => X.First());
+                        foreach (KaiaInventoryItem Item in ItemsWithoutDuplicates)
                         {
-                            SubDisplay += "\n";
+                            SubDisplay += $"→ {Item.DisplayEmote} {Item.DisplayName} [{Math.Round(Chance, 2)}%]\n";
+                        }
+                        if(SubDisplay.Length > 0)
+                        {
+                            Display.Add(SubDisplay);
                         }
                     }
-                    Display.Add(SubDisplay);
+                    this.WithListWrittenToField("rarest potential finds", Display, "");
                 }
-                this.WithListWrittenToField("rarest potential finds", Display, "\n");
             }
         }
     }

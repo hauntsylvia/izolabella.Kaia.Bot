@@ -10,7 +10,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 {
     public class CigaretteKickNutAndBoltEvent : KaiaLocationEvent
     {
-        public CigaretteKickNutAndBoltEvent(int Weight) : base(ExplorationStrings.CigaretteKickNutAndBoltEvent.Message,
+        public CigaretteKickNutAndBoltEvent(double Weight) : base(ExplorationStrings.CigaretteKickNutAndBoltEvent.Message,
             Weight,
             new(0, new Cigarette(), new NutAndBolt()))
         {

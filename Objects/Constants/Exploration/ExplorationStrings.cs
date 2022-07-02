@@ -41,12 +41,34 @@ namespace Kaia.Bot.Objects.Constants.Exploration
 
             public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
         }
+
         public static class CigaretteKickNutAndBoltEvent
         {
             private static string[] PossibleMessages => new string[]
             {
                 "u light an old cigarette u found out of slight impulse, whilst also kicking random bits of building material on the ground.",
                 "u find a cigarette laying in ur bag that u forgot about. bits of building material catch ur eye, so u stuff them in ur bag as well."
+            };
+
+            public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
+        }
+
+        public static class CandleEvent
+        {
+            private static string[] PossibleOmMessages => new string[]
+            {
+                "u've found candles!",
+                "why are candles lying around in the open?",
+                "what an odd place for a candle. actually, now that I look around, there seems to be many . ."
+            };
+
+            public static string OminousMessage => PossibleOmMessages[new Random().Next(0, PossibleOmMessages.Length)];
+
+            private static string[] PossibleMessages => new string[]
+            {
+                "u've found candles!",
+                "this seems to have been lit not too long ago.",
+                "this seems peaceful."
             };
 
             public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];

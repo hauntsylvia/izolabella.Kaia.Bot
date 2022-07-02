@@ -41,8 +41,8 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
 
         public double CostPerItem
         {
-            get => Math.Round(this.costPerItem, 2);
-            set => this.costPerItem = value;
+            get => this.costPerItem > 0 ? Math.Round(this.costPerItem, 2) : 0;
+            set => this.costPerItem = value > 0 ? value : 0;
         }
 
         public bool IsListed { get; private set; }

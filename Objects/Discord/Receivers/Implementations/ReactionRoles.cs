@@ -24,11 +24,11 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
             {
                 KaiaGuild Guild = new(Channel.Guild.Id);
                 IUser? U = Reaction.User.GetValueOrDefault() ?? await From.Parameters.CommandHandler.Client.GetUserAsync(Reaction.UserId);
-                if (U is not null and SocketGuildUser User)
+                if (U is not null and SocketGuildUser User && User.Id != From.Parameters.CommandHandler.Client.CurrentUser.Id)
                 {
                     foreach (KaiaReactionRole Role in Guild.Settings.ReactionRoles)
                     {
-                        if (Role.ChannelId == Reaction.Channel.Id && Role.MessageId == Reaction.MessageId && Role.Emote.Name == Reaction.Emote.Name)
+                        if (Role.ChannelId == Reaction.Channel.Id && Role.MessageId == Reaction.MessageId && Role.Emote.ToString() == Reaction.Emote.ToString())
                         {
                             IRole? ActualRole = await Role.GetRoleAsync(Channel.Guild);
                             if(ActualRole != null)

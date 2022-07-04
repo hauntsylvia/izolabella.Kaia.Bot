@@ -55,12 +55,27 @@ namespace Kaia.Bot.Objects.Clients
             this.Parameters.CommandHandler.Client.Ready += this.ClientReadyAsync;
             this.Parameters.CommandHandler.Client.ReactionAdded += this.ClientReactionAddedAsync;
             this.Parameters.CommandHandler.Client.ReactionRemoved += this.ClientReactionRemovedAsync;
+            this.Parameters.CommandHandler.Client.UserJoined += this.ClientUserJoinedGuildAsync;
+
             //this.Parameters.CommandHandler.OnCommandError += this.OnCommandErrorAsync;
         }
 
         public KaiaParams Parameters { get; }
 
         public List<Receiver> Receivers { get; }
+
+        private async Task ClientUserJoinedGuildAsync(SocketGuildUser User)
+        {
+            KaiaGuild G = new(User.Guild.Id);
+            foreach(KaiaAutoRole R in G.Settings.AutoRoles)
+            {
+                IRole? DR = await R.GetRoleAsync(User.Guild);
+                if(DR != null)
+                {
+                    await User.AddRoleAsync(DR);
+                }
+            }
+        }
 
         private async Task OnCommandErrorAsync(IzolabellaCommand? Command, HttpException Exception)
         {
@@ -100,6 +115,7 @@ namespace Kaia.Bot.Objects.Clients
             }
         }
 
+        #region reactions
         private async Task ClientReactionChangedAsync(SocketReaction Reaction, bool Removing)
         {
             KaiaUser User = new(Reaction.UserId);
@@ -118,6 +134,9 @@ namespace Kaia.Bot.Objects.Clients
         {
             await this.ClientReactionChangedAsync(Reaction, true);
         }
+        #endregion
+
+        #region messages, commands, startup, roles
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
@@ -158,15 +177,17 @@ namespace Kaia.Bot.Objects.Clients
             await Task.Run(() =>
             {
                 this.RefreshCommandsAsync(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
-                this.IterateOverReactionRoles(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
+                this.IterateOverReactionRolesAsync(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
+                this.IterateOverAutoRolesAsync(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
             });
         }
 
-        public async Task IterateOverReactionRoles(IEnumerable<SocketGuild> RefreshFor)
+        public async Task IterateOverReactionRolesAsync(IEnumerable<SocketGuild> RefreshFor)
         {
             foreach (SocketGuild DiscordGuild in RefreshFor)
             {
-                GuildPermissions KaiaPerms = DiscordGuild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id).GuildPermissions;
+                SocketGuildUser KaiaUser = DiscordGuild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id);
+                GuildPermissions KaiaPerms = KaiaUser.GuildPermissions;
                 if(KaiaPerms.Has(GuildPermission.ManageRoles) && KaiaPerms.Has(GuildPermission.ReadMessageHistory))
                 {
                     KaiaGuild Guild = new(DiscordGuild.Id);
@@ -178,11 +199,11 @@ namespace Kaia.Bot.Objects.Clients
                         if (DiscordRole != null && Message != null)
                         {
                             #region users who reacted but don't have the role
-                            IAsyncEnumerable<IReadOnlyCollection<IUser>> UsersThatReacted = Message.GetReactionUsersAsync(Role.Emote, int.MaxValue);
+                            IAsyncEnumerable<IReadOnlyCollection<IUser>> UsersThatReacted = Message.GetReactionUsersAsync(Role.Emote.IsCustom ? Emote.Parse(Role.Emote.ToString()) : Role.Emote, int.MaxValue);
                             List<SocketGuildUser> Cached = new();
                             await foreach (IReadOnlyCollection<IUser> U in UsersThatReacted)
                             {
-                                foreach (IUser IUs in U)
+                                foreach (IUser IUs in U.Where(GU => GU.Id != KaiaUser.Id))
                                 {
                                     SocketGuildUser? ActualU = DiscordGuild.GetUser(IUs.Id);
                                     if (!ActualU.Roles.Any(R => R.Id == Role.Id))
@@ -197,7 +218,7 @@ namespace Kaia.Bot.Objects.Clients
                             #region users who have the role but didn't react
                             await foreach (IReadOnlyCollection<IGuildUser> UserList in DiscordGuild.GetUsersAsync())
                             {
-                                foreach (IGuildUser User in UserList)
+                                foreach (IGuildUser User in UserList.Where(GU => GU.Id != KaiaUser.Id))
                                 {
                                     if (User.RoleIds.Any(RId => Role.RoleId == RId))
                                     {
@@ -210,6 +231,33 @@ namespace Kaia.Bot.Objects.Clients
                                 }
                             }
                             #endregion
+                        }
+                    }
+                }
+            }
+        }
+
+        public async Task IterateOverAutoRolesAsync(IEnumerable<SocketGuild> RefreshFor)
+        {
+            foreach(SocketGuild Guild in RefreshFor)
+            {
+                await Guild.DownloadUsersAsync();
+                SocketGuildUser KaiaUser = Guild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id);
+                if(KaiaUser.GuildPermissions.Has(GuildPermission.ManageRoles))
+                {
+                    KaiaGuild G = new(Guild.Id);
+                    foreach (KaiaAutoRole Role in G.Settings.AutoRoles.Where(AR => AR.Enforce))
+                    {
+                        IRole? R = await Role.GetRoleAsync(Guild);
+                        if (R != null)
+                        {
+                            foreach (SocketGuildUser User in Guild.Users.Where(GU => GU.Id != KaiaUser.Id))
+                            {
+                                if (User.Roles.Any(UR => UR.Id != R.Id) && User.Hierarchy < KaiaUser.Hierarchy)
+                                {
+                                    await User.AddRoleAsync(R);
+                                }
+                            }
                         }
                     }
                 }
@@ -249,5 +297,6 @@ namespace Kaia.Bot.Objects.Clients
             }
             await this.Parameters.CommandHandler.UpdateCommandsAsync(Commands.ToArray());
         }
+        #endregion
     }
 }

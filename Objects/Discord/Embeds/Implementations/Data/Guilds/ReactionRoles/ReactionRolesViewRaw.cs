@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
 {
     public class ReactionRolesViewRaw : KaiaPathEmbedRefreshable
     {

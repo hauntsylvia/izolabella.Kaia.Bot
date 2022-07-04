@@ -6,13 +6,13 @@ using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {
-    public class ReactionRoles : KaiaCommand
+    public class AutoRoles : KaiaCommand
     {
-        public override string ForeverId => CommandForeverIds.ReactionRoles;
+        public override string ForeverId => CommandForeverIds.AutoRoles;
 
-        public override string Name => "Reaction Roles";
+        public override string Name => "Auto Roles";
 
-        public override string Description => "View and delete reaction roles.";
+        public override string Description => "View and delete auto roles.";
 
         public override bool GuildsOnly => true;
 
@@ -32,11 +32,11 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
         {
             IzolabellaCommandArgument? EphemeralArg = Arguments.FirstOrDefault(A => A.Name == "ephemeral");
             bool Ephemeral = EphemeralArg != null && EphemeralArg.Value is bool E && E;
-            
+
             if (Context.UserContext.User is SocketGuildUser User)
             {
                 KaiaGuild G = new(User.Guild.Id);
-                await new ReactionRolesPaginated(Context, User.Guild, Ephemeral).StartAsync();
+                await new AutoRolesPaginated(Context, User.Guild, Ephemeral).StartAsync();
             }
         }
     }

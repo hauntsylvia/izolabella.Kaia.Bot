@@ -1,6 +1,7 @@
 ﻿using Discord.Net;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
 using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
@@ -55,17 +56,22 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             {
                 if(Channel is SocketTextChannel SChannel)
                 {
-                    if (ulong.TryParse(MessageIdS, out ulong MessageId) && Emoji.TryParse(EmoteS, out Emoji E))
+                    if (ulong.TryParse(MessageIdS, out ulong MessageId) && (Emote.TryParse(EmoteS, out Emote Emo) || Emoji.TryParse(EmoteS, out Emoji Emoj)))
                     {
                         IMessage? Message = await SChannel.GetMessageAsync(MessageId);
                         if (Message != null)
                         {
-                            KaiaReactionRole NewReactionRole = new(Context.UserContext.User.Id, Message.Id, Channel.Id, Role.Id, new(E.Name), Enforce);
-                            KaiaGuild G = new(User.Guild.Id);
-                            G.Settings.ReactionRoles.Add(NewReactionRole);
-                            await G.SaveAsync();
-                            await Message.AddReactionAsync(E);
-                            await new ReactionRolesPaginated(Context, User.Guild, false).StartAsync();
+                            IEmote? A = Emote.TryParse(EmoteS, out Emote A1) ? A1 : Emoji.TryParse(EmoteS, out Emoji A2) ? A2 : null;
+                            string? As = A?.ToString();
+                            if(A != null && As != null)
+                            {
+                                KaiaReactionRole NewReactionRole = new(Context.UserContext.User.Id, Message.Id, Channel.Id, Role.Id, new(As), Enforce);
+                                KaiaGuild G = new(User.Guild.Id);
+                                G.Settings.ReactionRoles.Add(NewReactionRole);
+                                await G.SaveAsync();
+                                await Message.AddReactionAsync(A);
+                                await new ReactionRolesPaginated(Context, User.Guild, false).StartAsync();
+                            }
                         }
                     }
                 }

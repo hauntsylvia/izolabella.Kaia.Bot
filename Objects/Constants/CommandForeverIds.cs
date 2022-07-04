@@ -14,5 +14,7 @@
         internal static string CreateItemListing => "createitmlstng-63020222121";
         internal static string ReactionRole => "reactionrole-7420220638";
         internal static string ReactionRoles => "viewreactionroles-7420220746";
+        internal static string AutoRole => "autorole-7420221230";
+        internal static string AutoRoles => "autoroles-7420221259";
     }
 }

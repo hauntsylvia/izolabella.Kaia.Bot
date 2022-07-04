@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
 {
     public class ReactionRolesPaginated : KaiaPathEmbedPaginated
     {
@@ -32,7 +32,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
                 foreach (KaiaReactionRole Role in Chunk)
                 {
                     IRole? R = await Role.GetRoleAsync(this.Guild);
-                    B.Add(new(R?.Name ?? Role.Id.ToString(CultureInfo.InvariantCulture), Role.Id.ToString(CultureInfo.InvariantCulture), R?.Name ?? Strings.EmbedStrings.Empty));
+                    B.Add(new(R?.Name ?? Role.Id.ToString(CultureInfo.InvariantCulture), Role.Id.ToString(CultureInfo.InvariantCulture), R?.Name ?? Strings.EmbedStrings.Empty, Role.Emote.IsCustom ? Emote.Parse(Role.Emote.ToString()) : Role.Emote));
                 }
                 this.EmbedsAndOptions.Add(Embed, B);
             }

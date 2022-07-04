@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Kaia.Bot.Objects.Discord.Components.KaiaButton;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
 {
     public class ReactionRoleView : KaiaItemContentView
     {
@@ -40,7 +40,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
                 G.Settings.ReactionRoles.Remove(R);
                 await G.SaveAsync();
             }
-            if(this.Original != null)
+            if (this.Original != null)
             {
                 this.Dispose();
                 await this.Original.StartAsync();

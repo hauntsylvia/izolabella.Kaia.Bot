@@ -26,7 +26,9 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                 {
                     new NotebookEvent(10),
                     new RoseEvent(5),
-                }, AvailableAt: TimeSpan.FromHours(16), AvailableTo: TimeSpan.FromHours(7), TimeSpan.FromHours(16), new("🌙"), new("https://i.pinimg.com/originals/33/4e/a1/334ea17c92dfccd6418b3ebe9206aaa7.gif")),
+                }, AvailableAt: TimeSpan.FromHours(16), AvailableTo: TimeSpan.FromHours(7), TimeSpan.FromHours(16), new("🌙"), 
+                CoverUrl: new("https://i.pinimg.com/originals/33/4e/a1/334ea17c92dfccd6418b3ebe9206aaa7.gif"),
+                CoverUrlCredit: new("https://willow95-deactivated20220224.tumblr.com/post/625648064600981504")),
             #endregion
 
             #region factory

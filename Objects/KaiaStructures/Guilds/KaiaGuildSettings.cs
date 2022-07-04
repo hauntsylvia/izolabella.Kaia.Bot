@@ -47,5 +47,16 @@ namespace Kaia.Bot.Objects.KaiaStructures.Guilds
                 return this.reactionRoles;
             }
         }
+
+        [JsonProperty("AutoRole", Required = Required.Default)]
+        private List<KaiaAutoRole> autoRoles = new();
+        public List<KaiaAutoRole> AutoRoles
+        {
+            get
+            {
+                this.autoRoles = this.autoRoles.DistinctBy(A => A.RoleId).ToList();
+                return this.autoRoles;
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
 {
     public class ReactionRolesPage : KaiaPathEmbedRefreshable
     {
@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
             foreach (KaiaReactionRole Role in this.Roles)
             {
                 IRole? RelatingRole = this.Guild.GetRole(Role.RoleId);
-                if(RelatingRole != null)
+                if (RelatingRole != null)
                 {
                     IMessage? Message = await Role.GetMessageAsync(this.Guild);
                     List<string> Display = new()
@@ -34,7 +34,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
                         $"setup by <@{Role.ListerId}>",
                         $"triggered by reaction with {Role.Emote}",
                     };
-                    if(Message != null)
+                    if (Message != null)
                     {
                         Display.Add(Message.GetJumpUrl());
                     }

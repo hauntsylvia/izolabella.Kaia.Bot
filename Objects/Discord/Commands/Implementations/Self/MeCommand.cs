@@ -1,27 +1,28 @@
-﻿using izolabella.Discord.Objects.Constraints.Interfaces;
+﻿using Discord.Net;
+using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {
-    public class MeCommand : IKaiaCommand
+    public class MeCommand : KaiaCommand
     {
-        public string Name => "Me";
+        public override string Name => "Me";
 
-        public string Description => "View my statistics and my inventory, or view another user's statistics.";
+        public override string Description => "View my statistics and my inventory, or view another user's statistics.";
 
-        public bool GuildsOnly => false;
+        public override bool GuildsOnly => false;
 
-        public List<IzolabellaCommandParameter> Parameters => new()
+        public override List<IzolabellaCommandParameter> Parameters => new()
         {
             CommandParameters.SomeoneOtherThanMeUser,
         };
 
-        public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
+        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
-        public string ForeverId => CommandForeverIds.MeCommand;
+        public override string ForeverId => CommandForeverIds.MeCommand;
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? UserArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == CommandParameters.SomeoneOtherThanMeUser.Name.ToLower(CultureInfo.InvariantCulture));
             IUser U = UserArg != null && UserArg.Value is IUser DU ? DU : Context.UserContext.User;
@@ -35,16 +36,6 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
                 await M.RefreshAsync();
                 await Context.UserContext.RespondAsync(text: "", embed: M.Build());
             }
-        }
-
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
-            return Task.CompletedTask;
         }
     }
 }

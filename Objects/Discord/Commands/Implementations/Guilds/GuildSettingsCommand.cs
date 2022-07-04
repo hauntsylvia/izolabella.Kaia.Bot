@@ -4,26 +4,27 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 {
-    public class GuildSettingsCommand : IKaiaCommand
+    public class GuildSettingsCommand : KaiaCommand
     {
-        public string Name => "Guild Settings";
+        public override string Name => "Guild Settings";
 
-        public string Description => "Change my guild's settings.";
+        public override string Description => "Change my guild's settings.";
 
-        public bool GuildsOnly => true;
+        public override bool GuildsOnly => true;
 
-        public List<IzolabellaCommandParameter> Parameters => new()
+        public override List<IzolabellaCommandParameter> Parameters => new()
         {
             new IzolabellaCommandParameter("Counting Channel", "The channel used for counting.", ApplicationCommandOptionType.Channel, false),
         };
 
-        public List<IIzolabellaCommandConstraint> Constraints { get; } = new()
+        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new()
         {
             new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
         };
-        public string ForeverId => CommandForeverIds.GuildSettingsCommand;
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override string ForeverId => CommandForeverIds.GuildSettingsCommand;
+
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? CountingChannelArgument = Arguments.FirstOrDefault();
 
@@ -37,16 +38,6 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
                 }
                 await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, ephemeral: false, embed: new GuildSettingsView(SUser.Guild.Name, Guild).Build());
             }
-        }
-
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
-            return Task.CompletedTask;
         }
     }
 }

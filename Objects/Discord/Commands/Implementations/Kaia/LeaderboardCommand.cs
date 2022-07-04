@@ -5,19 +5,21 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 {
-    public class LeaderboardCommand : IKaiaCommand
+    public class LeaderboardCommand : KaiaCommand
     {
-        public string Name => "Leaderboard";
+        public override string Name => "Leaderboard";
 
-        public string Description => "View a leaderboard.";
-        public bool GuildsOnly => false;
+        public override string Description => "View a leaderboard.";
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new();
-        public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
+        public override bool GuildsOnly => false;
 
-        public string ForeverId => CommandForeverIds.ViewLeaderboard;
+        public override List<IzolabellaCommandParameter> Parameters { get; } = new();
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
+
+        public override string ForeverId => CommandForeverIds.ViewLeaderboard;
+
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? LeaderboardType = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "leaderboard");
             LeaderboardTypes LType = EnumToReadable.GetEnumFromArg<LeaderboardTypes>(LeaderboardType);
@@ -28,14 +30,9 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
                 EnumToReadable.GetNameOfEnumType(LType)).Build());
         }
 
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
+        public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
             this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Leaderboard", "The leaderboard to view.", typeof(LeaderboardTypes)));
-            return Task.CompletedTask;
-        }
-
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
             return Task.CompletedTask;
         }
     }

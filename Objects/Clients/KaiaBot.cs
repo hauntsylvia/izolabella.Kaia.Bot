@@ -1,4 +1,5 @@
-﻿using izolabella.Util;
+﻿using Discord.Net;
+using izolabella.Util;
 using izolabella.Util.RateLimits.Limiters;
 using Kaia.Bot.Objects.Constants.Responses;
 using Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds;
@@ -36,11 +37,24 @@ namespace Kaia.Bot.Objects.Clients
             this.Parameters.CommandHandler.Client.Ready += this.ClientReadyAsync;
             this.Parameters.CommandHandler.Client.ReactionAdded += this.ClientReactionAddedAsync;
             this.Parameters.CommandHandler.Client.ReactionRemoved += this.ClientReactionRemovedAsync;
+            //this.Parameters.CommandHandler.OnCommandError += this.OnCommandErrorAsync;
         }
 
         public KaiaParams Parameters { get; }
 
         public List<Receiver> Receivers { get; }
+
+        private async Task OnCommandErrorAsync(IzolabellaCommand? Command, HttpException Exception)
+        {
+            if(Command != null)
+            {
+                Console.WriteLine(Exception);
+                Console.WriteLine($"__kaia_restart attempt @ [{DateTime.Now}]");
+                await this.Parameters.StopAsync();
+                await this.Parameters.StartAsync();
+                Console.WriteLine($"__kaia_restart finalized @ [{DateTime.Now}]");
+            }
+        }
 
         private static async Task HandleReceiverTaskAsync(KaiaUser User, Receiver R, Task<ReceiverResult> ToHandle)
         {
@@ -62,7 +76,7 @@ namespace Kaia.Bot.Objects.Clients
             }
             catch (Exception Ex)
             {
-                Console.WriteLine($"message receiver {R.Name} error => {Ex.Message}");
+                Console.WriteLine($"message receiver {R.Name} error => message: {Ex.Message} // src: {Ex.Source ?? "no source"}");
                 KaiaSessionStatistics.MessageReceiverFailureCount++;
                 await R.OnErrorAsync(Ex);
             }
@@ -101,7 +115,7 @@ namespace Kaia.Bot.Objects.Clients
             }
         }
 
-        private async Task AfterCommandExecutedAsync(CommandContext Context, izolabella.Discord.Objects.Parameters.IzolabellaCommandArgument[] Arguments, IIzolabellaCommand CommandInvoked)
+        private async Task AfterCommandExecutedAsync(CommandContext Context, izolabella.Discord.Objects.Parameters.IzolabellaCommandArgument[] Arguments, IzolabellaCommand CommandInvoked)
         {
             if (Context.UserContext.User is SocketGuildUser SUser && CommandInvoked is AddCommandConstraintCommand)
             {
@@ -128,13 +142,13 @@ namespace Kaia.Bot.Objects.Clients
 
         public async Task RefreshCommandsAsync(IEnumerable<SocketGuild> RefreshFor)
         {
-            List<IIzolabellaCommand> Commands = await IzolabellaDiscordCommandClient.GetIzolabellaCommandsAsync(Assembly.GetAssembly(typeof(KaiaBot)) ?? throw new NullReferenceException());
+            List<IzolabellaCommand> Commands = await IzolabellaDiscordCommandClient.GetIzolabellaCommandsAsync(Assembly.GetAssembly(typeof(KaiaBot)) ?? throw new NullReferenceException());
             foreach (SocketGuild DiscordGuild in RefreshFor)
             {
                 KaiaGuild Guild = new(DiscordGuild.Id);
-                foreach (IIzolabellaCommand Command in Commands)
+                foreach (IzolabellaCommand Command in Commands)
                 {
-                    if (Command is IKaiaCommand CCBLevelCommand)
+                    if (Command is KaiaCommand CCBLevelCommand)
                     {
                         GuildPermission[]? Permissions = Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CCBLevelCommand.ForeverId);
                         if (Permissions != null)

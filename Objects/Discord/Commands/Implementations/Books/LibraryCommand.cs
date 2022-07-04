@@ -5,22 +5,21 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Books
 {
-    public class KaiaLibraryCommand : IKaiaCommand
+    public class KaiaLibraryCommand : KaiaCommand
     {
-        public string Name => "Library";
+        public override string Name => "Library";
 
-        public string Description => "View Kaia's library.";
-        public bool GuildsOnly => false;
+        public override string Description => "View Kaia's library.";
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new()
-        {
-        };
+        public override bool GuildsOnly => false;
 
-        public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
+        public override List<IzolabellaCommandParameter> Parameters { get; } = new();
 
-        public string ForeverId => CommandForeverIds.BookLibrary;
+        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override string ForeverId => CommandForeverIds.BookLibrary;
+
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? BookFilterArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "book-filter");
             //LibraryViewFilters LFilterMax = ((LibraryViewFilters[])Enum.GetValues(typeof(LibraryViewFilters))).Max();
@@ -33,14 +32,9 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Books
             await new BooksPaginated(Context, Result).StartAsync();
         }
 
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
+        public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
             this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Book Filter", "The filter to apply the books by.", typeof(LibraryViewFilters)));
-            return Task.CompletedTask;
-        }
-
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
             return Task.CompletedTask;
         }
     }

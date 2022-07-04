@@ -1,10 +1,10 @@
 ﻿namespace Kaia.Bot.Objects.Discord.Commands.Bases
 {
-    public interface IKaiaCommand : IIzolabellaCommand
+    public abstract class KaiaCommand : IzolabellaCommand
     {
         /// <summary>
         /// DO NOT CHANGE after first compilation with the command.
         /// </summary>
-        public string ForeverId { get; }
+        public abstract string ForeverId { get; }
     }
 }

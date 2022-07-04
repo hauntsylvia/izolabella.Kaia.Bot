@@ -1,21 +1,22 @@
-﻿using izolabella.Discord.Objects.Constraints.Interfaces;
+﻿using Discord.Net;
+using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
 using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {
-    public class ReactionRole : IKaiaCommand
+    public class ReactionRole : KaiaCommand
     {
-        public string ForeverId => CommandForeverIds.ReactionRole;
+        public override string ForeverId => CommandForeverIds.ReactionRole;
 
-        public string Name => "Reaction Role";
+        public override string Name => "Reaction Role";
 
-        public string Description => "Automatically grant users a role when they react to a message.";
+        public override string Description => "Automatically grant users a role when they react to a message.";
 
-        public bool GuildsOnly => true;
+        public override bool GuildsOnly => true;
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new()
+        public override List<IzolabellaCommandParameter> Parameters { get; } = new()
         {            
             new("Role", "The role to give or remove when the message is reacted to.", ApplicationCommandOptionType.Role, true),
             new("Message", "The message's id.", ApplicationCommandOptionType.String, true),
@@ -23,22 +24,12 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             new("Emote", "The emote users must react with.", ApplicationCommandOptionType.String, true),
         };
 
-        public List<IIzolabellaCommandConstraint> Constraints { get; } = new()
+        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new()
         {
             new WhitelistPermissionsConstraint(false, GuildPermission.ManageRoles)
         };
 
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
-        {
-            return Task.CompletedTask;
-        }
-
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? RoleArg = Arguments.FirstOrDefault(A => A.Name == "role");
             IzolabellaCommandArgument? MessageIdArg = Arguments.FirstOrDefault(A => A.Name == "message");
@@ -68,6 +59,15 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
                     }
                 }
             }
+        }
+
+        public override Task OnErrorAsync(CommandContext? Context, HttpException Error)
+        {
+            if(Context != null)
+            {
+
+            }
+            return base.OnErrorAsync(Context, Error);
         }
     }
 }

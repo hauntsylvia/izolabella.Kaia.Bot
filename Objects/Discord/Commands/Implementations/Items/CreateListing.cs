@@ -7,30 +7,25 @@ using System.Linq;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
 {
-    public class CreateListing : IKaiaCommand
+    public class CreateListing : KaiaCommand
     {
-        public string ForeverId => CommandForeverIds.CreateItemListing;
+        public override string ForeverId => CommandForeverIds.CreateItemListing;
 
-        public string Name => "Store Listing";
+        public override string Name => "Store Listing";
 
-        public string Description => "Create a store listing.";
+        public override string Description => "Create a store listing.";
 
-        public bool GuildsOnly => false;
+        public override bool GuildsOnly => false;
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new()
+        public override List<IzolabellaCommandParameter> Parameters { get; } = new()
         {
             new("Quantity", "Number of the item to put up for this listing.", ApplicationCommandOptionType.Number, true),
             new("Cost Per Item", $"Number of {Strings.Economy.CurrencyName} required to buy one item.", ApplicationCommandOptionType.Number, true),
         };
 
-        public List<IIzolabellaCommandConstraint> Constraints => new();
+        public override List<IIzolabellaCommandConstraint> Constraints => new();
 
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
+        public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
             IzolabellaCommandParameter Items = new("Item", "The item to put up in this listing.", ApplicationCommandOptionType.String, true)
             {
@@ -42,7 +37,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
             return Task.CompletedTask;
         }
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? QuantityArg = Arguments.FirstOrDefault(A => A.Name == "quantity");
             IzolabellaCommandArgument? CPIArg = Arguments.FirstOrDefault(A => A.Name == "cost-per-item");

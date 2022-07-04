@@ -4,30 +4,31 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 {
-    public class AddCommandConstraintCommand : IKaiaCommand
+    public class AddCommandConstraintCommand : KaiaCommand
     {
-        public string Name => "Add Command Constraint";
+        public override string Name => "Add Command Constraint";
 
-        public string Description => "[Admin] Constrain a command in my guild to certain roles or permissions.";
+        public override string Description => "[Admin] Constrain a command in my guild to certain roles or permissions.";
 
-        public bool GuildsOnly => true;
+        public override bool GuildsOnly => true;
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new()
+        public override List<IzolabellaCommandParameter> Parameters { get; } = new()
         {
             new("Allowed Role", "The role to add or overwrite to the list of allowed roles.", ApplicationCommandOptionType.Role, false),
             new("Permissions Allowed", "The role to copy the permissions of.", ApplicationCommandOptionType.Role, false),
             new("Overwrite", "If true, the current constraints will get entirely replaced by the new ones.", ApplicationCommandOptionType.Boolean, true),
         };
-        public List<IIzolabellaCommandConstraint> Constraints { get; } = new()
+
+        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new()
         {
             new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
         };
 
-        public string ForeverId => CommandForeverIds.AddCommandConstraint;
+        public override string ForeverId => CommandForeverIds.AddCommandConstraint;
 
-        public IIzolabellaCommand[]? AllCommands { get; private set; }
+        public IzolabellaCommand[]? AllCommands { get; private set; }
 
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             if (Context.UserContext.User is SocketGuildUser SUser)
             {
@@ -81,17 +82,17 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
                     Guild.Settings.OverrideCommandPermissionsConstraint = PermissionsDict;
                     Guild.Settings.OverrideCommandRolesConstraint = RolesDict;
                     Guild.Settings = Guild.Settings;
-                    await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, this.AllCommands?.FirstOrDefault(C => C is IKaiaCommand CCB && CCB.ForeverId == CommandId)?.Name ?? CommandId, Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CommandId), Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CommandId)).Build());
+                    await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, this.AllCommands?.FirstOrDefault(C => C is KaiaCommand CCB && CCB.ForeverId == CommandId)?.Name ?? CommandId, Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CommandId), Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CommandId)).Build());
                 }
             }
         }
 
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
+        public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
             List<IzolabellaCommandParameterChoices> Choices = new();
-            foreach (IIzolabellaCommand Command in AllCommands)
+            foreach (IzolabellaCommand Command in AllCommands)
             {
-                if (Command is IKaiaCommand CCBLevelCommand)
+                if (Command is KaiaCommand CCBLevelCommand)
                 {
                     if (CCBLevelCommand.ForeverId != this.ForeverId)
                     {
@@ -104,11 +105,6 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
                 Choices = Choices
             });
             this.AllCommands = AllCommands;
-            return Task.CompletedTask;
-        }
-
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
             return Task.CompletedTask;
         }
     }

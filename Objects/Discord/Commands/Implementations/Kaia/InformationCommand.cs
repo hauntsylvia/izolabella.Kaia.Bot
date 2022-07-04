@@ -4,31 +4,21 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 {
-    internal class InformationCommand : IKaiaCommand
+    internal class InformationCommand : KaiaCommand
     {
-        public string ForeverId => CommandForeverIds.BotDevelopmentInformation;
+        public override string ForeverId => CommandForeverIds.BotDevelopmentInformation;
 
-        public string Name => "Information";
+        public override string Name => "Information";
 
-        public string Description => "View Kaia's statistics for this session.";
+        public override string Description => "View Kaia's statistics for this session.";
 
-        public bool GuildsOnly => false;
+        public override bool GuildsOnly => false;
 
-        public List<IzolabellaCommandParameter> Parameters { get; } = new();
+        public override List<IzolabellaCommandParameter> Parameters { get; } = new();
 
-        public List<IIzolabellaCommandConstraint> Constraints { get; } = new();
+        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
-        public Task OnConstrainmentAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments, IIzolabellaCommandConstraint ConstraintThatFailed)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task OnLoadAsync(IIzolabellaCommand[] AllCommands)
-        {
-            return Task.CompletedTask;
-        }
-
-        public async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new KaiaStatisticsEmbed().Build());
         }

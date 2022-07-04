@@ -42,7 +42,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                         foreach (Spell Spell in I.OnInteract.Reward.Spells)
                         {
                             U.SpellsProcessor.ApplySpellAndSaveAsync(U, Spell).Wait();
-                            Display.Add($"__{Spell.Name} {Spell.Emote}__ {(!Spell.SingleUse ? $"[until `{Spell.Id.ActiveUntil.ToShortDateString()}` @ `{Spell.Id.ActiveUntil.ToShortTimeString()}`]" : "")} ```{Spell.Description}```");
+                            Display.Add($"__{Spell.Name} {Spell.Emote}__ {(!Spell.SingleUse ? $"[until (utc) `{Spell.Id.ActiveUntil.ToUniversalTime().ToShortDateString()}` @ `{Spell.Id.ActiveUntil.ToUniversalTime().ToShortTimeString()}`]" : "")} ```{Spell.Description}```");
                         }
                         this.WithListWrittenToField("spells applied", Display, "\n");
                     }

@@ -31,7 +31,9 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             }
             else
             {
-                await Context.UserContext.RespondAsync(text: "", embed: new MeView(U.Username, new(U.Id)).Build());
+                MeView? M = new(U.Username, new(U.Id));
+                await M.RefreshAsync();
+                await Context.UserContext.RespondAsync(text: "", embed: M.Build());
             }
         }
 

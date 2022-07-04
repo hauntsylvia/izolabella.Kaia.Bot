@@ -8,7 +8,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
     {
         public override string Name => "Add Command Constraint";
 
-        public override string Description => "[Admin] Constrain a command in my guild to certain roles or permissions.";
+        public override string Description => "[Admin] Constrain a command in your guild to certain roles or permissions.";
 
         public override bool GuildsOnly => true;
 
@@ -23,6 +23,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
         {
             new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
         };
+
+        public override List<GuildPermission> RequiredPermissions { get; } = new();
 
         public override string ForeverId => CommandForeverIds.AddCommandConstraint;
 

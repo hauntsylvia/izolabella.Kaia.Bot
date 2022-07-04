@@ -9,13 +9,14 @@ namespace Kaia.Bot.Objects.KaiaStructures.Guilds.Roles
 {
     public class KaiaReactionRole
     {
-        public KaiaReactionRole(ulong ListerId, ulong MessageId, ulong ChannelId, ulong RoleId, KaiaEmote Emote, ulong? Id = null)
+        public KaiaReactionRole(ulong ListerId, ulong MessageId, ulong ChannelId, ulong RoleId, KaiaEmote Emote, bool Enforce, ulong? Id = null)
         {
             this.ListerId = ListerId;
             this.MessageId = MessageId;
             this.ChannelId = ChannelId;
             this.RoleId = RoleId;
             this.Emote = Emote;
+            this.Enforce = Enforce;
             this.Id = Id ?? IdGenerator.CreateNewId();
         }
 
@@ -43,6 +44,12 @@ namespace Kaia.Bot.Objects.KaiaStructures.Guilds.Roles
         /// The emote required in the reaction to give this role.
         /// </summary>
         public KaiaEmote Emote { get; }
+
+        /// <summary>
+        /// If true, this indicates that Kaia should check whether the user has reacted or not on startup and 
+        /// grant the role (or remove it) accordingly, instead of only relying on listeners.
+        /// </summary>
+        public bool Enforce { get; }
 
         /// <summary>
         /// The unique id of this instance.

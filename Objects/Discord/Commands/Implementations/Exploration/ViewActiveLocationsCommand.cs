@@ -19,6 +19,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 
         public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
+        public override List<GuildPermission> RequiredPermissions { get; } = new();
+
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             LocationViewPaginated A = new(Context); 

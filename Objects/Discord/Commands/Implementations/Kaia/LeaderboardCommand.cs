@@ -17,6 +17,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 
         public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
+        public override List<GuildPermission> RequiredPermissions { get; } = new();
+
         public override string ForeverId => CommandForeverIds.ViewLeaderboard;
 
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)

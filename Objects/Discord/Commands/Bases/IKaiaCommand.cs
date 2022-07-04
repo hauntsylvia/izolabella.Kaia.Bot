@@ -6,5 +6,7 @@
         /// DO NOT CHANGE after first compilation with the command.
         /// </summary>
         public abstract string ForeverId { get; }
+
+        public abstract List<GuildPermission> RequiredPermissions { get; }
     }
 }

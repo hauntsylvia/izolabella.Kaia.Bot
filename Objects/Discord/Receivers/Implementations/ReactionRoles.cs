@@ -33,7 +33,14 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
                             IRole? ActualRole = await Role.GetRoleAsync(Channel.Guild);
                             if(ActualRole != null)
                             {
-                                await (User.Roles.Any(R => R.Id == Role.RoleId) ? User.RemoveRoleAsync(ActualRole.Id) : User.AddRoleAsync(ActualRole));
+                                if(Removing)
+                                {
+                                    await User.RemoveRoleAsync(ActualRole.Id);
+                                }
+                                else
+                                {
+                                    await User.AddRoleAsync(ActualRole);
+                                }
                                 Result.GuildToSave = Guild;
                             }
                         }
@@ -45,7 +52,7 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
 
         public override Task OnErrorAsync(Exception Exception)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

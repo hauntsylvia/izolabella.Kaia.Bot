@@ -1,6 +1,7 @@
 ﻿using Discord.Net;
 using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
 using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
@@ -22,11 +23,19 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             new("Message", "The message's id.", ApplicationCommandOptionType.String, true),
             new("Channel", "The channel the message is in.", ApplicationCommandOptionType.Channel, true),
             new("Emote", "The emote users must react with.", ApplicationCommandOptionType.String, true),
+            new("Enforce", "(Recommended: true) The role is granted or removed even when Kaia is offline (on startup).", ApplicationCommandOptionType.Boolean, true),
         };
 
         public override List<IIzolabellaCommandConstraint> Constraints { get; } = new()
         {
             new WhitelistPermissionsConstraint(false, GuildPermission.ManageRoles)
+        };
+
+        public override List<GuildPermission> RequiredPermissions => new()
+        {
+            GuildPermission.ManageRoles,
+            GuildPermission.ReadMessageHistory,
+            GuildPermission.AddReactions
         };
 
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
@@ -35,12 +44,14 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             IzolabellaCommandArgument? MessageIdArg = Arguments.FirstOrDefault(A => A.Name == "message");
             IzolabellaCommandArgument? ChannelArg = Arguments.FirstOrDefault(A => A.Name == "channel");
             IzolabellaCommandArgument? EmoteArg = Arguments.FirstOrDefault(A => A.Name == "emote");
-            if(RoleArg != null && MessageIdArg != null && ChannelArg != null && EmoteArg != null &&
+            IzolabellaCommandArgument? EnforceArg = Arguments.FirstOrDefault(A => A.Name == "enforce");
+            if(RoleArg != null && MessageIdArg != null && ChannelArg != null && EmoteArg != null && EnforceArg != null &&
                 RoleArg.Value is IRole Role && 
                 MessageIdArg.Value is string MessageIdS && 
                 Context.UserContext.User is SocketGuildUser User && 
                 ChannelArg.Value is IGuildChannel Channel &&
-                EmoteArg.Value is string EmoteS)
+                EmoteArg.Value is string EmoteS &&
+                EnforceArg.Value is bool Enforce)
             {
                 if(Channel is SocketTextChannel SChannel)
                 {
@@ -49,7 +60,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
                         IMessage? Message = await SChannel.GetMessageAsync(MessageId);
                         if (Message != null)
                         {
-                            KaiaReactionRole NewReactionRole = new(Context.UserContext.User.Id, Message.Id, Channel.Id, Role.Id, new(E.Name));
+                            KaiaReactionRole NewReactionRole = new(Context.UserContext.User.Id, Message.Id, Channel.Id, Role.Id, new(E.Name), Enforce);
                             KaiaGuild G = new(User.Guild.Id);
                             G.Settings.ReactionRoles.Add(NewReactionRole);
                             await G.SaveAsync();
@@ -63,11 +74,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 
         public override Task OnErrorAsync(CommandContext? Context, HttpException Error)
         {
-            if(Context != null)
-            {
-
-            }
-            return base.OnErrorAsync(Context, Error);
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Discord.Net;
 using izolabella.Util;
 using izolabella.Util.RateLimits.Limiters;
+using Kaia.Bot.Objects.Constants.Permissions;
 using Kaia.Bot.Objects.Constants.Responses;
 using Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
+using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 using System.Reflection;
 
 namespace Kaia.Bot.Objects.Clients
@@ -16,10 +18,26 @@ namespace Kaia.Bot.Objects.Clients
             this.Receivers = BaseImplementationUtil.GetItems<Receiver>();
             DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(4));
             DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
-            this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Context) =>
+            this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Command, Context) =>
             {
-                if(await Limiter.CheckIfPassesAsync(Context.UserContext.User.Id))
+                if(Command is KaiaCommand KaiaCommand && await Limiter.CheckIfPassesAsync(Context.UserContext.User.Id))
                 {
+                    if (Context != null && Context.UserContext.Channel is SocketGuildChannel C)
+                    {
+                        GuildPermissions KaiaPerms = C.Guild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id).GuildPermissions;
+                        List<GuildPermission> ReqPerms = KaiaCommand.RequiredPermissions.ToList();
+                        ReqPerms.AddRange(DefaultPerms.Default);
+                        if (ReqPerms.All(RP => KaiaPerms.Has(RP)))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            PermissionsProblem V = new(C.Guild.Name, KaiaCommand.Name, KaiaPerms, ReqPerms.ToArray());
+                            await Context.UserContext.RespondAsync(ephemeral: true, embed: V.Build());
+                            return false;
+                        }
+                    }
                     return true;
                 }
                 else
@@ -98,7 +116,7 @@ namespace Kaia.Bot.Objects.Clients
 
         private async Task ClientReactionRemovedAsync(Cacheable<IUserMessage, ulong> CachedMessage, Cacheable<IMessageChannel, ulong> CachedChannel, SocketReaction Reaction)
         {
-            await this.ClientReactionChangedAsync(Reaction, false);
+            await this.ClientReactionChangedAsync(Reaction, true);
         }
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
@@ -137,7 +155,65 @@ namespace Kaia.Bot.Objects.Clients
 
         private async Task ClientReadyAsync()
         {
-            await this.RefreshCommandsAsync(this.Parameters.CommandHandler.Client.Guilds);
+            await Task.Run(() =>
+            {
+                this.RefreshCommandsAsync(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
+                this.IterateOverReactionRoles(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
+            });
+        }
+
+        public async Task IterateOverReactionRoles(IEnumerable<SocketGuild> RefreshFor)
+        {
+            foreach (SocketGuild DiscordGuild in RefreshFor)
+            {
+                GuildPermissions KaiaPerms = DiscordGuild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id).GuildPermissions;
+                if(KaiaPerms.Has(GuildPermission.ManageRoles) && KaiaPerms.Has(GuildPermission.ReadMessageHistory))
+                {
+                    KaiaGuild Guild = new(DiscordGuild.Id);
+                    await DiscordGuild.DownloadUsersAsync();
+                    foreach (KaiaReactionRole Role in Guild.Settings.ReactionRoles.Where(R => R.Enforce))
+                    {
+                        IRole? DiscordRole = await Role.GetRoleAsync(DiscordGuild);
+                        IMessage? Message = await Role.GetMessageAsync(DiscordGuild);
+                        if (DiscordRole != null && Message != null)
+                        {
+                            #region users who reacted but don't have the role
+                            IAsyncEnumerable<IReadOnlyCollection<IUser>> UsersThatReacted = Message.GetReactionUsersAsync(Role.Emote, int.MaxValue);
+                            List<SocketGuildUser> Cached = new();
+                            await foreach (IReadOnlyCollection<IUser> U in UsersThatReacted)
+                            {
+                                foreach (IUser IUs in U)
+                                {
+                                    SocketGuildUser? ActualU = DiscordGuild.GetUser(IUs.Id);
+                                    if (!ActualU.Roles.Any(R => R.Id == Role.Id))
+                                    {
+                                        await ActualU.AddRoleAsync(DiscordRole);
+                                    }
+                                    Cached.Add(ActualU);
+                                }
+                            }
+                            #endregion
+
+                            #region users who have the role but didn't react
+                            await foreach (IReadOnlyCollection<IGuildUser> UserList in DiscordGuild.GetUsersAsync())
+                            {
+                                foreach (IGuildUser User in UserList)
+                                {
+                                    if (User.RoleIds.Any(RId => Role.RoleId == RId))
+                                    {
+                                        SocketGuildUser? Matching = Cached.FirstOrDefault(CU => CU.Id == User.Id);
+                                        if(Matching == null)
+                                        {
+                                            await User.RemoveRoleAsync(Role.RoleId);
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+                        }
+                    }
+                }
+            }
         }
 
         public async Task RefreshCommandsAsync(IEnumerable<SocketGuild> RefreshFor)

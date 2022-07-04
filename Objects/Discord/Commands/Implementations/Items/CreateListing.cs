@@ -25,6 +25,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
 
         public override List<IIzolabellaCommandConstraint> Constraints => new();
 
+        public override List<GuildPermission> RequiredPermissions { get; } = new();
+
         public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
             IzolabellaCommandParameter Items = new("Item", "The item to put up in this listing.", ApplicationCommandOptionType.String, true)

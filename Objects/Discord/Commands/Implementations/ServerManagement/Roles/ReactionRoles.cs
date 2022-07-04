@@ -25,6 +25,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             new WhitelistPermissionsConstraint(false, GuildPermission.ManageRoles)
         };
 
+        public override List<GuildPermission> RequiredPermissions { get; } = new();
+
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? EphemeralArg = Arguments.FirstOrDefault(A => A.Name == "ephemeral");

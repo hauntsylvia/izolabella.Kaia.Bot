@@ -42,5 +42,9 @@
         {
             internal static KaiaEmote Counting => new("🔢");
         }
+        internal static class Customs
+        {
+            internal static Emote KaiaDot => Emote.Parse("<:kaiadot:993506891604967504>");
+        }
     }
 }

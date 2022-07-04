@@ -22,13 +22,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 
         protected override Task ClientRefreshAsync()
         {
-            string MissingStr = Strings.EmbedStrings.Empty;
+            List<string> Display = new();
             GuildPermission[] MissingGP = this.Required.Where(P => !this.UserHas.Has(P)).ToArray();
             foreach (GuildPermission P in MissingGP)
             {
-                MissingStr += $"{(MissingStr != Strings.EmbedStrings.Empty ? ", " : "")}{Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture)}";
+                Display.Add($"{Emotes.Customs.KaiaDot}{Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture)}");
             }
-            this.WithField(Strings.EmbedStrings.Empty, $"// *missing permissions*\n {MissingStr}");
+            this.WithListWrittenToField($"missing permissions", Display, "\n");
             return Task.CompletedTask;
         }
     }

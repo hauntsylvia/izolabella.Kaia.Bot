@@ -19,6 +19,8 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Achievements
 
         public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
+        public override List<GuildPermission> RequiredPermissions { get; } = new();
+
         public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
             this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Achievement Filter", "The filter to apply to the list of achievements.", typeof(AchievementFilter)));

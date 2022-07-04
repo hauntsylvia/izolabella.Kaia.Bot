@@ -19,8 +19,10 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 
         public override List<IIzolabellaCommandConstraint> Constraints { get; } = new()
         {
-            new WhitelistPermissionsConstraint(true, GuildPermission.Administrator)
+            new WhitelistPermissionsConstraint(true, GuildPermission.ManageGuild)
         };
+
+        public override List<GuildPermission> RequiredPermissions { get; } = new();
 
         public override string ForeverId => CommandForeverIds.GuildSettingsCommand;
 

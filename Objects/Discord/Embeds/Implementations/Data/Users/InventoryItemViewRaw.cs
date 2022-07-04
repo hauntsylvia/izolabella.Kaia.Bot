@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
 {
     public class InventoryItemViewRaw : KaiaPathEmbedRefreshable
     {
@@ -18,7 +18,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
         protected override Task ClientRefreshAsync()
         {
             this.WithField(this.Item.DisplayString, this.Item.Description);
-            if(this.Item.ReceivedAt.HasValue)
+            if (this.Item.ReceivedAt.HasValue)
             {
                 this.WithField("received at", $"`{this.Item.ReceivedAt.Value.ToShortDateString()}`");
             }

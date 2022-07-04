@@ -1,16 +1,19 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Guilds
+﻿using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+
+namespace Kaia.Bot.Objects.KaiaStructures.Guilds
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KaiaGuildSettings
     {
         [JsonConstructor]
-        public KaiaGuildSettings(ulong? CountingChannelId = null, ulong? LastSuccessfulNumber = null, ulong? LastUserWhoCounted = null, ulong? HighestCountEver = null, IReadOnlyDictionary<string, GuildPermission[]>? OverrideCommandPermissionsConstraint = null)
+        public KaiaGuildSettings(ulong? CountingChannelId = null, ulong? LastSuccessfulNumber = null, ulong? LastUserWhoCounted = null, ulong? HighestCountEver = null, IReadOnlyDictionary<string, GuildPermission[]>? OverrideCommandPermissionsConstraint = null, List<KaiaReactionRole>? ReactionRoles = null)
         {
             this.CountingChannelId = CountingChannelId;
             this.lastSuccessfulNumber = LastSuccessfulNumber;
             this.lastUserWhoCounted = LastUserWhoCounted ?? this.LastUserWhoCounted;
             this.highestCountEver = HighestCountEver ?? this.HighestCountEver;
             this.OverrideCommandPermissionsConstraint = OverrideCommandPermissionsConstraint ?? this.OverrideCommandPermissionsConstraint;
+            this.reactionRoles = ReactionRoles ?? new();
         }
 
         [JsonProperty("CountingChannelId", Required = Required.AllowNull)]
@@ -33,5 +36,16 @@
 
         [JsonProperty("OverrideCommandRolesConstraint", Required = Required.Default)]
         public IReadOnlyDictionary<string, ulong[]> OverrideCommandRolesConstraint { get; set; } = new Dictionary<string, ulong[]>();
+
+        [JsonProperty("ReactionRoles", Required = Required.Default)]
+        private List<KaiaReactionRole> reactionRoles = new();
+        public List<KaiaReactionRole> ReactionRoles
+        {
+            get
+            {
+                this.reactionRoles = this.reactionRoles.DistinctBy(A => A.RoleId).ToList();
+                return this.reactionRoles;
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Guilds
         public new ulong Id { get; }
 
         private KaiaGuildSettings settings;
+
         [JsonProperty("Settings", Required = Required.Always)]
         public KaiaGuildSettings Settings
         {

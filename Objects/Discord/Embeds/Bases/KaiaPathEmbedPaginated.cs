@@ -12,7 +12,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             string Parent,
             string? Sub1 = null,
             string? Sub2 = null,
-            Color? Override = null)
+            Color? Override = null,
+            bool Private = false)
         {
             this.EmbedsAndOptions = EmbedsAndOptions;
             this.IfNoListElements = new ListOfItemsNotFound();
@@ -22,6 +23,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.Sub1 = Sub1;
             this.Sub2 = Sub2;
             this.Override = Override;
+            this.Private = Private;
             this.BId = $"back-paginationembed-{IdGenerator.CreateNewId()}";
             this.FId = $"forward-paginationembed-{IdGenerator.CreateNewId()}";
             this.GlobalSelectMenuId = IdGenerator.CreateNewId();
@@ -56,6 +58,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         public string? Sub2 { get; }
 
         public Color? Override { get; }
+
+        public bool Private { get; }
 
         public delegate void PageChangeHandler(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex);
 
@@ -110,7 +114,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                 {
                     await this.Context.UserContext.RespondAsync(
                         components: Comps,
-                        embed: BuiltEmbed);
+                        embed: BuiltEmbed, ephemeral: this.Private);
                 }
                 else
                 {

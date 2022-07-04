@@ -12,5 +12,7 @@
         internal static string ViewAchievements => "viewachievements-62320221727";
         internal static string ViewActiveLocations => "viewactvlocs-63020221755";
         internal static string CreateItemListing => "createitmlstng-63020222121";
+        internal static string ReactionRole => "reactionrole-7420220638";
+        internal static string ReactionRoles => "viewreactionroles-7420220746";
     }
 }

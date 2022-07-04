@@ -1,19 +1,19 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
 
-namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
+namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
-    internal class Counter : IMessageReceiver
+    public class Counter : Receiver
     {
-        public string Name => "Counter";
+        public override string Name => "Counter";
 
-        public Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message)
+        public override Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message)
         {
             return Task.FromResult(Message.Author is SocketGuildUser SUser && new KaiaGuild(SUser.Guild.Id).Settings.CountingChannelId == Message.Channel.Id);
         }
 
-        public async Task<MessageReceiverResult> RunAsync(KaiaUser Author, KaiaGuild? Guild, SocketMessage Message)
+        public override async Task<ReceiverResult> OnMessageAsync(KaiaUser Author, KaiaGuild? Guild, SocketMessage Message)
         {
-            MessageReceiverResult Result = new(false, false);
+            ReceiverResult Result = new();
             string? Split = Message.Content.Split(' ').FirstOrDefault();
             if (Split != null && double.TryParse(Split, out double Num))
             {
@@ -72,12 +72,12 @@ namespace Kaia.Bot.Objects.Discord.MessageReceivers.Implementations
             return Result;
         }
 
-        public Task CallbackAsync(KaiaUser Author, SocketMessage Message, MessageReceiverResult CausedCallback)
+        public override Task CallbackAsync(KaiaUser Author, SocketMessage Message, ReceiverResult CausedCallback)
         {
             return Task.CompletedTask;
         }
 
-        public Task OnErrorAsync(Exception Exception)
+        public override Task OnErrorAsync(Exception Exception)
         {
             return Task.CompletedTask;
         }

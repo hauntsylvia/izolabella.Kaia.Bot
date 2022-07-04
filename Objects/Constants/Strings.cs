@@ -40,6 +40,7 @@
                 internal static string Kaia => "kaia";
                 internal static string Achievements => "achievements";
                 internal static string Locations => "locations";
+                internal static string ReactionRoles => "roles";
             }
         }
         internal static class Responses

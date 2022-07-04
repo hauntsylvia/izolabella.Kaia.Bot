@@ -12,7 +12,7 @@ namespace Kaia.Bot.Objects.Clients
         public KaiaBot(KaiaParams Parameters)
         {
             this.Parameters = Parameters;
-            this.MessageReceivers = BaseImplementationUtil.GetItems<IMessageReceiver>();
+            this.Receivers = BaseImplementationUtil.GetItems<Receiver>();
             DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(4));
             DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
             this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Context) =>
@@ -34,11 +34,58 @@ namespace Kaia.Bot.Objects.Clients
             this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
             this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceivedAsync;
             this.Parameters.CommandHandler.Client.Ready += this.ClientReadyAsync;
+            this.Parameters.CommandHandler.Client.ReactionAdded += this.ClientReactionAddedAsync;
+            this.Parameters.CommandHandler.Client.ReactionRemoved += this.ClientReactionRemovedAsync;
         }
 
         public KaiaParams Parameters { get; }
 
-        public List<IMessageReceiver> MessageReceivers { get; }
+        public List<Receiver> Receivers { get; }
+
+        private static async Task HandleReceiverTaskAsync(KaiaUser User, Receiver R, Task<ReceiverResult> ToHandle)
+        {
+            try
+            {
+                ReceiverResult Result = await ToHandle;
+                if (Result.ItemToUse != null)
+                {
+                    await User.Settings.Inventory.RemoveItemOfIdAsync(Result.ItemToUse);
+                }
+                if (Result.UserToSave != null)
+                {
+                    await Result.UserToSave.SaveAsync();
+                }
+                if (Result.GuildToSave != null)
+                {
+                    await Result.GuildToSave.SaveAsync();
+                }
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine($"message receiver {R.Name} error => {Ex.Message}");
+                KaiaSessionStatistics.MessageReceiverFailureCount++;
+                await R.OnErrorAsync(Ex);
+            }
+        }
+
+        private async Task ClientReactionChangedAsync(SocketReaction Reaction, bool Removing)
+        {
+            KaiaUser User = new(Reaction.UserId);
+            foreach (Receiver Receiver in this.Receivers)
+            {
+                await HandleReceiverTaskAsync(User, Receiver, Receiver.OnReactionAsync(this, Reaction, Removing));
+            }
+        }
+
+        private async Task ClientReactionAddedAsync(Cacheable<IUserMessage, ulong> CachedMessage, Cacheable<IMessageChannel, ulong> CachedChannel, SocketReaction Reaction)
+        {
+            await this.ClientReactionChangedAsync(Reaction, false);
+        }
+
+        private async Task ClientReactionRemovedAsync(Cacheable<IUserMessage, ulong> CachedMessage, Cacheable<IMessageChannel, ulong> CachedChannel, SocketReaction Reaction)
+        {
+            await this.ClientReactionChangedAsync(Reaction, false);
+        }
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
@@ -46,36 +93,11 @@ namespace Kaia.Bot.Objects.Clients
             {
                 KaiaUser User = new(Arg.Author.Id);
                 KaiaGuild? Guild = Arg.Author is SocketGuildUser GuildUser ? new(GuildUser.Guild.Id) : null;
-                IEnumerable<IMessageReceiver> Receivers = this.MessageReceivers.Where((M) => M.CheckMessageValidityAsync(User, Arg).Result);
-                foreach (IMessageReceiver Receiver in Receivers)
+                IEnumerable<Receiver> Receivers = this.Receivers.Where((M) => M.CheckMessageValidityAsync(User, Arg).Result);
+                foreach (Receiver Receiver in Receivers)
                 {
-                    if (Receiver != null)
-                    {
-                        try
-                        {
-                            MessageReceiverResult Result = await Receiver.RunAsync(User, Guild, Arg);
-                            if (Result.ItemToUse != null)
-                            {
-                                await Receiver.CallbackAsync(User, Arg, Result);
-                                await User.Settings.Inventory.RemoveItemOfIdAsync(Result.ItemToUse);
-                            }
-                            if (Result.SaveUser)
-                            {
-                                await User.SaveAsync();
-                            }
-                            if (Result.SaveUserGuild && Guild != null)
-                            {
-                                await Guild.SaveAsync();
-                            }
-                        }
-                        catch (Exception Ex)
-                        {
-                            Console.WriteLine($"message receiver {Receiver.Name} error => {Ex.Message}");
-                            await Receiver.OnErrorAsync(Ex);
-                        }
-                    }
+                    await HandleReceiverTaskAsync(User, Receiver, Receiver.OnMessageAsync(User, Guild, Arg));
                 }
-                await User.SaveAsync();
             }
         }
 

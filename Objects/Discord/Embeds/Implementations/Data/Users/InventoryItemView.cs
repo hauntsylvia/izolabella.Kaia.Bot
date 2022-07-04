@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
 {
     public class InventoryItemView : KaiaItemContentView
     {
@@ -68,12 +68,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
             {
                 this.ListingInteraction = new ItemCreateSaleListing(this, this.Context, new(new() { this.Item }, this.U, this.Item.MarketCost));
             }
-            else if(this.ListingInteraction != null)
+            else if (this.ListingInteraction != null)
             {
                 this.ListingInteraction.Dispose();
             }
 
-            if(this.ListingInteraction != null)
+            if (this.ListingInteraction != null)
             {
                 await this.ListingInteraction.StartAsync(U);
             }
@@ -81,7 +81,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData
 
         private async Task InteractAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (this.Item != null && (await U.Settings.Inventory.GetItemOfId(this.Item.Id)) != null)
+            if (this.Item != null && await U.Settings.Inventory.GetItemOfId(this.Item.Id) != null)
             {
                 await this.Context.UserContext.FollowupAsync(embed: new InteractWithItemEmbed(this.Item, U).Build());
                 this.Item = await U.Settings.Inventory.GetItemOfDisplayName(this.Item);

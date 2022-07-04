@@ -1,4 +1,4 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.UserData;
+﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 using System;
 using System.Collections.Generic;

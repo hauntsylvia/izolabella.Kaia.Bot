@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Kaia.Bot.Objects.Discord.Components.KaiaButton;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles
 {
     public class AutoRoleView : KaiaItemContentView
     {

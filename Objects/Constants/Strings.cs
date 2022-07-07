@@ -15,7 +15,8 @@
             internal static string LocationStore => "Locations";
             internal static string SpellsStore => "Spells";
             internal static string RateLimitStore => "Rate Limits";
-            internal static string SaleListingsStore => "Sale Listings";
+            internal static string SaleListingsStore => "Sale Relationships";
+            internal static string RelationshipsStore => "User Relationships";
         }
         public static class EmbedStrings
         {
@@ -41,6 +42,7 @@
                 internal static string Achievements => "achievements";
                 internal static string Locations => "locations";
                 internal static string ReactionRoles => "roles";
+                internal static string Relationships => "relationships";
             }
         }
         internal static class Responses

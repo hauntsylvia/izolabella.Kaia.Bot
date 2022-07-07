@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
 {
     public class InventoryItemViewRaw : KaiaPathEmbedRefreshable
     {

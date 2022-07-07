@@ -1,10 +1,11 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
 using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.ServerManagement.Roles
 {
     public class AutoRole : KaiaCommand
     {

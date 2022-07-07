@@ -14,7 +14,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
 
         public override List<IzolabellaCommandParameter> Parameters { get; } = new()
         {
-            new("User Listings", "Whether to include user listings or not.", ApplicationCommandOptionType.Boolean, false),
+            new("User Relationships", "Whether to include user listings or not.", ApplicationCommandOptionType.Boolean, false),
             new("Lister", "Filters all listings by this user.", ApplicationCommandOptionType.User, false)
         };
 

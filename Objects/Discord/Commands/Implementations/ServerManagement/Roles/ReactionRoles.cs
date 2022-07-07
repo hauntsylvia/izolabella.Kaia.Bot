@@ -4,7 +4,7 @@ using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
 using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.ServerManagement.Roles
 {
     public class ReactionRoles : KaiaCommand
     {
@@ -32,7 +32,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
         {
             IzolabellaCommandArgument? EphemeralArg = Arguments.FirstOrDefault(A => A.Name == "ephemeral");
             bool Ephemeral = EphemeralArg != null && EphemeralArg.Value is bool E && E;
-            
+
             if (Context.UserContext.User is SocketGuildUser User)
             {
                 KaiaGuild G = new(User.Guild.Id);

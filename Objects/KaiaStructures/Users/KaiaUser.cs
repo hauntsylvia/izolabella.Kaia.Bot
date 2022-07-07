@@ -6,6 +6,7 @@ using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+using Kaia.Bot.Objects.KaiaStructures.Relationships;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
 {
@@ -22,6 +23,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
                 this.AchievementProcessor = new(Id);
                 this.LocationProcessor = new(Id);
                 this.SpellsProcessor = new(Id);
+                this.RelationshipsProcessor = new(Id);
                 this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
 
                 List<KaiaBook> UserOwnedBooks = this.LibraryProcessor.GetUserBooksAsync().Result;
@@ -62,5 +64,8 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
 
         [JsonIgnore]
         public SpellsProcessor SpellsProcessor { get; set; }
+
+        [JsonIgnore]
+        public RelationshipsProcessor RelationshipsProcessor { get; set; }
     }
 }

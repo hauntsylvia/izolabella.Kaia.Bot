@@ -1,6 +1,6 @@
 ﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
 {
     public class MeInventoryView : KaiaPathEmbedPaginated
     {

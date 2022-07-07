@@ -1,7 +1,7 @@
 ﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
 {
     public class MeLibraryView : KaiaPathEmbedPaginated
     {

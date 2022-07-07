@@ -25,4 +25,8 @@
     <ProjectReference Include="..\izolabella.Util\izolabella.Util.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Objects\Discord\Embeds\Implementations\Data\Users\Books\" />
+  </ItemGroup>
+
 </Project>

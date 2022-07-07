@@ -30,7 +30,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         }
 
         public Dictionary<KaiaPathEmbedRefreshable, List<SelectMenuOptionBuilder>?> EmbedsAndOptions { get; }
+
         public KaiaPathEmbedRefreshable IfNoListElements { get; }
+
         public CommandContext Context { get; }
 
         private int index;
@@ -75,10 +77,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             ComponentBuilder CB = new();
             if (B != null)
             {
-                _ = CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
+                CB.WithSelectMenu(menu: new(this.GetIdFromIndex(), this.EmbedsAndOptions.ElementAtOrDefault(this.ZeroBasedIndex).Value), row: 0);
             }
 
-            _ = CB.WithButton(emote: this.PageBack,
+            CB.WithButton(emote: this.PageBack,
                           customId: this.BId,
                           disabled: this.ZeroBasedIndex <= 0,
                           style: ButtonStyle.Secondary,
@@ -87,6 +89,14 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                                              disabled: this.ZeroBasedIndex >= this.EmbedsAndOptions.Count - 1,
                                              style: ButtonStyle.Secondary,
                                              row: 0);
+            IEnumerable<KaiaButton>? Buttons = this.GetExtraComponentsAsync().Result;
+            if(Buttons != null)
+            {
+                foreach (KaiaButton Button in Buttons)
+                {
+                    CB.WithButton(Button);
+                }
+            }
             return CB;
         }
 
@@ -169,6 +179,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         {
             this.EmbedsAndOptions.Clear();
             await this.ClientRefreshAsync();
+        }
+
+        public virtual Task<IEnumerable<KaiaButton>?> GetExtraComponentsAsync()
+        {
+            return Task.FromResult<IEnumerable<KaiaButton>?>(null);
         }
 
         protected abstract Task ClientRefreshAsync();

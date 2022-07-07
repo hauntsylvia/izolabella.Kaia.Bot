@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
+﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
 {
     public class MeView : KaiaPathEmbedRefreshable
     {
@@ -12,12 +12,16 @@
 
         public KaiaUser User { get; }
 
-        protected override Task ClientRefreshAsync()
+        protected override async Task ClientRefreshAsync()
         {
             this.WithField("highest number counted", $"`{this.User.Settings.HighestCountEver ?? 0}`");
             this.WithField("total numbers counted", $"`{this.User.Settings.NumbersCounted ?? 0}`");
             this.WithField($"{Strings.Economy.CurrencyEmote} current {Strings.Economy.CurrencyName}", $"`{this.User.Settings.Inventory.Petals}`");
-            return Task.CompletedTask;
+            IEnumerable<KaiaStructures.Relationships.UserRelationship> Relationships = await this.User.RelationshipsProcessor.GetRelationshipsAsync();
+            if (Relationships.Any())
+            {
+                this.WithField("relationships", $"in {Relationships.Count()} relationships");
+            }
         }
     }
 }

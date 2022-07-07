@@ -1,6 +1,6 @@
 ﻿using Kaia.Bot.Objects.Constants.Enums;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
 {
     public class LeaderboardEmbed : KaiaPathEmbedRefreshable
     {
@@ -36,7 +36,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users
                 List<KaiaUser> Users = DataStores.UserStore.ReadAllAsync<KaiaUser>().Result
                     .OrderByDescending(U => this.LType == LeaderboardTypes.UsersHighestNumberCounted ? U.Settings.HighestCountEver : U.Settings.NumbersCounted)
                     .Take(this.NumberOfElements)
-                    .ToList();
+                    .ToList(); //5435 3686 6847227915
                 int LongestDisplayName = Truncate(Strings.EmbedStrings.UnknownUser).Length;
                 foreach (KaiaUser User in Users)
                 {

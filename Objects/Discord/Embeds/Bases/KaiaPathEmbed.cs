@@ -35,12 +35,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             return this;
         }
 
-        public KaiaPathEmbed WithListWrittenToField(string Name, List<string> Values, string DelimBy = ", ")
+        public KaiaPathEmbed WithListWrittenToField(string Name, IEnumerable<string> Values, string DelimBy = ", ")
         {
             string S = Strings.EmbedStrings.Empty;
-            for (int Index = 0; Index < Values.Count; Index++)
+            for (int Index = 0; Index < Values.Count(); Index++)
             {
-                S += $"{(Index != 0 ? DelimBy : string.Empty)}{Values[Index]}";
+                S += $"{(Index != 0 ? DelimBy : string.Empty)}{Values.ElementAt(Index)}";
             }
             this.WithField(Name, S);
             return this;

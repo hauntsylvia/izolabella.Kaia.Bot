@@ -3,7 +3,7 @@ using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
+namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Exploration
 {
     public class ViewActiveLocationsCommand : KaiaCommand
     {
@@ -23,7 +23,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            LocationViewPaginated A = new(Context); 
+            LocationViewPaginated A = new(Context);
             await A.StartAsync();
         }
     }

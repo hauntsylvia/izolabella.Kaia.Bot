@@ -80,25 +80,25 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
             #region walmart
 
-            new(Name: "Walmart",
-                Description: "A super-store run by a mass of both fresh-out-of-highschool students and grumpy people that suck off management.",
-                ShortDescription: "A super-store containing a diverse selection of items.",
-                DisplayRewards: true,
-                SuperSecretSelfId: 7720221639,
-                Events: new List<KaiaLocationEvent>()
-                {
-                    new DeadFingerEvent(0.09),
-                    new NotebookEvent(0.2),
-                    new CandleEvent(0.2),
-                    new KaiaLocationEvent("u didn't steal cigarettes.", 0.3, new(0, new Cigarette())),
-                    new RoseEvent(0.1),
-                },
-                AvailableAt: TimeSpan.FromHours(4),
-                AvailableTo: TimeSpan.FromHours(23),
-                MinimumTimeBetweenExplorations: TimeSpan.FromHours(24),
-                Emote: new("🛒"),
-                CoverUrl: new("https://i.pinimg.com/originals/c0/36/28/c03628e7339e0d492cdd077acb6a9e8f.gif"),
-                CoverUrlCredit: new("https://steamcommunity.com/sharedfiles/filedetails/?id=1624054751&searchtext=")),
+            //new(Name: "Walmart",
+            //    Description: "A super-store run by a mass of both fresh-out-of-highschool students and grumpy people that suck off management.",
+            //    ShortDescription: "A super-store containing a diverse selection of items.",
+            //    DisplayRewards: true,
+            //    SuperSecretSelfId: 7720221639,
+            //    Events: new List<KaiaLocationEvent>()
+            //    {
+            //        new DeadFingerEvent(0.09),
+            //        new NotebookEvent(0.2),
+            //        new CandleEvent(0.2),
+            //        new KaiaLocationEvent("u didn't steal cigarettes.", 0.3, new(0, new Cigarette())),
+            //        new RoseEvent(0.1),
+            //    },
+            //    AvailableAt: TimeSpan.FromHours(4),
+            //    AvailableTo: TimeSpan.FromHours(23),
+            //    MinimumTimeBetweenExplorations: TimeSpan.FromHours(24),
+            //    Emote: new("🛒"),
+            //    CoverUrl: new("https://i.pinimg.com/originals/c0/36/28/c03628e7339e0d492cdd077acb6a9e8f.gif"),
+            //    CoverUrlCredit: new("https://steamcommunity.com/sharedfiles/filedetails/?id=1624054751&searchtext=")),
 
             #endregion
         };

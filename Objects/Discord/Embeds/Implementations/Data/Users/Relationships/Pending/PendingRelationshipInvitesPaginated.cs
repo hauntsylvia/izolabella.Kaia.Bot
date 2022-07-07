@@ -1,4 +1,5 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending;
+using Kaia.Bot.Objects.KaiaStructures.Relationships;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
@@ -12,12 +13,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
                                                                                           Strings.EmbedStrings.FakePaths.Relationships)
         {
             this.ChunkSize = ChunkSize;
-            this.ItemSelected += this.RelSelAsync;
+            this.ItemSelected += this.RelationshipSelectedAsync;
         }
 
         public int ChunkSize { get; }
 
-        private async void RelSelAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        private async void RelationshipSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             string? Item = ItemsSelected.FirstOrDefault();
             if (ulong.TryParse(Item, out ulong Id))
@@ -25,7 +26,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
                 UserRelationship? Relationship = await DataStores.UserRelationshipsMainDirectory.ReadAsync<UserRelationship>(Id);
                 if(Relationship != null)
                 {
-
+                    await Component.DeferAsync();
+                    await new PendingRelInviteDisplay(this, this.Context, Relationship).StartAsync(new KaiaUser(Component.User.Id));
+                    this.Dispose();
                 }
             }
         }
@@ -43,7 +46,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
                 {
                     Builds.Add(new($"relationship {R.Id}", R.Id.ToString(CultureInfo.InvariantCulture), R.Description, R.Emote, false));
                 }
-                MyRelationshipsPage Embed = new(this.Context, RelChunk);
+                MyRelationshipsPage Embed = new(this.Context, 3, RelChunk);
                 this.EmbedsAndOptions.Add(Embed, Builds);
             }
         }

@@ -14,14 +14,31 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
             this.ChunkSize = ChunkSize;
             this.MakeNew = new(Context, "Create", Emotes.Counting.Blessings, false, false);
             this.MakeNew.OnButtonPush += this.MakeNewRelationshipAsync;
+            this.ItemSelected += this.RelationshipSelectedAsync;
         }
 
         public int ChunkSize { get; }
 
         public KaiaButton MakeNew { get; }
 
+        private async void RelationshipSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
+        {
+            string? Item = ItemsSelected.FirstOrDefault();
+            if (ulong.TryParse(Item, out ulong Id))
+            {
+                UserRelationship? Relationship = await DataStores.UserRelationshipsMainDirectory.ReadAsync<UserRelationship>(Id);
+                if (Relationship != null)
+                {
+                    await Component.DeferAsync();
+                    await new RelationshipView(this, this.Context, Relationship).StartAsync(new KaiaUser(Component.User.Id));
+                    this.Dispose();
+                }
+            }
+        }
+
         private async Task MakeNewRelationshipAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
+            this.Dispose();
             await Arg.DeferAsync();
             await new CreateNewRelationshipView(this, this.Context).StartAsync(UserWhoPressed);
         }
@@ -34,8 +51,13 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
 
             foreach (UserRelationship[] RelChunk in Rels)
             {
-                MyRelationshipsPage Embed = new(this.Context, RelChunk);
-                this.EmbedsAndOptions.Add(Embed, null);
+                List<SelectMenuOptionBuilder> Builds = new();
+                foreach (UserRelationship R in RelChunk)
+                {
+                    Builds.Add(new($"relationship {R.Id}", R.Id.ToString(CultureInfo.InvariantCulture), R.Description, R.Emote, false));
+                }
+                MyRelationshipsPage Embed = new(this.Context, 3, RelChunk);
+                this.EmbedsAndOptions.Add(Embed, Builds);
             }
         }
 

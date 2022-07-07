@@ -170,9 +170,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             this.Context.Reference.Client.ButtonExecuted -= this.ClientButtonPressedAsync;
             this.Context.Reference.Client.SelectMenuExecuted -= this.ClientSelectMenuExecutedAsync;
+            GC.SuppressFinalize(this);
         }
 
         public async Task RefreshAsync()

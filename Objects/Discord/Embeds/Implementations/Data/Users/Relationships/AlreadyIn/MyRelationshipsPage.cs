@@ -4,13 +4,16 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
 {
     public class MyRelationshipsPage : KaiaPathEmbedRefreshable
     {
-        public MyRelationshipsPage(CommandContext Context, IEnumerable<UserRelationship> Relationships) : base(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Relationships)
+        public MyRelationshipsPage(CommandContext Context, int MaxMembersToDisplay, IEnumerable<UserRelationship> Relationships) : base(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Relationships)
         {
             this.Context = Context;
+            this.MaxMembersToDisplay = MaxMembersToDisplay;
             this.Relationships = Relationships;
         }
 
         public CommandContext Context { get; }
+
+        public int MaxMembersToDisplay { get; }
 
         public IEnumerable<UserRelationship> Relationships { get; }
 
@@ -18,10 +21,27 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         {
             foreach (UserRelationship Relationship in this.Relationships)
             {
-                IEnumerable<string> Display = Relationship.KaiaUserIds.Select(A => $"<@{A}>");
-                this.WithListWrittenToField($"members", Display, ",\n");
-                Display = Relationship.PendingIds.Select(A => $"<@{A}>");
-                this.WithListWrittenToField($"pending", Display, ",\n");
+                List<string> Display = new()
+                {
+                    "__members__"
+                };
+                Display.AddRange(Relationship.KaiaUserIds.Take(this.MaxMembersToDisplay).Select(A => $"→ <@{A}>"));
+                if (Relationship.KaiaUserIds.Count() > this.MaxMembersToDisplay)
+                {
+                    Display.Add($". . and {Relationship.KaiaUserIds.Count() - this.MaxMembersToDisplay} more");
+                }
+
+                if(Relationship.PendingIds.Any())
+                {
+                    Display.Add("__pending__");
+                    Display.AddRange(Relationship.PendingIds.Take(this.MaxMembersToDisplay).Select(A => $"→ <@{A}>"));
+
+                    if (Relationship.PendingIds.Count() > this.MaxMembersToDisplay)
+                    {
+                        Display.Add($". . and {Relationship.PendingIds.Count() - this.MaxMembersToDisplay} more");
+                    }
+                }
+                this.WithListWrittenToField($"{Relationship.Emote} relationship {Relationship.Id}", Display, "\n");
             }
             return Task.CompletedTask;
         }

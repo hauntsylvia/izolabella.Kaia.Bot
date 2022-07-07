@@ -27,6 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         {
             this.ReceivingUserMention = true;
             await Arg.RespondAsync(text: "type the ids of the users to invite, or mention them. u can do this multiple times");
+            await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.NewRelationship);
             await this.UpdateEmbedAsync(UserWhoPressed);
         }
 

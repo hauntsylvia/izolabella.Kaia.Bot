@@ -18,14 +18,23 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         {
             this.Rel.UserDeclines(UserWhoPressed.Id);
             this.Dispose();
+            await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.Rel);
             await this.ForceBackAsync(this.Context);
         }
 
         private async Task AcceptAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            this.Rel.AddMember(UserWhoPressed.Id);
-            this.Dispose();
-            await this.ForceBackAsync(this.Context);
+            if(this.Rel.AddMember(UserWhoPressed.Id))
+            {
+                this.Dispose();
+                await Arg.DeferAsync();
+                await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.Rel);
+                await this.ForceBackAsync(this.Context);
+            }
+            else
+            {
+                await Arg.RespondAsync("looks like this relationship is at the max that I can keep up with!");
+            }
         }
 
         public KaiaButton Accept { get; }
@@ -44,7 +53,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
             ComponentBuilder CB = await this.GetDefaultComponents();
-            CB.WithButton(this.Accept.WithDisabled(false));
+            CB.WithButton(this.Accept.WithDisabled(this.Rel.AtMax));
             CB.WithButton(this.Decline.WithDisabled(false));
             return CB;
         }
@@ -59,6 +68,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
             ComponentBuilder B = await this.GetComponentsAsync(U);
             KaiaPathEmbedRefreshable Embed = await this.GetEmbedAsync(U);
             await Embed.RefreshAsync();
+            await this.Context.UserContext.ModifyOriginalResponseAsync(A =>
+            {
+                A.Embed = Embed.Build();
+                A.Components = B.Build();
+            });
         }
     }
 }

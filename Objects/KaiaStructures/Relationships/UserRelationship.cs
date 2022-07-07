@@ -1,18 +1,15 @@
 ﻿using izolabella.Storage.Objects.Structures;
 using izolabella.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Relationships
 {
     public class UserRelationship : IDataStoreEntity
     {
-        public UserRelationship(DateTime CreatedAt, Dictionary<ulong, DateTime> PendingIds, Dictionary<ulong, DateTime> KaiaUserIds, ulong? Id = null)
+        public UserRelationship(DateTime CreatedAt, string Description, KaiaEmote Emote, Dictionary<ulong, DateTime> PendingIds, Dictionary<ulong, DateTime> KaiaUserIds, ulong? Id = null)
         {
             this.CreatedAt = CreatedAt;
+            this.description = Description.Length > 512 ? Description[..512] : Description;
+            this.Emote = Emote;
             this.kaiaUserIds = KaiaUserIds;
             this.pendingIds = PendingIds;
             this.Id = Id ?? IdGenerator.CreateNewId();
@@ -20,14 +17,26 @@ namespace Kaia.Bot.Objects.KaiaStructures.Relationships
 
         public DateTime CreatedAt { get; }
 
+        [JsonProperty("Description")]
+        private readonly string description;
+
+        [JsonIgnore]
+        public string Description => this.description.Length > 32 ? this.description[..32] : this.description;
+
+        public KaiaEmote Emote { get; }
+
         public ulong Id { get; }
 
+        [JsonProperty("KaiaUserIds")]
         private readonly Dictionary<ulong, DateTime> kaiaUserIds;
 
-        public IEnumerable<ulong> KaiaUserIds => this.kaiaUserIds.Keys.Distinct();
+        [JsonIgnore]
+        public IEnumerable<ulong> KaiaUserIds => this.kaiaUserIds.Keys.Distinct().ToArray();
 
+        [JsonProperty("PendingUserIds")]
         private readonly Dictionary<ulong, DateTime> pendingIds;
 
+        [JsonIgnore]
         public IEnumerable<ulong> PendingIds => this.pendingIds.Keys.Distinct();
 
         [JsonIgnore]
@@ -40,7 +49,24 @@ namespace Kaia.Bot.Objects.KaiaStructures.Relationships
 
         public void AddMember(ulong Member)
         {
-            this.kaiaUserIds.Add(Member, DateTime.UtcNow);
+            this.UserDeclines(Member);
+            if(!this.kaiaUserIds.ContainsKey(Member))
+            {
+                this.kaiaUserIds.Add(Member, DateTime.UtcNow);
+            }
+        }
+
+        public void UserDeclines(ulong UserThatDeclined)
+        {
+            if(this.pendingIds.ContainsKey(UserThatDeclined))
+            {
+                this.pendingIds.Remove(UserThatDeclined);
+                this.UserDeclines(UserThatDeclined);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

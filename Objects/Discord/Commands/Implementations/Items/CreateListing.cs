@@ -3,7 +3,6 @@ using izolabella.Discord.Objects.Parameters;
 using izolabella.Util;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
-using System.Linq;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
 {

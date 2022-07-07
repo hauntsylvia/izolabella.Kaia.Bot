@@ -1,11 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
+﻿namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
 {
     public class BookIncomeIncrease : Spell
     {

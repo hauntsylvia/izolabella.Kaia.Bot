@@ -1,20 +1,17 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
-using Kaia.Bot.Objects.KaiaStructures.Relationships;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
     public class CreateNewRelationshipView : KaiaItemContentView
     {
         public CreateNewRelationshipView(MyRelationshipsPaginated? Previous, CommandContext Context) : base(Previous, Context, true)
         {
-            this.NewRelationship = new(DateTime.UtcNow, new(), new());
-            this.InviteUser = new(Context, "Invite User", Emotes.Counting.Add, false, false);
+            this.NewRelationship = new(DateTime.UtcNow, string.Empty, Emotes.Counting.Heart, new(), new());
+            this.NewRelationship.AddMember(Context.UserContext.User.Id);
+            this.InviteUser = new(Context, "Start Inviting", Emotes.Counting.Add, false, false);
             this.InviteUser.OnButtonPush += this.UserInviteAsync;
+            this.Done = new(Context, "Done", Emotes.Counting.CheckRare, false, false);
+            this.Done.OnButtonPush += this.DoneAsync;
             this.Context.Reference.Client.MessageReceived += this.MessageReceivedAsync;
         }
 
@@ -22,30 +19,41 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
 
         public KaiaButton InviteUser { get; }
 
-        public bool ReceivingUserMention { get; }
+        public KaiaButton Done { get; }
 
-        private Task UserInviteAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
+        public bool ReceivingUserMention { get; private set; }
+
+        private async Task UserInviteAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
+            this.ReceivingUserMention = true;
+            await Arg.RespondAsync(text: "type the ids of the users to invite, or mention them. u can do this multiple times");
+            await this.UpdateEmbedAsync(UserWhoPressed);
+        }
 
-            throw new NotImplementedException();
+        private async Task DoneAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
+        {
+            this.ReceivingUserMention = false;
+            await Arg.DeferAsync(true);
+            await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.NewRelationship);
+            await this.ForceBackAsync(this.Context);
         }
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
-            if (this.ReceivingUserMention && 
-                Arg.Author.Id == this.Context.UserContext.User.Id && 
+            if (this.ReceivingUserMention &&
+                Arg.Author.Id == this.Context.UserContext.User.Id &&
                 (ulong.TryParse(Arg.Content, out ulong IdToInv) || Arg.MentionedUsers.Any()))
             {
-                if((IdToInv != default && Arg.Author.Id != IdToInv) || Arg.MentionedUsers.All(M => M.Id != Arg.Author.Id))
+                if ((IdToInv != default && Arg.Author.Id != IdToInv) || Arg.MentionedUsers.All(M => M.Id != Arg.Author.Id))
                 {
-                    if(Arg.MentionedUsers.Count > 0)
+                    if (Arg.MentionedUsers.Count > 0)
                     {
-                        foreach(SocketUser? Mentioned in Arg.MentionedUsers)
+                        foreach (SocketUser? Mentioned in Arg.MentionedUsers)
                         {
                             this.NewRelationship.AddPendingMember(Mentioned.Id);
                         }
                     }
-                    else if(IdToInv != default)
+                    else if (IdToInv != default)
                     {
                         this.NewRelationship.AddPendingMember(IdToInv);
                     }
@@ -70,11 +78,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
             ComponentBuilder CB = await this.GetDefaultComponents();
-            CB.WithButton(this.InviteUser.WithDisabled(false));
+            CB.WithButton(this.InviteUser.WithDisabled(this.ReceivingUserMention));
+            CB.WithButton(this.Done.WithDisabled(false));
             return CB;
         }
 
-        public override async Task StartAsync(KaiaUser U)
+        public async Task UpdateEmbedAsync(KaiaUser U)
         {
             Embed E = (await this.GetEmbedAsync(U)).Build();
             MessageComponent Com = (await this.GetComponentsAsync(U)).Build();
@@ -91,6 +100,11 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
                     M.Embed = E;
                 });
             }
+        }
+
+        public override async Task StartAsync(KaiaUser U)
+        {
+            await this.UpdateEmbedAsync(U);
         }
     }
 }

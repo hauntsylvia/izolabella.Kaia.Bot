@@ -1,11 +1,6 @@
 ﻿using izolabella.Util.RateLimits.Limiters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
 {
@@ -42,7 +37,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
 
         private async Task ButtonPressed(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id))
+            if (await this.RateLimiter.PassesAsync(Arg.User.Id))
             {
                 if (Arg.Data.CustomId != this.PutUpForSaleButton.Id)
                 {

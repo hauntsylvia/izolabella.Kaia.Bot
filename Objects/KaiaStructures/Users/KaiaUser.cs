@@ -3,7 +3,6 @@ using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Derivations;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
 using Kaia.Bot.Objects.KaiaStructures.Relationships;

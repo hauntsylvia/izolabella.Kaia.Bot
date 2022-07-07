@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kaia.Bot.Objects.Discord.Embeds.Bases
+﻿namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 {
     public class KaiaPathEmbed
     {
-        public KaiaPathEmbed(string Parent, string? Sub1 = null, string? Sub2 = null, Color? Override = null)
+        public KaiaPathEmbed(string Parent, string? Sub1 = null, string? Sub2 = null, Color? Override = null, DateTimeOffset? OverrideDate = null)
         {
             this.Parent = Parent;
             this.Sub1 = Sub1;
             this.Sub2 = Sub2;
             this.Override = Override;
+            this.OverrideDate = OverrideDate;
             this.Populate();
         }
 
@@ -26,6 +21,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
         public string? Sub2 { get; }
 
         public Color? Override { get; }
+
+        public DateTimeOffset? OverrideDate { get; }
 
         #region upper level customizations
 
@@ -73,7 +70,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             {
                 Text = Strings.EmbedStrings.FooterString,
             };
-            this.Inner.Timestamp = Strings.EmbedStrings.DefaultTimestamp;
+            this.Inner.Timestamp = this.OverrideDate ?? Strings.EmbedStrings.DefaultTimestamp;
             return this;
         }
 

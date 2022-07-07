@@ -1,9 +1,6 @@
-﻿using izolabella.Util;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
     public class MyRelationshipsPaginated : KaiaPathEmbedPaginated
     {
@@ -44,7 +41,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public override Task<IEnumerable<KaiaButton>?> GetExtraComponentsAsync()
         {
-            return Task.FromResult<IEnumerable<KaiaButton>?>( new List<KaiaButton>() { this.MakeNew });
+            return Task.FromResult<IEnumerable<KaiaButton>?>(new List<KaiaButton>() { this.MakeNew });
         }
     }
 }

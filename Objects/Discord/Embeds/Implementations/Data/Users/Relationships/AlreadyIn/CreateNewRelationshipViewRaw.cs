@@ -1,11 +1,6 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
     public class CreateNewRelationshipViewRaw : KaiaPathEmbedRefreshable
     {
@@ -23,6 +18,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         protected override Task ClientRefreshAsync()
         {
             this.WithListWrittenToField("members", this.Rel.KaiaUserIds.Select(S => $"<@{S}>"), ",\n");
+            this.WithListWrittenToField("pending", this.Rel.PendingIds.Select(S => $"<@{S}>"), ",\n");
             return Task.CompletedTask;
         }
     }

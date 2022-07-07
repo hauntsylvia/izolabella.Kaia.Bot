@@ -1,11 +1,6 @@
 ﻿using Kaia.Bot.Objects.Constants.Responses;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {

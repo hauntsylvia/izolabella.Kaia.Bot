@@ -1,5 +1,4 @@
-﻿using izolabella.Util;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self;
+﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items

@@ -17,5 +17,6 @@
         internal static string AutoRole => "autorole-7420221230";
         internal static string AutoRoles => "autoroles-7420221259";
         internal static string Relationships => "relsview-7620221331";
+        internal static string ToggleNSFW => "togglensfw-7720221640";
     }
 }

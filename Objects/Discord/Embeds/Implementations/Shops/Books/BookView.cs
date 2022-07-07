@@ -1,6 +1,5 @@
 ﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
-using izolabella.Util;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books

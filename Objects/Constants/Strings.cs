@@ -22,7 +22,7 @@
         {
             internal static string FooterString => "⊹⊱-☿ Mercury-Izolabella ☿-⊰⊹";
             internal static DateTime DefaultTimestamp => DateTime.UtcNow;
-            internal static string Empty => "\u200b";
+            public static string Empty => "\u200b";
             internal static string UnknownUser => "unknown user";
             internal static string UnknownGuild => "unknown guild";
             public static class FakePaths

@@ -1,5 +1,4 @@
 ﻿using izolabella.Storage.Objects.Structures;
-using izolabella.Util;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
 using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
 

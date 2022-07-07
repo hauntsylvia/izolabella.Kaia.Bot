@@ -1,5 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Users
 {

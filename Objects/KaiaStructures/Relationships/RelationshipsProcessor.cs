@@ -1,10 +1,4 @@
 ﻿using izolabella.Storage.Objects.DataStores;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.KaiaStructures.Relationships
 {
@@ -27,6 +21,15 @@ namespace Kaia.Bot.Objects.KaiaStructures.Relationships
         {
             return (await this.RelationshipsStore.ReadAllAsync<UserRelationship>())
                                                  .Where(R => R.KaiaUserIds.Any(U => this.U == U));
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{UserRelationship}"/> of the relationships this user is involved with.</returns>
+        public async Task<IEnumerable<UserRelationship>> GetPendingRelationshipsAsync()
+        {
+            return (await this.RelationshipsStore.ReadAllAsync<UserRelationship>())
+                                                 .Where(R => R.PendingIds.Any(U => this.U == U));
         }
     }
 }

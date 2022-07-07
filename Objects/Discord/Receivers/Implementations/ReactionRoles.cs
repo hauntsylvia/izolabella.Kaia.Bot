@@ -1,10 +1,5 @@
 ﻿using Kaia.Bot.Objects.Clients;
 using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
 {

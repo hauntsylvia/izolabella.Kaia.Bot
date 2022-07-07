@@ -1,11 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
 namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles
 {

@@ -20,6 +20,7 @@
             internal static Emoji Explore => Emoji.Parse("☁️");
             internal static KaiaEmote Blessings => new("❤️‍🩹");
             internal static KaiaEmote Curses => new("☠️");
+            internal static KaiaEmote Heart => new("💞");
         }
         internal static class Items
         {

@@ -20,7 +20,7 @@ namespace Kaia.Bot.Objects.Clients
             DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
             this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Command, Context) =>
             {
-                if(Command is KaiaCommand KaiaCommand && await Limiter.CheckIfPassesAsync(Context.UserContext.User.Id))
+                if(Command is KaiaCommand KaiaCommand && await Limiter.PassesAsync(Context.UserContext.User.Id))
                 {
                     if (Context != null && Context.UserContext.Channel is SocketGuildChannel C)
                     {
@@ -42,7 +42,7 @@ namespace Kaia.Bot.Objects.Clients
                 }
                 else
                 {
-                    if(await LimiterForLimiter.CheckIfPassesAsync(Context.UserContext.User.Id))
+                    if(await LimiterForLimiter.PassesAsync(Context.UserContext.User.Id))
                     {
                         await Responses.PipeErrors(Context, new RateLimited());
                     }

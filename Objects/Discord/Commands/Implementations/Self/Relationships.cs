@@ -1,12 +1,6 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Commands.Bases;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {

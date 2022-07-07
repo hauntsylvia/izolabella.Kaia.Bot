@@ -1,6 +1,4 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
-
-namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
+﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
 {
     public class Cigarette : KaiaInventoryItem
     {

@@ -1,13 +1,6 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Relationships;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
     public class MyRelationshipsPage : KaiaPathEmbedRefreshable
     {
@@ -23,10 +16,12 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         protected override Task ClientRefreshAsync()
         {
-            foreach(UserRelationship Relationship in this.Relationships)
+            foreach (UserRelationship Relationship in this.Relationships)
             {
                 IEnumerable<string> Display = Relationship.KaiaUserIds.Select(A => $"<@{A}>");
                 this.WithListWrittenToField($"members", Display, ",\n");
+                Display = Relationship.PendingIds.Select(A => $"<@{A}>");
+                this.WithListWrittenToField($"pending", Display, ",\n");
             }
             return Task.CompletedTask;
         }

@@ -8,7 +8,6 @@ global using izolabella.Discord.Objects.Interfaces;
 global using Kaia.Bot.Objects.ClientParameters;
 global using Kaia.Bot.Objects.Constants;
 global using Kaia.Bot.Objects.Discord.Commands.Bases;
-global using Kaia.Bot.Objects.Discord.Commands.Implementations;
 global using Kaia.Bot.Objects.Discord.Embeds.Bases;
 global using Kaia.Bot.Objects.Discord.Receivers.Bases;
 global using Kaia.Bot.Objects.Discord.Receivers.Results;

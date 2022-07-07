@@ -1,5 +1,4 @@
-﻿using izolabella.Util;
-using izolabella.Util.RateLimits.Limiters;
+﻿using izolabella.Util.RateLimits.Limiters;
 using Kaia.Bot.Objects.Constants.Responses;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
@@ -93,7 +92,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private async Task UpdateEmbedAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (await this.RateLimiter.CheckIfPassesAsync(Arg.User.Id))
+            if (await this.RateLimiter.PassesAsync(Arg.User.Id))
             {
                 if(Arg.Data.CustomId != this.PutUpForSaleButton.Id && Arg.Data.CustomId != this.RemoveListingButton.Id)
                 {
@@ -128,7 +127,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                     await Arg.DeferAsync(true);
                 }
             }
-            else if (await this.SecondaryRateLimiter.CheckIfPassesAsync(Arg.User.Id) && this.Context.UserContext.IsValidToken)
+            else if (await this.SecondaryRateLimiter.PassesAsync(Arg.User.Id) && this.Context.UserContext.IsValidToken)
             {
                 await Responses.PipeErrors(this.Context, new RateLimited());
             }

@@ -227,7 +227,7 @@ namespace Kaia.Bot.Objects.Clients
 
         public async Task RefreshCommandsAsync(IEnumerable<SocketGuild> RefreshFor)
         {
-            List<IzolabellaCommand> Commands = await IzolabellaDiscordClient.GetIzolabellaCommandsAsync(Assembly.GetAssembly(typeof(KaiaBot)) ?? throw new NullReferenceException());
+            List<IzolabellaCommand> Commands = await IzolabellaDiscordClient.GetIzolabellaCommandsAsync(Assembly.GetAssembly(typeof(KaiaBot)) ?? Assembly.GetExecutingAssembly());
             foreach (SocketGuild DiscordGuild in RefreshFor)
             {
                 KaiaGuild Guild = new(DiscordGuild.Id);

@@ -4,10 +4,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class ItemRawView : KaiaPathEmbedRefreshable
     {
-        public ItemRawView(CommandContext Context, KaiaInventoryItem ItemA, KaiaUser U, SaleListing Listing, bool DisplayBalancesMayGoUpMessage) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, ItemA?.DisplayName ?? "none")
+        public ItemRawView(CommandContext Context, KaiaInventoryItem ItemA, KaiaUser U, SaleListing Listing, bool DisplayBalancesMayGoUpMessage) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, ItemA.DisplayName)
         {
             this.Context = Context;
-            this.Item = ItemA ?? throw new NullReferenceException("A");
+            this.Item = ItemA;
             this.U = U;
             this.Listing = Listing;
             this.DisplayBalancesMayGoUpMessage = DisplayBalancesMayGoUpMessage;

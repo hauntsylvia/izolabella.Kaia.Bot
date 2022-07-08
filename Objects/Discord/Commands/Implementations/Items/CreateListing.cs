@@ -1,5 +1,6 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using izolabella.Discord.Objects.Structures.Discord;
 using izolabella.Util;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;

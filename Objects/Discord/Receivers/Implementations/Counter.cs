@@ -1,24 +1,24 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
+﻿using Discord.Net;
+using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
 
 namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
-    public class Counter : Receiver
+    public class Counter : IzolabellaMessageReceiver
     {
         public override string Name => "Counter";
 
-        public override Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message)
-        {
-            return Task.FromResult(Message.Author is SocketGuildUser SUser && new KaiaGuild(SUser.Guild.Id).Settings.CountingChannelId == Message.Channel.Id);
-        }
+        public override Predicate<SocketMessage> ValidPredicate => (Message) => Message.Author is SocketGuildUser SUser && new KaiaGuild(SUser.Guild.Id).Settings.CountingChannelId == Message.Channel.Id;
 
-        public override async Task<ReceiverResult> OnMessageAsync(KaiaUser Author, KaiaGuild? Guild, SocketMessage Message)
+        public override async Task OnMessageAsync(IzolabellaDiscordClient Reference, SocketMessage Message)
         {
-            ReceiverResult Result = new();
+            SocketGuild? SGuild = Message.Author is SocketGuildUser U ? U.Guild : null;
             string? Split = Message.Content.Split(' ').FirstOrDefault();
             if (Split != null && double.TryParse(Split, out double Num))
             {
-                if (Guild != null)
+                if (SGuild != null)
                 {
+                    KaiaGuild Guild = new(SGuild.Id);
+                    KaiaUser Author = new(Message.Author.Id);
                     MessageReference Ref = new(Message.Id, Message.Channel.Id, Guild.Id);
                     ulong LastSuccessfulNumber = Guild.Settings.LastSuccessfulNumber;
                     ulong HighestGuildNumberCounted = Guild.Settings.HighestCountEver ?? 0;
@@ -44,7 +44,7 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
                         KaiaInventoryItem? Refresh = await Author.Settings.Inventory.GetItemOfDisplayName(new CountingRefresher());
                         if (Refresh != null)
                         {
-                            Result.ItemToUse = Refresh;
+                            await Author.Settings.Inventory.RemoveItemOfNameAsync(Author, Refresh);
                             await Message.AddReactionAsync(Refresh.DisplayEmote);
                             _ = await Message.Channel.SendMessageAsync(Strings.Responses.Counting.UserCountingSaved + $" - the next number is `{LastSuccessfulNumber + 1}`.", messageReference: Ref);
                         }
@@ -69,15 +69,9 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
                     await Author.SaveAsync();
                 }
             }
-            return Result;
         }
 
-        public override Task CallbackAsync(KaiaUser Author, SocketMessage Message, ReceiverResult CausedCallback)
-        {
-            return Task.CompletedTask;
-        }
-
-        public override Task OnErrorAsync(Exception Exception)
+        public override Task OnErrorAsync(HttpException Exception)
         {
             return Task.CompletedTask;
         }

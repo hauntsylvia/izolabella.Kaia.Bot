@@ -20,7 +20,7 @@
             IEnumerable<KaiaStructures.Relationships.UserRelationship> Relationships = await this.User.RelationshipsProcessor.GetRelationshipsAsync();
             if (Relationships.Any())
             {
-                this.WithField("relationships", $"in {Relationships.Count()} relationships");
+                this.WithField("relationships", $"in `{Relationships.Count()}` {(Relationships.Count() == 1 ? "relationship" : "relationships")}");
             }
         }
     }

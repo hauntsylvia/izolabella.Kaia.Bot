@@ -4,7 +4,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles
 {
     public class AutoRoleViewRaw : KaiaPathEmbedRefreshable
     {
-        public AutoRoleViewRaw(CommandContext Context, SocketGuild Guild, KaiaAutoRole Role) : base(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
+        public AutoRoleViewRaw(SocketGuild Guild, KaiaAutoRole Role) : base(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
         {
             this.Guild = Guild;
             this.Role = Role;

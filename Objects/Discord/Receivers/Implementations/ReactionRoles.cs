@@ -1,25 +1,22 @@
-﻿using Kaia.Bot.Objects.Clients;
+﻿using Discord.Net;
+using Kaia.Bot.Objects.Clients;
 using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
 namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
-    public class ReactionRoles : Receiver
+    public class ReactionRoles : IzolabellaReactionReceiver
     {
         public override string Name => "Reaction Roles";
 
-        public override Task CallbackAsync(KaiaUser Author, SocketMessage Message, ReceiverResult CausedCallback)
-        {
-            return Task.CompletedTask;
-        }
+        public override Predicate<SocketReaction> ValidPredicate => (Arg) => true;
 
-        public override async Task<ReceiverResult> OnReactionAsync(KaiaBot From, SocketReaction Reaction, bool Removing = false)
+        public override async Task OnReactionAsync(IzolabellaDiscordClient Reference, SocketReaction Reaction, bool ReactionRemoved)
         {
-            ReceiverResult Result = new();
             if(Reaction.Channel is SocketGuildChannel Channel)
             {
                 KaiaGuild Guild = new(Channel.Guild.Id);
-                IUser? U = Reaction.User.GetValueOrDefault() ?? await From.Parameters.CommandHandler.Client.GetUserAsync(Reaction.UserId);
-                if (U is not null and SocketGuildUser User && User.Id != From.Parameters.CommandHandler.Client.CurrentUser.Id)
+                IUser? U = Reaction.User.GetValueOrDefault() ?? await Reference.GetUserAsync(Reaction.UserId);
+                if (U is not null and SocketGuildUser User && User.Id != Reference.CurrentUser.Id)
                 {
                     foreach (KaiaReactionRole Role in Guild.Settings.ReactionRoles)
                     {
@@ -28,7 +25,7 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
                             IRole? ActualRole = await Role.GetRoleAsync(Channel.Guild);
                             if(ActualRole != null)
                             {
-                                if(Removing)
+                                if(ReactionRemoved)
                                 {
                                     await User.RemoveRoleAsync(ActualRole.Id);
                                 }
@@ -36,16 +33,15 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
                                 {
                                     await User.AddRoleAsync(ActualRole);
                                 }
-                                Result.GuildToSave = Guild;
                             }
                         }
                     }
                 }
+                await Guild.SaveAsync();
             }
-            return Result;
         }
 
-        public override Task OnErrorAsync(Exception Exception)
+        public override Task OnErrorAsync(HttpException Exception)
         {
             return Task.CompletedTask;
         }

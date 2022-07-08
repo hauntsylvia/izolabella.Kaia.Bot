@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
             this.AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
             this.RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
-            Context.Reference.Client.MessageReceived += this.MessageReceivedAsync;
+            Context.Reference.MessageReceived += this.MessageReceivedAsync;
         }
 
         public ItemCreateSaleListing(InventoryItemView PreviousPage, CommandContext Context, SaleListing FromListing) : base(PreviousPage, Context, true)
@@ -42,7 +42,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
             this.AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
             this.RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
-            Context.Reference.Client.MessageReceived += this.MessageReceivedAsync;
+            Context.Reference.MessageReceived += this.MessageReceivedAsync;
         }
 
         #region properties
@@ -201,7 +201,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.Context.Reference.Client.MessageReceived -= this.MessageReceivedAsync;
+            this.Context.Reference.MessageReceived -= this.MessageReceivedAsync;
             this.SubmitButton.Dispose();
             this.AddOneMoreButton.Dispose();
             this.RemoveOneMoreButton.Dispose();

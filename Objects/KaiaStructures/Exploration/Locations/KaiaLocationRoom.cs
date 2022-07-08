@@ -99,7 +99,6 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
             //    Emote: new("🛒"),
             //    CoverUrl: new("https://i.pinimg.com/originals/c0/36/28/c03628e7339e0d492cdd077acb6a9e8f.gif"),
             //    CoverUrlCredit: new("https://steamcommunity.com/sharedfiles/filedetails/?id=1624054751&searchtext=")),
-
             #endregion
         };
     }

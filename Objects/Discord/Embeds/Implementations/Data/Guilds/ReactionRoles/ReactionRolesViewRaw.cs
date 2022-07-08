@@ -4,7 +4,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRo
 {
     public class ReactionRolesViewRaw : KaiaPathEmbedRefreshable
     {
-        public ReactionRolesViewRaw(CommandContext Context, SocketGuild Guild, KaiaReactionRole Role) : base(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
+        public ReactionRolesViewRaw(SocketGuild Guild, KaiaReactionRole Role) : base(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
         {
             this.Guild = Guild;
             this.Role = Role;

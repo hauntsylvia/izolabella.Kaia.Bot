@@ -1,28 +1,22 @@
-﻿namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
+﻿using Discord.Net;
+
+namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
-    public class Achievements : Receiver
+    public class Achievements : IzolabellaMessageReceiver
     {
         public override string Name => "Achievements";
 
-        public override Task CallbackAsync(KaiaUser Author, SocketMessage Message, ReceiverResult CausedCallback)
+        public override Predicate<SocketMessage> ValidPredicate => (Arg) => true;
+
+        public override Task OnErrorAsync(HttpException Exception)
         {
             return Task.CompletedTask;
         }
 
-        public override Task<bool> CheckMessageValidityAsync(KaiaUser Author, SocketMessage Message)
+        public override async Task OnMessageAsync(IzolabellaDiscordClient Reference, SocketMessage Message)
         {
-            return Task.FromResult(true);
-        }
-
-        public override Task OnErrorAsync(Exception Exception)
-        {
-            return Task.CompletedTask;
-        }
-
-        public override async Task<ReceiverResult> OnMessageAsync(KaiaUser Author, KaiaGuild? Guild, SocketMessage Message)
-        {
+            KaiaUser Author = new(Message.Author.Id);
             await Author.AchievementProcessor.TryAwardAchievements(Author, null, KaiaAchievementRoom.Achievements.ToArray());
-            return new ReceiverResult();
         }
     }
 }

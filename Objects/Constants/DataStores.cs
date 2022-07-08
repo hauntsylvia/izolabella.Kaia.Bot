@@ -58,13 +58,16 @@ namespace Kaia.Bot.Objects.Constants
         }
 
         #endregion
+
         #region relationships
 
         internal static DataStore UserRelationshipsMainDirectory => new(Strings.App.Name, Strings.DataStoreNames.RelationshipsStore, SerializerSettings);
 
         #endregion
 
+        #region rate limits
         internal static DataStore RateLimitsStore => new(Strings.App.Name, Strings.DataStoreNames.RateLimitStore, SerializerSettings);
         internal static DataStore SaleListingsStore => new(Strings.App.Name, Strings.DataStoreNames.SaleListingsStore, SerializerSettings);
+        #endregion
     }
 }

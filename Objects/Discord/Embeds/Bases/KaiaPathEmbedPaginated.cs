@@ -134,8 +134,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                         SelfMessageAction.Embed = BuiltEmbed;
                     });
                 }
-                this.Context.Reference.Client.ButtonExecuted += this.ClientButtonPressedAsync;
-                this.Context.Reference.Client.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
+                this.Context.Reference.ButtonExecuted += this.ClientButtonPressedAsync;
+                this.Context.Reference.SelectMenuExecuted += this.ClientSelectMenuExecutedAsync;
             }
         }
 
@@ -170,8 +170,8 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public void Dispose()
         {
-            this.Context.Reference.Client.ButtonExecuted -= this.ClientButtonPressedAsync;
-            this.Context.Reference.Client.SelectMenuExecuted -= this.ClientSelectMenuExecutedAsync;
+            this.Context.Reference.ButtonExecuted -= this.ClientButtonPressedAsync;
+            this.Context.Reference.SelectMenuExecuted -= this.ClientSelectMenuExecutedAsync;
             GC.SuppressFinalize(this);
         }
 

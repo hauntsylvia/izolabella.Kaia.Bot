@@ -4,7 +4,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
 {
     public class LeaderboardEmbed : KaiaPathEmbedRefreshable
     {
-        public LeaderboardEmbed(LeaderboardTypes LType, IzolabellaDiscordCommandClient Reference, int NumberOfElements, string LeaderboardDisplayName)
+        public LeaderboardEmbed(LeaderboardTypes LType, IzolabellaDiscordClient Reference, int NumberOfElements, string LeaderboardDisplayName)
             : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Leaderboards, LeaderboardDisplayName)
         {
             this.LType = LType;
@@ -16,7 +16,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
 
         public LeaderboardTypes LType { get; }
 
-        public IzolabellaDiscordCommandClient Reference { get; }
+        public IzolabellaDiscordClient Reference { get; }
 
         public int NumberOfElements { get; }
 
@@ -40,7 +40,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
                 int LongestDisplayName = Truncate(Strings.EmbedStrings.UnknownUser).Length;
                 foreach (KaiaUser User in Users)
                 {
-                    SocketUser? DiscordUser = this.Reference.Client.GetUser(User.Id);
+                    SocketUser? DiscordUser = this.Reference.GetUser(User.Id);
                     if (DiscordUser != null && LongestDisplayName < Truncate(DiscordUser.Username).Length)
                     {
                         LongestDisplayName = Truncate(DiscordUser.Username).Length;
@@ -49,7 +49,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
                 for (int Index = 0; Index < this.NumberOfElements && Users.Count > Index; Index++)
                 {
                     KaiaUser ThisUser = Users[Index];
-                    SocketUser? DiscordUser = this.Reference.Client.GetUser(ThisUser.Id);
+                    SocketUser? DiscordUser = this.Reference.GetUser(ThisUser.Id);
                     string DisplayName = Truncate(DiscordUser != null ? DiscordUser.Username : Strings.EmbedStrings.UnknownUser);
                     DisplayName = DisplayName.Length < LongestDisplayName ? DisplayName + new string(' ', LongestDisplayName - DisplayName.Length) : DisplayName;
                     Displays.Add($"@`{DisplayName}` - " +
@@ -66,7 +66,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
                 int LongestDisplayName = Truncate(Strings.EmbedStrings.UnknownGuild).Length;
                 foreach (KaiaGuild Guild in Guilds)
                 {
-                    SocketGuild? DGuild = this.Reference.Client.GetGuild(Guild.Id);
+                    SocketGuild? DGuild = this.Reference.GetGuild(Guild.Id);
                     if (DGuild != null && LongestDisplayName < Truncate(DGuild.Name).Length)
                     {
                         LongestDisplayName = Truncate(DGuild.Name).Length;
@@ -75,7 +75,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
                 for (int Index = 0; Index < this.NumberOfElements && Guilds.Count > Index; Index++)
                 {
                     KaiaGuild ThisGuild = Guilds[Index];
-                    SocketGuild? DiscordGuild = this.Reference.Client.GetGuild(ThisGuild.Id);
+                    SocketGuild? DiscordGuild = this.Reference.GetGuild(ThisGuild.Id);
                     string DisplayName = Truncate(DiscordGuild != null ? DiscordGuild.Name : Strings.EmbedStrings.UnknownGuild);
                     DisplayName = DisplayName.Length < LongestDisplayName ? DisplayName + new string(' ', LongestDisplayName - DisplayName.Length) : DisplayName;
                     Displays.Add($"@`{DisplayName}` - " +

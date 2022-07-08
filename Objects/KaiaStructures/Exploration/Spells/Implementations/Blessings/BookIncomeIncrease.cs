@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
+﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+
+namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
 {
     public class BookIncomeIncrease : Spell
     {

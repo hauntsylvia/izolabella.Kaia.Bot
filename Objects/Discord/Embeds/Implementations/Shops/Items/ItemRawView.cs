@@ -25,7 +25,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         protected override async Task ClientRefreshAsync()
         {
-            bool IsKaiaListing = !(this.Listing.ListerId != null && this.Listing.ListerId != this.Context.Reference.Client.CurrentUser.Id);
+            bool IsKaiaListing = !(this.Listing.ListerId != null && this.Listing.ListerId != this.Context.Reference.CurrentUser.Id);
             this.WithField($"[{Strings.Economy.CurrencyEmote} `{this.Listing.CostPerItem}`] {this.Item.DisplayName} {this.Item.DisplayEmote}", this.Item.Description);
             this.WithField("your balance", $"{Strings.Economy.CurrencyEmote} `{this.U.Settings.Inventory.Petals}`{(this.DisplayBalancesMayGoUpMessage ? "- balances may go up due to passive income from books every time it refreshes." : "")}");
             this.WithField($"number of {this.Item.DisplayName}s owned", $"`{(await this.U.Settings.Inventory.GetItemsOfDisplayNameFromItem(this.Item)).Count()}`");

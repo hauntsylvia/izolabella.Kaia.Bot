@@ -32,7 +32,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                                                                   .Where(Item => Item.KaiaDisplaysThisOnTheStore)
                                                                   .ToList();
 
-            if (this.FilterBy == null || this.FilterBy.Id == this.Context.Reference.Client.CurrentUser.Id)
+            if (this.FilterBy == null || this.FilterBy.Id == this.Context.Reference.CurrentUser.Id)
             {
                 foreach (KaiaInventoryItem Item in AllItems)
                 {
@@ -57,7 +57,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 foreach (SaleListing Listing in ListingsChunk)
                 {
                     KaiaInventoryItem Item = Listing.Items.First();
-                    string Description = $"[Sold By {(Listing.Lister != null ? this.Context.Reference.Client.GetUser(Listing.Lister.Id)?.Username : "Kaia")}] {Item.Description}";
+                    string Description = $"[Sold By {(Listing.Lister != null ? this.Context.Reference.GetUser(Listing.Lister.Id)?.Username : "Kaia")}] {Item.Description}";
                     B.Add(new($"{Item.DisplayName}", Listing.Id.ToString(CultureInfo.InvariantCulture), Description.Length > 100 ? Description[..97] + "..." : Description, Item.DisplayEmote, false));
                 }
                 this.EmbedsAndOptions.Add(Embed, B);

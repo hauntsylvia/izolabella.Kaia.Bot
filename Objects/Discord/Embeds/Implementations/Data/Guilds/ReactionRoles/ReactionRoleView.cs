@@ -40,7 +40,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRo
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser? U = null)
         {
-            ReactionRolesViewRaw V = new(this.Context, this.Guild, this.Role);
+            ReactionRolesViewRaw V = new(this.Guild, this.Role);
             await V.RefreshAsync();
             return V;
         }

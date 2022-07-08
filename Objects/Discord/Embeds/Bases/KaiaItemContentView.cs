@@ -10,7 +10,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.BackId = $"goback-{IdGenerator.CreateNewId()}";
             this.CanGoBack = CanGoBack;
             this.Context = Context;
-            this.Context.Reference.Client.ButtonExecuted += this.CheckForBackButtonAsync;
+            this.Context.Reference.ButtonExecuted += this.CheckForBackButtonAsync;
         }
 
         public KaiaItemContentView(KaiaItemContentView? PreviousPage, CommandContext Context, bool CanGoBack = false)
@@ -19,7 +19,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
             this.BackId = $"goback-{IdGenerator.CreateNewId()}";
             this.CanGoBack = CanGoBack;
             this.Context = Context;
-            this.Context.Reference.Client.ButtonExecuted += this.CheckForBackButtonAsync;
+            this.Context.Reference.ButtonExecuted += this.CheckForBackButtonAsync;
         }
 
         private string BackId { get; }

@@ -50,7 +50,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
             GC.SuppressFinalize(this);
         }
 
-        public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
+        public async Task<ComponentBuilder> GetComponentsAsync()
         {
             ComponentBuilder CB = await this.GetDefaultComponents();
             CB.WithButton(this.Accept.WithDisabled(this.Rel.AtMax));
@@ -65,7 +65,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
 
         public override async Task StartAsync(KaiaUser U)
         {
-            ComponentBuilder B = await this.GetComponentsAsync(U);
+            ComponentBuilder B = await this.GetComponentsAsync();
             KaiaPathEmbedRefreshable Embed = await this.GetEmbedAsync(U);
             await Embed.RefreshAsync();
             await this.Context.UserContext.ModifyOriginalResponseAsync(A =>

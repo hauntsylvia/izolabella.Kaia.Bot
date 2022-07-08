@@ -12,7 +12,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
             this.InviteUser.OnButtonPush += this.UserInviteAsync;
             this.Done = new(Context, "Done", Emotes.Counting.CheckRare, false, false);
             this.Done.OnButtonPush += this.DoneAsync;
-            this.Context.Reference.Client.MessageReceived += this.MessageReceivedAsync;
+            this.Context.Reference.MessageReceived += this.MessageReceivedAsync;
         }
 
         public UserRelationship NewRelationship { get; }
@@ -66,7 +66,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.Context.Reference.Client.MessageReceived -= this.MessageReceivedAsync;
+            this.Context.Reference.MessageReceived -= this.MessageReceivedAsync;
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
@@ -76,7 +76,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
             return A;
         }
 
-        public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
+        public async Task<ComponentBuilder> GetComponentsAsync()
         {
             ComponentBuilder CB = await this.GetDefaultComponents();
             CB.WithButton(this.InviteUser.WithDisabled(this.ReceivingUserMention));
@@ -87,7 +87,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
         public async Task UpdateEmbedAsync(KaiaUser U)
         {
             Embed E = (await this.GetEmbedAsync(U)).Build();
-            MessageComponent Com = (await this.GetComponentsAsync(U)).Build();
+            MessageComponent Com = (await this.GetComponentsAsync()).Build();
             if (!this.Context.UserContext.HasResponded)
             {
                 await this.Context.UserContext.RespondAsync(components: Com, embed: E);

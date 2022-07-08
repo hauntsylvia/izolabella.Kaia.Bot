@@ -11,7 +11,7 @@ namespace Kaia.Bot.Objects.Discord.Components
                                                               Emote,
                                                               Disabled)
         {
-            Context.Reference.Client.ButtonExecuted += this.ButtonExecutedAsync;
+            Context.Reference.ButtonExecuted += this.ButtonExecutedAsync;
             this.CustomId = $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}";
             this.Referrer = new(Context.UserContext.User.Id);
             this.Context = Context;
@@ -26,7 +26,7 @@ namespace Kaia.Bot.Objects.Discord.Components
                                                               Emote,
                                                               Disabled)
         {
-            Context.Reference.Client.ButtonExecuted += this.ButtonExecutedAsync;
+            Context.Reference.ButtonExecuted += this.ButtonExecutedAsync;
             this.CustomId = $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}";
             this.Referrer = new(Context.UserContext.User.Id);
             this.Context = Context;
@@ -52,7 +52,7 @@ namespace Kaia.Bot.Objects.Discord.Components
         private async void ControlLoop()
         {
             await Task.Delay(this.EnabledUntil - DateTime.UtcNow);
-            this.Context.Reference.Client.ButtonExecuted -= this.ButtonExecutedAsync;
+            this.Context.Reference.ButtonExecuted -= this.ButtonExecutedAsync;
             this.Dispose();
         }
 
@@ -68,7 +68,7 @@ namespace Kaia.Bot.Objects.Discord.Components
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            /* if u call this.Context.Reference.Client.ButtonExecuted -= this.ButtonExecutedAsync,
+            /* if u call this.Context.Reference.ButtonExecuted -= this.ButtonExecutedAsync,
              * any embed that uses these buttons in their constructors will no longer work, since
              * this instance is no longer listening for button pushes.
              * 

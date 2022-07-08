@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.Discord.Commands.Bases
+﻿using izolabella.Discord.Objects.Structures.Discord;
+
+namespace Kaia.Bot.Objects.Discord.Commands.Bases
 {
     public abstract class KaiaCommand : IzolabellaCommand
     {

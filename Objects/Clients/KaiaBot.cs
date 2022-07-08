@@ -1,5 +1,7 @@
 ﻿using Discord.Net;
+using izolabella.Discord.Objects.Structures.Discord;
 using izolabella.Util;
+using izolabella.Util.Controllers;
 using izolabella.Util.RateLimits.Limiters;
 using Kaia.Bot.Objects.Constants.Permissions;
 using Kaia.Bot.Objects.Constants.Responses;
@@ -12,11 +14,12 @@ namespace Kaia.Bot.Objects.Clients
 {
     public class KaiaBot
     {
-        public KaiaBot(KaiaParams Parameters)
+        public KaiaBot(Controller Self, KaiaParams Parameters)
         {
+            this.Self = Self;
             this.Parameters = Parameters;
             this.Receivers = BaseImplementationUtil.GetItems<Receiver>();
-            DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(4));
+            DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(2));
             DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
             this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Command, Context) =>
             {
@@ -24,7 +27,7 @@ namespace Kaia.Bot.Objects.Clients
                 {
                     if (Context != null && Context.UserContext.Channel is SocketGuildChannel C)
                     {
-                        GuildPermissions KaiaPerms = C.Guild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id).GuildPermissions;
+                        GuildPermissions KaiaPerms = C.Guild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id).GuildPermissions;
                         List<GuildPermission> ReqPerms = KaiaCommand.RequiredPermissions.ToList();
                         ReqPerms.AddRange(DefaultPerms.Default);
                         if (ReqPerms.All(RP => KaiaPerms.Has(RP)))
@@ -51,18 +54,49 @@ namespace Kaia.Bot.Objects.Clients
             };
             this.Parameters.CommandHandler.AfterJoinedGuild += this.ClientJoinedGuildAsync;
             this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
-            this.Parameters.CommandHandler.Client.MessageReceived += this.MessageReceivedAsync;
-            this.Parameters.CommandHandler.Client.Ready += this.ClientReadyAsync;
-            this.Parameters.CommandHandler.Client.ReactionAdded += this.ClientReactionAddedAsync;
-            this.Parameters.CommandHandler.Client.ReactionRemoved += this.ClientReactionRemovedAsync;
-            this.Parameters.CommandHandler.Client.UserJoined += this.ClientUserJoinedGuildAsync;
-
+            this.Parameters.CommandHandler.Ready += this.ClientReadyAsync;
+            this.Parameters.CommandHandler.UserJoined += this.ClientUserJoinedGuildAsync;
+            this.Parameters.CommandHandler.OnMessageReceiverError += this.MessageReceiverErrorAsync;
+            this.Parameters.CommandHandler.OnReactionReceiverError += this.ReactionReceiverErrorAsync;
+            this.Self.Update("hello world!");
             //this.Parameters.CommandHandler.OnCommandError += this.OnCommandErrorAsync;
         }
+
+        public Controller Self { get; }
 
         public KaiaParams Parameters { get; }
 
         public List<Receiver> Receivers { get; }
+
+        private Task ReactionReceiverErrorAsync(IzolabellaReactionReceiver Receiver, HttpException Exception)
+        {
+            return this.OnCommandErrorAsync(null, Receiver, null, Exception);
+        }
+
+        private Task MessageReceiverErrorAsync(IzolabellaMessageReceiver Receiver, HttpException Exception)
+        {
+            return this.OnCommandErrorAsync(null, null, Receiver, Exception);
+        }
+
+        private async Task OnCommandErrorAsync(IzolabellaCommand? Command, IzolabellaReactionReceiver? ReactionReceiver, IzolabellaMessageReceiver? MessageReceiver, HttpException Exception)
+        {
+            this.Self.Update(Exception.Message);
+            if (Command != null)
+            {
+                this.Self.Update($"__kaia_restart attempt @ [{DateTime.Now}]");
+                await this.Parameters.StopAsync();
+                await this.Parameters.StartAsync();
+                this.Self.Update($"__kaia_restart finalized @ [{DateTime.Now}]");
+            }
+            else if(ReactionReceiver != null)
+            {
+                this.Self.Update($"reaction receiver {ReactionReceiver.Name} failed");
+            }
+            else if(MessageReceiver != null)
+            {
+                this.Self.Update($"message receiver {MessageReceiver.Name} failed");
+            }
+        }
 
         private async Task ClientUserJoinedGuildAsync(SocketGuildUser User)
         {
@@ -77,80 +111,7 @@ namespace Kaia.Bot.Objects.Clients
             }
         }
 
-        private async Task OnCommandErrorAsync(IzolabellaCommand? Command, HttpException Exception)
-        {
-            if(Command != null)
-            {
-                Console.WriteLine(Exception);
-                Console.WriteLine($"__kaia_restart attempt @ [{DateTime.Now}]");
-                await this.Parameters.StopAsync();
-                await this.Parameters.StartAsync();
-                Console.WriteLine($"__kaia_restart finalized @ [{DateTime.Now}]");
-            }
-        }
-
-        private static async Task HandleReceiverTaskAsync(KaiaUser User, Receiver R, Task<ReceiverResult> ToHandle)
-        {
-            try
-            {
-                ReceiverResult Result = await ToHandle;
-                if (Result.ItemToUse != null)
-                {
-                    await User.Settings.Inventory.RemoveItemOfIdAsync(Result.ItemToUse);
-                }
-                if (Result.UserToSave != null)
-                {
-                    await Result.UserToSave.SaveAsync();
-                }
-                if (Result.GuildToSave != null)
-                {
-                    await Result.GuildToSave.SaveAsync();
-                }
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine($"message receiver {R.Name} error => message: {Ex.Message} // src: {Ex.Source ?? "no source"}");
-                KaiaSessionStatistics.MessageReceiverFailureCount++;
-                await R.OnErrorAsync(Ex);
-            }
-        }
-
-        #region reactions
-        private async Task ClientReactionChangedAsync(SocketReaction Reaction, bool Removing)
-        {
-            KaiaUser User = new(Reaction.UserId);
-            foreach (Receiver Receiver in this.Receivers)
-            {
-                await HandleReceiverTaskAsync(User, Receiver, Receiver.OnReactionAsync(this, Reaction, Removing));
-            }
-        }
-
-        private async Task ClientReactionAddedAsync(Cacheable<IUserMessage, ulong> CachedMessage, Cacheable<IMessageChannel, ulong> CachedChannel, SocketReaction Reaction)
-        {
-            await this.ClientReactionChangedAsync(Reaction, false);
-        }
-
-        private async Task ClientReactionRemovedAsync(Cacheable<IUserMessage, ulong> CachedMessage, Cacheable<IMessageChannel, ulong> CachedChannel, SocketReaction Reaction)
-        {
-            await this.ClientReactionChangedAsync(Reaction, true);
-        }
-        #endregion
-
         #region messages, commands, startup, roles
-
-        private async Task MessageReceivedAsync(SocketMessage Arg)
-        {
-            if (!Arg.Author.IsBot || this.Parameters.AllowBotsOnMessageReceivers)
-            {
-                KaiaUser User = new(Arg.Author.Id);
-                KaiaGuild? Guild = Arg.Author is SocketGuildUser GuildUser ? new(GuildUser.Guild.Id) : null;
-                IEnumerable<Receiver> Receivers = this.Receivers.Where((M) => M.CheckMessageValidityAsync(User, Arg).Result);
-                foreach (Receiver Receiver in Receivers)
-                {
-                    await HandleReceiverTaskAsync(User, Receiver, Receiver.OnMessageAsync(User, Guild, Arg));
-                }
-            }
-        }
 
         private async Task AfterCommandExecutedAsync(CommandContext Context, izolabella.Discord.Objects.Parameters.IzolabellaCommandArgument[] Arguments, IzolabellaCommand CommandInvoked)
         {
@@ -176,9 +137,9 @@ namespace Kaia.Bot.Objects.Clients
         {
             await Task.Run(() =>
             {
-                this.RefreshCommandsAsync(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
-                this.IterateOverReactionRolesAsync(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
-                this.IterateOverAutoRolesAsync(this.Parameters.CommandHandler.Client.Guilds).ConfigureAwait(false);
+                this.RefreshCommandsAsync(this.Parameters.CommandHandler.Guilds).ConfigureAwait(false);
+                this.IterateOverReactionRolesAsync(this.Parameters.CommandHandler.Guilds).ConfigureAwait(false);
+                this.IterateOverAutoRolesAsync(this.Parameters.CommandHandler.Guilds).ConfigureAwait(false);
             });
         }
 
@@ -186,7 +147,7 @@ namespace Kaia.Bot.Objects.Clients
         {
             foreach (SocketGuild DiscordGuild in RefreshFor)
             {
-                SocketGuildUser KaiaUser = DiscordGuild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id);
+                SocketGuildUser KaiaUser = DiscordGuild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id);
                 GuildPermissions KaiaPerms = KaiaUser.GuildPermissions;
                 if(KaiaPerms.Has(GuildPermission.ManageRoles) && KaiaPerms.Has(GuildPermission.ReadMessageHistory))
                 {
@@ -242,7 +203,7 @@ namespace Kaia.Bot.Objects.Clients
             foreach(SocketGuild Guild in RefreshFor)
             {
                 await Guild.DownloadUsersAsync();
-                SocketGuildUser KaiaUser = Guild.GetUser(this.Parameters.CommandHandler.Client.CurrentUser.Id);
+                SocketGuildUser KaiaUser = Guild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id);
                 if(KaiaUser.GuildPermissions.Has(GuildPermission.ManageRoles))
                 {
                     KaiaGuild G = new(Guild.Id);
@@ -266,7 +227,7 @@ namespace Kaia.Bot.Objects.Clients
 
         public async Task RefreshCommandsAsync(IEnumerable<SocketGuild> RefreshFor)
         {
-            List<IzolabellaCommand> Commands = await IzolabellaDiscordCommandClient.GetIzolabellaCommandsAsync(Assembly.GetAssembly(typeof(KaiaBot)) ?? throw new NullReferenceException());
+            List<IzolabellaCommand> Commands = await IzolabellaDiscordClient.GetIzolabellaCommandsAsync(Assembly.GetAssembly(typeof(KaiaBot)) ?? throw new NullReferenceException());
             foreach (SocketGuild DiscordGuild in RefreshFor)
             {
                 KaiaGuild Guild = new(DiscordGuild.Id);
@@ -297,6 +258,7 @@ namespace Kaia.Bot.Objects.Clients
             }
             await this.Parameters.CommandHandler.UpdateCommandsAsync(Commands.ToArray());
         }
+        
         #endregion
     }
 }

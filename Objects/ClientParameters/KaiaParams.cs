@@ -9,7 +9,7 @@
             this.Token = Token;
         }
 
-        public IzolabellaDiscordCommandClient CommandHandler { get; }
+        public IzolabellaDiscordClient CommandHandler { get; }
 
         public bool AllowBotsOnMessageReceivers { get; }
 
@@ -22,7 +22,7 @@
 
         public async Task StopAsync()
         {
-            await this.CommandHandler.StopAsync();
+            await this.CommandHandler.StopAndLogoutAsync();
         }
     }
 }

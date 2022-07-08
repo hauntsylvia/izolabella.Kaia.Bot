@@ -1,5 +1,5 @@
 ﻿using Discord.Net;
-using izolabella.Discord.Objects.Structures.Discord;
+using izolabella.Discord.Objects.Structures.Discord.Commands;
 using izolabella.Util;
 using izolabella.Util.Controllers;
 using izolabella.Util.RateLimits.Limiters;
@@ -23,22 +23,26 @@ namespace Kaia.Bot.Objects.Clients
             DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
             this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Command, Context) =>
             {
-                if(Command is KaiaCommand KaiaCommand && await Limiter.PassesAsync(Context.UserContext.User.Id))
+                if(await Limiter.PassesAsync(Context.UserContext.User.Id))
                 {
                     if (Context != null && Context.UserContext.Channel is SocketGuildChannel C)
                     {
-                        GuildPermissions KaiaPerms = C.Guild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id).GuildPermissions;
-                        List<GuildPermission> ReqPerms = KaiaCommand.RequiredPermissions.ToList();
-                        ReqPerms.AddRange(DefaultPerms.Default);
-                        if (ReqPerms.All(RP => KaiaPerms.Has(RP)))
+                        IKaiaCommand? KaiaCommand = Command is KaiaCommand KaiaCmd ? KaiaCmd : Command is KaiaSubCommand KaiaSub ? KaiaSub : null;
+                        if(KaiaCommand != null)
                         {
-                            return true;
-                        }
-                        else
-                        {
-                            PermissionsProblem V = new(C.Guild.Name, KaiaCommand.Name, KaiaPerms, ReqPerms.ToArray());
-                            await Context.UserContext.RespondAsync(ephemeral: true, embed: V.Build());
-                            return false;
+                            GuildPermissions KaiaPerms = C.Guild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id).GuildPermissions;
+                            List<GuildPermission> ReqPerms = KaiaCommand.RequiredPermissions.ToList();
+                            ReqPerms.AddRange(DefaultPerms.Default);
+                            if (ReqPerms.All(RP => KaiaPerms.Has(RP)))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                PermissionsProblem V = new(C.Guild.Name, KaiaCommand.Name, KaiaPerms, ReqPerms.ToArray());
+                                await Context.UserContext.RespondAsync(ephemeral: true, embed: V.Build());
+                                return false;
+                            }
                         }
                     }
                     return true;

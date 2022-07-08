@@ -1,5 +1,6 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using izolabella.Discord.Objects.Structures.Discord.Commands;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
@@ -21,19 +22,6 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             new("View Pending", "Whether to view current or pending relationships.", ApplicationCommandOptionType.Boolean, false)
         };
 
-        public override List<IIzolabellaCommandConstraint> Constraints => new();
-
-        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
-        {
-            IzolabellaCommandArgument? PArg = Arguments.FirstOrDefault(A => A.Name == "view-pending");
-            if(PArg != null && PArg.Value is bool ViewPending && ViewPending)
-            {
-                await new PendingRelationshipInvitesPaginated(Context).StartAsync();
-            }
-            else
-            {
-                await new MyRelationshipsPaginated(Context).StartAsync();
-            }
-        }
+        public override List<IzolabellaSubCommand> SubCommands => new() { new RelationshipsPending(), new RelationshipsView() };
     }
 }

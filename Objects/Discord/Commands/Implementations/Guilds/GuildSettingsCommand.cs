@@ -1,6 +1,7 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained;
+using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 {
@@ -14,7 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 
         public override List<IzolabellaCommandParameter> Parameters => new()
         {
-            new IzolabellaCommandParameter("Counting Channel", "The channel used for counting.", ApplicationCommandOptionType.Channel, false),
+            new IzolabellaCommandParameter("Counting Channel", "The channel used for counting.", ApplicationCommandOptionType.Channel, new() { ChannelType.Text }, false),
         };
 
         public override List<IIzolabellaCommandConstraint> Constraints { get; } = new()

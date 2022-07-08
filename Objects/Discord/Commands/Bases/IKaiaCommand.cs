@@ -1,14 +1,20 @@
-﻿using izolabella.Discord.Objects.Structures.Discord;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Bases
 {
-    public abstract class KaiaCommand : IzolabellaCommand
+    public interface IKaiaCommand
     {
         /// <summary>
         /// DO NOT CHANGE after first compilation with the command.
         /// </summary>
-        public abstract string ForeverId { get; }
+        public string ForeverId { get; }
 
-        public abstract List<GuildPermission> RequiredPermissions { get; }
+        public string Name { get; }
+
+        public List<GuildPermission> RequiredPermissions { get; }
     }
 }

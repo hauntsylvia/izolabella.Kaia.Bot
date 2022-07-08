@@ -1,6 +1,6 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using izolabella.Discord.Objects.Structures.Discord;
+using izolabella.Discord.Objects.Structures.Discord.Commands;
 using Kaia.Bot.Objects.Constants.Enums;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others;
 

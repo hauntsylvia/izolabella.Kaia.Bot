@@ -1,5 +1,6 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
+using izolabella.Discord.Objects.Structures.Discord.Commands;
 using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self;
 
 namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
@@ -16,8 +17,6 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Self
         {
             CommandParameters.SomeoneOtherThanMeUser,
         };
-
-        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
 
         public override List<GuildPermission> RequiredPermissions { get; } = new();
 

@@ -17,6 +17,16 @@
         internal static string AutoRole => "autorole-7420221230";
         internal static string AutoRoles => "autoroles-7420221259";
         internal static string Relationships => "relsview-7620221331";
+        internal static string RelationshipsView => "relsviewview-7820220926";
+        internal static string RelationshipsPending => "relspend-7820220927";
         internal static string ToggleNSFW => "togglensfw-7720221640";
+        internal static string Act => "act-7820221041";
+        internal static class Acts
+        {
+            internal static string Hug => "hug-7820221043";
+            internal static string Kiss => "kiss-7820221106";
+            internal static string Pat => "pat-7820221111";
+            internal static string Cuddle => "cuddle-7820221112";
+        }
     }
 }

@@ -28,7 +28,7 @@
 
         public KaiaPathEmbed WithField(string Name, string Value, bool OverrideCaps = false)
         {
-            this.Inner.AddField(Strings.EmbedStrings.Empty, $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n{(OverrideCaps ? Value : Value.ToLower(CultureInfo.InvariantCulture))}");
+            this.Inner.AddField(Strings.EmbedStrings.Empty, $"{(Name == Strings.EmbedStrings.Empty || Name == string.Empty ? string.Empty : $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n")}{(OverrideCaps ? Value : Value.ToLower(CultureInfo.InvariantCulture))}");
             return this;
         }
 

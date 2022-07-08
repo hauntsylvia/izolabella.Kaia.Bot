@@ -22,11 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\izolabella.Discord\izolabella.Discord.csproj" />
+    <ProjectReference Include="..\izolabella.KawaiiRed.NET\izolabella.KawaiiRed.NET.csproj" />
     <ProjectReference Include="..\izolabella.Util\izolabella.Util.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Objects\Discord\Embeds\Implementations\Data\Users\Books\" />
   </ItemGroup>
 
 </Project>

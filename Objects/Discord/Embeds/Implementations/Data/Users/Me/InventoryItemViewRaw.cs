@@ -2,7 +2,7 @@
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Me
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeViews
 {
     public class InventoryItemViewRaw : KaiaPathEmbedRefreshable
     {

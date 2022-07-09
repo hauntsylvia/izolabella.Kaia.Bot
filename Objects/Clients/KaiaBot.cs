@@ -62,7 +62,6 @@ namespace Kaia.Bot.Objects.Clients
             this.Parameters.CommandHandler.UserJoined += this.ClientUserJoinedGuildAsync;
             this.Parameters.CommandHandler.OnMessageReceiverError += this.MessageReceiverErrorAsync;
             this.Parameters.CommandHandler.OnReactionReceiverError += this.ReactionReceiverErrorAsync;
-            this.Self.Update("hello world!");
             //this.Parameters.CommandHandler.OnCommandError += this.OnCommandErrorAsync;
         }
 

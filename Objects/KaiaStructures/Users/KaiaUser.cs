@@ -23,7 +23,9 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
                 this.LocationProcessor = new(Id);
                 this.SpellsProcessor = new(Id);
                 this.RelationshipsProcessor = new(Id);
-                this.Settings = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings ?? new(Id);
+                KaiaUserSettings? S = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings;
+                this.Exists = S != null;
+                this.Settings = S ?? new(Id);
 
                 List<KaiaBook> UserOwnedBooks = this.LibraryProcessor.GetUserBooksAsync().Result;
                 double TotalToPay = 0.0;
@@ -66,5 +68,8 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
 
         [JsonIgnore]
         public RelationshipsProcessor RelationshipsProcessor { get; set; }
+
+        [JsonProperty("Exists", Required = Required.Default)]
+        public bool Exists { get; }
     }
 }

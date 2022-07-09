@@ -17,13 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="izolabella.Discord" Version="7.0.2" />
     <PackageReference Include="izolabella.Storage" Version="0.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\izolabella.Discord\izolabella.Discord.csproj" />
     <ProjectReference Include="..\izolabella.KawaiiRed.NET\izolabella.KawaiiRed.NET.csproj" />
-    <ProjectReference Include="..\izolabella.Util\izolabella.Util.csproj" />
   </ItemGroup>
 
 </Project>

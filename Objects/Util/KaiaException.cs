@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.Util
+﻿namespace izolabella.Kaia.Bot.Objects.Util
 {
     public class KaiaException : Exception
     {

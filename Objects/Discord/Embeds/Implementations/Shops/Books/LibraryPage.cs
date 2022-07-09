@@ -1,6 +1,9 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
     public class LibraryPage : KaiaPathEmbedRefreshable
     {
@@ -19,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         protected override async Task ClientRefreshAsync()
         {
-            if(this.IsFirstPage)
+            if (this.IsFirstPage)
             {
                 this.WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round((await this.U.LibraryProcessor.GetUserBooksAsync()).Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min. " +
                     $"{(this.U.TotalMultiplierOnBooks != 1 ? $"[* `{this.U.TotalMultiplierOnBooks}`]" : "")}");

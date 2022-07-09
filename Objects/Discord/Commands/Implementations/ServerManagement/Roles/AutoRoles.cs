@@ -1,8 +1,11 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.ServerManagement.Roles
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.ServerManagement.Roles
 {
     public class AutoRoles : KaiaCommand
     {

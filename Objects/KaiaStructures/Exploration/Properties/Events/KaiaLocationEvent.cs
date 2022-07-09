@@ -1,6 +1,7 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events
 {
     public class KaiaLocationEvent
     {

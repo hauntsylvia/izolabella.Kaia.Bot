@@ -1,4 +1,8 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Me
 {
     public class InventoryItemViewRaw : KaiaPathEmbedRefreshable
     {

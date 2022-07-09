@@ -1,6 +1,10 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class ItemRawView : KaiaPathEmbedRefreshable
     {

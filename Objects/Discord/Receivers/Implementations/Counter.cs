@@ -1,7 +1,11 @@
 ﻿using Discord.Net;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
 
-namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
+namespace izolabella.Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
     public class Counter : IzolabellaMessageReceiver
     {

@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Bases
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
 {
     public class KaiaPathEmbed
     {

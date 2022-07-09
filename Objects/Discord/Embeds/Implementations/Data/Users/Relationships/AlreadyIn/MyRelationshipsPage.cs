@@ -1,6 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
     public class MyRelationshipsPage : KaiaPathEmbedRefreshable
     {
@@ -31,7 +33,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
                     Display.Add($". . and {Relationship.KaiaUserIds.Count() - this.MaxMembersToDisplay} more");
                 }
 
-                if(Relationship.PendingIds.Any())
+                if (Relationship.PendingIds.Any())
                 {
                     Display.Add("__pending__");
                     Display.AddRange(Relationship.PendingIds.Take(this.MaxMembersToDisplay).Select(A => $"→ <@{A}>"));

@@ -1,8 +1,12 @@
-﻿using Kaia.Bot.Objects.Constants.Responses;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Constants.Responses;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {
     public class LocationViewPaginated : KaiaPathEmbedPaginated
     {
@@ -19,7 +23,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
         {
             IEnumerable<KaiaLocation> Inventory = KaiaLocationRoom.Locations;
 
-            foreach (KaiaLocation[] Chunk in Inventory.Where(IB => IB.StatusNoTimeout == KaiaStructures.Exploration.Locations.Enums.KaiaLocationExplorationStatus.Successful).OrderBy(IB => IB.AvailableUntil.HasValue ? IB.AvailableUntil : IB.End).Chunk(4))
+            foreach (KaiaLocation[] Chunk in Inventory.Where(IB => IB.StatusNoTimeout == KaiaLocationExplorationStatus.Successful).OrderBy(IB => IB.AvailableUntil.HasValue ? IB.AvailableUntil : IB.End).Chunk(4))
             {
                 LocationPage Embed = new(Chunk, this.U);
                 List<SelectMenuOptionBuilder> B = new();
@@ -36,10 +40,10 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
         private async void ItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             string? F = ItemsSelected.FirstOrDefault();
-            if(F != null && ulong.TryParse(F, out ulong Res))
+            if (F != null && ulong.TryParse(F, out ulong Res))
             {
                 KaiaLocation? Location = await DataStores.GetUserLocationsStore(Component.User.Id).ReadAsync<KaiaLocation>(Res) ?? KaiaLocationRoom.Locations.FirstOrDefault(KL => KL.Id == Res);
-                if(Location != null)
+                if (Location != null)
                 {
                     LocationView V = new(this, Location, this.Context, this.U);
                     await Component.DeferAsync(true);

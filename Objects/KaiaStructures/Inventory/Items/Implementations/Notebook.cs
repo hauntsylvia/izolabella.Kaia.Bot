@@ -1,4 +1,7 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
 {
     public class Notebook : KaiaInventoryItem
     {

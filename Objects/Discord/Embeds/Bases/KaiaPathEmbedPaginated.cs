@@ -1,7 +1,9 @@
-﻿using izolabella.Util;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Util;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Bases
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
 {
     public abstract class KaiaPathEmbedPaginated : IDisposable
     {
@@ -90,7 +92,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Bases
                                              style: ButtonStyle.Secondary,
                                              row: 0);
             IEnumerable<KaiaButton>? Buttons = this.GetExtraComponentsAsync().Result;
-            if(Buttons != null)
+            if (Buttons != null)
             {
                 foreach (KaiaButton Button in Buttons)
                 {

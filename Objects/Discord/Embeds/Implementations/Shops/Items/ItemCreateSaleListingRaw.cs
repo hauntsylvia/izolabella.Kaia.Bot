@@ -1,6 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class ItemCreateSaleListingRaw : KaiaPathEmbedRefreshable
     {
@@ -20,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 "items will be validated when submitted",
                 "buying back items from ur own listing does not grant a refund"
             }, ",\n");
-            if((await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == this.SingleListing.ListerId))
+            if ((await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == this.SingleListing.ListerId))
             {
                 this.WithField("warning", "users may only submit up to one active listing at a time");
             }

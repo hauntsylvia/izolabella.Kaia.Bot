@@ -1,6 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 {
     public class CountAchievement : KaiaAchievement
     {
@@ -25,7 +27,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 
         public override Task<bool> CanAwardAsync(KaiaUser U, CommandContext? Context)
         {
-            return Task.FromResult((this.Highest ? (U.Settings.HighestCountEver ?? 0) : (U.Settings.NumbersCounted ?? 0)) >= this.CountTo);
+            return Task.FromResult((this.Highest ? U.Settings.HighestCountEver ?? 0 : U.Settings.NumbersCounted ?? 0) >= this.CountTo);
         }
     }
 }

@@ -1,8 +1,13 @@
-﻿using izolabella.Util.RateLimits.Limiters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Util.RateLimits.Limiters;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Me
 {
     public class InventoryItemView : KaiaItemContentView
     {

@@ -1,8 +1,10 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Items
 {
     public class StoreCommand : KaiaCommand
     {

@@ -1,7 +1,7 @@
-﻿using izolabella.Storage.Objects.DataStores;
-using Kaia.Bot.Objects.KaiaStructures.Derivations;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations;
+using izolabella.Storage.Objects.DataStores;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Startup
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Startup
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
     public class StartupProfile : Unique

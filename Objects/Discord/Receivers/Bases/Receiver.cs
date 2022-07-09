@@ -1,7 +1,10 @@
-﻿using Kaia.Bot.Objects.Clients;
-using Kaia.Bot.Objects.ErrorControl.Interfaces;
+﻿using izolabella.Kaia.Bot.Objects.Clients;
+using izolabella.Kaia.Bot.Objects.Discord.Receivers.Results;
+using izolabella.Kaia.Bot.Objects.ErrorControl.Interfaces;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Receivers.Bases
+namespace izolabella.Kaia.Bot.Objects.Discord.Receivers.Bases
 {
     public abstract class Receiver : ISelfHandler
     {

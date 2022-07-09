@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.Constants
+﻿using izolabella.Kaia.Bot.Objects.Util;
+
+namespace izolabella.Kaia.Bot.Objects.Constants
 {
     internal static class Emotes
     {
@@ -54,7 +56,7 @@
                 internal static KaiaEmote Kaia2 => new("<:number2:993544418088976424>");
                 internal static KaiaEmote Kaia3 => new("<:number3:993544418994954371>");
                 internal static KaiaEmote Kaia4 => new("<:number4:993544414897115197>");
-                internal static KaiaEmote Kaia5 => new ("<:number5:993544415786303489>");
+                internal static KaiaEmote Kaia5 => new("<:number5:993544415786303489>");
                 internal static KaiaEmote Kaia6 => new("<:number6:993544416918777936>");
                 internal static KaiaEmote Kaia7 => new("<:number7:993544413064212550>");
                 internal static KaiaEmote Kaia8 => new("<:number8:993544414054055996>");

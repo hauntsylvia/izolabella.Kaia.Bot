@@ -1,9 +1,12 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using izolabella.Discord.Objects.Structures.Discord.Commands;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
 {
     public class AddCommandConstraintCommand : KaiaCommand
     {

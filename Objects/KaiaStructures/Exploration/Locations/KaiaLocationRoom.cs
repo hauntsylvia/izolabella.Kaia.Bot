@@ -1,7 +1,7 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 {
     public class KaiaLocationRoom
     {
@@ -21,7 +21,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                 {
                     new NotebookEvent(10),
                     new RoseEvent(5),
-                }, AvailableAt: TimeSpan.FromHours(16), AvailableTo: TimeSpan.FromHours(7), TimeSpan.FromHours(16), new("🌙"), 
+                }, AvailableAt: TimeSpan.FromHours(16), AvailableTo: TimeSpan.FromHours(7), TimeSpan.FromHours(16), new("🌙"),
                 CoverUrl: new("https://i.pinimg.com/originals/33/4e/a1/334ea17c92dfccd6418b3ebe9206aaa7.gif"),
                 CoverUrlCredit: new("https://willow95-deactivated20220224.tumblr.com/post/625648064600981504")),
             #endregion
@@ -36,22 +36,22 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
             #endregion
 
             #region quiet town
-            new(Name: "Quiet Town", 
+            new(Name: "Quiet Town",
                 Description: "A cute and quiet town. Everything here is oddly still.",
-                ShortDescription: "A cute little town; home to many.", 
-                DisplayRewards: true, 
-                SuperSecretSelfId: 7220220406, 
+                ShortDescription: "A cute little town; home to many.",
+                DisplayRewards: true,
+                SuperSecretSelfId: 7220220406,
                 Events: new List<KaiaLocationEvent>()
                 {
                     new DeadFingerEvent(0.01),
                     new NotebookEvent(0.15),
                     new CandleEvent(0.7),
-                }, 
-                AvailableAt: TimeSpan.FromHours(15), 
-                AvailableTo: TimeSpan.FromHours(22.25), 
-                MinimumTimeBetweenExplorations: TimeSpan.FromHours(9), 
-                Emote: new("🕯️"), 
-                CoverUrl: new("https://i.pinimg.com/originals/c0/36/28/c03628e7339e0d492cdd077acb6a9e8f.gif"), 
+                },
+                AvailableAt: TimeSpan.FromHours(15),
+                AvailableTo: TimeSpan.FromHours(22.25),
+                MinimumTimeBetweenExplorations: TimeSpan.FromHours(9),
+                Emote: new("🕯️"),
+                CoverUrl: new("https://i.pinimg.com/originals/c0/36/28/c03628e7339e0d492cdd077acb6a9e8f.gif"),
                 CoverUrlCredit: new("https://steamcommunity.com/sharedfiles/filedetails/?id=1624054751&searchtext=")),
             #endregion
 
@@ -62,8 +62,8 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                     new CandleEvent(0.3, false),
                     new RoseEvent(0.6),
                     new NotebookEvent(1),
-                }, TimeSpan.FromHours(2.5), TimeSpan.FromHours(11), TimeSpan.FromHours(9), new("🍂"), 
-                CoverUrl: new("https://i.pinimg.com/564x/d9/e3/f3/d9e3f308a0908fedff694bf3b23627e2.jpg"), 
+                }, TimeSpan.FromHours(2.5), TimeSpan.FromHours(11), TimeSpan.FromHours(9), new("🍂"),
+                CoverUrl: new("https://i.pinimg.com/564x/d9/e3/f3/d9e3f308a0908fedff694bf3b23627e2.jpg"),
                 CoverUrlCredit: new("https://old.reddit.com/r/PixelArt/comments/di68y1/autumn_scenery/")),
             #endregion
 
@@ -73,8 +73,8 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
                 {
                     new CandleEvent(0.9, false),
                     new CigaretteKickNutAndBoltEvent(0.25)
-                }, TimeSpan.FromHours(19), TimeSpan.FromHours(4), TimeSpan.FromHours(4), new("🌙"), 
-                CoverUrl: new("https://i.pinimg.com/originals/7a/f8/ce/7af8ced6fc14a1f2840b72187ba19248.gif"), 
+                }, TimeSpan.FromHours(19), TimeSpan.FromHours(4), TimeSpan.FromHours(4), new("🌙"),
+                CoverUrl: new("https://i.pinimg.com/originals/7a/f8/ce/7af8ced6fc14a1f2840b72187ba19248.gif"),
                 CoverUrlCredit: new("https://guttykreum.tumblr.com/post/182656493636/%E7%AA%93-1am-tama-tokyo")),
             #endregion
 

@@ -1,7 +1,10 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {
     public class LocationPage : KaiaPathEmbedRefreshable
     {

@@ -1,6 +1,7 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Derivations;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Guilds
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KaiaGuild : Unique

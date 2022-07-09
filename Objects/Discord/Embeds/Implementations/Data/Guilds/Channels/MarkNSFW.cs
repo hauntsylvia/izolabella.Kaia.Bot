@@ -1,4 +1,7 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.Channels
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.Channels
 {
     internal class MarkNSFW : KaiaPathEmbed
     {

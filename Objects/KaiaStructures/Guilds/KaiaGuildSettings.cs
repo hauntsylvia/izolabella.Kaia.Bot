@@ -1,6 +1,6 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Guilds
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KaiaGuildSettings

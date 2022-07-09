@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.Constants.Enums
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums
 {
     public enum AchievementCategory
     {

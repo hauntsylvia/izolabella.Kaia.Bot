@@ -1,6 +1,9 @@
-﻿using izolabella.Storage.Objects.DataStores;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Storage.Objects.DataStores;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties
 {
     public class SpellsProcessor
     {
@@ -19,7 +22,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties
 
         public async Task ApplySpellAndSaveAsync(KaiaUser UserToApplyTo, Spell SpellToApply)
         {
-            if(this.SpellsStore != null)
+            if (this.SpellsStore != null)
             {
                 await SpellToApply.ApplyAsync(this, UserToApplyTo);
                 if (!SpellToApply.SingleUse)
@@ -32,7 +35,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties
         public async Task<IEnumerable<Spell>> GetActiveSpellsAsync()
         {
             List<SpellId> UserSpells = await (this.SpellsStore != null ? this.SpellsStore.ReadAllAsync<SpellId>() : Task.FromResult<List<SpellId>>(new()));
-            if(this.SpellsStore != null)
+            if (this.SpellsStore != null)
             {
                 foreach (SpellId Inactive in UserSpells.Where(A => DateTime.UtcNow > A.ActiveUntil))
                 {

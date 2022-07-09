@@ -1,7 +1,9 @@
-﻿using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+﻿using izolabella.Kaia.Bot.Objects.Constants.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Util;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 {
     public class UserEarnedAchievement : KaiaAchievement
     {

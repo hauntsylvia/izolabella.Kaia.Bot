@@ -1,8 +1,10 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.Channels;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.Channels;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.ServerManagement.Channels
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.ServerManagement.Channels
 {
     public class ToggleNSFW : KaiaCommand
     {
@@ -32,12 +34,12 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.ServerManagement.Cha
 
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
-            if(Context.UserContext.User is SocketGuildUser User)
+            if (Context.UserContext.User is SocketGuildUser User)
             {
                 IzolabellaCommandArgument? Ch = Arguments.FirstOrDefault(A => A.Name == "channel");
 
                 IGuildChannel? Channel = Ch != null && Ch.Value is IGuildChannel A ? A : User.Guild.GetChannel(Context.UserContext.Channel.Id);
-                if(Channel is not null and SocketTextChannel TextChannel)
+                if (Channel is not null and SocketTextChannel TextChannel)
                 {
                     bool NewNSFW = Arguments.FirstOrDefault(A => A.Name == "nsfw")?.Value is bool B ? B : !TextChannel.IsNsfw;
                     await TextChannel.ModifyAsync(C => C.IsNsfw = NewNSFW);

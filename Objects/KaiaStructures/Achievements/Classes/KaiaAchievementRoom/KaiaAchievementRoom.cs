@@ -1,7 +1,7 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom
 {
     public class KaiaAchievementRoom
     {

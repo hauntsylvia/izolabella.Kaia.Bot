@@ -1,7 +1,13 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Me;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class ItemCreateSaleListing : KaiaItemContentView
     {
@@ -9,7 +15,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         {
             KaiaUser U = new(Context.UserContext.User.Id);
             this.Listing = new(new(), U, FromListing.CostPerItem);
-            foreach(KaiaInventoryItem Item in FromListing.Items.ToList())
+            foreach (KaiaInventoryItem Item in FromListing.Items.ToList())
             {
                 KaiaInventoryItem? RelevantItem = U.Settings.Inventory.GetItemOfDisplayName(Item).Result;
                 if (RelevantItem != null)
@@ -29,7 +35,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         {
             KaiaUser U = new(Context.UserContext.User.Id);
             this.Listing = new(new(), U, FromListing.CostPerItem);
-            foreach(KaiaInventoryItem Item in FromListing.Items.ToList())
+            foreach (KaiaInventoryItem Item in FromListing.Items.ToList())
             {
                 KaiaInventoryItem? RelevantItem = U.Settings.Inventory.GetItemOfDisplayName(Item).Result;
                 if (RelevantItem != null)
@@ -68,7 +74,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             IEnumerable<KaiaInventoryItem> ItemsMinusExistingIdsInThisListing = U.Settings.Inventory.Items
                 .Where(I => I.UsersCanSellThis && !this.Listing.Items.Any(ListingItem => ListingItem.Id == I.Id) && I.DisplayName == this.Listing.Items.First().DisplayName);
             KaiaInventoryItem? RelevantItem = await U.Settings.Inventory.GetItemOfId(ItemsMinusExistingIdsInThisListing.FirstOrDefault()?.Id ?? 0);
-            if(RelevantItem != null)
+            if (RelevantItem != null)
             {
                 this.Listing.Items.Add(RelevantItem);
             }
@@ -76,7 +82,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private Task RemoveOneAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            if(this.Listing.Items.Count > 0)
+            if (this.Listing.Items.Count > 0)
             {
                 this.Listing.Items.RemoveAt(0);
             }
@@ -88,18 +94,18 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             await Arg.DeferAsync();
             await this.Listing.StartSellingAsync();
             this.Dispose();
-            if(this.PreviousPageStore != null)
+            if (this.PreviousPageStore != null)
             {
                 this.PreviousPageStore.Dispose();
             }
-            if(this.PreviousPageInventory != null)
+            if (this.PreviousPageInventory != null)
             {
                 this.PreviousPageInventory.Dispose();
             }
             if (this.PreviousPageStore?.From != null || this.PreviousPageInventory?.From != null)
             {
                 this.PreviousPageStore?.From?.Dispose();
-                if(this.PreviousPageStore != null)
+                if (this.PreviousPageStore != null)
                 {
                     await new ItemsPaginated(this.Context, this.PreviousPageStore?.From?.FilterBy, this.PreviousPageStore?.From?.IncludeUserListings ?? true, this.PreviousPageStore?.From?.ChunkSize ?? 2).StartAsync();
                 }
@@ -121,7 +127,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 await U.SaveAsync();
                 KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
                 ComponentBuilder Com = await this.GetComponentsAsync(U);
-                if(Arg != null)
+                if (Arg != null)
                 {
                     await Arg.UpdateAsync(C =>
                     {
@@ -148,7 +154,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
-            if(Arg.Author.Id == this.Context.UserContext.User.Id && double.TryParse(Arg.Content, out double NewPricePerItem))
+            if (Arg.Author.Id == this.Context.UserContext.User.Id && double.TryParse(Arg.Content, out double NewPricePerItem))
             {
                 this.Listing.CostPerItem = NewPricePerItem;
                 await this.UpdateEmbedAsync(null, new(Arg.Author.Id));

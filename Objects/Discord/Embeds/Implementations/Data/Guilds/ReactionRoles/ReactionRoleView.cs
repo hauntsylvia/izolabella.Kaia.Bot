@@ -1,6 +1,11 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
 {
     public class ReactionRoleView : KaiaItemContentView
     {

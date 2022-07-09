@@ -1,6 +1,6 @@
 ﻿using izolabella.Storage.Objects.Structures;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
 {
     public class SpellId : IDataStoreEntity
     {

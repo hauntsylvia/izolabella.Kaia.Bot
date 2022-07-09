@@ -1,8 +1,12 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
+﻿using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
     public class BookView : KaiaItemContentView
     {

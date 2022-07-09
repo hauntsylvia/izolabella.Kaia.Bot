@@ -1,6 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
 {
     public class BookIncomeIncrease : Spell
     {

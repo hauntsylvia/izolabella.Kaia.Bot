@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.Constants.Permissions
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Permissions
 {
     internal class DefaultPerms
     {

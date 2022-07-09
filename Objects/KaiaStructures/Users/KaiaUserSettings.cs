@@ -1,6 +1,6 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Users
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KaiaUserSettings

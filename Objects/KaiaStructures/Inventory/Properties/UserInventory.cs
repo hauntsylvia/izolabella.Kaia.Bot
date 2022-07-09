@@ -1,4 +1,7 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class UserInventory
@@ -31,7 +34,7 @@
         public Task<bool> RemoveItemOfIdAsync(KaiaInventoryItem Item)
         {
             int I = this.items.FindIndex(A => A.Id == Item.Id);
-            if(I >= 0)
+            if (I >= 0)
             {
                 this.items.RemoveAt(I);
                 return Task.FromResult(true);
@@ -50,7 +53,7 @@
         public async Task RemoveItemOfNameAsync(KaiaUser Parent, KaiaInventoryItem Item)
         {
             int I = this.items.FindIndex(A => A.DisplayName == Item.DisplayName);
-            if(I >= 0)
+            if (I >= 0)
             {
                 this.items.RemoveAt(I);
             }
@@ -121,7 +124,7 @@
         /// <returns></returns>
         public async Task AddItemsToInventoryAndSaveAsync(KaiaUser Parent, params KaiaInventoryItem[] Items)
         {
-            foreach(KaiaInventoryItem Item in Items)
+            foreach (KaiaInventoryItem Item in Items)
             {
                 await Item.OnKaiaStoreRefresh();
                 Item.ReceivedAt = DateTime.UtcNow;

@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties
 {
     public class KaiaItemReturnContext
     {

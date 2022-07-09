@@ -1,6 +1,10 @@
-﻿using Kaia.Bot.Objects.Constants.Enums;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Constants.Enums;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
 {
     public class LeaderboardEmbed : KaiaPathEmbedRefreshable
     {

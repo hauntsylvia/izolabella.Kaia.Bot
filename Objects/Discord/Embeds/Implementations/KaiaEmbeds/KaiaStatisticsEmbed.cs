@@ -1,6 +1,8 @@
 ﻿using izolabella.Discord;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds
 {
     public class KaiaStatisticsEmbed : KaiaPathEmbedRefreshable
     {

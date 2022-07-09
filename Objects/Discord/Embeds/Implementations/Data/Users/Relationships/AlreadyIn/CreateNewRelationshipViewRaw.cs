@@ -1,6 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
     public class CreateNewRelationshipViewRaw : KaiaPathEmbedRefreshable
     {

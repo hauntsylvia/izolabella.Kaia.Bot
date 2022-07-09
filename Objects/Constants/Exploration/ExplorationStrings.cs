@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.Constants.Exploration
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Exploration
 {
     public class ExplorationStrings
     {

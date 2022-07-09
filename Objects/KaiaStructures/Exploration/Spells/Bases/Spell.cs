@@ -1,6 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Util;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
 {
     public abstract class Spell
     {

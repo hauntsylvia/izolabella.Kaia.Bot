@@ -1,6 +1,7 @@
-﻿using izolabella.Storage.Objects.DataStores;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Storage.Objects.DataStores;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Relationships
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
 {
     public class RelationshipsProcessor
     {

@@ -1,6 +1,6 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
 {
     public class KaiaLibrary
     {

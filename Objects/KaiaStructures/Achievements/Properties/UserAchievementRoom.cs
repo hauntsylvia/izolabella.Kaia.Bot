@@ -1,8 +1,10 @@
-﻿using izolabella.Storage.Objects.DataStores;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Storage.Objects.DataStores;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class UserAchievementRoom
@@ -10,7 +12,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
         public UserAchievementRoom(ulong U)
         {
             this.U = U;
-            if(this.U != default)
+            if (this.U != default)
             {
                 this.UserAchievementsStore = DataStores.GetUserAchievementStore(this.U);
             }
@@ -31,7 +33,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
 
         public async Task TryAwardAchievements(KaiaUser User, CommandContext? CanRespondTo, params KaiaAchievement[] Achievements)
         {
-            if(this.UserAchievementsStore != null)
+            if (this.UserAchievementsStore != null)
             {
                 List<KaiaAchievement> Actual = new();
                 foreach (KaiaAchievement A in Achievements)

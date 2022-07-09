@@ -1,8 +1,10 @@
-﻿using Kaia.Bot.Objects.Constants.Responses;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
-using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Constants.Responses;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles
 {
     public class AutoRolesPaginated : KaiaPathEmbedPaginated
     {

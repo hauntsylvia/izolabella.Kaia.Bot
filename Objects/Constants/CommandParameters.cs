@@ -1,6 +1,6 @@
 ﻿using izolabella.Discord.Objects.Parameters;
 
-namespace Kaia.Bot.Objects.Constants
+namespace izolabella.Kaia.Bot.Objects.Constants
 {
     internal static class CommandParameters
     {

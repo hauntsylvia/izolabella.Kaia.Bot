@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.ClientParameters
+﻿namespace izolabella.Kaia.Bot.Objects.ClientParameters
 {
     public class KaiaParams
     {

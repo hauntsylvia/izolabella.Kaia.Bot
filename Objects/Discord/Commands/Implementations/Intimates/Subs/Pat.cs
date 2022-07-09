@@ -1,12 +1,14 @@
 ﻿using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs
 {
     public class Pat : KaiaSubCommand
     {

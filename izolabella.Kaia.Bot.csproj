@@ -19,6 +19,7 @@
   <ItemGroup>
     <PackageReference Include="izolabella.Discord" Version="7.0.2" />
     <PackageReference Include="izolabella.Storage" Version="0.2.1" />
+    <PackageReference Include="izolabella.Util" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

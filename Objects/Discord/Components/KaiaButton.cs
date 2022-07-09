@@ -1,6 +1,7 @@
-﻿using izolabella.Util;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Util;
 
-namespace Kaia.Bot.Objects.Discord.Components
+namespace izolabella.Kaia.Bot.Objects.Discord.Components
 {
     public class KaiaButton : ButtonBuilder, IDisposable
     {
@@ -58,7 +59,7 @@ namespace Kaia.Bot.Objects.Discord.Components
 
         private Task ButtonExecutedAsync(SocketMessageComponent Arg)
         {
-            if(Arg.IsValidToken && this.Id == Arg.Data.CustomId && (Arg.User.Id == this.Referrer.Id || this.AnyoneCanPress))
+            if (Arg.IsValidToken && this.Id == Arg.Data.CustomId && (Arg.User.Id == this.Referrer.Id || this.AnyoneCanPress))
             {
                 this.OnButtonPush?.Invoke(Arg, new(Arg.User.Id));
             }

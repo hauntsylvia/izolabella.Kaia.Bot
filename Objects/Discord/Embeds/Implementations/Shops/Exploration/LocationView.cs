@@ -1,9 +1,13 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
-using static Kaia.Bot.Objects.Discord.Components.KaiaButton;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using static izolabella.Kaia.Bot.Objects.Discord.Components.KaiaButton;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {
     public class LocationView : KaiaItemContentView
     {

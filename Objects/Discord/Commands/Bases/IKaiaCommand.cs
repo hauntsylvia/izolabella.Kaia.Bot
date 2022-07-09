@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Bases
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Bases
 {
     public interface IKaiaCommand
     {

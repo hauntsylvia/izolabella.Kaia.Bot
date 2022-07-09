@@ -1,6 +1,9 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings
 {
     public class ExhaustionRevival : Spell
     {

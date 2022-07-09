@@ -1,7 +1,10 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Me
 {
     public class MeLibraryView : KaiaPathEmbedPaginated
     {

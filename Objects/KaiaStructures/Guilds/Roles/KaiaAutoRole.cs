@@ -1,6 +1,6 @@
 ﻿using izolabella.Util;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Guilds.Roles
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles
 {
     public class KaiaAutoRole
     {

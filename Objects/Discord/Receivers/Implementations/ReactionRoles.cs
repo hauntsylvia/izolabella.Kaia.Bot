@@ -1,8 +1,9 @@
 ﻿using Discord.Net;
-using Kaia.Bot.Objects.Clients;
-using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+using izolabella.Kaia.Bot.Objects.Clients;
 
-namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
+namespace izolabella.Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
     public class ReactionRoles : IzolabellaReactionReceiver
     {
@@ -12,7 +13,7 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
 
         public override async Task OnReactionAsync(IzolabellaDiscordClient Reference, SocketReaction Reaction, bool ReactionRemoved)
         {
-            if(Reaction.Channel is SocketGuildChannel Channel)
+            if (Reaction.Channel is SocketGuildChannel Channel)
             {
                 KaiaGuild Guild = new(Channel.Guild.Id);
                 IUser? U = Reaction.User.GetValueOrDefault() ?? await Reference.GetUserAsync(Reaction.UserId);
@@ -23,9 +24,9 @@ namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
                         if (Role.ChannelId == Reaction.Channel.Id && Role.MessageId == Reaction.MessageId && Role.Emote.ToString() == Reaction.Emote.ToString())
                         {
                             IRole? ActualRole = await Role.GetRoleAsync(Channel.Guild);
-                            if(ActualRole != null)
+                            if (ActualRole != null)
                             {
-                                if(ReactionRemoved)
+                                if (ReactionRemoved)
                                 {
                                     await User.RemoveRoleAsync(ActualRole.Id);
                                 }

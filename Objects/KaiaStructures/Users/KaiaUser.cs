@@ -1,13 +1,14 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
-using Kaia.Bot.Objects.KaiaStructures.Books.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Derivations;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
-using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Implementations.Blessings;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Users
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
     public class KaiaUser : Unique
@@ -15,7 +16,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
         [JsonConstructor]
         public KaiaUser(ulong Id, KaiaUserSettings? Settings = null) : base(DataStores.UserStore, Id)
         {
-            if(Id > 0)
+            if (Id > 0)
             {
                 this.Id = Id;
                 this.LibraryProcessor = new(Id);

@@ -1,11 +1,14 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
 {
     public class Rose : KaiaInventoryItem
     {
         public Rose() : base(DisplayName: Strings.ItemStrings.Rose.Name,
                              Description: "a rose!",
                              MarketCost: 34.98,
-                             CanInteractWithDirectly: true, 
+                             CanInteractWithDirectly: true,
                              KaiaDisplaysThisOnTheStore: true,
                              UsersCanSellThis: true,
                              DisplayEmoteName: Emotes.Items.Rose)

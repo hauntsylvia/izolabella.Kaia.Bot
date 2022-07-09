@@ -1,7 +1,10 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Me;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class ItemsPaginatedPage : KaiaPathEmbedRefreshable
     {
@@ -25,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         protected override Task ClientRefreshAsync()
         {
-            if(this.Listings != null)
+            if (this.Listings != null)
             {
                 foreach (SaleListing Listing in this.Listings.Where(L => L.IsListed))
                 {
@@ -34,7 +37,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                     this.WithField($"[{Strings.Economy.CurrencyEmote} `{Listing.CostPerItem}`] {Item.DisplayName} {Item.DisplayEmote}", Item.Description);
                 }
             }
-            else if(this.ItemCountChunk != null)
+            else if (this.ItemCountChunk != null)
             {
                 this.ItemCountChunk = MeInventoryView.GetItemsAndCounts(new(this.Context.UserContext.User.Id));
                 List<string> Display = new();

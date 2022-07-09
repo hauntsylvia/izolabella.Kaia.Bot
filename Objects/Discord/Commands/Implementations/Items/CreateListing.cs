@@ -1,11 +1,15 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using izolabella.Discord.Objects.Structures.Discord.Commands;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 using izolabella.Util;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Items
 {
     public class CreateListing : KaiaCommand
     {
@@ -46,7 +50,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Items
             IzolabellaCommandArgument? ItemArg = Arguments.FirstOrDefault(A => A.Name == "item");
             if (QuantityArg != null && CPIArg != null && ItemArg != null && QuantityArg.Value is double Quantity && CPIArg.Value is double CPI && ItemArg.Value is string DisplayName)
             {
-                if(!(await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == Context.UserContext.User.Id && S.IsListed))
+                if (!(await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == Context.UserContext.User.Id && S.IsListed))
                 {
                     KaiaUser U = new(Context.UserContext.User.Id);
                     List<KaiaInventoryItem> ItemsFromUserInv = (await U.Settings.Inventory.GetItemsOfDisplayName(DisplayName)).Take((int)Quantity).ToList();

@@ -1,7 +1,8 @@
-﻿using izolabella.Storage.Objects.DataStores;
-using Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
+using izolabella.Storage.Objects.DataStores;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Books.Properties
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Properties
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class UserLibrary

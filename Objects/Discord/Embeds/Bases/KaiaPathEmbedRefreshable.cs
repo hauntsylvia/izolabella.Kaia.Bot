@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Bases
+﻿namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
 {
     public abstract class KaiaPathEmbedRefreshable : KaiaPathEmbed
     {

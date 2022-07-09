@@ -1,8 +1,10 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 {
     internal class InformationCommand : KaiaCommand
     {

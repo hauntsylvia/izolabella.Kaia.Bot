@@ -1,6 +1,8 @@
 ﻿using Discord.Net;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Receivers.Implementations
+namespace izolabella.Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
     public class Achievements : IzolabellaMessageReceiver
     {

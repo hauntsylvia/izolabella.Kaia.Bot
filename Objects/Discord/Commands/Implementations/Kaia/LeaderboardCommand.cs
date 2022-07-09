@@ -1,10 +1,13 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
 using izolabella.Discord.Objects.Structures.Discord.Commands;
-using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Constants.Enums;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Util;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 {
     public class LeaderboardCommand : KaiaCommand
     {

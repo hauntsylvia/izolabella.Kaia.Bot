@@ -1,8 +1,10 @@
 ﻿using izolabella.Discord.Objects.Constraints.Interfaces;
 using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Exploration
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Exploration
 {
     public class ViewActiveLocationsCommand : KaiaCommand
     {

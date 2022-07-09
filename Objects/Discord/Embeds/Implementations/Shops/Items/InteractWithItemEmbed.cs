@@ -1,4 +1,10 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class InteractWithItemEmbed : KaiaPathEmbed
     {
@@ -6,9 +12,9 @@
         {
             U.Settings.Inventory.RemoveItemOfIdAsync(I).Wait();
             U.SaveAsync().Wait();
-            if(I.OnInteract != null)
+            if (I.OnInteract != null)
             {
-                if(I.OnInteract.Message.Length > 0)
+                if (I.OnInteract.Message.Length > 0)
                 {
                     this.WithField("?", $"```{I.OnInteract.Message}```");
                 }

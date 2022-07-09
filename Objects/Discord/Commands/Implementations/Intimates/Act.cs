@@ -1,13 +1,15 @@
 ﻿using izolabella.Discord.Objects.Parameters;
 using izolabella.Discord.Objects.Structures.Discord.Commands;
-using Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates
 {
     public class Act : KaiaCommand
     {

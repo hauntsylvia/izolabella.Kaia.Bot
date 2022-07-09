@@ -1,6 +1,7 @@
-﻿using izolabella.Util;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using izolabella.Util;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties
 {
     public class KaiaSpellsRoom
     {

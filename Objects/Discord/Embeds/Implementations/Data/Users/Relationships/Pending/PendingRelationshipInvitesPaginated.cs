@@ -1,7 +1,11 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending;
-using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending
 {
     public class PendingRelationshipInvitesPaginated : KaiaPathEmbedPaginated
     {
@@ -24,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
             if (ulong.TryParse(Item, out ulong Id))
             {
                 UserRelationship? Relationship = await DataStores.UserRelationshipsMainDirectory.ReadAsync<UserRelationship>(Id);
-                if(Relationship != null)
+                if (Relationship != null)
                 {
                     await Component.DeferAsync();
                     await new PendingRelInviteDisplay(this, this.Context, Relationship).StartAsync(new KaiaUser(Component.User.Id));
@@ -42,7 +46,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
             foreach (UserRelationship[] RelChunk in Rels)
             {
                 List<SelectMenuOptionBuilder> Builds = new();
-                foreach(UserRelationship R in RelChunk)
+                foreach (UserRelationship R in RelChunk)
                 {
                     Builds.Add(new($"relationship {R.Id}", R.Id.ToString(CultureInfo.InvariantCulture), R.Description, R.Emote, false));
                 }

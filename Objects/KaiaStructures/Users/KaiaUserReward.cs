@@ -1,6 +1,8 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Users
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class KaiaUserReward
@@ -12,7 +14,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
 
         public KaiaUserReward(double Petals, params Spell[] Spells)
         {
-            this.Petals = Petals; 
+            this.Petals = Petals;
             this.SpellIds = Spells.Select(S => S.Id).ToArray();
         }
 
@@ -33,11 +35,11 @@ namespace Kaia.Bot.Objects.KaiaStructures.Users
         public KaiaUserReward(double Petals, SpellId[]? SpellIds, KaiaInventoryItem[]? Items)
         {
             this.Petals = Petals;
-            if(SpellIds != null)
+            if (SpellIds != null)
             {
                 this.SpellIds = SpellIds;
             }
-            if(Items != null)
+            if (Items != null)
             {
                 this.Items = Items;
             }

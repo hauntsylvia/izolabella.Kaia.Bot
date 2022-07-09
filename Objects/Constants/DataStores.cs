@@ -1,6 +1,6 @@
 ﻿using izolabella.Storage.Objects.DataStores;
 
-namespace Kaia.Bot.Objects.Constants
+namespace izolabella.Kaia.Bot.Objects.Constants
 {
     internal static class DataStores
     {

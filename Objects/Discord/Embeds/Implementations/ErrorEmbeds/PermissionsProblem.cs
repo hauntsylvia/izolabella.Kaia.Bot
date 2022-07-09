@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using System.Text.RegularExpressions;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds
 {
     public class PermissionsProblem : KaiaPathEmbed
     {

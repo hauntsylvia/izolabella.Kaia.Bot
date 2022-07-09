@@ -1,8 +1,10 @@
-﻿using izolabella.Storage.Objects.Structures;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Util;
+using izolabella.Storage.Objects.Structures;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 {
     public class KaiaLocation : IDataStoreEntity
     {
@@ -80,7 +82,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
             this.Overnight && this.InnerClock.TimeOfDay > this.AvailableTo && this.InnerClock.TimeOfDay < this.AvailableAt ? KaiaLocationExplorationStatus.IncorrectLocationTime :
             !this.Overnight && (this.InnerClock < this.Start || this.InnerClock > this.End) ? KaiaLocationExplorationStatus.IncorrectLocationTime :
             this.AvailableUntil.HasValue && this.InnerClock < this.AvailableUntil.Value ? KaiaLocationExplorationStatus.LocationUnavailable :
-            this.MustWaitUntil.HasValue && (this.MustWaitUntil.Value > this.InnerClock) ? KaiaLocationExplorationStatus.Timeout :
+            this.MustWaitUntil.HasValue && this.MustWaitUntil.Value > this.InnerClock ? KaiaLocationExplorationStatus.Timeout :
             KaiaLocationExplorationStatus.Successful;
 
         public KaiaLocationExplorationStatus StatusNoTimeout => this.Status == KaiaLocationExplorationStatus.Timeout ? KaiaLocationExplorationStatus.Successful : this.Status;
@@ -89,10 +91,10 @@ namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
         {
             double TotalWeight = this.Events.Sum(A => A.Weight);
             double Random = new Random().Next(0, (int)TotalWeight) + TotalWeight - (int)TotalWeight;
-            foreach(KaiaLocationEvent Event in this.Events)
+            foreach (KaiaLocationEvent Event in this.Events)
             {
                 Random -= Event.Weight;
-                if(Random <= 0)
+                if (Random <= 0)
                 {
                     return Event;
                 }

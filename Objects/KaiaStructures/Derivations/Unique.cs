@@ -2,7 +2,7 @@
 using izolabella.Storage.Objects.Structures;
 using izolabella.Util;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Derivations
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
     public class Unique : IDataStoreEntity
@@ -22,7 +22,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Derivations
         {
             if (this.BelongsTo != null)
             {
-                lock(this)
+                lock (this)
                 {
                     this.BelongsTo.SaveAsync(this).Wait();
                 }

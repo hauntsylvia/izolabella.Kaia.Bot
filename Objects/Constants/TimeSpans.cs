@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.Constants
+﻿namespace izolabella.Kaia.Bot.Objects.Constants
 {
     internal static class TimeSpans
     {

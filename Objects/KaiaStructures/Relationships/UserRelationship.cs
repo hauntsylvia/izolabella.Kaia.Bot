@@ -1,7 +1,9 @@
-﻿using izolabella.Storage.Objects.Structures;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Util;
+using izolabella.Storage.Objects.Structures;
 using izolabella.Util;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Relationships
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
 {
     public class UserRelationship : IDataStoreEntity
     {
@@ -47,7 +49,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Relationships
 
         public bool AddPendingMember(ulong Member)
         {
-            if(this.AtMax)
+            if (this.AtMax)
             {
                 return false;
             }
@@ -62,7 +64,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Relationships
                 return false;
             }
             this.UserDeclines(Member);
-            if(!this.kaiaUserIds.ContainsKey(Member))
+            if (!this.kaiaUserIds.ContainsKey(Member))
             {
                 this.kaiaUserIds.Add(Member, DateTime.UtcNow);
             }
@@ -72,7 +74,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Relationships
         public void RemoveMember(ulong Member)
         {
             this.UserDeclines(Member);
-            if(this.kaiaUserIds.ContainsKey(Member))
+            if (this.kaiaUserIds.ContainsKey(Member))
             {
                 this.kaiaUserIds.Remove(Member);
                 this.RemoveMember(Member);
@@ -85,7 +87,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Relationships
 
         public void UserDeclines(ulong UserThatDeclined)
         {
-            if(this.pendingIds.ContainsKey(UserThatDeclined))
+            if (this.pendingIds.ContainsKey(UserThatDeclined))
             {
                 this.pendingIds.Remove(UserThatDeclined);
                 this.UserDeclines(UserThatDeclined);

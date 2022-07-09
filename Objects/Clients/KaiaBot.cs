@@ -1,16 +1,23 @@
 ﻿using Discord.Net;
 using izolabella.Discord.Objects.Structures.Discord.Commands;
+using izolabella.Kaia.Bot.Objects.ClientParameters;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Constants.Permissions;
+using izolabella.Kaia.Bot.Objects.Constants.Responses;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
+using izolabella.Kaia.Bot.Objects.Discord.Receivers.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 using izolabella.Util;
 using izolabella.Util.Controllers;
 using izolabella.Util.RateLimits.Limiters;
-using Kaia.Bot.Objects.Constants.Permissions;
-using Kaia.Bot.Objects.Constants.Responses;
-using Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
-using Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 using System.Reflection;
 
-namespace Kaia.Bot.Objects.Clients
+namespace izolabella.Kaia.Bot.Objects.Clients
 {
     public class KaiaBot
     {
@@ -23,12 +30,12 @@ namespace Kaia.Bot.Objects.Clients
             DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
             this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Command, Context) =>
             {
-                if(await Limiter.PassesAsync(Context.UserContext.User.Id))
+                if (await Limiter.PassesAsync(Context.UserContext.User.Id))
                 {
                     if (Context != null && Context.UserContext.Channel is SocketGuildChannel C)
                     {
                         IKaiaCommand? KaiaCommand = Command is KaiaCommand KaiaCmd ? KaiaCmd : Command is KaiaSubCommand KaiaSub ? KaiaSub : null;
-                        if(KaiaCommand != null)
+                        if (KaiaCommand != null)
                         {
                             GuildPermissions KaiaPerms = C.Guild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id).GuildPermissions;
                             List<GuildPermission> ReqPerms = KaiaCommand.RequiredPermissions.ToList();
@@ -49,7 +56,7 @@ namespace Kaia.Bot.Objects.Clients
                 }
                 else
                 {
-                    if(await LimiterForLimiter.PassesAsync(Context.UserContext.User.Id))
+                    if (await LimiterForLimiter.PassesAsync(Context.UserContext.User.Id))
                     {
                         await Responses.PipeErrors(Context, new RateLimited());
                     }
@@ -91,11 +98,11 @@ namespace Kaia.Bot.Objects.Clients
                 await this.Parameters.StartAsync();
                 this.Self.Update($"__kaia_restart finalized @ [{DateTime.Now}]");
             }
-            else if(ReactionReceiver != null)
+            else if (ReactionReceiver != null)
             {
                 this.Self.Update($"reaction receiver {ReactionReceiver.Name} failed");
             }
-            else if(MessageReceiver != null)
+            else if (MessageReceiver != null)
             {
                 this.Self.Update($"message receiver {MessageReceiver.Name} failed");
             }
@@ -104,10 +111,10 @@ namespace Kaia.Bot.Objects.Clients
         private async Task ClientUserJoinedGuildAsync(SocketGuildUser User)
         {
             KaiaGuild G = new(User.Guild.Id);
-            foreach(KaiaAutoRole R in G.Settings.AutoRoles)
+            foreach (KaiaAutoRole R in G.Settings.AutoRoles)
             {
                 IRole? DR = await R.GetRoleAsync(User.Guild);
-                if(DR != null)
+                if (DR != null)
                 {
                     await User.AddRoleAsync(DR);
                 }
@@ -152,7 +159,7 @@ namespace Kaia.Bot.Objects.Clients
             {
                 SocketGuildUser KaiaUser = DiscordGuild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id);
                 GuildPermissions KaiaPerms = KaiaUser.GuildPermissions;
-                if(KaiaPerms.Has(GuildPermission.ManageRoles) && KaiaPerms.Has(GuildPermission.ReadMessageHistory))
+                if (KaiaPerms.Has(GuildPermission.ManageRoles) && KaiaPerms.Has(GuildPermission.ReadMessageHistory))
                 {
                     KaiaGuild Guild = new(DiscordGuild.Id);
                     await DiscordGuild.DownloadUsersAsync();
@@ -187,7 +194,7 @@ namespace Kaia.Bot.Objects.Clients
                                     if (User.RoleIds.Any(RId => Role.RoleId == RId))
                                     {
                                         SocketGuildUser? Matching = Cached.FirstOrDefault(CU => CU.Id == User.Id);
-                                        if(Matching == null)
+                                        if (Matching == null)
                                         {
                                             await User.RemoveRoleAsync(Role.RoleId);
                                         }
@@ -203,11 +210,11 @@ namespace Kaia.Bot.Objects.Clients
 
         public async Task IterateOverAutoRolesAsync(IEnumerable<SocketGuild> RefreshFor)
         {
-            foreach(SocketGuild Guild in RefreshFor)
+            foreach (SocketGuild Guild in RefreshFor)
             {
                 await Guild.DownloadUsersAsync();
                 SocketGuildUser KaiaUser = Guild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id);
-                if(KaiaUser.GuildPermissions.Has(GuildPermission.ManageRoles))
+                if (KaiaUser.GuildPermissions.Has(GuildPermission.ManageRoles))
                 {
                     KaiaGuild G = new(Guild.Id);
                     foreach (KaiaAutoRole Role in G.Settings.AutoRoles.Where(AR => AR.Enforce))
@@ -261,7 +268,7 @@ namespace Kaia.Bot.Objects.Clients
             }
             await this.Parameters.CommandHandler.UpdateCommandsAsync(Commands.ToArray());
         }
-        
+
         #endregion
     }
 }

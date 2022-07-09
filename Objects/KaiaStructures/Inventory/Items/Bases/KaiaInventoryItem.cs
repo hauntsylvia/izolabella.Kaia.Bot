@@ -1,7 +1,9 @@
-﻿using izolabella.Util;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
+using izolabella.Kaia.Bot.Objects.Util;
+using izolabella.Util;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KaiaInventoryItem

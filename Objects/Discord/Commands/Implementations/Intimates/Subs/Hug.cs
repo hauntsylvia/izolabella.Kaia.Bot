@@ -1,12 +1,14 @@
 ﻿using izolabella.Discord.Objects.Parameters;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates;
+using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs
 {
     public class Hug : KaiaSubCommand
     {
@@ -25,7 +27,7 @@ namespace Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             IzolabellaCommandArgument? OtherUser = Arguments.FirstOrDefault(A => A.Name == "user");
-            if(OtherUser != null && OtherUser.Value is IUser U)
+            if (OtherUser != null && OtherUser.Value is IUser U)
             {
 
                 IntimateDisplay D = new(new("hug", "hugs"), new(Context.UserContext.User.Id), new(U.Id));

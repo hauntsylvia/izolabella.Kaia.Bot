@@ -1,7 +1,11 @@
-﻿using Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn;
-using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending
 {
     public class PendingRelInviteDisplay : KaiaItemContentView
     {
@@ -24,7 +28,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
 
         private async Task AcceptAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            if(this.Rel.AddMember(UserWhoPressed.Id))
+            if (this.Rel.AddMember(UserWhoPressed.Id))
             {
                 this.Dispose();
                 await Arg.DeferAsync();

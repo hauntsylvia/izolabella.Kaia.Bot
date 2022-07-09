@@ -1,4 +1,7 @@
-﻿using izolabella.KawaiiRed.NET;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.KawaiiRed.NET;
 using izolabella.KawaiiRed.NET.Enums;
 using System;
 using System.Collections.Generic;
@@ -6,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates
 {
     public class IntimateDisplay : KaiaPathEmbed
     {

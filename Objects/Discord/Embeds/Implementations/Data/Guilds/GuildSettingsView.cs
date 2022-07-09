@@ -1,4 +1,8 @@
-﻿namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
+
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
 {
     public class GuildSettingsView : KaiaPathEmbed
     {

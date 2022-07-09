@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.ErrorControl.Interfaces
+﻿namespace izolabella.Kaia.Bot.Objects.ErrorControl.Interfaces
 {
     public interface ISelfHandler
     {

@@ -1,4 +1,6 @@
-﻿namespace Kaia.Bot.Objects.Constants.Responses
+﻿using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+
+namespace izolabella.Kaia.Bot.Objects.Constants.Responses
 {
     internal class Responses
     {

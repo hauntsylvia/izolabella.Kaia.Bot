@@ -1,9 +1,15 @@
-﻿using izolabella.Util.RateLimits.Limiters;
-using Kaia.Bot.Objects.Constants.Responses;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Constants.Responses;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Util.RateLimits.Limiters;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
     public class ItemView : KaiaItemContentView
     {
@@ -44,9 +50,9 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         private bool Refreshed { get; set; }
 
         public DateRateLimiter RateLimiter { get; } = new(DataStores.RateLimitsStore, "Kaia Item", TimeSpan.FromSeconds(8), 6, TimeSpan.FromSeconds(4));
-        
+
         public DateRateLimiter SecondaryRateLimiter { get; } = new(DataStores.RateLimitsStore, "Secondary Kaia Item", TimeSpan.FromSeconds(2));
-        
+
         public ItemCreateSaleListing? ListingInteraction { get; set; }
 
         #endregion
@@ -55,7 +61,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private async Task RemoveListingAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            if(UserWhoPressed.Id == this.Listing.ListerId)
+            if (UserWhoPressed.Id == this.Listing.ListerId)
             {
                 await this.Listing.StopSellingAsync();
                 this.Dispose();
@@ -94,7 +100,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         {
             if (await this.RateLimiter.PassesAsync(Arg.User.Id))
             {
-                if(Arg.Data.CustomId != this.PutUpForSaleButton.Id && Arg.Data.CustomId != this.RemoveListingButton.Id)
+                if (Arg.Data.CustomId != this.PutUpForSaleButton.Id && Arg.Data.CustomId != this.RemoveListingButton.Id)
                 {
                     await U.SaveAsync();
                     KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
@@ -122,7 +128,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                         });
                     }
                 }
-                else if(!Arg.HasResponded)
+                else if (!Arg.HasResponded)
                 {
                     await Arg.DeferAsync(true);
                 }
@@ -150,7 +156,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             {
                 CB.WithButton(this.PutUpForSaleButton.WithDisabled(!await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || !Item.UsersCanSellThis));
             }
-            if(this.Listing.ListerId == U.Id)
+            if (this.Listing.ListerId == U.Id)
             {
                 CB.WithButton(this.RemoveListingButton.WithDisabled(false));
             }

@@ -1,6 +1,6 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Derivations;
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class KaiaBook : Unique

@@ -1,8 +1,11 @@
-﻿using izolabella.Storage.Objects.Structures;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Exceptions;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Storage.Objects.Structures;
 using izolabella.Util;
-using Kaia.Bot.Objects.KaiaStructures.Inventory.Exceptions;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
 {
     public class SaleListing : IDataStoreEntity
     {
@@ -17,12 +20,12 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         public SaleListing(List<KaiaInventoryItem> Items, KaiaUser? Lister, double CostPerItem, ulong? Id = null, bool IsListed = false, ulong? ListerId = null)
         {
             this.Items = Items;
-            this.Id = Id ?? IdGenerator.CreateNewId(); 
+            this.Id = Id ?? IdGenerator.CreateNewId();
             this.ListerId = ListerId ?? Lister?.Id;
             this.costPerItem = this.Lister != null || this.ListerId != null ? CostPerItem : Items.First().MarketCost;
             this.IsListed = IsListed;
             // implies an actual user is attempting to sell the item when they can't
-            if ((this.ListerId == null && Items.Any(I => !I.KaiaDisplaysThisOnTheStore)) || (this.ListerId != null && Items.Any(I => !I.UsersCanSellThis)))
+            if (this.ListerId == null && Items.Any(I => !I.KaiaDisplaysThisOnTheStore) || this.ListerId != null && Items.Any(I => !I.UsersCanSellThis))
             {
                 throw new KaiaSaleListingInvalidException(Lister);
             }
@@ -49,7 +52,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
 
         public async Task StartSellingAsync()
         {
-            if(!(await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(SaleListing => SaleListing.ListerId == this.ListerId))
+            if (!(await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(SaleListing => SaleListing.ListerId == this.ListerId))
             {
                 this.IsListed = true;
                 KaiaUser? Lister = this.Lister;
@@ -78,9 +81,9 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
 
         public async Task UserBoughtAsync(KaiaUser UserBuying)
         {
-            if(this.Items.Count > 0)
+            if (this.Items.Count > 0)
             {
-                if(UserBuying.Settings.Inventory.Petals >= this.CostPerItem)
+                if (UserBuying.Settings.Inventory.Petals >= this.CostPerItem)
                 {
                     KaiaUser? Lister = this.Lister;
                     KaiaInventoryItem Item = this.Items.First();
@@ -105,7 +108,7 @@ namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
                     }
                 }
             }
-            if(this.Items.Count <= 0)
+            if (this.Items.Count <= 0)
             {
                 await DataStores.SaleListingsStore.DeleteAsync(this.Id);
             }

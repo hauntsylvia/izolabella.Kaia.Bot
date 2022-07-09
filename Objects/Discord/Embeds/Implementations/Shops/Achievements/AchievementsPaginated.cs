@@ -1,8 +1,12 @@
-﻿using Kaia.Bot.Objects.Constants.Enums;
-using Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
-using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Constants.Enums;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.KaiaAchievementRoom;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
     public class AchievementsPaginated : KaiaPathEmbedPaginated
     {

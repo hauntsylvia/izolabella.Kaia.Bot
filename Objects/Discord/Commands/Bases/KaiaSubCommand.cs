@@ -1,6 +1,6 @@
 ﻿using izolabella.Discord.Objects.Structures.Discord.Commands;
 
-namespace Kaia.Bot.Objects.Discord.Commands.Bases
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Bases
 {
     public abstract class KaiaSubCommand : IzolabellaSubCommand, IKaiaCommand
     {

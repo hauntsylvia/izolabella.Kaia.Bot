@@ -1,6 +1,9 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
     public class AchievementPaginatedPage : KaiaPathEmbedRefreshable
     {
@@ -19,7 +22,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 
         protected override Task ClientRefreshAsync()
         {
-            foreach(KaiaAchievement Ach in this.Chunk)
+            foreach (KaiaAchievement Ach in this.Chunk)
             {
                 this.WithField($"{Ach.DisplayEmote} {Ach.Title} : `earned: {(Ach.UserAlreadyOwns(this.User).Result ? Emotes.Counting.Check : Emotes.Counting.Invalid)}`", $"{Ach.GetDescriptionAsync(this.User).Result}");
             }

@@ -1,7 +1,12 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
-using Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {
     public class LocationRawView : KaiaPathEmbedRefreshable
     {
@@ -30,7 +35,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
                     this.WithImage(this.KaiaLocation.CoverUrl);
                 }
                 this.WithField("description", $"```{this.KaiaLocation.Description}```");
-                if (this.UserLocation.MustWaitUntil != null && this.UserLocation.Status == KaiaStructures.Exploration.Locations.Enums.KaiaLocationExplorationStatus.Timeout)
+                if (this.UserLocation.MustWaitUntil != null && this.UserLocation.Status == KaiaLocationExplorationStatus.Timeout)
                 {
                     double Hours = Math.Round((this.UserLocation.MustWaitUntil - DateTime.UtcNow).Value.TotalHours, 2);
                     this.WithField("timeout!", $"please wait for `{Hours}` {(Hours != 1 ? "hours" : "hour")} before exploring this place again!");
@@ -48,7 +53,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
                         {
                             SubDisplay += $"→ {Item.DisplayEmote} {Item.DisplayName} [{Math.Round(Chance, 2)}%]\n";
                         }
-                        if(SubDisplay.Length > 0)
+                        if (SubDisplay.Length > 0)
                         {
                             Display.Add(SubDisplay);
                         }

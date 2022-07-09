@@ -1,4 +1,7 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Inventory.Exceptions
+﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Util;
+
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Exceptions
 {
     public class KaiaSaleListingInvalidException : KaiaException
     {

@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using System.Text.RegularExpressions;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {
     public class CommandConstrainedByPermissions : KaiaPathEmbedRefreshable
     {

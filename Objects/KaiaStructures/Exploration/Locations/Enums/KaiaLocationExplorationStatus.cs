@@ -1,4 +1,4 @@
-﻿namespace Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums
+﻿namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums
 {
     public enum KaiaLocationExplorationStatus
     {

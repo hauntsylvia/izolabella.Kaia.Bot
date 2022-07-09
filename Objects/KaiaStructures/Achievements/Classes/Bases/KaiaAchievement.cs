@@ -1,7 +1,9 @@
-﻿using izolabella.Storage.Objects.Structures;
-using Kaia.Bot.Objects.Constants.Enums;
+﻿using izolabella.Kaia.Bot.Objects.Constants.Enums;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
+using izolabella.Kaia.Bot.Objects.Util;
+using izolabella.Storage.Objects.Structures;
 
-namespace Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 {
     public abstract class KaiaAchievement : IDataStoreEntity
     {

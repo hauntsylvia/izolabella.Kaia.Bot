@@ -1,6 +1,10 @@
-﻿using Kaia.Bot.Objects.KaiaStructures.Relationships;
+﻿using izolabella.Kaia.Bot.Objects.Constants;
+using izolabella.Kaia.Bot.Objects.Discord.Components;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
+using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
     public class CreateNewRelationshipView : KaiaItemContentView
     {
@@ -45,7 +49,7 @@ namespace Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationshi
                 Arg.Author.Id == this.Context.UserContext.User.Id &&
                 (ulong.TryParse(Arg.Content, out ulong IdToInv) || Arg.MentionedUsers.Any()))
             {
-                if ((IdToInv != default && Arg.Author.Id != IdToInv) || Arg.MentionedUsers.All(M => M.Id != Arg.Author.Id))
+                if (IdToInv != default && Arg.Author.Id != IdToInv || Arg.MentionedUsers.All(M => M.Id != Arg.Author.Id))
                 {
                     if (Arg.MentionedUsers.Count > 0)
                     {

@@ -25,7 +25,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
             this.costPerItem = this.Lister != null || this.ListerId != null ? CostPerItem : Items.First().MarketCost;
             this.IsListed = IsListed;
             // implies an actual user is attempting to sell the item when they can't
-            if (this.ListerId == null && Items.Any(I => !I.KaiaDisplaysThisOnTheStore) || this.ListerId != null && Items.Any(I => !I.UsersCanSellThis))
+            if ((this.ListerId == null && Items.Any(I => !I.KaiaDisplaysThisOnTheStore)) || (this.ListerId != null && Items.Any(I => !I.UsersCanSellThis)))
             {
                 throw new KaiaSaleListingInvalidException(Lister);
             }

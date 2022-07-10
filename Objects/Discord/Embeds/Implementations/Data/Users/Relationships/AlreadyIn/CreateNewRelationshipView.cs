@@ -49,7 +49,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
                 Arg.Author.Id == this.Context.UserContext.User.Id &&
                 (ulong.TryParse(Arg.Content, out ulong IdToInv) || Arg.MentionedUsers.Any()))
             {
-                if (IdToInv != default && Arg.Author.Id != IdToInv || Arg.MentionedUsers.All(M => M.Id != Arg.Author.Id))
+                if ((IdToInv != default && Arg.Author.Id != IdToInv) || Arg.MentionedUsers.All(M => M.Id != Arg.Author.Id))
                 {
                     if (Arg.MentionedUsers.Count > 0)
                     {

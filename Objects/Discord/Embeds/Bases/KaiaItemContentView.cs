@@ -65,7 +65,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
         public Task<ComponentBuilder> GetDefaultComponents()
         {
             return Task.FromResult(new ComponentBuilder().WithButton("Back", this.BackId, ButtonStyle.Secondary, this.GoBackEmote,
-                disabled: !this.CanGoBack || this.CanGoBack && this.PreviousPageElse == null && this.PreviousPageIf == null));
+                disabled: !this.CanGoBack || (this.CanGoBack && this.PreviousPageElse == null && this.PreviousPageIf == null)));
         }
 
         public abstract Task StartAsync(KaiaUser U);

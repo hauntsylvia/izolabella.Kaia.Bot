@@ -39,7 +39,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Items
                                                 .Where(Item => Item.UsersCanSellThis)
                                                 .Select<KaiaInventoryItem, IzolabellaCommandParameterChoices>(Item => new($"[{Item.DisplayEmote}] {Item.DisplayName}", Item.DisplayName)).ToList()
             };
-            this.Parameters.Add(Items);
+            Parameters.Add(Items);
             return Task.CompletedTask;
         }
 

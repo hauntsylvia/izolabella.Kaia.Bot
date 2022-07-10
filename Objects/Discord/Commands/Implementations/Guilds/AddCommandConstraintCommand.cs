@@ -88,7 +88,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
                     Guild.Settings.OverrideCommandPermissionsConstraint = PermissionsDict;
                     Guild.Settings.OverrideCommandRolesConstraint = RolesDict;
                     Guild.Settings = Guild.Settings;
-                    await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, this.AllCommands?.FirstOrDefault(C => C is KaiaCommand CCB && CCB.ForeverId == CommandId)?.Name ?? CommandId, Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CommandId), Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CommandId)).Build());
+                    await Context.UserContext.RespondAsync(text: Strings.EmbedStrings.Empty, embed: new CommandConstraintAdded(SUser.Guild, AllCommands?.FirstOrDefault(C => C is KaiaCommand CCB && CCB.ForeverId == CommandId)?.Name ?? CommandId, Guild.Settings.OverrideCommandRolesConstraint.GetValueOrDefault(CommandId), Guild.Settings.OverrideCommandPermissionsConstraint.GetValueOrDefault(CommandId)).Build());
                 }
             }
         }
@@ -100,13 +100,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Guilds
             {
                 if (Command is KaiaCommand CCBLevelCommand)
                 {
-                    if (CCBLevelCommand.ForeverId != this.ForeverId)
+                    if (CCBLevelCommand.ForeverId != ForeverId)
                     {
                         Choices.Add(new(CCBLevelCommand.Name, CCBLevelCommand.ForeverId));
                     }
                 }
             }
-            this.Parameters.Add(new("Command", "The command to constrain.", ApplicationCommandOptionType.String, true)
+            Parameters.Add(new("Command", "The command to constrain.", ApplicationCommandOptionType.String, true)
             {
                 Choices = Choices
             });

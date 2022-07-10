@@ -12,7 +12,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properti
             this.U = U;
             if (U != default)
             {
-                this.SpellsStore = DataStores.GetUserSpellsStore(this.U);
+                SpellsStore = DataStores.GetUserSpellsStore(this.U);
             }
         }
 
@@ -22,24 +22,24 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Properti
 
         public async Task ApplySpellAndSaveAsync(KaiaUser UserToApplyTo, Spell SpellToApply)
         {
-            if (this.SpellsStore != null)
+            if (SpellsStore != null)
             {
                 await SpellToApply.ApplyAsync(this, UserToApplyTo);
                 if (!SpellToApply.SingleUse)
                 {
-                    await this.SpellsStore.SaveAsync(SpellToApply.Id);
+                    await SpellsStore.SaveAsync(SpellToApply.Id);
                 }
             }
         }
 
         public async Task<IEnumerable<Spell>> GetActiveSpellsAsync()
         {
-            List<SpellId> UserSpells = await (this.SpellsStore != null ? this.SpellsStore.ReadAllAsync<SpellId>() : Task.FromResult<List<SpellId>>(new()));
-            if (this.SpellsStore != null)
+            List<SpellId> UserSpells = await (SpellsStore != null ? SpellsStore.ReadAllAsync<SpellId>() : Task.FromResult<List<SpellId>>(new()));
+            if (SpellsStore != null)
             {
                 foreach (SpellId Inactive in UserSpells.Where(A => DateTime.UtcNow > A.ActiveUntil))
                 {
-                    await this.SpellsStore.DeleteAsync(Inactive.Id);
+                    await SpellsStore.DeleteAsync(Inactive.Id);
                 }
             }
             return KaiaSpellsRoom.Spells.Where(KaiaSpell => UserSpells.Where(UserSpell => DateTime.UtcNow <= UserSpell.ActiveUntil).Any(UserSpell => UserSpell.Id == KaiaSpell.Id.Id));

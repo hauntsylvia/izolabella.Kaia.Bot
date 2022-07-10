@@ -9,7 +9,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         [JsonConstructor]
         public UserInventory(double? Petals, DateTime? LastBookUpdate, params KaiaInventoryItem[]? Items)
         {
-            this.items = Items?.ToList() ?? new();
+            items = Items?.ToList() ?? new();
             this.LastBookUpdate = LastBookUpdate ?? DateTime.UtcNow;
             this.Petals = Petals ?? 10.0;
         }
@@ -17,14 +17,14 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         [JsonProperty("Items", Required = Required.Default)]
         private readonly List<KaiaInventoryItem> items = new();
 
-        public IReadOnlyCollection<KaiaInventoryItem> Items => this.items;
+        public IReadOnlyCollection<KaiaInventoryItem> Items => items;
 
         [JsonProperty("LastBookUpdate", Required = Required.Default)]
         public DateTime LastBookUpdate { get; set; }
 
         private double petals;
         [JsonProperty("Currency", Required = Required.Default)]
-        public double Petals { get => this.petals < 0 ? 0 : Math.Round(this.petals, 2); set => this.petals = value < 0 ? 0 : value; }
+        public double Petals { get => petals < 0 ? 0 : Math.Round(petals, 2); set => petals = value < 0 ? 0 : value; }
 
         /// <summary>
         /// Removes an item from the user's inventory with the same id.
@@ -33,10 +33,10 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public Task<bool> RemoveItemOfIdAsync(KaiaInventoryItem Item)
         {
-            int I = this.items.FindIndex(A => A.Id == Item.Id);
+            int I = items.FindIndex(A => A.Id == Item.Id);
             if (I >= 0)
             {
-                this.items.RemoveAt(I);
+                items.RemoveAt(I);
                 return Task.FromResult(true);
             }
             else
@@ -52,10 +52,10 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public async Task RemoveItemOfNameAsync(KaiaUser Parent, KaiaInventoryItem Item)
         {
-            int I = this.items.FindIndex(A => A.DisplayName == Item.DisplayName);
+            int I = items.FindIndex(A => A.DisplayName == Item.DisplayName);
             if (I >= 0)
             {
-                this.items.RemoveAt(I);
+                items.RemoveAt(I);
             }
             await Parent.SaveAsync();
         }
@@ -66,7 +66,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public Task<KaiaInventoryItem?> GetItemOfDisplayName(KaiaInventoryItem? Item)
         {
-            return Task.FromResult(this.Items.FirstOrDefault(I => I.DisplayName == Item?.DisplayName));
+            return Task.FromResult(Items.FirstOrDefault(I => I.DisplayName == Item?.DisplayName));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public Task<IEnumerable<KaiaInventoryItem>> GetItemsOfDisplayNameFromItem(KaiaInventoryItem? Item)
         {
-            return Task.FromResult(this.Items.Where(I => I.DisplayName == Item?.DisplayName));
+            return Task.FromResult(Items.Where(I => I.DisplayName == Item?.DisplayName));
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public Task<IEnumerable<KaiaInventoryItem>> GetItemsOfDisplayName(string DisplayName)
         {
-            return Task.FromResult(this.Items.Where(I => I.DisplayName == DisplayName));
+            return Task.FromResult(Items.Where(I => I.DisplayName == DisplayName));
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public Task<KaiaInventoryItem?> GetItemOfId(ulong ItemId)
         {
-            return Task.FromResult(this.Items.FirstOrDefault(I => I.Id == ItemId));
+            return Task.FromResult(Items.FirstOrDefault(I => I.Id == ItemId));
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public Task<bool> ItemOfTypeExists<TItemType>() where TItemType : KaiaInventoryItem
         {
-            return Task.FromResult(this.Items.Any(I => I.GetType() == typeof(TItemType)));
+            return Task.FromResult(Items.Any(I => I.GetType() == typeof(TItemType)));
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
         /// <returns></returns>
         public Task<bool> ItemOfDisplayNameExists(KaiaInventoryItem? Item)
         {
-            return Task.FromResult(this.Items.Any(I => I.DisplayName == Item?.DisplayName));
+            return Task.FromResult(Items.Any(I => I.DisplayName == Item?.DisplayName));
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
                 await Item.OnKaiaStoreRefresh();
                 Item.ReceivedAt = DateTime.UtcNow;
             }
-            this.items.AddRange(Items);
+            items.AddRange(Items);
             await Parent.SaveAsync();
         }
     }

@@ -16,7 +16,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases
             this.CostPerPage = CostPerPage;
             this.CostPerPageExponent = CostPerPageExponent;
             this.AvailableUntil = AvailableUntil;
-            this.CurrentPageIndex = 0;
+            CurrentPageIndex = 0;
         }
 
         [JsonProperty("Title")]
@@ -37,12 +37,12 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases
         public int CurrentPageIndex { get; set; }
         [JsonProperty("AvailableUntil")]
         public DateTime AvailableUntil { get; }
-        public double CurrentEarning => Math.Round(Math.Pow(this.Starting * this.CurrentPageIndex, this.ExponentToIncreaseBy), 2);
-        public double NextPageEarning => Math.Round(Math.Pow(this.Starting * (this.CurrentPageIndex + 1), this.ExponentToIncreaseBy), 2);
-        public double NextPageTurnCost => Math.Round(Math.Pow(this.CostPerPage * (this.CurrentPageIndex + 1), this.CostPerPageExponent), 2);
+        public double CurrentEarning => Math.Round(Math.Pow(Starting * CurrentPageIndex, ExponentToIncreaseBy), 2);
+        public double NextPageEarning => Math.Round(Math.Pow(Starting * (CurrentPageIndex + 1), ExponentToIncreaseBy), 2);
+        public double NextPageTurnCost => Math.Round(Math.Pow(CostPerPage * (CurrentPageIndex + 1), CostPerPageExponent), 2);
         [JsonProperty("BookId")]
-        public string BookId => $"{this.Title}-{(this.AvailableUntil - new DateTime(1970, 1, 1)).TotalMilliseconds}";
+        public string BookId => $"{Title}-{(AvailableUntil - new DateTime(1970, 1, 1)).TotalMilliseconds}";
 
-        public bool IsFinished => this.CurrentPageIndex >= this.Pages;
+        public bool IsFinished => CurrentPageIndex >= Pages;
     }
 }

@@ -18,10 +18,10 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
 
         protected override async Task ClientRefreshAsync()
         {
-            IRole? GuildRole = await this.Role.GetRoleAsync(this.Guild);
-            this.WithField("role mention", GuildRole?.Mention ?? "unknown");
-            this.WithField("author id", this.Role.ListerId.ToString(CultureInfo.InvariantCulture));
-            this.WithField("enforced", this.Role.Enforce.ToString());
+            IRole? GuildRole = await Role.GetRoleAsync(Guild);
+            WithField("role mention", GuildRole?.Mention ?? "unknown");
+            WithField("author id", Role.ListerId.ToString(CultureInfo.InvariantCulture));
+            WithField("enforced", Role.Enforce.ToString());
         }
     }
 }

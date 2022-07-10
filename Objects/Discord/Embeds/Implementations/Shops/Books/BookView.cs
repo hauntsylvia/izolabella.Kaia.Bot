@@ -12,8 +12,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
     {
         public BookView(BooksPaginated? From, CommandContext Context, string BookId, IEmote ReadPageEmote, bool CanGoBack) : base(From, Context, CanGoBack)
         {
-            this.ReadNextPageButton = new(Context, "Read", ReadPageEmote);
-            this.ReadNextPageButton.OnButtonPush += this.ReadNextPageAsync;
+            ReadNextPageButton = new(Context, "Read", ReadPageEmote);
+            ReadNextPageButton.OnButtonPush += ReadNextPageAsync;
             this.BookId = BookId;
         }
 
@@ -23,10 +23,10 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         private async Task ReadNextPageAsync(SocketMessageComponent Component, KaiaUser U)
         {
-            KaiaBook? Book = await this.GetUserBookAsync(U);
+            KaiaBook? Book = await GetUserBookAsync(U);
             if (Book != null && U.Settings.Inventory.Petals >= Book.NextPageTurnCost)
             {
-                if (!await U.LibraryProcessor.UserHasBookOfIdAsync(this.BookId) && KaiaLibrary.GetActiveBookById(this.BookId) is KaiaBook KBook)
+                if (!await U.LibraryProcessor.UserHasBookOfIdAsync(BookId) && KaiaLibrary.GetActiveBookById(BookId) is KaiaBook KBook)
                 {
                     await U.LibraryProcessor.AddBookAsync(KBook);
                 }
@@ -34,8 +34,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
                 await U.LibraryProcessor.IncrementBookAsync(Book.BookId);
                 await U.SaveAsync();
             }
-            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
-            ComponentBuilder Com = await this.GetComponentsAsync(U);
+            KaiaPathEmbedRefreshable E = await GetEmbedAsync(U);
+            ComponentBuilder Com = await GetComponentsAsync(U);
             await Component.UpdateAsync(C =>
             {
                 C.Embed = E.Build();
@@ -45,19 +45,19 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         private async Task<KaiaBook?> GetUserBookAsync(KaiaUser U)
         {
-            return (await U.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == this.BookId) ?? KaiaLibrary.GetActiveBookById(this.BookId) ?? null;
+            return (await U.LibraryProcessor.GetUserBooksAsync()).FirstOrDefault(B => B.BookId == BookId) ?? KaiaLibrary.GetActiveBookById(BookId) ?? null;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
-            KaiaBook? Book = await this.GetUserBookAsync(U);
-            ComponentBuilder CB = (await this.GetDefaultComponents()).WithButton(this.ReadNextPageButton.WithDisabled(Book != null && Book.CurrentPageIndex >= Book.Pages));
+            KaiaBook? Book = await GetUserBookAsync(U);
+            ComponentBuilder CB = (await GetDefaultComponents()).WithButton(ReadNextPageButton.WithDisabled(Book != null && Book.CurrentPageIndex >= Book.Pages));
             return CB;
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            KaiaBook? Book = await this.GetUserBookAsync(U);
+            KaiaBook? Book = await GetUserBookAsync(U);
             KaiaPathEmbedRefreshable Embed = Book != null ? new BookRawView(Book, U) : new SingleItemNotFound();
             await Embed.RefreshAsync();
             return Embed;
@@ -65,13 +65,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         public override async Task StartAsync(KaiaUser U)
         {
-            if (!this.Context.UserContext.HasResponded)
+            if (!Context.UserContext.HasResponded)
             {
-                await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
+                await Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
-            ComponentBuilder Com = await this.GetComponentsAsync(U);
-            _ = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+            KaiaPathEmbedRefreshable E = await GetEmbedAsync(U);
+            ComponentBuilder Com = await GetComponentsAsync(U);
+            _ = await Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
                 M.Content = Strings.EmbedStrings.Empty;
                 M.Components = Com.Build();
@@ -82,7 +82,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.ReadNextPageButton.OnButtonPush -= this.ReadNextPageAsync;
+            ReadNextPageButton.OnButtonPush -= ReadNextPageAsync;
         }
     }
 }

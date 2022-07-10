@@ -4,7 +4,7 @@
     {
         public KaiaParams(DiscordSocketConfig Config, bool AllowBotsOnMessageReceivers, bool GlobalCommands, string Token)
         {
-            this.CommandHandler = new(Config, GlobalCommands);
+            CommandHandler = new(Config, GlobalCommands);
             this.AllowBotsOnMessageReceivers = AllowBotsOnMessageReceivers;
             this.Token = Token;
         }
@@ -17,12 +17,12 @@
 
         public async Task StartAsync()
         {
-            await this.CommandHandler.StartAsync(this.Token, false);
+            await CommandHandler.StartAsync(Token, false);
         }
 
         public async Task StopAsync()
         {
-            await this.CommandHandler.StopAndLogoutAsync();
+            await CommandHandler.StopAndLogoutAsync();
         }
     }
 }

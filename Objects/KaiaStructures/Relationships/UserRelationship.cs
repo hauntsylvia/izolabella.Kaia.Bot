@@ -10,10 +10,10 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
         public UserRelationship(DateTime CreatedAt, string Description, KaiaEmote Emote, Dictionary<ulong, DateTime> PendingIds, Dictionary<ulong, DateTime> KaiaUserIds, ulong? Id = null)
         {
             this.CreatedAt = CreatedAt;
-            this.description = Description.Length > 512 ? Description[..512] : Description;
+            description = Description.Length > 512 ? Description[..512] : Description;
             this.Emote = Emote;
-            this.kaiaUserIds = KaiaUserIds;
-            this.pendingIds = PendingIds;
+            kaiaUserIds = KaiaUserIds;
+            pendingIds = PendingIds;
             this.Id = Id ?? IdGenerator.CreateNewId();
         }
 
@@ -23,7 +23,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
         private readonly string description;
 
         [JsonIgnore]
-        public string Description => this.description.Length > 32 ? this.description[..32] : this.description.Length == 0 ? Strings.EmbedStrings.Empty : this.description;
+        public string Description => description.Length > 32 ? description[..32] : description.Length == 0 ? Strings.EmbedStrings.Empty : description;
 
         public KaiaEmote Emote { get; }
 
@@ -33,51 +33,51 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
         private readonly Dictionary<ulong, DateTime> kaiaUserIds;
 
         [JsonIgnore]
-        public IEnumerable<ulong> KaiaUserIds => this.kaiaUserIds.Keys.Distinct().ToArray();
+        public IEnumerable<ulong> KaiaUserIds => kaiaUserIds.Keys.Distinct().ToArray();
 
         [JsonProperty("PendingUserIds")]
         private readonly Dictionary<ulong, DateTime> pendingIds;
 
         [JsonIgnore]
-        public IEnumerable<ulong> PendingIds => this.pendingIds.Where(A => DateTime.UtcNow.Subtract(A.Value).TotalDays < 1).Select(KV => KV.Key).Distinct();
+        public IEnumerable<ulong> PendingIds => pendingIds.Where(A => DateTime.UtcNow.Subtract(A.Value).TotalDays < 1).Select(KV => KV.Key).Distinct();
 
         [JsonIgnore]
-        public int NumberOfMembers => this.KaiaUserIds.Count();
+        public int NumberOfMembers => KaiaUserIds.Count();
 
         [JsonIgnore]
-        public bool AtMax => this.KaiaUserIds.Count() >= 50;
+        public bool AtMax => KaiaUserIds.Count() >= 50;
 
         public bool AddPendingMember(ulong Member)
         {
-            if (this.AtMax)
+            if (AtMax)
             {
                 return false;
             }
-            this.pendingIds.TryAdd(Member, DateTime.UtcNow);
+            pendingIds.TryAdd(Member, DateTime.UtcNow);
             return true;
         }
 
         public bool AddMember(ulong Member)
         {
-            if (this.AtMax)
+            if (AtMax)
             {
                 return false;
             }
-            this.UserDeclines(Member);
-            if (!this.kaiaUserIds.ContainsKey(Member))
+            UserDeclines(Member);
+            if (!kaiaUserIds.ContainsKey(Member))
             {
-                this.kaiaUserIds.Add(Member, DateTime.UtcNow);
+                kaiaUserIds.Add(Member, DateTime.UtcNow);
             }
             return true;
         }
 
         public void RemoveMember(ulong Member)
         {
-            this.UserDeclines(Member);
-            if (this.kaiaUserIds.ContainsKey(Member))
+            UserDeclines(Member);
+            if (kaiaUserIds.ContainsKey(Member))
             {
-                this.kaiaUserIds.Remove(Member);
-                this.RemoveMember(Member);
+                kaiaUserIds.Remove(Member);
+                RemoveMember(Member);
             }
             else
             {
@@ -87,10 +87,10 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
 
         public void UserDeclines(ulong UserThatDeclined)
         {
-            if (this.pendingIds.ContainsKey(UserThatDeclined))
+            if (pendingIds.ContainsKey(UserThatDeclined))
             {
-                this.pendingIds.Remove(UserThatDeclined);
-                this.UserDeclines(UserThatDeclined);
+                pendingIds.Remove(UserThatDeclined);
+                UserDeclines(UserThatDeclined);
             }
             else
             {

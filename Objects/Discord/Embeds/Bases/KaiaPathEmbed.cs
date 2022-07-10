@@ -11,7 +11,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
             this.Sub2 = Sub2;
             this.Override = Override;
             this.OverrideDate = OverrideDate;
-            this.Populate();
+            Populate();
         }
 
         private EmbedBuilder Inner { get; set; } = new();
@@ -30,7 +30,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public KaiaPathEmbed WithField(string Name, string Value, bool OverrideCaps = false)
         {
-            this.Inner.AddField(Strings.EmbedStrings.Empty, $"{(Name == Strings.EmbedStrings.Empty || Name == string.Empty ? string.Empty : $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n")}{(OverrideCaps ? Value : Value.ToLower(CultureInfo.InvariantCulture))}");
+            Inner.AddField(Strings.EmbedStrings.Empty, $"{(Name == Strings.EmbedStrings.Empty || Name == string.Empty ? string.Empty : $"// *{Name.ToLower(CultureInfo.InvariantCulture)}*\n")}{(OverrideCaps ? Value : Value.ToLower(CultureInfo.InvariantCulture))}");
             return this;
         }
 
@@ -41,13 +41,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
             {
                 S += $"{(Index != 0 ? DelimBy : string.Empty)}{Values.ElementAt(Index)}";
             }
-            this.WithField(Name, S);
+            WithField(Name, S);
             return this;
         }
 
         public KaiaPathEmbed WithImage(Uri Url)
         {
-            this.Inner.WithImageUrl(Url.ToString());
+            Inner.WithImageUrl(Url.ToString());
             return this;
         }
 
@@ -55,32 +55,32 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases
 
         public KaiaPathEmbed MakeNaked()
         {
-            this.Inner = new();
+            Inner = new();
             return this;
         }
 
         private KaiaPathEmbed Populate()
         {
             string Parent = this.Parent.ToLower(CultureInfo.InvariantCulture);
-            this.Inner.Description =
+            Inner.Description =
                 $"" +
-                $"{(this.Sub1 != null ? $"*{Parent}*" : $"***{Parent}***")}{(this.Sub1 == null ? "" : " // ")}" +
-                $"{(this.Sub1 != null ? $"{(this.Sub2 == null ? $"***{this.Sub1.ToLower(CultureInfo.InvariantCulture)}***" : $"*{this.Sub1.ToLower(CultureInfo.InvariantCulture)}*")}" : "")}" +
-                $"{(this.Sub2 != null ? $" // ***{this.Sub2.ToLower(CultureInfo.InvariantCulture)}***" : "")}";
-            this.Inner.Color = this.Override ?? Colors.EmbedColor;
-            this.Inner.Footer = new()
+                $"{(Sub1 != null ? $"*{Parent}*" : $"***{Parent}***")}{(Sub1 == null ? "" : " // ")}" +
+                $"{(Sub1 != null ? $"{(Sub2 == null ? $"***{Sub1.ToLower(CultureInfo.InvariantCulture)}***" : $"*{Sub1.ToLower(CultureInfo.InvariantCulture)}*")}" : "")}" +
+                $"{(Sub2 != null ? $" // ***{Sub2.ToLower(CultureInfo.InvariantCulture)}***" : "")}";
+            Inner.Color = Override ?? Colors.EmbedColor;
+            Inner.Footer = new()
             {
                 Text = Strings.EmbedStrings.FooterString,
             };
-            this.Inner.Timestamp = this.OverrideDate ?? Strings.EmbedStrings.DefaultTimestamp;
+            Inner.Timestamp = OverrideDate ?? Strings.EmbedStrings.DefaultTimestamp;
             return this;
         }
 
         public Embed Build()
         {
-            Embed Pre = this.Inner.Build();
-            this.MakeNaked();
-            this.Populate();
+            Embed Pre = Inner.Build();
+            MakeNaked();
+            Populate();
             return Pre;
         }
     }

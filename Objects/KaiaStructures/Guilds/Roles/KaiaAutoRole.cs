@@ -35,7 +35,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles
 
         public Task<IRole?> GetRoleAsync(SocketGuild Guild)
         {
-            return Task.FromResult<IRole?>(Guild.GetRole(this.RoleId));
+            return Task.FromResult<IRole?>(Guild.GetRole(RoleId));
         }
     }
 }

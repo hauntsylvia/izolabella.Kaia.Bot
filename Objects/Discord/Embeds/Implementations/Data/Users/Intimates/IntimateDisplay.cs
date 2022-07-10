@@ -16,10 +16,10 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
         public IntimateDisplay(GenericEndpointType TypeOfInteraction, KaiaUser UserActing, KaiaUser TargetUser) : base(TypeOfInteraction.Singular)
         {
             GenericResponse? Response = new KawaiiRedClient().GetGifAsync(TypeOfInteraction).Result;
-            this.WithField(Strings.EmbedStrings.Empty, $"**<@{UserActing.Id}>** {TypeOfInteraction.Verb} **<@{TargetUser.Id}>**");
+            WithField(Strings.EmbedStrings.Empty, $"**<@{UserActing.Id}>** {TypeOfInteraction.Verb} **<@{TargetUser.Id}>**");
             if (Response != null)
             {
-                this.WithImage(Response.ResponseUrl);
+                WithImage(Response.ResponseUrl);
             }
         }
     }

@@ -13,12 +13,12 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementat
                              UsersCanSellThis: true,
                              DisplayEmoteName: Emotes.Items.Notebook)
         {
-            this.OnInteract = new(Strings.ItemStrings.Notebook.GetMessage(), new(new Random().Next(1, 10)));
+            OnInteract = new(Strings.ItemStrings.Notebook.GetMessage(), new(new Random().Next(1, 10)));
         }
 
         public override Task OnKaiaStoreRefresh()
         {
-            this.OnInteract = new(Strings.ItemStrings.Notebook.GetMessage(), new(new Random().Next(1, 10)));
+            OnInteract = new(Strings.ItemStrings.Notebook.GetMessage(), new(new Random().Next(1, 10)));
             return Task.CompletedTask;
         }
     }

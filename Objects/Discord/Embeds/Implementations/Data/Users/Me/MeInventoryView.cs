@@ -17,7 +17,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
         {
             this.User = User;
             this.InventoryChunkSize = InventoryChunkSize;
-            this.ItemSelected += this.ItemSelectedAsync;
+            ItemSelected += ItemSelectedAsync;
         }
 
         public static IEnumerable<KeyValuePair<KaiaInventoryItem, int>> GetItemsAndCounts(KaiaUser User)
@@ -45,32 +45,32 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
         private async void ItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
-            KaiaInventoryItem? Listing = (await this.User.Settings.Inventory.GetItemsOfDisplayName(ItemsSelected.FirstOrDefault() ?? "")).FirstOrDefault();
+            KaiaInventoryItem? Listing = (await User.Settings.Inventory.GetItemsOfDisplayName(ItemsSelected.FirstOrDefault() ?? "")).FirstOrDefault();
             if (Listing != null)
             {
-                InventoryItemView V = new(this, Listing, this.Context, this.User);
+                InventoryItemView V = new(this, Listing, Context, User);
                 await V.StartAsync(new(Component.User.Id));
-                this.Dispose();
+                Dispose();
             }
         }
 
         protected override Task ClientRefreshAsync()
         {
-            this.User = new(this.Context.UserContext.User.Id);
+            User = new(Context.UserContext.User.Id);
 
-            MeView LandingPage = new(this.Context.UserContext.User.Username, this.User);
-            LandingPage.WithField($"{Emotes.Counting.Inventory} inventory", $"`{this.User.Settings.Inventory.Items.Count}` {(this.User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
-            this.EmbedsAndOptions.Add(LandingPage, null);
+            MeView LandingPage = new(Context.UserContext.User.Username, User);
+            LandingPage.WithField($"{Emotes.Counting.Inventory} inventory", $"`{User.Settings.Inventory.Items.Count}` {(User.Settings.Inventory.Items.Count == 1 ? "item" : "items")}");
+            EmbedsAndOptions.Add(LandingPage, null);
 
-            foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in GetItemsAndCounts(this.User).Chunk(this.InventoryChunkSize))
+            foreach (IEnumerable<KeyValuePair<KaiaInventoryItem, int>> ItemCountChunk in GetItemsAndCounts(User).Chunk(InventoryChunkSize))
             {
-                ItemsPaginatedPage Embed = new(this.Context, ItemCountChunk);
+                ItemsPaginatedPage Embed = new(Context, ItemCountChunk);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KeyValuePair<KaiaInventoryItem, int> ItemChunk in ItemCountChunk)
                 {
                     B.Add(new($"[{Strings.Economy.CurrencyEmote} {ItemChunk.Key.MarketCost}] {ItemChunk.Key.DisplayName}", ItemChunk.Key.DisplayName, ItemChunk.Key.Description, ItemChunk.Key.DisplayEmote));
                 }
-                this.EmbedsAndOptions.Add(Embed, B);
+                EmbedsAndOptions.Add(Embed, B);
             }
             return Task.CompletedTask;
         }

@@ -8,8 +8,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
     {
         public GuildSettingsView(string GuildName, KaiaGuild Guild) : base(GuildName, Strings.EmbedStrings.FakePaths.Settings)
         {
-            this.WithField("counting channel", $"<#{Guild.Settings.CountingChannelId}>");
-            this.WithField("highest number counted", $"`{Guild.Settings.HighestCountEver ?? 0}`");
+            WithField("counting channel", $"<#{Guild.Settings.CountingChannelId}>");
+            WithField("highest number counted", $"`{Guild.Settings.HighestCountEver ?? 0}`");
         }
     }
 }

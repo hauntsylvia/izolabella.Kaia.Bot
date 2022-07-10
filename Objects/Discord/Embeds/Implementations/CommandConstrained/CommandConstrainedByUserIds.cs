@@ -17,7 +17,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
 
         protected override Task ClientRefreshAsync()
         {
-            this.WithField(Strings.EmbedStrings.Empty, $"// *access*\nYou do not have access to this command.");
+            WithField(Strings.EmbedStrings.Empty, $"// *access*\nYou do not have access to this command.");
             return Task.CompletedTask;
         }
     }

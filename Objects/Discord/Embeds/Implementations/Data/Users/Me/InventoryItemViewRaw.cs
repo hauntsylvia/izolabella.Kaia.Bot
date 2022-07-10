@@ -15,12 +15,12 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         protected override Task ClientRefreshAsync()
         {
-            this.WithField(this.Item.DisplayString, this.Item.Description);
-            if (this.Item.ReceivedAt.HasValue)
+            WithField(Item.DisplayString, Item.Description);
+            if (Item.ReceivedAt.HasValue)
             {
-                this.WithField("received at", $"`{this.Item.ReceivedAt.Value.ToShortDateString()}`");
+                WithField("received at", $"`{Item.ReceivedAt.Value.ToShortDateString()}`");
             }
-            this.WithField("unique identifier", $"`{this.Item.Id.ToString(CultureInfo.InvariantCulture)}`");
+            WithField("unique identifier", $"`{Item.Id.ToString(CultureInfo.InvariantCulture)}`");
             return Task.CompletedTask;
         }
     }

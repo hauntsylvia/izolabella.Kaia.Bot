@@ -14,12 +14,12 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementat
                              UsersCanSellThis: true,
                              DisplayEmoteName: Emotes.Items.DeadFinger)
         {
-            this.OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new(0, KaiaSpellsRoom.Spells[new Random().Next(0, KaiaSpellsRoom.Spells.Count)]));
+            OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new(0, KaiaSpellsRoom.Spells[new Random().Next(0, KaiaSpellsRoom.Spells.Count)]));
         }
 
         public override Task OnKaiaStoreRefresh()
         {
-            this.OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new(0, KaiaSpellsRoom.Spells[new Random().Next(0, KaiaSpellsRoom.Spells.Count)]));
+            OnInteract = new(Strings.ItemStrings.DeadFinger.Message, new(0, KaiaSpellsRoom.Spells[new Random().Next(0, KaiaSpellsRoom.Spells.Count)]));
             return Task.CompletedTask;
         }
     }

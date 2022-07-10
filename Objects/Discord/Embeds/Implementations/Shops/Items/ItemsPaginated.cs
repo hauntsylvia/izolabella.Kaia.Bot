@@ -17,7 +17,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             this.FilterBy = FilterBy;
             this.IncludeUserListings = IncludeUserListings;
             this.ChunkSize = ChunkSize;
-            this.ItemSelected += this.StoreItemSelectedAsync;
+            ItemSelected += StoreItemSelectedAsync;
         }
 
         public List<SaleListing> Listings { get; private set; } = new();
@@ -30,52 +30,52 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         protected override async Task ClientRefreshAsync()
         {
-            this.Listings = new();
+            Listings = new();
             List<KaiaInventoryItem> AllItems = BaseImplementationUtil.GetItems<KaiaInventoryItem>()
                                                                   .Where(Item => Item.KaiaDisplaysThisOnTheStore)
                                                                   .ToList();
 
-            if (this.FilterBy == null || this.FilterBy.Id == this.Context.Reference.CurrentUser.Id)
+            if (FilterBy == null || FilterBy.Id == Context.Reference.CurrentUser.Id)
             {
                 foreach (KaiaInventoryItem Item in AllItems)
                 {
                     SaleListing L = new(new() { Item }, null, Item.MarketCost);
                     await L.StartSellingAsync();
-                    this.Listings.Add(L);
+                    Listings.Add(L);
                 }
             }
 
-            if (this.IncludeUserListings)
+            if (IncludeUserListings)
             {
                 List<SaleListing> CurrentUserListings = await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>();
-                this.Listings.AddRange(CurrentUserListings.Where(L => this.FilterBy == null || L.ListerId == this.FilterBy.Id));
+                Listings.AddRange(CurrentUserListings.Where(L => FilterBy == null || L.ListerId == FilterBy.Id));
             }
 
-            IEnumerable<SaleListing[]> ListingsChunked = this.Listings.Where(A => A.IsListed).OrderBy(K => K.CostPerItem).OrderBy(K => K.Items.First().DisplayName).OrderBy(K => K.ListerId).Chunk(this.ChunkSize);
+            IEnumerable<SaleListing[]> ListingsChunked = Listings.Where(A => A.IsListed).OrderBy(K => K.CostPerItem).OrderBy(K => K.Items.First().DisplayName).OrderBy(K => K.ListerId).Chunk(ChunkSize);
 
             foreach (SaleListing[] ListingsChunk in ListingsChunked)
             {
-                ItemsPaginatedPage Embed = new(this.Context, ListingsChunk);
+                ItemsPaginatedPage Embed = new(Context, ListingsChunk);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (SaleListing Listing in ListingsChunk)
                 {
                     KaiaInventoryItem Item = Listing.Items.First();
-                    string Description = $"[Sold By {(Listing.Lister != null ? this.Context.Reference.GetUser(Listing.Lister.Id)?.Username : "Kaia")}] {Item.Description}";
+                    string Description = $"[Sold By {(Listing.Lister != null ? Context.Reference.GetUser(Listing.Lister.Id)?.Username : "Kaia")}] {Item.Description}";
                     B.Add(new($"{Item.DisplayName}", Listing.Id.ToString(CultureInfo.InvariantCulture), Description.Length > 100 ? Description[..97] + "..." : Description, Item.DisplayEmote, false));
                 }
-                this.EmbedsAndOptions.Add(Embed, B);
+                EmbedsAndOptions.Add(Embed, B);
             }
         }
 
         private async void StoreItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
-            SaleListing? Listing = this.Listings.FirstOrDefault(Listing => Listing.Id.ToString(CultureInfo.InvariantCulture) == (ItemsSelected.FirstOrDefault() ?? ""));
+            SaleListing? Listing = Listings.FirstOrDefault(Listing => Listing.Id.ToString(CultureInfo.InvariantCulture) == (ItemsSelected.FirstOrDefault() ?? ""));
             if (Listing != null)
             {
-                ItemView V = new(this, this.Context, Listing, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, Emotes.Counting.SellItem, true);
+                ItemView V = new(this, Context, Listing, Emotes.Counting.BuyItem, Emotes.Counting.InteractItem, Emotes.Counting.SellItem, true);
                 await V.StartAsync(new(Component.User.Id));
-                this.Dispose();
+                Dispose();
             }
         }
     }

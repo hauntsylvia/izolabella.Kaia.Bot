@@ -18,12 +18,12 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
 
         protected override async Task ClientRefreshAsync()
         {
-            foreach (KaiaReactionRole Role in this.Roles)
+            foreach (KaiaReactionRole Role in Roles)
             {
-                IRole? RelatingRole = this.Guild.GetRole(Role.RoleId);
+                IRole? RelatingRole = Guild.GetRole(Role.RoleId);
                 if (RelatingRole != null)
                 {
-                    IMessage? Message = await Role.GetMessageAsync(this.Guild);
+                    IMessage? Message = await Role.GetMessageAsync(Guild);
                     List<string> Display = new()
                     {
                         $"setup by <@{Role.ListerId}>",
@@ -33,7 +33,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
                     {
                         Display.Add(Message.GetJumpUrl());
                     }
-                    this.WithListWrittenToField($"{RelatingRole.Mention}", Display, "\n");
+                    WithListWrittenToField($"{RelatingRole.Mention}", Display, "\n");
                 }
             }
         }

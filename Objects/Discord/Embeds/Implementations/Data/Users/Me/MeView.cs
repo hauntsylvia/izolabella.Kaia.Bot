@@ -19,13 +19,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         protected override async Task ClientRefreshAsync()
         {
-            this.WithField("highest number counted", $"`{this.User.Settings.HighestCountEver ?? 0}`");
-            this.WithField("total numbers counted", $"`{this.User.Settings.NumbersCounted ?? 0}`");
-            this.WithField($"{Strings.Economy.CurrencyEmote} current {Strings.Economy.CurrencyName}", $"`{this.User.Settings.Inventory.Petals}`");
-            IEnumerable<UserRelationship> Relationships = await this.User.RelationshipsProcessor.GetRelationshipsAsync();
+            WithField("highest number counted", $"`{User.Settings.HighestCountEver ?? 0}`");
+            WithField("total numbers counted", $"`{User.Settings.NumbersCounted ?? 0}`");
+            WithField($"{Strings.Economy.CurrencyEmote} current {Strings.Economy.CurrencyName}", $"`{User.Settings.Inventory.Petals}`");
+            IEnumerable<UserRelationship> Relationships = await User.RelationshipsProcessor.GetRelationshipsAsync();
             if (Relationships.Any())
             {
-                this.WithField("relationships", $"in `{Relationships.Count()}` {(Relationships.Count() == 1 ? "relationship" : "relationships")}");
+                WithField("relationships", $"in `{Relationships.Count()}` {(Relationships.Count() == 1 ? "relationship" : "relationships")}");
             }
         }
     }

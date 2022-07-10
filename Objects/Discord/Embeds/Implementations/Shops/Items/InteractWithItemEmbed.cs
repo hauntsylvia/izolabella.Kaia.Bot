@@ -16,14 +16,14 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
             {
                 if (I.OnInteract.Message.Length > 0)
                 {
-                    this.WithField("?", $"```{I.OnInteract.Message}```");
+                    WithField("?", $"```{I.OnInteract.Message}```");
                 }
                 if (I.OnInteract.Reward != null)
                 {
                     if (I.OnInteract.Reward.Petals is > 0 or < 0)
                     {
                         U.Settings.Inventory.Petals += I.OnInteract.Reward.Petals;
-                        this.WithField($"{Strings.Economy.CurrencyName}", $"{Strings.Economy.CurrencyEmote} {(I.OnInteract.Reward.Petals > 0 ? "+" : "-")}`{Math.Abs(I.OnInteract.Reward.Petals)}`");
+                        WithField($"{Strings.Economy.CurrencyName}", $"{Strings.Economy.CurrencyEmote} {(I.OnInteract.Reward.Petals > 0 ? "+" : "-")}`{Math.Abs(I.OnInteract.Reward.Petals)}`");
                     }
                     if (I.OnInteract.Reward.Items.Length > 0)
                     {
@@ -33,7 +33,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                         {
                             Display.Add($"[worth {Strings.Economy.CurrencyEmote} `{Item.MarketCost}`] {Item.DisplayName} {Item.DisplayEmote}");
                         }
-                        this.WithListWrittenToField("items found", Display, ",\n");
+                        WithListWrittenToField("items found", Display, ",\n");
                     }
                     if (I.OnInteract.Reward.Spells.Any())
                     {
@@ -43,7 +43,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                             U.SpellsProcessor.ApplySpellAndSaveAsync(U, Spell).Wait();
                             Display.Add($"__{Spell.Name} {Spell.Emote}__ {(!Spell.SingleUse ? $"[until (utc) `{Spell.Id.ActiveUntil.ToUniversalTime().ToShortDateString()}` @ `{Spell.Id.ActiveUntil.ToUniversalTime().ToShortTimeString()}`]" : "")} ```{Spell.Description}```");
                         }
-                        this.WithListWrittenToField("spells applied", Display, "\n");
+                        WithListWrittenToField("spells applied", Display, "\n");
                     }
                 }
             }

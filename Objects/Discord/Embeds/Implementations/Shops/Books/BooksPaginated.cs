@@ -16,14 +16,14 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
                                                           Strings.EmbedStrings.FakePaths.Library)
         {
             this.Filter = Filter;
-            this.ItemSelected += this.ItemSelectedAsync;
+            ItemSelected += ItemSelectedAsync;
         }
 
         public LibraryViewFilters Filter { get; }
 
         protected override async Task ClientRefreshAsync()
         {
-            KaiaUser User = new(this.Context.UserContext.User.Id);
+            KaiaUser User = new(Context.UserContext.User.Id);
 
             IEnumerable<KaiaBook> KaiasBooks = KaiaLibrary.Books.Where(KB => KB.AvailableUntil >= DateTime.UtcNow);
             IEnumerable<KaiaBook> UserBooks = await User.LibraryProcessor.GetUserBooksAsync();
@@ -33,9 +33,9 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
             bool FirstPage = true;
             foreach (KaiaBook[] Chunk in Inventory.Where(IB =>
             {
-                return this.Filter == LibraryViewFilters.Complete ? IB.IsFinished :
-                       this.Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
-                       this.Filter == LibraryViewFilters.All;
+                return Filter == LibraryViewFilters.Complete ? IB.IsFinished :
+                       Filter == LibraryViewFilters.Incomplete ? !IB.IsFinished :
+                       Filter == LibraryViewFilters.All;
             }).OrderBy(IB => IB.AvailableUntil).Chunk(2))
             {
                 LibraryPage Embed = new(Chunk, User, FirstPage);
@@ -48,16 +48,16 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
                 {
                     B.Add(new(Book.Title, Book.BookId, $"by {Book.Author}", Emotes.Counting.Book, false));
                 }
-                this.EmbedsAndOptions.Add(Embed, B);
+                EmbedsAndOptions.Add(Embed, B);
             }
         }
 
         private async void ItemSelectedAsync(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
             await Component.DeferAsync();
-            BookView V = new(this, this.Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book, true);
+            BookView V = new(this, Context, ItemsSelected.FirstOrDefault() ?? "", Emotes.Counting.Book, true);
             await V.StartAsync(new(Component.User.Id));
-            this.Dispose();
+            Dispose();
         }
     }
 }

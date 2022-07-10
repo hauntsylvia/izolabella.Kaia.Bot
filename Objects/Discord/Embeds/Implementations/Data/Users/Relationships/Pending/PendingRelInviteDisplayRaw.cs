@@ -15,8 +15,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         protected override Task ClientRefreshAsync()
         {
-            this.WithListWrittenToField("members", this.Rel.KaiaUserIds.Select(S => $"<@{S}>"), ",\n");
-            this.WithField("invited", $"{this.Rel.PendingIds.Count()} users");
+            WithListWrittenToField("members", Rel.KaiaUserIds.Select(S => $"<@{S}>"), ",\n");
+            WithField("invited", $"{Rel.PendingIds.Count()} users");
             return Task.CompletedTask;
         }
     }

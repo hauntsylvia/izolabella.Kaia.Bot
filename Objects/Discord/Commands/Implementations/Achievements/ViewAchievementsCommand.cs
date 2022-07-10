@@ -27,7 +27,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Achieveme
 
         public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
-            this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Achievement Filter", "The filter to apply to the list of achievements.", typeof(AchievementFilter)));
+            Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Achievement Filter", "The filter to apply to the list of achievements.", typeof(AchievementFilter)));
             return Task.CompletedTask;
         }
 

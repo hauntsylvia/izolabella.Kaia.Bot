@@ -20,9 +20,9 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
         {
             int MissingRolesCount = 0;
             string RoleStr = Strings.EmbedStrings.Empty;
-            foreach (ulong RoleId in this.RoleIdsRequired)
+            foreach (ulong RoleId in RoleIdsRequired)
             {
-                SocketRole? RoleOfId = this.Guild.GetRole(RoleId);
+                SocketRole? RoleOfId = Guild.GetRole(RoleId);
                 if (RoleOfId != null)
                 {
                     RoleStr += $"{(RoleStr != Strings.EmbedStrings.Empty ? ", " : "")}{RoleOfId.Mention}";
@@ -32,7 +32,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
                     MissingRolesCount++;
                 }
             }
-            this.WithField(Strings.EmbedStrings.Empty, $"// *missing roles*\n {(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
+            WithField(Strings.EmbedStrings.Empty, $"// *missing roles*\n {(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
             return Task.CompletedTask;
         }
     }

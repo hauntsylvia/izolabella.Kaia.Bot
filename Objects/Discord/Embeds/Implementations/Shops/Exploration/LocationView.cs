@@ -15,8 +15,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
         {
             this.U = U;
             this.Location = Location;
-            this.ExploreButton = new(Context, "Explore", Emotes.Counting.Explore);
-            this.ExploreButton.OnButtonPush += this.ExploreAsync;
+            ExploreButton = new(Context, "Explore", Emotes.Counting.Explore);
+            ExploreButton.OnButtonPush += ExploreAsync;
         }
 
         public KaiaUser U { get; }
@@ -45,7 +45,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
                 KaiaLocationEvent Result = await Location.ExploreAsync(UserWhoPressed);
                 await UserWhoPressed.LocationProcessor.AddLocationExploredAsync(Location);
 
-                KaiaButton OK = new(this.Context, "Ok", null, false);
+                KaiaButton OK = new(Context, "Ok", null, false);
                 ButtonExecHandler? A = null;
                 A = async (Arg, P) =>
                 {
@@ -54,42 +54,42 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
                         OK.OnButtonPush -= A;
                     }
                     await Arg.DeferAsync(true);
-                    await this.StartAsync(UserWhoPressed);
+                    await StartAsync(UserWhoPressed);
                 };
                 OK.OnButtonPush += A;
-                await this.Context.UserContext.ModifyOriginalResponseAsync(A =>
+                await Context.UserContext.ModifyOriginalResponseAsync(A =>
                 {
                     A.Embed = new LocationExplorationResult(this.Location, Result).Build();
                     A.Components = new ComponentBuilder().WithButton(OK).Build();
                     A.Content = null;
                 });
-                this.Dispose();
+                Dispose();
             }
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            LocationRawView V = new(this.Context, this.Location);
+            LocationRawView V = new(Context, Location);
             await V.RefreshAsync();
             return V;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
-            KaiaLocation? UserBoundLocation = (await U.LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(A => A.Id == this.Location.Id);
-            ComponentBuilder CB = (await this.GetDefaultComponents()).WithButton(this.ExploreButton.WithDisabled((UserBoundLocation ?? this.Location).Status != KaiaLocationExplorationStatus.Successful));
+            KaiaLocation? UserBoundLocation = (await U.LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(A => A.Id == Location.Id);
+            ComponentBuilder CB = (await GetDefaultComponents()).WithButton(ExploreButton.WithDisabled((UserBoundLocation ?? Location).Status != KaiaLocationExplorationStatus.Successful));
             return CB;
         }
 
         public override async Task StartAsync(KaiaUser U)
         {
-            if (!this.Context.UserContext.HasResponded)
+            if (!Context.UserContext.HasResponded)
             {
-                await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
+                await Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
-            ComponentBuilder Com = await this.GetComponentsAsync(U);
-            await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
+            KaiaPathEmbedRefreshable E = await GetEmbedAsync(U);
+            ComponentBuilder Com = await GetComponentsAsync(U);
+            await Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
                 M.Content = Strings.EmbedStrings.Empty;
                 M.Components = Com.Build();
@@ -100,7 +100,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.ExploreButton.Dispose();
+            ExploreButton.Dispose();
         }
     }
 }

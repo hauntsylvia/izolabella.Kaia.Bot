@@ -18,12 +18,12 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
 
         protected override async Task ClientRefreshAsync()
         {
-            IRole? GuildRole = await this.Role.GetRoleAsync(this.Guild);
-            IMessage? GuildMessage = await this.Role.GetMessageAsync(this.Guild);
-            this.WithField("message link", GuildMessage?.GetJumpUrl() ?? "unknown");
-            this.WithField("role mention", GuildRole?.Mention ?? "unknown");
-            this.WithField("author id", this.Role.ListerId.ToString(CultureInfo.InvariantCulture));
-            this.WithField("listening emote", this.Role.Emote.ToString());
+            IRole? GuildRole = await Role.GetRoleAsync(Guild);
+            IMessage? GuildMessage = await Role.GetMessageAsync(Guild);
+            WithField("message link", GuildMessage?.GetJumpUrl() ?? "unknown");
+            WithField("role mention", GuildRole?.Mention ?? "unknown");
+            WithField("author id", Role.ListerId.ToString(CultureInfo.InvariantCulture));
+            WithField("listening emote", Role.Emote.ToString());
         }
     }
 }

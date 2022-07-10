@@ -14,7 +14,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
             this.U = U;
             if (this.U != default)
             {
-                this.UserAchievementsStore = DataStores.GetUserAchievementStore(this.U);
+                UserAchievementsStore = DataStores.GetUserAchievementStore(this.U);
             }
         }
 
@@ -28,19 +28,19 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
 
         public async Task<IReadOnlyCollection<UserEarnedAchievement>> GetUserAchievementsAsync()
         {
-            return await (this.UserAchievementsStore != null ? this.UserAchievementsStore.ReadAllAsync<UserEarnedAchievement>() : Task.FromResult(new List<UserEarnedAchievement>()));
+            return await (UserAchievementsStore != null ? UserAchievementsStore.ReadAllAsync<UserEarnedAchievement>() : Task.FromResult(new List<UserEarnedAchievement>()));
         }
 
         public async Task TryAwardAchievements(KaiaUser User, CommandContext? CanRespondTo, params KaiaAchievement[] Achievements)
         {
-            if (this.UserAchievementsStore != null)
+            if (UserAchievementsStore != null)
             {
                 List<KaiaAchievement> Actual = new();
                 foreach (KaiaAchievement A in Achievements)
                 {
                     if (await A.CanAwardAsync(User, CanRespondTo) && !await A.UserAlreadyOwns(User))
                     {
-                        await this.UserAchievementsStore.SaveAsync(A);
+                        await UserAchievementsStore.SaveAsync(A);
                         User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
                         foreach (KaiaUserReward R in A.Rewards)
                         {
@@ -51,7 +51,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
                 }
                 if (Actual.Count > 0)
                 {
-                    this.AchievementsRewarded?.Invoke(User, CanRespondTo, Actual);
+                    AchievementsRewarded?.Invoke(User, CanRespondTo, Actual);
                 }
             }
         }

@@ -40,12 +40,12 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 
         public async Task<bool> UserAlreadyOwns(KaiaUser U)
         {
-            return (await U.AchievementProcessor.GetUserAchievementsAsync()).Any(X => X.Id == this.Id);
+            return (await U.AchievementProcessor.GetUserAchievementsAsync()).Any(X => X.Id == Id);
         }
 
         public async Task<string> GetDescriptionAsync(KaiaUser U)
         {
-            return await this.UserAlreadyOwns(U) ? this.DescriptionWhenAchieved : this.DescriptionWhenNotAchieved;
+            return await UserAlreadyOwns(U) ? DescriptionWhenAchieved : DescriptionWhenNotAchieved;
         }
     }
 }

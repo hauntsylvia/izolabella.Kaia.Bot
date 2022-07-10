@@ -9,11 +9,11 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
         public KaiaGuildSettings(ulong? CountingChannelId = null, ulong? LastSuccessfulNumber = null, ulong? LastUserWhoCounted = null, ulong? HighestCountEver = null, IReadOnlyDictionary<string, GuildPermission[]>? OverrideCommandPermissionsConstraint = null, List<KaiaReactionRole>? ReactionRoles = null)
         {
             this.CountingChannelId = CountingChannelId;
-            this.lastSuccessfulNumber = LastSuccessfulNumber;
-            this.lastUserWhoCounted = LastUserWhoCounted ?? this.LastUserWhoCounted;
-            this.highestCountEver = HighestCountEver ?? this.HighestCountEver;
+            lastSuccessfulNumber = LastSuccessfulNumber;
+            lastUserWhoCounted = LastUserWhoCounted ?? this.LastUserWhoCounted;
+            highestCountEver = HighestCountEver ?? this.HighestCountEver;
             this.OverrideCommandPermissionsConstraint = OverrideCommandPermissionsConstraint ?? this.OverrideCommandPermissionsConstraint;
-            this.reactionRoles = ReactionRoles ?? new();
+            reactionRoles = ReactionRoles ?? new();
         }
 
         [JsonProperty("CountingChannelId", Required = Required.AllowNull)]
@@ -21,15 +21,15 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
 
         [JsonProperty("LastSuccessfulNumber", Required = Required.AllowNull)]
         private ulong? lastSuccessfulNumber;
-        public ulong LastSuccessfulNumber { get => this.lastSuccessfulNumber ?? 0; set => this.lastSuccessfulNumber = value; }
+        public ulong LastSuccessfulNumber { get => lastSuccessfulNumber ?? 0; set => lastSuccessfulNumber = value; }
 
         [JsonProperty("LastUserWhoCounted", Required = Required.AllowNull)]
         private ulong? lastUserWhoCounted;
-        public ulong? LastUserWhoCounted { get => this.lastUserWhoCounted ?? 0; set => this.lastUserWhoCounted = value; }
+        public ulong? LastUserWhoCounted { get => lastUserWhoCounted ?? 0; set => lastUserWhoCounted = value; }
 
         [JsonProperty("HighestCountEver", Required = Required.Default)]
         private ulong? highestCountEver;
-        public ulong? HighestCountEver { get => this.highestCountEver ?? 0; set => this.highestCountEver = value; }
+        public ulong? HighestCountEver { get => highestCountEver ?? 0; set => highestCountEver = value; }
 
         [JsonProperty("OverrideCommandPermissionsConstraint", Required = Required.Default)]
         public IReadOnlyDictionary<string, GuildPermission[]> OverrideCommandPermissionsConstraint { get; set; } = new Dictionary<string, GuildPermission[]>();
@@ -43,8 +43,8 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
         {
             get
             {
-                this.reactionRoles = this.reactionRoles.DistinctBy(A => A.RoleId).ToList();
-                return this.reactionRoles;
+                reactionRoles = reactionRoles.DistinctBy(A => A.RoleId).ToList();
+                return reactionRoles;
             }
         }
 
@@ -54,8 +54,8 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
         {
             get
             {
-                this.autoRoles = this.autoRoles.DistinctBy(A => A.RoleId).ToList();
-                return this.autoRoles;
+                autoRoles = autoRoles.DistinctBy(A => A.RoleId).ToList();
+                return autoRoles;
             }
         }
     }

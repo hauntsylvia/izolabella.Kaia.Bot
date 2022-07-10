@@ -24,13 +24,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
             {
                 "__members__"
             };
-            Display.AddRange(this.Relationship.KaiaUserIds.Select(A => $"→ <@{A}>"));
-            if (this.Relationship.PendingIds.Any())
+            Display.AddRange(Relationship.KaiaUserIds.Select(A => $"→ <@{A}>"));
+            if (Relationship.PendingIds.Any())
             {
                 Display.Add("__pending__");
-                Display.AddRange(this.Relationship.PendingIds.Select(A => $"→ <@{A}>"));
+                Display.AddRange(Relationship.PendingIds.Select(A => $"→ <@{A}>"));
             }
-            this.WithListWrittenToField($"{this.Relationship.Emote} relationship {this.Relationship.Id}", Display, "\n");
+            WithListWrittenToField($"{Relationship.Emote} relationship {Relationship.Id}", Display, "\n");
             return Task.CompletedTask;
         }
     }

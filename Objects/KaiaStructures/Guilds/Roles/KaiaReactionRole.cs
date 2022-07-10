@@ -54,10 +54,10 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles
 
         public async Task<IMessage?> GetMessageAsync(SocketGuild Guild)
         {
-            SocketGuildChannel? C = Guild.GetChannel(this.ChannelId);
+            SocketGuildChannel? C = Guild.GetChannel(ChannelId);
             if (C is not null and SocketTextChannel CS)
             {
-                IMessage? M = await CS.GetMessageAsync(this.MessageId);
+                IMessage? M = await CS.GetMessageAsync(MessageId);
                 return M;
             }
             return null;
@@ -65,7 +65,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles
 
         public Task<IRole?> GetRoleAsync(SocketGuild Guild)
         {
-            return Task.FromResult<IRole?>(Guild.GetRole(this.RoleId));
+            return Task.FromResult<IRole?>(Guild.GetRole(RoleId));
         }
     }
 }

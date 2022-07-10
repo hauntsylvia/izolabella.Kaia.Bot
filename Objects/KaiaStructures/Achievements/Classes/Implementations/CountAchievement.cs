@@ -27,7 +27,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implem
 
         public override Task<bool> CanAwardAsync(KaiaUser U, CommandContext? Context)
         {
-            return Task.FromResult((this.Highest ? U.Settings.HighestCountEver ?? 0 : U.Settings.NumbersCounted ?? 0) >= this.CountTo);
+            return Task.FromResult((Highest ? U.Settings.HighestCountEver ?? 0 : U.Settings.NumbersCounted ?? 0) >= CountTo);
         }
     }
 }

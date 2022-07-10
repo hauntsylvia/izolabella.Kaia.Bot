@@ -25,12 +25,12 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
         protected override Task ClientRefreshAsync()
         {
             List<string> Display = new();
-            GuildPermission[] MissingGP = Required.Where(P => !UserHas.Has(P)).ToArray();
+            GuildPermission[] MissingGP = this.Required.Where(P => !this.UserHas.Has(P)).ToArray();
             foreach (GuildPermission P in MissingGP)
             {
                 Display.Add($"{Emotes.Customs.KaiaDot}{Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture)}");
             }
-            WithListWrittenToField($"missing permissions", Display, "\n");
+            this.WithListWrittenToField($"missing permissions", Display, "\n");
             return Task.CompletedTask;
         }
     }

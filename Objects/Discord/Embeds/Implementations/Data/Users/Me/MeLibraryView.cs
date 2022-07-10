@@ -25,15 +25,15 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         protected override async Task ClientRefreshAsync()
         {
-            MeView LandingPage = new(Context.UserContext.User.Username, User);
-            List<KaiaBook> Books = await User.LibraryProcessor.GetUserBooksAsync();
-            IEnumerable<KaiaBook[]> BookChunked = Books.Chunk(LibraryChunkSize);
+            MeView LandingPage = new(this.Context.UserContext.User.Username, this.User);
+            List<KaiaBook> Books = await this.User.LibraryProcessor.GetUserBooksAsync();
+            IEnumerable<KaiaBook[]> BookChunked = Books.Chunk(this.LibraryChunkSize);
             LandingPage.WithField($"{Emotes.Counting.Book} library", $"`{Books.Count}` {(Books.Count == 1 ? "book" : "books")}");
-            EmbedsAndOptions.Add(LandingPage, null);
+            this.EmbedsAndOptions.Add(LandingPage, null);
             foreach (KaiaBook[] Chunk in BookChunked)
             {
-                LibraryPage Embed = new(Chunk, User, false);
-                EmbedsAndOptions.Add(Embed, null);
+                LibraryPage Embed = new(Chunk, this.User, false);
+                this.EmbedsAndOptions.Add(Embed, null);
             }
         }
     }

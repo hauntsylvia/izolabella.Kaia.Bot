@@ -16,14 +16,14 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
             this.From = From;
             this.Item = Item;
             this.U = U;
-            Interact = new(Context, "Interact", Emotes.Counting.InteractItem);
-            PutUpForSaleButton = new(Context, "Sell", Emotes.Counting.SellItem);
+            this.Interact = new(Context, "Interact", Emotes.Counting.InteractItem);
+            this.PutUpForSaleButton = new(Context, "Sell", Emotes.Counting.SellItem);
 
-            Interact.OnButtonPush += InteractAsync;
-            PutUpForSaleButton.OnButtonPush += SellAsync;
+            this.Interact.OnButtonPush += this.InteractAsync;
+            this.PutUpForSaleButton.OnButtonPush += this.SellAsync;
 
-            Interact.OnButtonPush += ButtonPressed;
-            PutUpForSaleButton.OnButtonPush += ButtonPressed;
+            this.Interact.OnButtonPush += this.ButtonPressed;
+            this.PutUpForSaleButton.OnButtonPush += this.ButtonPressed;
         }
 
         public ItemCreateSaleListing? ListingInteraction { get; set; }
@@ -42,13 +42,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         private async Task ButtonPressed(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (await RateLimiter.PassesAsync(Arg.User.Id))
+            if (await this.RateLimiter.PassesAsync(Arg.User.Id))
             {
-                if (Arg.Data.CustomId != PutUpForSaleButton.Id)
+                if (Arg.Data.CustomId != this.PutUpForSaleButton.Id)
                 {
                     await U.SaveAsync();
-                    KaiaPathEmbedRefreshable E = await GetEmbedAsync(U);
-                    ComponentBuilder Com = await GetComponentsAsync(U);
+                    KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
+                    ComponentBuilder Com = await this.GetComponentsAsync(U);
                     await Arg.UpdateAsync(A =>
                     {
                         A.Embed = E.Build();
@@ -64,59 +64,59 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         private async Task SellAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (ListingInteraction == null && Item != null)
+            if (this.ListingInteraction == null && this.Item != null)
             {
-                ListingInteraction = new ItemCreateSaleListing(this, Context, new(new() { Item }, this.U, Item.MarketCost));
+                this.ListingInteraction = new ItemCreateSaleListing(this, this.Context, new(new() { this.Item }, this.U, this.Item.MarketCost));
             }
-            else if (ListingInteraction != null)
+            else if (this.ListingInteraction != null)
             {
-                ListingInteraction.Dispose();
+                this.ListingInteraction.Dispose();
             }
 
-            if (ListingInteraction != null)
+            if (this.ListingInteraction != null)
             {
-                await ListingInteraction.StartAsync(U);
+                await this.ListingInteraction.StartAsync(U);
             }
         }
 
         private async Task InteractAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (Item != null && await U.Settings.Inventory.GetItemOfId(Item.Id) != null)
+            if (this.Item != null && await U.Settings.Inventory.GetItemOfId(this.Item.Id) != null)
             {
-                await Context.UserContext.FollowupAsync(embed: new InteractWithItemEmbed(Item, U).Build());
-                Item = await U.Settings.Inventory.GetItemOfDisplayName(Item);
+                await this.Context.UserContext.FollowupAsync(embed: new InteractWithItemEmbed(this.Item, U).Build());
+                this.Item = await U.Settings.Inventory.GetItemOfDisplayName(this.Item);
             }
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            KaiaPathEmbedRefreshable V = Item == null ? new SingleItemNotFound() : new InventoryItemViewRaw(Item);
+            KaiaPathEmbedRefreshable V = this.Item == null ? new SingleItemNotFound() : new InventoryItemViewRaw(this.Item);
             await V.RefreshAsync();
             return V;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
-            ComponentBuilder CB = await GetDefaultComponents();
-            CB.WithButton(Interact.WithDisabled(!await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || (!Item?.CanInteractWithDirectly ?? true)));
-            if (Item != null && Item.UsersCanSellThis)
+            ComponentBuilder CB = await this.GetDefaultComponents();
+            CB.WithButton(this.Interact.WithDisabled(!await U.Settings.Inventory.ItemOfDisplayNameExists(this.Item) || (!this.Item?.CanInteractWithDirectly ?? true)));
+            if (this.Item != null && this.Item.UsersCanSellThis)
             {
-                CB.WithButton(PutUpForSaleButton.WithDisabled(!await U.Settings.Inventory.ItemOfDisplayNameExists(Item) || !Item.UsersCanSellThis));
+                CB.WithButton(this.PutUpForSaleButton.WithDisabled(!await U.Settings.Inventory.ItemOfDisplayNameExists(this.Item) || !this.Item.UsersCanSellThis));
             }
             return CB;
         }
 
         public override async Task StartAsync(KaiaUser U)
         {
-            Embed E = (await GetEmbedAsync(U)).Build();
-            MessageComponent Com = (await GetComponentsAsync(U)).Build();
-            if (!Context.UserContext.HasResponded)
+            Embed E = (await this.GetEmbedAsync(U)).Build();
+            MessageComponent Com = (await this.GetComponentsAsync(U)).Build();
+            if (!this.Context.UserContext.HasResponded)
             {
-                await Context.UserContext.RespondAsync(components: Com, embed: E);
+                await this.Context.UserContext.RespondAsync(components: Com, embed: E);
             }
             else
             {
-                await Context.UserContext.ModifyOriginalResponseAsync(M =>
+                await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
                 {
                     M.Content = Strings.EmbedStrings.Empty;
                     M.Components = Com;
@@ -128,8 +128,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            Interact.Dispose();
-            PutUpForSaleButton.Dispose();
+            this.Interact.Dispose();
+            this.PutUpForSaleButton.Dispose();
         }
     }
 }

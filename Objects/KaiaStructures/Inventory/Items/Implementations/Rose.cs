@@ -15,14 +15,14 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementat
         {
             double PetalsEarned = Math.Round(new Random().Next(-100, 200) + new Random().NextDouble(), 2);
             string Message = PetalsEarned < 0 ? Strings.ItemStrings.Rose.RoseStab : Strings.ItemStrings.Rose.RosePretty;
-            OnInteract = new(Message, new(PetalsEarned));
+            this.OnInteract = new(Message, new(PetalsEarned));
         }
 
         public override Task OnKaiaStoreRefresh()
         {
             double PetalsEarned = Math.Round(new Random().Next(-100, 200) + new Random().NextDouble(), 2);
             string Message = PetalsEarned < 0 ? Strings.ItemStrings.Rose.RoseStab : Strings.ItemStrings.Rose.RosePretty;
-            OnInteract = new(Message, new(PetalsEarned));
+            this.OnInteract = new(Message, new(PetalsEarned));
             return Task.CompletedTask;
         }
     }

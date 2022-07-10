@@ -8,15 +8,15 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds
     {
         public KaiaStatisticsEmbed() : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Kaia)
         {
-            ClientRefreshAsync().Wait();
+            this.ClientRefreshAsync().Wait();
         }
 
         protected override Task ClientRefreshAsync()
         {
-            WithField("handler", $"`{ProjectInformation.ProjectCreditDisplay}`");
-            WithField("kaia version", $"`{KaiaSessionStatistics.Version?.Major}.{KaiaSessionStatistics.Version?.Minor}.{KaiaSessionStatistics.Version?.Build}`");
-            WithField("author", $"`{ProjectInformation.AuthorCreditDisplay}`");
-            WithField("message receiver error count", $"`{KaiaSessionStatistics.MessageReceiverFailureCount}`");
+            this.WithField("handler", $"`{ProjectInformation.ProjectCreditDisplay}`");
+            this.WithField("kaia version", $"`{KaiaSessionStatistics.Version?.Major}.{KaiaSessionStatistics.Version?.Minor}.{KaiaSessionStatistics.Version?.Build}`");
+            this.WithField("author", $"`{ProjectInformation.AuthorCreditDisplay}`");
+            this.WithField("message receiver error count", $"`{KaiaSessionStatistics.MessageReceiverFailureCount}`");
             return Task.CompletedTask;
         }
     }

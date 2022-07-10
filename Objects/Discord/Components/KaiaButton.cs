@@ -12,11 +12,11 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Components
                                                               Emote,
                                                               Disabled)
         {
-            Context.Reference.ButtonExecuted += ButtonExecutedAsync;
-            CustomId = $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}";
-            Referrer = new(Context.UserContext.User.Id);
+            Context.Reference.ButtonExecuted += this.ButtonExecutedAsync;
+            this.CustomId = $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}";
+            this.Referrer = new(Context.UserContext.User.Id);
             this.Context = Context;
-            EnabledUntil = DateTime.UtcNow.AddHours(1);
+            this.EnabledUntil = DateTime.UtcNow.AddHours(1);
             this.AnyoneCanPress = AnyoneCanPress;
         }
 
@@ -27,16 +27,16 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Components
                                                               Emote,
                                                               Disabled)
         {
-            Context.Reference.ButtonExecuted += ButtonExecutedAsync;
-            CustomId = $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}";
-            Referrer = new(Context.UserContext.User.Id);
+            Context.Reference.ButtonExecuted += this.ButtonExecutedAsync;
+            this.CustomId = $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}";
+            this.Referrer = new(Context.UserContext.User.Id);
             this.Context = Context;
             this.EnabledUntil = EnabledUntil;
             this.AnyoneCanPress = AnyoneCanPress;
-            ControlLoop();
+            this.ControlLoop();
         }
 
-        public string Id => CustomId;
+        public string Id => this.CustomId;
 
         public KaiaUser Referrer { get; }
 
@@ -52,14 +52,14 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Components
 
         private async void ControlLoop()
         {
-            await Task.Delay(EnabledUntil - DateTime.UtcNow);
-            Context.Reference.ButtonExecuted -= ButtonExecutedAsync;
-            Dispose();
+            await Task.Delay(this.EnabledUntil - DateTime.UtcNow);
+            this.Context.Reference.ButtonExecuted -= this.ButtonExecutedAsync;
+            this.Dispose();
         }
 
         private Task ButtonExecutedAsync(SocketMessageComponent Arg)
         {
-            if (Arg.IsValidToken && Id == Arg.Data.CustomId && (Arg.User.Id == Referrer.Id || AnyoneCanPress))
+            if (Arg.IsValidToken && this.Id == Arg.Data.CustomId && (Arg.User.Id == this.Referrer.Id || this.AnyoneCanPress))
             {
                 OnButtonPush?.Invoke(Arg, new(Arg.User.Id));
             }

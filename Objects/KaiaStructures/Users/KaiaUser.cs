@@ -19,21 +19,21 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
             if (Id > 0)
             {
                 this.Id = Id;
-                LibraryProcessor = new(Id);
-                AchievementProcessor = new(Id);
-                LocationProcessor = new(Id);
-                SpellsProcessor = new(Id);
-                RelationshipsProcessor = new(Id);
-                KaiaUserSettings? S = Settings ?? GetAsync<KaiaUser>().Result?.Settings;
-                Exists = S != null;
+                this.LibraryProcessor = new(Id);
+                this.AchievementProcessor = new(Id);
+                this.LocationProcessor = new(Id);
+                this.SpellsProcessor = new(Id);
+                this.RelationshipsProcessor = new(Id);
+                KaiaUserSettings? S = Settings ?? this.GetAsync<KaiaUser>().Result?.Settings;
+                this.Exists = S != null;
                 this.Settings = S ?? new(Id);
 
-                List<KaiaBook> UserOwnedBooks = LibraryProcessor.GetUserBooksAsync().Result;
+                List<KaiaBook> UserOwnedBooks = this.LibraryProcessor.GetUserBooksAsync().Result;
                 double TotalToPay = 0.0;
                 foreach (KaiaBook Book in UserOwnedBooks)
                 {
                     double CyclesMissed = (DateTime.UtcNow - this.Settings.Inventory.LastBookUpdate) / TimeSpans.BookTickRate;
-                    TotalToPay += Book.CurrentEarning * CyclesMissed * TotalMultiplierOnBooks;
+                    TotalToPay += Book.CurrentEarning * CyclesMissed * this.TotalMultiplierOnBooks;
                 }
 
                 this.Settings.Inventory.LastBookUpdate = DateTime.UtcNow;
@@ -51,7 +51,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
         [JsonProperty("Settings", Required = Required.Always)]
         public KaiaUserSettings Settings { get; set; }
 
-        public double TotalMultiplierOnBooks => 1 + Math.Round(SpellsProcessor.GetActiveSpellsAsync().Result
+        public double TotalMultiplierOnBooks => 1 + Math.Round(this.SpellsProcessor.GetActiveSpellsAsync().Result
                                                                          .Count(A => A.GetType() == typeof(BookIncomeIncrease))
                                                                          * BookIncomeIncrease.MultiplyBy, 2);
 

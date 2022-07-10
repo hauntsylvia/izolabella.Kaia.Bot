@@ -15,7 +15,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
         public KaiaUserReward(double Petals, params Spell[] Spells)
         {
             this.Petals = Petals;
-            SpellIds = Spells.Select(S => S.Id).ToArray();
+            this.SpellIds = Spells.Select(S => S.Id).ToArray();
         }
 
         public KaiaUserReward(double Petals, params KaiaInventoryItem[] Items)
@@ -27,7 +27,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
         public KaiaUserReward(double Petals, Spell[] Spells, params KaiaInventoryItem[] Items)
         {
             this.Petals = Petals;
-            SpellIds = Spells.Select(S => S.Id).ToArray();
+            this.SpellIds = Spells.Select(S => S.Id).ToArray();
             this.Items = Items;
         }
 
@@ -51,7 +51,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
         [JsonProperty("SpellIds")]
         private SpellId[]? SpellIds { get; }
 
-        public IEnumerable<Spell> Spells => KaiaSpellsRoom.GetSpellsFromIds(SpellIds ?? Array.Empty<SpellId>());
+        public IEnumerable<Spell> Spells => KaiaSpellsRoom.GetSpellsFromIds(this.SpellIds ?? Array.Empty<SpellId>());
 
         [JsonProperty("Items")]
         public KaiaInventoryItem[] Items { get; } = Array.Empty<KaiaInventoryItem>();

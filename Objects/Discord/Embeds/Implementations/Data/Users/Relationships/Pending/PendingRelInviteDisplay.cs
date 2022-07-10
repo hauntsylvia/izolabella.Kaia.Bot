@@ -11,29 +11,29 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
     {
         public PendingRelInviteDisplay(PendingRelationshipInvitesPaginated? Pending, CommandContext Context, UserRelationship Rel) : base(Pending, Context, true)
         {
-            Accept = new(Context, "Accept", Emotes.Counting.Heart, false, false);
-            Decline = new(Context, "Decline", Emotes.Counting.Invalid, false, false);
-            Accept.OnButtonPush += AcceptAsync;
-            Decline.OnButtonPush += DeclineAsync;
+            this.Accept = new(Context, "Accept", Emotes.Counting.Heart, false, false);
+            this.Decline = new(Context, "Decline", Emotes.Counting.Invalid, false, false);
+            this.Accept.OnButtonPush += this.AcceptAsync;
+            this.Decline.OnButtonPush += this.DeclineAsync;
             this.Rel = Rel;
         }
 
         private async Task DeclineAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            Rel.UserDeclines(UserWhoPressed.Id);
-            Dispose();
-            await DataStores.UserRelationshipsMainDirectory.SaveAsync(Rel);
-            await ForceBackAsync(Context);
+            this.Rel.UserDeclines(UserWhoPressed.Id);
+            this.Dispose();
+            await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.Rel);
+            await this.ForceBackAsync(this.Context);
         }
 
         private async Task AcceptAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            if (Rel.AddMember(UserWhoPressed.Id))
+            if (this.Rel.AddMember(UserWhoPressed.Id))
             {
-                Dispose();
+                this.Dispose();
                 await Arg.DeferAsync();
-                await DataStores.UserRelationshipsMainDirectory.SaveAsync(Rel);
-                await ForceBackAsync(Context);
+                await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.Rel);
+                await this.ForceBackAsync(this.Context);
             }
             else
             {
@@ -49,30 +49,30 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         public override void Dispose()
         {
-            Accept.Dispose();
-            Decline.Dispose();
+            this.Accept.Dispose();
+            this.Decline.Dispose();
             GC.SuppressFinalize(this);
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync()
         {
-            ComponentBuilder CB = await GetDefaultComponents();
-            CB.WithButton(Accept.WithDisabled(Rel.AtMax));
-            CB.WithButton(Decline.WithDisabled(false));
+            ComponentBuilder CB = await this.GetDefaultComponents();
+            CB.WithButton(this.Accept.WithDisabled(this.Rel.AtMax));
+            CB.WithButton(this.Decline.WithDisabled(false));
             return CB;
         }
 
         public override Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            return Task.FromResult<KaiaPathEmbedRefreshable>(new PendingRelInviteDisplayRaw(Rel));
+            return Task.FromResult<KaiaPathEmbedRefreshable>(new PendingRelInviteDisplayRaw(this.Rel));
         }
 
         public override async Task StartAsync(KaiaUser U)
         {
-            ComponentBuilder B = await GetComponentsAsync();
-            KaiaPathEmbedRefreshable Embed = await GetEmbedAsync(U);
+            ComponentBuilder B = await this.GetComponentsAsync();
+            KaiaPathEmbedRefreshable Embed = await this.GetEmbedAsync(U);
             await Embed.RefreshAsync();
-            await Context.UserContext.ModifyOriginalResponseAsync(A =>
+            await this.Context.UserContext.ModifyOriginalResponseAsync(A =>
             {
                 A.Embed = Embed.Build();
                 A.Components = B.Build();

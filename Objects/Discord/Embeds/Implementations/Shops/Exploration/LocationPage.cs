@@ -20,7 +20,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
 
         protected override Task ClientRefreshAsync()
         {
-            foreach (KaiaLocation Location in Locations)
+            foreach (KaiaLocation Location in this.Locations)
             {
                 List<string> Display = new()
                 {
@@ -35,7 +35,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
                     Display.Add($"`{Math.Round((Location.AvailableUntil.Value - DateTime.UtcNow).TotalDays, 0)}` days left");
                 }
                 Display.Add(Strings.EmbedStrings.Empty);
-                WithListWrittenToField($"{Location.Name}", Display, "\n");
+                this.WithListWrittenToField($"{Location.Name}", Display, "\n");
             }
             return Task.CompletedTask;
         }

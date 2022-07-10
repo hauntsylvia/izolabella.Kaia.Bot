@@ -18,16 +18,16 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
 
         protected override Task ClientRefreshAsync()
         {
-            foreach (KaiaAutoRole Role in Roles)
+            foreach (KaiaAutoRole Role in this.Roles)
             {
-                IRole? RelatingRole = Guild.GetRole(Role.RoleId);
+                IRole? RelatingRole = this.Guild.GetRole(Role.RoleId);
                 if (RelatingRole != null)
                 {
                     List<string> Display = new()
                     {
                         $"setup by <@{Role.ListerId}>",
                     };
-                    WithListWrittenToField($"{RelatingRole.Mention}", Display, "\n");
+                    this.WithListWrittenToField($"{RelatingRole.Mention}", Display, "\n");
                 }
             }
             return Task.CompletedTask;

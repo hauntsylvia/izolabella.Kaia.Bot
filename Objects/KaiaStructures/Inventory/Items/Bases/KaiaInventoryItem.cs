@@ -25,7 +25,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
             this.CanInteractWithDirectly = CanInteractWithDirectly;
             this.KaiaDisplaysThisOnTheStore = KaiaDisplaysThisOnTheStore;
             this.UsersCanSellThis = UsersCanSellThis;
-            DisplayEmote = DisplayEmoteName;
+            this.DisplayEmote = DisplayEmoteName;
             this.OnInteract = OnInteract;
             this.Id = Id ?? IdGenerator.CreateNewId();
         }
@@ -36,7 +36,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
         /// <summary>
         /// $"[{ExplorationStrings.Economy.CurrencyEmote} {ItemChunk.Key.MarketCost}] {ItemChunk.Key.DisplayName}"
         /// </summary>
-        public string DisplayString => $"[{Strings.Economy.CurrencyEmote} `{MarketCost}`] {DisplayName}";
+        public string DisplayString => $"[{Strings.Economy.CurrencyEmote} `{this.MarketCost}`] {this.DisplayName}";
 
         [JsonProperty("Description")]
         public string Description { get; }

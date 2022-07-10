@@ -24,22 +24,22 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
 
         protected override Task ClientRefreshAsync()
         {
-            if (Permissions != null)
+            if (this.Permissions != null)
             {
                 List<string> PermsStrs = new();
-                foreach (GuildPermission P in Permissions)
+                foreach (GuildPermission P in this.Permissions)
                 {
                     PermsStrs.Add(Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture));
                 }
-                WithListWrittenToField("required permissions", PermsStrs, ", ");
+                this.WithListWrittenToField("required permissions", PermsStrs, ", ");
             }
-            if (Roles != null)
+            if (this.Roles != null)
             {
                 int MissingRolesCount = 0;
                 string RoleStr = Strings.EmbedStrings.Empty;
-                foreach (ulong RoleId in Roles)
+                foreach (ulong RoleId in this.Roles)
                 {
-                    SocketRole? RoleOfId = Guild.GetRole(RoleId);
+                    SocketRole? RoleOfId = this.Guild.GetRole(RoleId);
                     if (RoleOfId != null)
                     {
                         RoleStr += $"{(RoleStr != Strings.EmbedStrings.Empty ? ", " : "")}{RoleOfId.Mention}";
@@ -49,7 +49,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
                         MissingRolesCount++;
                     }
                 }
-                WithField("required roles", $"{(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
+                this.WithField("required roles", $"{(RoleStr != Strings.EmbedStrings.Empty ? $"{RoleStr} {(MissingRolesCount > 0 ? "and " : "")} " : "")} {(MissingRolesCount > 0 ? $"{MissingRolesCount} unidentifiable role{(MissingRolesCount != 1 ? "s" : "")}." : "")}");
             }
             return Task.CompletedTask;
         }

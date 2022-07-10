@@ -14,41 +14,41 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         public ItemCreateSaleListing(ItemView PreviousPage, CommandContext Context, SaleListing FromListing) : base(PreviousPage, Context, true)
         {
             KaiaUser U = new(Context.UserContext.User.Id);
-            Listing = new(new(), U, FromListing.CostPerItem);
+            this.Listing = new(new(), U, FromListing.CostPerItem);
             foreach (KaiaInventoryItem Item in FromListing.Items.ToList())
             {
                 KaiaInventoryItem? RelevantItem = U.Settings.Inventory.GetItemOfDisplayName(Item).Result;
                 if (RelevantItem != null)
                 {
-                    Listing.Items.Add(RelevantItem);
+                    this.Listing.Items.Add(RelevantItem);
                 }
             }
             PreviousPage.ListingInteraction = this;
-            PreviousPageStore = PreviousPage;
-            SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
-            AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
-            RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
-            Context.Reference.MessageReceived += MessageReceivedAsync;
+            this.PreviousPageStore = PreviousPage;
+            this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
+            this.AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
+            this.RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
+            Context.Reference.MessageReceived += this.MessageReceivedAsync;
         }
 
         public ItemCreateSaleListing(InventoryItemView PreviousPage, CommandContext Context, SaleListing FromListing) : base(PreviousPage, Context, true)
         {
             KaiaUser U = new(Context.UserContext.User.Id);
-            Listing = new(new(), U, FromListing.CostPerItem);
+            this.Listing = new(new(), U, FromListing.CostPerItem);
             foreach (KaiaInventoryItem Item in FromListing.Items.ToList())
             {
                 KaiaInventoryItem? RelevantItem = U.Settings.Inventory.GetItemOfDisplayName(Item).Result;
                 if (RelevantItem != null)
                 {
-                    Listing.Items.Add(RelevantItem);
+                    this.Listing.Items.Add(RelevantItem);
                 }
             }
             PreviousPage.ListingInteraction = this;
-            PreviousPageInventory = PreviousPage;
-            SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
-            AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
-            RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
-            Context.Reference.MessageReceived += MessageReceivedAsync;
+            this.PreviousPageInventory = PreviousPage;
+            this.SubmitButton = new(this.Context, "Submit", Emotes.Counting.SellItem);
+            this.AddOneMoreButton = new(this.Context, "1", Emotes.Counting.Add);
+            this.RemoveOneMoreButton = new(this.Context, "1", Emotes.Counting.Sub);
+            Context.Reference.MessageReceived += this.MessageReceivedAsync;
         }
 
         #region properties
@@ -72,19 +72,19 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         private async Task AddOneAsync(SocketMessageComponent Arg, KaiaUser U)
         {
             IEnumerable<KaiaInventoryItem> ItemsMinusExistingIdsInThisListing = U.Settings.Inventory.Items
-                .Where(I => I.UsersCanSellThis && !Listing.Items.Any(ListingItem => ListingItem.Id == I.Id) && I.DisplayName == Listing.Items.First().DisplayName);
+                .Where(I => I.UsersCanSellThis && !this.Listing.Items.Any(ListingItem => ListingItem.Id == I.Id) && I.DisplayName == this.Listing.Items.First().DisplayName);
             KaiaInventoryItem? RelevantItem = await U.Settings.Inventory.GetItemOfId(ItemsMinusExistingIdsInThisListing.FirstOrDefault()?.Id ?? 0);
             if (RelevantItem != null)
             {
-                Listing.Items.Add(RelevantItem);
+                this.Listing.Items.Add(RelevantItem);
             }
         }
 
         private Task RemoveOneAsync(SocketMessageComponent Arg, KaiaUser U)
         {
-            if (Listing.Items.Count > 0)
+            if (this.Listing.Items.Count > 0)
             {
-                Listing.Items.RemoveAt(0);
+                this.Listing.Items.RemoveAt(0);
             }
             return Task.CompletedTask;
         }
@@ -92,41 +92,41 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         private async Task SubmitAsync(SocketMessageComponent Arg, KaiaUser U)
         {
             await Arg.DeferAsync();
-            await Listing.StartSellingAsync();
-            Dispose();
-            if (PreviousPageStore != null)
+            await this.Listing.StartSellingAsync();
+            this.Dispose();
+            if (this.PreviousPageStore != null)
             {
-                PreviousPageStore.Dispose();
+                this.PreviousPageStore.Dispose();
             }
-            if (PreviousPageInventory != null)
+            if (this.PreviousPageInventory != null)
             {
-                PreviousPageInventory.Dispose();
+                this.PreviousPageInventory.Dispose();
             }
-            if (PreviousPageStore?.From != null || PreviousPageInventory?.From != null)
+            if (this.PreviousPageStore?.From != null || this.PreviousPageInventory?.From != null)
             {
-                PreviousPageStore?.From?.Dispose();
-                if (PreviousPageStore != null)
+                this.PreviousPageStore?.From?.Dispose();
+                if (this.PreviousPageStore != null)
                 {
-                    await new ItemsPaginated(Context, PreviousPageStore?.From?.FilterBy, PreviousPageStore?.From?.IncludeUserListings ?? true, PreviousPageStore?.From?.ChunkSize ?? 2).StartAsync();
+                    await new ItemsPaginated(this.Context, this.PreviousPageStore?.From?.FilterBy, this.PreviousPageStore?.From?.IncludeUserListings ?? true, this.PreviousPageStore?.From?.ChunkSize ?? 2).StartAsync();
                 }
                 else
                 {
-                    await new MeInventoryView(U, Context, PreviousPageInventory?.From?.InventoryChunkSize ?? 4).StartAsync();
+                    await new MeInventoryView(U, this.Context, this.PreviousPageInventory?.From?.InventoryChunkSize ?? 4).StartAsync();
                 }
             }
             else
             {
-                await new ItemsPaginated(Context).StartAsync();
+                await new ItemsPaginated(this.Context).StartAsync();
             }
         }
 
         private async Task UpdateEmbedAsync(SocketMessageComponent? Arg, KaiaUser U)
         {
-            if (Arg == null || !(Arg.Data.CustomId == SubmitButton.Id && PreviousPageElse != null))
+            if (Arg == null || !(Arg.Data.CustomId == this.SubmitButton.Id && this.PreviousPageElse != null))
             {
                 await U.SaveAsync();
-                KaiaPathEmbedRefreshable E = await GetEmbedAsync(U);
-                ComponentBuilder Com = await GetComponentsAsync(U);
+                KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
+                ComponentBuilder Com = await this.GetComponentsAsync(U);
                 if (Arg != null)
                 {
                     await Arg.UpdateAsync(C =>
@@ -138,7 +138,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
                 }
                 else
                 {
-                    await Context.UserContext.ModifyOriginalResponseAsync(C =>
+                    await this.Context.UserContext.ModifyOriginalResponseAsync(C =>
                     {
                         C.Embed = E.Build();
                         C.Components = Com.Build();
@@ -154,10 +154,10 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
-            if (Arg.Author.Id == Context.UserContext.User.Id && double.TryParse(Arg.Content, out double NewPricePerItem))
+            if (Arg.Author.Id == this.Context.UserContext.User.Id && double.TryParse(Arg.Content, out double NewPricePerItem))
             {
-                Listing.CostPerItem = NewPricePerItem;
-                await UpdateEmbedAsync(null, new(Arg.Author.Id));
+                this.Listing.CostPerItem = NewPricePerItem;
+                await this.UpdateEmbedAsync(null, new(Arg.Author.Id));
             }
         }
 
@@ -165,41 +165,41 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         public async Task<ComponentBuilder> GetComponentsAsync(KaiaUser U)
         {
-            ComponentBuilder CB = (await GetDefaultComponents())
-                .WithButton(SubmitButton.WithDisabled(
-                    Listing.CostPerItem <= 0 || !Listing.Items.All(I => I.UsersCanSellThis) || (await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == Listing.ListerId)))
-                .WithButton(AddOneMoreButton.WithDisabled(U.Settings.Inventory.GetItemsOfDisplayNameFromItem(Listing.Items.First()).Result.Count() <= Listing.Items.Count))
-                .WithButton(RemoveOneMoreButton.WithDisabled(Listing.Items.Count <= 1));
+            ComponentBuilder CB = (await this.GetDefaultComponents())
+                .WithButton(this.SubmitButton.WithDisabled(
+                    this.Listing.CostPerItem <= 0 || !this.Listing.Items.All(I => I.UsersCanSellThis) || (await DataStores.SaleListingsStore.ReadAllAsync<SaleListing>()).Any(S => S.ListerId == this.Listing.ListerId)))
+                .WithButton(this.AddOneMoreButton.WithDisabled(U.Settings.Inventory.GetItemsOfDisplayNameFromItem(this.Listing.Items.First()).Result.Count() <= this.Listing.Items.Count))
+                .WithButton(this.RemoveOneMoreButton.WithDisabled(this.Listing.Items.Count <= 1));
             return CB;
         }
 
         public override async Task StartAsync(KaiaUser U)
         {
-            if (!Context.UserContext.HasResponded)
+            if (!this.Context.UserContext.HasResponded)
             {
-                await Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
+                await this.Context.UserContext.RespondAsync(Strings.EmbedStrings.Empty);
             }
-            KaiaPathEmbedRefreshable E = await GetEmbedAsync(U);
-            ComponentBuilder Com = await GetComponentsAsync(U);
-            _ = await Context.UserContext.ModifyOriginalResponseAsync(M =>
+            KaiaPathEmbedRefreshable E = await this.GetEmbedAsync(U);
+            ComponentBuilder Com = await this.GetComponentsAsync(U);
+            _ = await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
             {
                 M.Content = Strings.EmbedStrings.Empty;
                 M.Components = Com.Build();
                 M.Embed = E.Build();
             });
 
-            SubmitButton.OnButtonPush += SubmitAsync;
-            AddOneMoreButton.OnButtonPush += AddOneAsync;
-            RemoveOneMoreButton.OnButtonPush += RemoveOneAsync;
+            this.SubmitButton.OnButtonPush += this.SubmitAsync;
+            this.AddOneMoreButton.OnButtonPush += this.AddOneAsync;
+            this.RemoveOneMoreButton.OnButtonPush += this.RemoveOneAsync;
 
-            SubmitButton.OnButtonPush += UpdateEmbedAsync;
-            AddOneMoreButton.OnButtonPush += UpdateEmbedAsync;
-            RemoveOneMoreButton.OnButtonPush += UpdateEmbedAsync;
+            this.SubmitButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.AddOneMoreButton.OnButtonPush += this.UpdateEmbedAsync;
+            this.RemoveOneMoreButton.OnButtonPush += this.UpdateEmbedAsync;
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            ItemCreateSaleListingRaw Em = new(Listing);
+            ItemCreateSaleListingRaw Em = new(this.Listing);
             await Em.RefreshAsync();
             return Em;
         }
@@ -207,10 +207,10 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            Context.Reference.MessageReceived -= MessageReceivedAsync;
-            SubmitButton.Dispose();
-            AddOneMoreButton.Dispose();
-            RemoveOneMoreButton.Dispose();
+            this.Context.Reference.MessageReceived -= this.MessageReceivedAsync;
+            this.SubmitButton.Dispose();
+            this.AddOneMoreButton.Dispose();
+            this.RemoveOneMoreButton.Dispose();
         }
     }
 }

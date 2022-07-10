@@ -14,7 +14,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
             this.U = U;
             if (this.U != default)
             {
-                UserAchievementsStore = DataStores.GetUserAchievementStore(this.U);
+                this.UserAchievementsStore = DataStores.GetUserAchievementStore(this.U);
             }
         }
 
@@ -28,19 +28,19 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Properties
 
         public async Task<IReadOnlyCollection<UserEarnedAchievement>> GetUserAchievementsAsync()
         {
-            return await (UserAchievementsStore != null ? UserAchievementsStore.ReadAllAsync<UserEarnedAchievement>() : Task.FromResult(new List<UserEarnedAchievement>()));
+            return await (this.UserAchievementsStore != null ? this.UserAchievementsStore.ReadAllAsync<UserEarnedAchievement>() : Task.FromResult(new List<UserEarnedAchievement>()));
         }
 
         public async Task TryAwardAchievements(KaiaUser User, CommandContext? CanRespondTo, params KaiaAchievement[] Achievements)
         {
-            if (UserAchievementsStore != null)
+            if (this.UserAchievementsStore != null)
             {
                 List<KaiaAchievement> Actual = new();
                 foreach (KaiaAchievement A in Achievements)
                 {
                     if (await A.CanAwardAsync(User, CanRespondTo) && !await A.UserAlreadyOwns(User))
                     {
-                        await UserAchievementsStore.SaveAsync(A);
+                        await this.UserAchievementsStore.SaveAsync(A);
                         User.Settings.Inventory.Petals += A.Rewards.Sum(AA => AA.Petals);
                         foreach (KaiaUserReward R in A.Rewards)
                         {

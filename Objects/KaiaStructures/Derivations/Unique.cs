@@ -20,11 +20,11 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations
 
         public Task SaveAsync()
         {
-            if (BelongsTo != null)
+            if (this.BelongsTo != null)
             {
                 lock (this)
                 {
-                    BelongsTo.SaveAsync(this).Wait();
+                    this.BelongsTo.SaveAsync(this).Wait();
                 }
             }
             return Task.CompletedTask;
@@ -32,7 +32,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations
 
         public async Task<T?> GetAsync<T>() where T : class, IDataStoreEntity
         {
-            T? R = BelongsTo != null ? await BelongsTo.ReadAsync<T>(Id) : null;
+            T? R = this.BelongsTo != null ? await this.BelongsTo.ReadAsync<T>(this.Id) : null;
             return R;
         }
     }

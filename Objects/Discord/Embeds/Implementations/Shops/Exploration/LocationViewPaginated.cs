@@ -13,8 +13,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
         public LocationViewPaginated(CommandContext Context)
             : base(new(), Context, 0, Strings.EmbedStrings.FakePaths.Outside, Strings.EmbedStrings.FakePaths.Locations)
         {
-            U = new(Context.UserContext.User.Id);
-            ItemSelected += ItemSelectedAsync;
+            this.U = new(Context.UserContext.User.Id);
+            ItemSelected += this.ItemSelectedAsync;
         }
 
         KaiaUser U { get; }
@@ -25,13 +25,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
 
             foreach (KaiaLocation[] Chunk in Inventory.Where(IB => IB.StatusNoTimeout == KaiaLocationExplorationStatus.Successful).OrderBy(IB => IB.AvailableUntil.HasValue ? IB.AvailableUntil : IB.End).Chunk(4))
             {
-                LocationPage Embed = new(Chunk, U);
+                LocationPage Embed = new(Chunk, this.U);
                 List<SelectMenuOptionBuilder> B = new();
                 foreach (KaiaLocation Location in Chunk)
                 {
                     B.Add(new(Location.Name, Location.Id.ToString(CultureInfo.InvariantCulture), null, Location.Emote, false));
                 }
-                EmbedsAndOptions.Add(Embed, B);
+                this.EmbedsAndOptions.Add(Embed, B);
             }
 
             return Task.CompletedTask;
@@ -45,14 +45,14 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
                 KaiaLocation? Location = await DataStores.GetUserLocationsStore(Component.User.Id).ReadAsync<KaiaLocation>(Res) ?? KaiaLocationRoom.Locations.FirstOrDefault(KL => KL.Id == Res);
                 if (Location != null)
                 {
-                    LocationView V = new(this, Location, Context, U);
+                    LocationView V = new(this, Location, this.Context, this.U);
                     await Component.DeferAsync(true);
-                    Dispose();
-                    await V.StartAsync(U);
+                    this.Dispose();
+                    await V.StartAsync(this.U);
                 }
                 else
                 {
-                    await Responses.PipeErrors(Context, new SingleItemNotFound());
+                    await Responses.PipeErrors(this.Context, new SingleItemNotFound());
                 }
             }
         }

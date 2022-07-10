@@ -13,12 +13,12 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementat
                              UsersCanSellThis: true,
                              DisplayEmoteName: Emotes.Items.Cigarette)
         {
-            OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
+            this.OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
         }
 
         public override Task OnKaiaStoreRefresh()
         {
-            OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
+            this.OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
             return Task.CompletedTask;
         }
     }

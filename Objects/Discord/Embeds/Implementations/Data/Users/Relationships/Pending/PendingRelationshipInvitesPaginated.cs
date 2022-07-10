@@ -17,7 +17,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
                                                                                           Strings.EmbedStrings.FakePaths.Relationships)
         {
             this.ChunkSize = ChunkSize;
-            ItemSelected += RelationshipSelectedAsync;
+            ItemSelected += this.RelationshipSelectedAsync;
         }
 
         public int ChunkSize { get; }
@@ -31,17 +31,17 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
                 if (Relationship != null)
                 {
                     await Component.DeferAsync();
-                    await new PendingRelInviteDisplay(this, Context, Relationship).StartAsync(new KaiaUser(Component.User.Id));
-                    Dispose();
+                    await new PendingRelInviteDisplay(this, this.Context, Relationship).StartAsync(new KaiaUser(Component.User.Id));
+                    this.Dispose();
                 }
             }
         }
 
         protected override async Task ClientRefreshAsync()
         {
-            KaiaUser U = new(Context.UserContext.User.Id);
+            KaiaUser U = new(this.Context.UserContext.User.Id);
 
-            IEnumerable<UserRelationship[]> Rels = (await U.RelationshipsProcessor.GetPendingRelationshipsAsync()).Chunk(ChunkSize);
+            IEnumerable<UserRelationship[]> Rels = (await U.RelationshipsProcessor.GetPendingRelationshipsAsync()).Chunk(this.ChunkSize);
 
             foreach (UserRelationship[] RelChunk in Rels)
             {
@@ -50,8 +50,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
                 {
                     Builds.Add(new($"relationship {R.Id}", R.Id.ToString(CultureInfo.InvariantCulture), R.Description, R.Emote, false));
                 }
-                MyRelationshipsPage Embed = new(Context, 3, RelChunk);
-                EmbedsAndOptions.Add(Embed, Builds);
+                MyRelationshipsPage Embed = new(this.Context, 3, RelChunk);
+                this.EmbedsAndOptions.Add(Embed, Builds);
             }
         }
     }

@@ -11,8 +11,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
         public RelationshipView(MyRelationshipsPaginated? Previous, CommandContext Context, UserRelationship Relationship) : base(Previous, Context, true)
         {
             this.Relationship = Relationship;
-            Leave = new(Context, "Leave", Emotes.Counting.Sub, false, false);
-            Leave.OnButtonPush += LeaveRelationshipAsync;
+            this.Leave = new(Context, "Leave", Emotes.Counting.Sub, false, false);
+            this.Leave.OnButtonPush += this.LeaveRelationshipAsync;
         }
 
         public UserRelationship Relationship { get; }
@@ -28,44 +28,44 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         private async Task LeaveRelationshipAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            Relationship.RemoveMember(UserWhoPressed.Id);
-            if (Relationship.KaiaUserIds.Any())
+            this.Relationship.RemoveMember(UserWhoPressed.Id);
+            if (this.Relationship.KaiaUserIds.Any())
             {
-                await DataStores.UserRelationshipsMainDirectory.SaveAsync(Relationship);
+                await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.Relationship);
             }
             else
             {
-                await DataStores.UserRelationshipsMainDirectory.DeleteAsync(Relationship.Id);
+                await DataStores.UserRelationshipsMainDirectory.DeleteAsync(this.Relationship.Id);
             }
             await Arg.DeferAsync();
-            Dispose();
-            await ForceBackAsync(Context);
+            this.Dispose();
+            await this.ForceBackAsync(this.Context);
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            RelationshipViewRaw? A = new(Relationship);
+            RelationshipViewRaw? A = new(this.Relationship);
             await A.RefreshAsync();
             return A;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync()
         {
-            ComponentBuilder B = await GetDefaultComponents();
-            return B.WithButton(Leave.WithDisabled(!Relationship.KaiaUserIds.Any(KUId => KUId == Context.UserContext.User.Id)));
+            ComponentBuilder B = await this.GetDefaultComponents();
+            return B.WithButton(this.Leave.WithDisabled(!this.Relationship.KaiaUserIds.Any(KUId => KUId == this.Context.UserContext.User.Id)));
         }
 
         public async Task UpdateEmbedAsync(KaiaUser U)
         {
-            Embed E = (await GetEmbedAsync(U)).Build();
-            MessageComponent Com = (await GetComponentsAsync()).Build();
-            if (!Context.UserContext.HasResponded)
+            Embed E = (await this.GetEmbedAsync(U)).Build();
+            MessageComponent Com = (await this.GetComponentsAsync()).Build();
+            if (!this.Context.UserContext.HasResponded)
             {
-                await Context.UserContext.RespondAsync(components: Com, embed: E);
+                await this.Context.UserContext.RespondAsync(components: Com, embed: E);
             }
             else
             {
-                await Context.UserContext.ModifyOriginalResponseAsync(M =>
+                await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
                 {
                     M.Content = Strings.EmbedStrings.Empty;
                     M.Components = Com;
@@ -76,7 +76,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         public override async Task StartAsync(KaiaUser U)
         {
-            await UpdateEmbedAsync(U);
+            await this.UpdateEmbedAsync(U);
         }
     }
 }

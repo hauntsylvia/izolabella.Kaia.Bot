@@ -25,7 +25,7 @@ namespace izolabella.Kaia.Bot.Objects.Clients
         {
             this.Self = Self;
             this.Parameters = Parameters;
-            Receivers = BaseImplementationUtil.GetItems<Receiver>();
+            this.Receivers = BaseImplementationUtil.GetItems<Receiver>();
             DateRateLimiter Limiter = new(DataStores.RateLimitsStore, "Main Command Rate Limiter", TimeSpan.FromSeconds(2));
             DateRateLimiter LimiterForLimiter = new(DataStores.RateLimitsStore, "Secondary Command Rate Limiter", TimeSpan.FromSeconds(4));
             this.Parameters.CommandHandler.PreCommandInvokeCheck = async (Command, Context) =>
@@ -63,12 +63,12 @@ namespace izolabella.Kaia.Bot.Objects.Clients
                     return false;
                 }
             };
-            this.Parameters.CommandHandler.AfterJoinedGuild += ClientJoinedGuildAsync;
-            this.Parameters.CommandHandler.CommandInvoked += AfterCommandExecutedAsync;
-            this.Parameters.CommandHandler.Ready += ClientReadyAsync;
-            this.Parameters.CommandHandler.UserJoined += ClientUserJoinedGuildAsync;
-            this.Parameters.CommandHandler.OnMessageReceiverError += MessageReceiverErrorAsync;
-            this.Parameters.CommandHandler.OnReactionReceiverError += ReactionReceiverErrorAsync;
+            this.Parameters.CommandHandler.AfterJoinedGuild += this.ClientJoinedGuildAsync;
+            this.Parameters.CommandHandler.CommandInvoked += this.AfterCommandExecutedAsync;
+            this.Parameters.CommandHandler.Ready += this.ClientReadyAsync;
+            this.Parameters.CommandHandler.UserJoined += this.ClientUserJoinedGuildAsync;
+            this.Parameters.CommandHandler.OnMessageReceiverError += this.MessageReceiverErrorAsync;
+            this.Parameters.CommandHandler.OnReactionReceiverError += this.ReactionReceiverErrorAsync;
             //this.Parameters.CommandHandler.OnCommandError += this.OnCommandErrorAsync;
         }
 
@@ -80,31 +80,31 @@ namespace izolabella.Kaia.Bot.Objects.Clients
 
         private Task ReactionReceiverErrorAsync(IzolabellaReactionReceiver Receiver, HttpException Exception)
         {
-            return OnCommandErrorAsync(null, Receiver, null, Exception);
+            return this.OnCommandErrorAsync(null, Receiver, null, Exception);
         }
 
         private Task MessageReceiverErrorAsync(IzolabellaMessageReceiver Receiver, HttpException Exception)
         {
-            return OnCommandErrorAsync(null, null, Receiver, Exception);
+            return this.OnCommandErrorAsync(null, null, Receiver, Exception);
         }
 
         private async Task OnCommandErrorAsync(IzolabellaCommand? Command, IzolabellaReactionReceiver? ReactionReceiver, IzolabellaMessageReceiver? MessageReceiver, HttpException Exception)
         {
-            Self.Update(Exception.Message);
+            this.Self.Update(Exception.Message);
             if (Command != null)
             {
-                Self.Update($"__kaia_restart attempt @ [{DateTime.Now}]");
-                await Parameters.StopAsync();
-                await Parameters.StartAsync();
-                Self.Update($"__kaia_restart finalized @ [{DateTime.Now}]");
+                this.Self.Update($"__kaia_restart attempt @ [{DateTime.Now}]");
+                await this.Parameters.StopAsync();
+                await this.Parameters.StartAsync();
+                this.Self.Update($"__kaia_restart finalized @ [{DateTime.Now}]");
             }
             else if (ReactionReceiver != null)
             {
-                Self.Update($"reaction receiver {ReactionReceiver.Name} failed");
+                this.Self.Update($"reaction receiver {ReactionReceiver.Name} failed");
             }
             else if (MessageReceiver != null)
             {
-                Self.Update($"message receiver {MessageReceiver.Name} failed");
+                this.Self.Update($"message receiver {MessageReceiver.Name} failed");
             }
         }
 
@@ -127,7 +127,7 @@ namespace izolabella.Kaia.Bot.Objects.Clients
         {
             if (Context.UserContext.User is SocketGuildUser SUser && CommandInvoked is AddCommandConstraintCommand)
             {
-                await RefreshCommandsAsync(new[] { SUser.Guild });
+                await this.RefreshCommandsAsync(new[] { SUser.Guild });
             }
             KaiaUser U = new(Context.UserContext.User.Id);
             await U.AchievementProcessor.TryAwardAchievements(U, Context, KaiaAchievementRoom.Achievements.ToArray());
@@ -140,16 +140,16 @@ namespace izolabella.Kaia.Bot.Objects.Clients
 
         private async Task ClientJoinedGuildAsync(SocketGuild Arg)
         {
-            await RefreshCommandsAsync(new[] { Arg });
+            await this.RefreshCommandsAsync(new[] { Arg });
         }
 
         private async Task ClientReadyAsync()
         {
             await Task.Run(() =>
             {
-                RefreshCommandsAsync(Parameters.CommandHandler.Guilds).ConfigureAwait(false);
-                IterateOverReactionRolesAsync(Parameters.CommandHandler.Guilds).ConfigureAwait(false);
-                IterateOverAutoRolesAsync(Parameters.CommandHandler.Guilds).ConfigureAwait(false);
+                this.RefreshCommandsAsync(this.Parameters.CommandHandler.Guilds).ConfigureAwait(false);
+                this.IterateOverReactionRolesAsync(this.Parameters.CommandHandler.Guilds).ConfigureAwait(false);
+                this.IterateOverAutoRolesAsync(this.Parameters.CommandHandler.Guilds).ConfigureAwait(false);
             });
         }
 
@@ -157,7 +157,7 @@ namespace izolabella.Kaia.Bot.Objects.Clients
         {
             foreach (SocketGuild DiscordGuild in RefreshFor)
             {
-                SocketGuildUser KaiaUser = DiscordGuild.GetUser(Parameters.CommandHandler.CurrentUser.Id);
+                SocketGuildUser KaiaUser = DiscordGuild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id);
                 GuildPermissions KaiaPerms = KaiaUser.GuildPermissions;
                 if (KaiaPerms.Has(GuildPermission.ManageRoles) && KaiaPerms.Has(GuildPermission.ReadMessageHistory))
                 {
@@ -213,7 +213,7 @@ namespace izolabella.Kaia.Bot.Objects.Clients
             foreach (SocketGuild Guild in RefreshFor)
             {
                 await Guild.DownloadUsersAsync();
-                SocketGuildUser KaiaUser = Guild.GetUser(Parameters.CommandHandler.CurrentUser.Id);
+                SocketGuildUser KaiaUser = Guild.GetUser(this.Parameters.CommandHandler.CurrentUser.Id);
                 if (KaiaUser.GuildPermissions.Has(GuildPermission.ManageRoles))
                 {
                     KaiaGuild G = new(Guild.Id);
@@ -266,7 +266,7 @@ namespace izolabella.Kaia.Bot.Objects.Clients
                     }
                 }
             }
-            await Parameters.CommandHandler.UpdateCommandsAsync(Commands.ToArray());
+            await this.Parameters.CommandHandler.UpdateCommandsAsync(Commands.ToArray());
         }
 
         #endregion

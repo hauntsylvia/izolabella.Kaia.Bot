@@ -22,9 +22,9 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achie
 
         protected override Task ClientRefreshAsync()
         {
-            foreach (KaiaAchievement Ach in Chunk)
+            foreach (KaiaAchievement Ach in this.Chunk)
             {
-                WithField($"{Ach.DisplayEmote} {Ach.Title} : `earned: {(Ach.UserAlreadyOwns(User).Result ? Emotes.Counting.Check : Emotes.Counting.Invalid)}`", $"{Ach.GetDescriptionAsync(User).Result}");
+                this.WithField($"{Ach.DisplayEmote} {Ach.Title} : `earned: {(Ach.UserAlreadyOwns(this.User).Result ? Emotes.Counting.Check : Emotes.Counting.Invalid)}`", $"{Ach.GetDescriptionAsync(this.User).Result}");
             }
             return Task.CompletedTask;
         }

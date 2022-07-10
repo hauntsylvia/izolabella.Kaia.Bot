@@ -12,7 +12,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
             this.U = U;
             if (this.U != default)
             {
-                UserLocationStore = DataStores.GetUserLocationsStore(this.U);
+                this.UserLocationStore = DataStores.GetUserLocationsStore(this.U);
             }
         }
 
@@ -22,12 +22,12 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
 
         public async Task<IEnumerable<KaiaLocation>> GetUserLocationsExploredAsync()
         {
-            List<KaiaLocation> Locs = await (UserLocationStore != null ? UserLocationStore.ReadAllAsync<KaiaLocation>() : Task.FromResult(new List<KaiaLocation>()));
-            if (UserLocationStore != null)
+            List<KaiaLocation> Locs = await (this.UserLocationStore != null ? this.UserLocationStore.ReadAllAsync<KaiaLocation>() : Task.FromResult(new List<KaiaLocation>()));
+            if (this.UserLocationStore != null)
             {
                 foreach (KaiaLocation Loc in Locs.Where(L => L.MustWaitUntil < DateTime.UtcNow))
                 {
-                    await UserLocationStore.DeleteAsync(Loc.Id);
+                    await this.UserLocationStore.DeleteAsync(Loc.Id);
                 }
             }
             return Locs.Where(L => L.MustWaitUntil >= DateTime.UtcNow);
@@ -35,14 +35,14 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
 
         public async Task AddLocationExploredAsync(KaiaLocation L)
         {
-            await (UserLocationStore != null ? UserLocationStore.SaveAsync(L) : Task.CompletedTask);
+            await (this.UserLocationStore != null ? this.UserLocationStore.SaveAsync(L) : Task.CompletedTask);
         }
 
         public async Task RemoveAllLocationsExploredAsync()
         {
-            if (UserLocationStore != null)
+            if (this.UserLocationStore != null)
             {
-                await UserLocationStore.DeleteAllAsync();
+                await this.UserLocationStore.DeleteAllAsync();
             }
         }
     }

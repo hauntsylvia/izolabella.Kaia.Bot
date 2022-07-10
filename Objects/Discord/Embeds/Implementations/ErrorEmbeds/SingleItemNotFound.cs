@@ -11,7 +11,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds
 
         protected override Task ClientRefreshAsync()
         {
-            WithField("404", "Nothing is here.");
+            this.WithField("404", "Nothing is here.");
             return Task.CompletedTask;
         }
     }

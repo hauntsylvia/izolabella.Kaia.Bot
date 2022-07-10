@@ -6,7 +6,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
     {
         public SpellId(TimeSpan ActiveFor, ulong Id)
         {
-            ActiveUntil = DateTime.UtcNow.Add(ActiveFor);
+            this.ActiveUntil = DateTime.UtcNow.Add(ActiveFor);
             this.Id = Id;
         }
 
@@ -19,7 +19,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Spells.Bases
 
         public DateTime ActiveUntil { get; }
 
-        public bool Expired => DateTime.UtcNow > ActiveUntil;
+        public bool Expired => DateTime.UtcNow > this.ActiveUntil;
 
         public ulong Id { get; }
     }

@@ -13,38 +13,38 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
         public LocationRawView(CommandContext Context, KaiaLocation Location) : base(Strings.EmbedStrings.FakePaths.Outside, Location.Name)
         {
             this.Context = Context;
-            UserLocation = Location;
+            this.UserLocation = Location;
         }
 
         public CommandContext Context { get; }
 
         public KaiaLocation UserLocation { get; set; }
 
-        private KaiaUser User => new(Context.UserContext.User.Id);
+        private KaiaUser User => new(this.Context.UserContext.User.Id);
 
         private KaiaLocation? KaiaLocation { get; set; }
 
         protected override async Task ClientRefreshAsync()
         {
-            UserLocation = (await new KaiaUser(Context.UserContext.User.Id).LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(A => A.Id == UserLocation.Id) ?? UserLocation;
-            KaiaLocation = await LocationView.GetKaiaLocationAsync(UserLocation.Id, User);
-            if (KaiaLocation != null)
+            this.UserLocation = (await new KaiaUser(this.Context.UserContext.User.Id).LocationProcessor.GetUserLocationsExploredAsync()).FirstOrDefault(A => A.Id == this.UserLocation.Id) ?? this.UserLocation;
+            this.KaiaLocation = await LocationView.GetKaiaLocationAsync(this.UserLocation.Id, this.User);
+            if (this.KaiaLocation != null)
             {
-                if (KaiaLocation.CoverUrl != null)
+                if (this.KaiaLocation.CoverUrl != null)
                 {
-                    WithImage(KaiaLocation.CoverUrl);
+                    this.WithImage(this.KaiaLocation.CoverUrl);
                 }
-                WithField("description", $"```{KaiaLocation.Description}```");
-                if (UserLocation.MustWaitUntil != null && UserLocation.Status == KaiaLocationExplorationStatus.Timeout)
+                this.WithField("description", $"```{this.KaiaLocation.Description}```");
+                if (this.UserLocation.MustWaitUntil != null && this.UserLocation.Status == KaiaLocationExplorationStatus.Timeout)
                 {
-                    double Hours = Math.Round((UserLocation.MustWaitUntil - DateTime.UtcNow).Value.TotalHours, 2);
-                    WithField("timeout!", $"please wait for `{Hours}` {(Hours != 1 ? "hours" : "hour")} before exploring this place again!");
+                    double Hours = Math.Round((this.UserLocation.MustWaitUntil - DateTime.UtcNow).Value.TotalHours, 2);
+                    this.WithField("timeout!", $"please wait for `{Hours}` {(Hours != 1 ? "hours" : "hour")} before exploring this place again!");
                 }
-                if (KaiaLocation.DisplayRewards)
+                if (this.KaiaLocation.DisplayRewards)
                 {
                     List<string> Display = new();
-                    double TotalWeight = KaiaLocation.Events.Sum(KV => KV.Weight);
-                    foreach (KaiaLocationEvent A in KaiaLocation.Events.OrderBy(KV => KV.Weight).Take(3))
+                    double TotalWeight = this.KaiaLocation.Events.Sum(KV => KV.Weight);
+                    foreach (KaiaLocationEvent A in this.KaiaLocation.Events.OrderBy(KV => KV.Weight).Take(3))
                     {
                         string SubDisplay = string.Empty;
                         double Chance = A.Weight / TotalWeight * 100.0;
@@ -58,7 +58,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
                             Display.Add(SubDisplay);
                         }
                     }
-                    WithListWrittenToField("rarest potential finds", Display, "");
+                    this.WithListWrittenToField("rarest potential finds", Display, "");
                 }
             }
         }

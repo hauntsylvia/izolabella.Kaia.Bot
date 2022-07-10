@@ -8,11 +8,11 @@
 
         public async Task RefreshAsync()
         {
-            if (!IsRefreshed)
+            if (!this.IsRefreshed)
             {
-                IsRefreshed = true;
+                this.IsRefreshed = true;
             }
-            await ClientRefreshAsync();
+            await this.ClientRefreshAsync();
         }
 
         public bool IsRefreshed { get; private set; }

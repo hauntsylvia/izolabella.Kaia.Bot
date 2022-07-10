@@ -16,8 +16,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achie
                                                                     Strings.EmbedStrings.FakePaths.Users,
                                                                     Context.UserContext.User.Username)
         {
-            U = new(Context.UserContext.User.Id);
-            ItemSelected += AchievementSelected;
+            this.U = new(Context.UserContext.User.Id);
+            ItemSelected += this.AchievementSelected;
             this.Filter = Filter;
             this.ChunkSize = ChunkSize;
         }
@@ -30,49 +30,49 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achie
 
         protected override async Task ClientRefreshAsync()
         {
-            List<KaiaAchievement>? R = (await U.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
+            List<KaiaAchievement>? R = (await this.U.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
             R.AddRange(KaiaAchievementRoom.Achievements.Where(KaiaAch => !R.Any(RR => RR.Id == KaiaAch.Id)));
             IEnumerable<KaiaAchievement[]> Relevant = R.Where(Ach =>
             {
-                return Filter == AchievementFilter.Complete ? Ach.UserAlreadyOwns(U).Result :
-                       Filter == AchievementFilter.Incomplete ? !Ach.UserAlreadyOwns(U).Result :
-                       Filter == AchievementFilter.All;
-            }).OrderBy(Ach => Ach.Category).Chunk(ChunkSize);
+                return this.Filter == AchievementFilter.Complete ? Ach.UserAlreadyOwns(this.U).Result :
+                       this.Filter == AchievementFilter.Incomplete ? !Ach.UserAlreadyOwns(this.U).Result :
+                       this.Filter == AchievementFilter.All;
+            }).OrderBy(Ach => Ach.Category).Chunk(this.ChunkSize);
 
             foreach (KaiaAchievement[] AchievementChunk in Relevant)
             {
-                AchievementPaginatedPage Embed = new(AchievementChunk, Context, U);
+                AchievementPaginatedPage Embed = new(AchievementChunk, this.Context, this.U);
                 List<SelectMenuOptionBuilder> SelectMenu = new();
                 foreach (KaiaAchievement Ach in AchievementChunk)
                 {
-                    SelectMenu.Add(new($"{Ach.Title}", Ach.Id.ToString(CultureInfo.InvariantCulture), Ach.GetDescriptionAsync(U).Result, Ach.DisplayEmote));
+                    SelectMenu.Add(new($"{Ach.Title}", Ach.Id.ToString(CultureInfo.InvariantCulture), Ach.GetDescriptionAsync(this.U).Result, Ach.DisplayEmote));
                 }
-                EmbedsAndOptions.Add(Embed, SelectMenu);
+                this.EmbedsAndOptions.Add(Embed, SelectMenu);
             }
         }
         private async void AchievementSelected(KaiaPathEmbedRefreshable Page, int ZeroBasedIndex, SocketMessageComponent Component, IReadOnlyCollection<string> ItemsSelected)
         {
-            if (Context.UserContext.IsValidToken)
+            if (this.Context.UserContext.IsValidToken)
             {
                 await Component.DeferAsync();
-                List<KaiaAchievement> UserEarned = (await U.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
+                List<KaiaAchievement> UserEarned = (await this.U.AchievementProcessor.GetUserAchievementsAsync()).Cast<KaiaAchievement>().ToList();
                 UserEarned.AddRange(KaiaAchievementRoom.Achievements.Where(KaiaAch => UserEarned.All(UserAch => UserAch.Id != KaiaAch.Id)));
                 KaiaAchievement? Selected = UserEarned.FirstOrDefault(Ach => (ItemsSelected.FirstOrDefault() ?? "") == Ach.Id.ToString(CultureInfo.InvariantCulture));
                 if (Selected != null)
                 {
-                    AchievementView V = new(this, Selected, Context);
+                    AchievementView V = new(this, Selected, this.Context);
                     await V.StartAsync(new(Component.User.Id));
                 }
                 else
                 {
-                    await Context.UserContext.ModifyOriginalResponseAsync(A =>
+                    await this.Context.UserContext.ModifyOriginalResponseAsync(A =>
                     {
                         A.Embed = new ListOfItemsNotFound().Build();
                         A.Components = new ComponentBuilder().Build();
                         A.Content = null;
                     });
                 }
-                Dispose();
+                this.Dispose();
             }
         }
     }

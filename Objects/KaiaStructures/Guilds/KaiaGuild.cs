@@ -10,7 +10,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
         public KaiaGuild(ulong Id, KaiaGuildSettings? Settings = null) : base(DataStores.GuildStore, Id)
         {
             this.Id = Id;
-            settings = Settings ?? GetAsync<KaiaGuild>().Result?.Settings ?? new();
+            this.settings = Settings ?? this.GetAsync<KaiaGuild>().Result?.Settings ?? new();
         }
 
         public new ulong Id { get; }
@@ -20,11 +20,11 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
         [JsonProperty("Settings", Required = Required.Always)]
         public KaiaGuildSettings Settings
         {
-            get => settings;
+            get => this.settings;
             set
             {
-                settings = value;
-                SaveAsync().GetAwaiter().GetResult();
+                this.settings = value;
+                this.SaveAsync().GetAwaiter().GetResult();
             }
         }
     }

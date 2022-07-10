@@ -12,11 +12,11 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
         {
             if (Event.Status == KaiaStructures.Exploration.Locations.Enums.KaiaLocationExplorationStatus.Successful)
             {
-                WithField("?", $"```{Event.Message}```");
+                this.WithField("?", $"```{Event.Message}```");
                 if (Event.RewardResult.Petals is > 0 or < 0)
                 {
                     string F = $"{Strings.Economy.CurrencyEmote} `{Event.RewardResult.Petals}`";
-                    WithField($"{Strings.Economy.CurrencyName}", $"{(Event.RewardResult.Petals > 0 ? $"u've found {F}" : $"u r down {F}")}");
+                    this.WithField($"{Strings.Economy.CurrencyName}", $"{(Event.RewardResult.Petals > 0 ? $"u've found {F}" : $"u r down {F}")}");
                 }
                 if (Event.RewardResult.Items.Length > 0)
                 {
@@ -25,12 +25,12 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Explo
                     {
                         Display.Add($"[worth {Strings.Economy.CurrencyEmote} `{Item.MarketCost}`] {Item.DisplayName} {Item.DisplayEmote}");
                     }
-                    WithListWrittenToField("items found", Display, ",\n");
+                    this.WithListWrittenToField("items found", Display, ",\n");
                 }
             }
             else
             {
-                WithField("nothing!", "looks like something went wrong");
+                this.WithField("nothing!", "looks like something went wrong");
             }
         }
     }

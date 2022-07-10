@@ -7,7 +7,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
     {
         public MarkNSFW(string GuildName, string ChannelName, bool IsNSFW) : base(Strings.EmbedStrings.FakePaths.Guilds, GuildName, ChannelName)
         {
-            WithField("nsfw", IsNSFW ? "`true`" : "`false`");
+            this.WithField("nsfw", IsNSFW ? "`true`" : "`false`");
         }
     }
 }

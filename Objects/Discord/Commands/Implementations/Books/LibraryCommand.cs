@@ -40,7 +40,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Books
 
         public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
-            Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Book Filter", "The filter to apply the books by.", typeof(LibraryViewFilters)));
+            this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Book Filter", "The filter to apply the books by.", typeof(LibraryViewFilters)));
             return Task.CompletedTask;
         }
     }

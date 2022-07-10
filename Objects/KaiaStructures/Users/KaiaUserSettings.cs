@@ -13,7 +13,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
         {
             this.HighestCountEver = HighestCountEver ?? 0;
             this.NumbersCounted = NumbersCounted ?? 0;
-            Inventory = Inv ?? new(30, DateTime.UtcNow);
+            this.Inventory = Inv ?? new(30, DateTime.UtcNow);
             this.U = U;
         }
 

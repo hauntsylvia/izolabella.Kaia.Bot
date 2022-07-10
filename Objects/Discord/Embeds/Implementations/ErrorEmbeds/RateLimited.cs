@@ -11,7 +11,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds
 
         protected override Task ClientRefreshAsync()
         {
-            WithField("Slow down", "Wait.");
+            this.WithField("Slow down", "Wait.");
             return Task.CompletedTask;
         }
     }

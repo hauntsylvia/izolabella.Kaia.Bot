@@ -9,7 +9,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
     {
         public LibraryPage(IEnumerable<KaiaBook> BookChunkToWrite, KaiaUser U, bool IsFirstPage = false) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library)
         {
-            BookChunk = BookChunkToWrite;
+            this.BookChunk = BookChunkToWrite;
             this.U = U;
             this.IsFirstPage = IsFirstPage;
         }
@@ -22,12 +22,12 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 
         protected override async Task ClientRefreshAsync()
         {
-            if (IsFirstPage)
+            if (this.IsFirstPage)
             {
-                WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round((await U.LibraryProcessor.GetUserBooksAsync()).Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min. " +
-                    $"{(U.TotalMultiplierOnBooks != 1 ? $"[* `{U.TotalMultiplierOnBooks}`]" : "")}");
+                this.WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round((await this.U.LibraryProcessor.GetUserBooksAsync()).Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min. " +
+                    $"{(this.U.TotalMultiplierOnBooks != 1 ? $"[* `{this.U.TotalMultiplierOnBooks}`]" : "")}");
             }
-            foreach (KaiaBook Book in BookChunk)
+            foreach (KaiaBook Book in this.BookChunk)
             {
                 if (Book.AvailableUntil >= DateTime.UtcNow || Book.IsFinished)
                 {
@@ -50,7 +50,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
                     {
                         Display.Add($"if u begin reading - {Strings.Economy.CurrencyEmote} `{Book.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
                     }
-                    WithListWrittenToField(Book.Title, Display, "\n");
+                    this.WithListWrittenToField(Book.Title, Display, "\n");
                 }
             }
         }

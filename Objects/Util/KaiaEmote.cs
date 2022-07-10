@@ -11,11 +11,11 @@
         [JsonProperty("Name")]
         public string Name { get; set; }
 
-        public bool IsCustom => Emote.TryParse(Name, out Emote _);
+        public bool IsCustom => Emote.TryParse(this.Name, out Emote _);
 
         public override string ToString()
         {
-            return !IsCustom ? Name : Emote.Parse(Name).ToString();
+            return !this.IsCustom ? this.Name : Emote.Parse(this.Name).ToString();
         }
     }
 }

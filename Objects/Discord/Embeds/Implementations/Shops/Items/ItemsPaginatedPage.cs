@@ -28,25 +28,25 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 
         protected override Task ClientRefreshAsync()
         {
-            if (Listings != null)
+            if (this.Listings != null)
             {
-                foreach (SaleListing Listing in Listings.Where(L => L.IsListed))
+                foreach (SaleListing Listing in this.Listings.Where(L => L.IsListed))
                 {
                     KaiaInventoryItem Item = Listing.Items.First();
 
-                    WithField($"[{Strings.Economy.CurrencyEmote} `{Listing.CostPerItem}`] {Item.DisplayName} {Item.DisplayEmote}", Item.Description);
+                    this.WithField($"[{Strings.Economy.CurrencyEmote} `{Listing.CostPerItem}`] {Item.DisplayName} {Item.DisplayEmote}", Item.Description);
                 }
             }
-            else if (ItemCountChunk != null)
+            else if (this.ItemCountChunk != null)
             {
-                ItemCountChunk = MeInventoryView.GetItemsAndCounts(new(Context.UserContext.User.Id));
+                this.ItemCountChunk = MeInventoryView.GetItemsAndCounts(new(this.Context.UserContext.User.Id));
                 List<string> Display = new();
-                foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in ItemCountChunk)
+                foreach (KeyValuePair<KaiaInventoryItem, int> ItemCount in this.ItemCountChunk)
                 {
                     Display.Add($"[{ItemCount.Key.DisplayEmote}] {ItemCount.Key.DisplayName} [x{ItemCount.Value}]");
                 }
 
-                WithListWrittenToField("inventory", Display, "\n");
+                this.WithListWrittenToField("inventory", Display, "\n");
             }
             return Task.CompletedTask;
         }

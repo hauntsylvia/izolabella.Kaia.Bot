@@ -23,22 +23,22 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achie
 
         protected override async Task ClientRefreshAsync()
         {
-            WithField("description", $"`{await KaiaAchievement.GetDescriptionAsync(User)}`");
-            WithField("achieved?", $"`{(await KaiaAchievement.UserAlreadyOwns(User) ? "yes" : "no")}`");
-            double TotalCurrencyEarned = KaiaAchievement.Rewards.Sum(A => A.Petals);
+            this.WithField("description", $"`{await this.KaiaAchievement.GetDescriptionAsync(this.User)}`");
+            this.WithField("achieved?", $"`{(await this.KaiaAchievement.UserAlreadyOwns(this.User) ? "yes" : "no")}`");
+            double TotalCurrencyEarned = this.KaiaAchievement.Rewards.Sum(A => A.Petals);
             List<string> W = new()
             {
                 $"{Strings.Economy.CurrencyEmote} `{TotalCurrencyEarned}`",
                 Strings.EmbedStrings.Empty,
             };
-            foreach (KaiaUserReward Reward in KaiaAchievement.Rewards)
+            foreach (KaiaUserReward Reward in this.KaiaAchievement.Rewards)
             {
                 foreach (KaiaInventoryItem Item in Reward.Items)
                 {
                     W.Add($"{Item.DisplayEmote} {Item.DisplayName}");
                 }
             }
-            WithListWrittenToField("rewards", W, "\n");
+            this.WithListWrittenToField("rewards", W, "\n");
         }
     }
 }

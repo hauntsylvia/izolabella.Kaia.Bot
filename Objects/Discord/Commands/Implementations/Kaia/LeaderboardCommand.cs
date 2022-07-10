@@ -38,7 +38,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 
         public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
         {
-            Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Leaderboard", "The leaderboard to view.", typeof(LeaderboardTypes)));
+            this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Leaderboard", "The leaderboard to view.", typeof(LeaderboardTypes)));
             return Task.CompletedTask;
         }
     }

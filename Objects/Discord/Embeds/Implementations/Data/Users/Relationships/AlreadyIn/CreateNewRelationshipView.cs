@@ -10,13 +10,13 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
     {
         public CreateNewRelationshipView(MyRelationshipsPaginated? Previous, CommandContext Context) : base(Previous, Context, true)
         {
-            NewRelationship = new(DateTime.UtcNow, string.Empty, Emotes.Counting.Heart, new(), new());
-            NewRelationship.AddMember(Context.UserContext.User.Id);
-            InviteUser = new(Context, "Start Inviting", Emotes.Counting.Add, false, false);
-            InviteUser.OnButtonPush += UserInviteAsync;
-            Done = new(Context, "Done", Emotes.Counting.CheckRare, false, false);
-            Done.OnButtonPush += DoneAsync;
-            this.Context.Reference.MessageReceived += MessageReceivedAsync;
+            this.NewRelationship = new(DateTime.UtcNow, string.Empty, Emotes.Counting.Heart, new(), new());
+            this.NewRelationship.AddMember(Context.UserContext.User.Id);
+            this.InviteUser = new(Context, "Start Inviting", Emotes.Counting.Add, false, false);
+            this.InviteUser.OnButtonPush += this.UserInviteAsync;
+            this.Done = new(Context, "Done", Emotes.Counting.CheckRare, false, false);
+            this.Done.OnButtonPush += this.DoneAsync;
+            this.Context.Reference.MessageReceived += this.MessageReceivedAsync;
         }
 
         public UserRelationship NewRelationship { get; }
@@ -29,24 +29,24 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         private async Task UserInviteAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            ReceivingUserMention = true;
+            this.ReceivingUserMention = true;
             await Arg.RespondAsync(text: "type the ids of the users to invite, or mention them. u can do this multiple times");
-            await DataStores.UserRelationshipsMainDirectory.SaveAsync(NewRelationship);
-            await UpdateEmbedAsync(UserWhoPressed);
+            await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.NewRelationship);
+            await this.UpdateEmbedAsync(UserWhoPressed);
         }
 
         private async Task DoneAsync(SocketMessageComponent Arg, KaiaUser UserWhoPressed)
         {
-            ReceivingUserMention = false;
+            this.ReceivingUserMention = false;
             await Arg.DeferAsync(true);
-            await DataStores.UserRelationshipsMainDirectory.SaveAsync(NewRelationship);
-            await ForceBackAsync(Context);
+            await DataStores.UserRelationshipsMainDirectory.SaveAsync(this.NewRelationship);
+            await this.ForceBackAsync(this.Context);
         }
 
         private async Task MessageReceivedAsync(SocketMessage Arg)
         {
-            if (ReceivingUserMention &&
-                Arg.Author.Id == Context.UserContext.User.Id &&
+            if (this.ReceivingUserMention &&
+                Arg.Author.Id == this.Context.UserContext.User.Id &&
                 (ulong.TryParse(Arg.Content, out ulong IdToInv) || Arg.MentionedUsers.Any()))
             {
                 if ((IdToInv != default && Arg.Author.Id != IdToInv) || Arg.MentionedUsers.All(M => M.Id != Arg.Author.Id))
@@ -55,14 +55,14 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
                     {
                         foreach (SocketUser? Mentioned in Arg.MentionedUsers)
                         {
-                            NewRelationship.AddPendingMember(Mentioned.Id);
+                            this.NewRelationship.AddPendingMember(Mentioned.Id);
                         }
                     }
                     else if (IdToInv != default)
                     {
-                        NewRelationship.AddPendingMember(IdToInv);
+                        this.NewRelationship.AddPendingMember(IdToInv);
                     }
-                    await StartAsync(new(Arg.Author.Id));
+                    await this.StartAsync(new(Arg.Author.Id));
                 }
             }
         }
@@ -70,35 +70,35 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
-            Context.Reference.MessageReceived -= MessageReceivedAsync;
+            this.Context.Reference.MessageReceived -= this.MessageReceivedAsync;
         }
 
         public override async Task<KaiaPathEmbedRefreshable> GetEmbedAsync(KaiaUser U)
         {
-            CreateNewRelationshipViewRaw? A = new(Context, NewRelationship);
+            CreateNewRelationshipViewRaw? A = new(this.Context, this.NewRelationship);
             await A.RefreshAsync();
             return A;
         }
 
         public async Task<ComponentBuilder> GetComponentsAsync()
         {
-            ComponentBuilder CB = await GetDefaultComponents();
-            CB.WithButton(InviteUser.WithDisabled(ReceivingUserMention));
-            CB.WithButton(Done.WithDisabled(false));
+            ComponentBuilder CB = await this.GetDefaultComponents();
+            CB.WithButton(this.InviteUser.WithDisabled(this.ReceivingUserMention));
+            CB.WithButton(this.Done.WithDisabled(false));
             return CB;
         }
 
         public async Task UpdateEmbedAsync(KaiaUser U)
         {
-            Embed E = (await GetEmbedAsync(U)).Build();
-            MessageComponent Com = (await GetComponentsAsync()).Build();
-            if (!Context.UserContext.HasResponded)
+            Embed E = (await this.GetEmbedAsync(U)).Build();
+            MessageComponent Com = (await this.GetComponentsAsync()).Build();
+            if (!this.Context.UserContext.HasResponded)
             {
-                await Context.UserContext.RespondAsync(components: Com, embed: E);
+                await this.Context.UserContext.RespondAsync(components: Com, embed: E);
             }
             else
             {
-                await Context.UserContext.ModifyOriginalResponseAsync(M =>
+                await this.Context.UserContext.ModifyOriginalResponseAsync(M =>
                 {
                     M.Content = Strings.EmbedStrings.Empty;
                     M.Components = Com;
@@ -109,7 +109,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         public override async Task StartAsync(KaiaUser U)
         {
-            await UpdateEmbedAsync(U);
+            await this.UpdateEmbedAsync(U);
         }
     }
 }

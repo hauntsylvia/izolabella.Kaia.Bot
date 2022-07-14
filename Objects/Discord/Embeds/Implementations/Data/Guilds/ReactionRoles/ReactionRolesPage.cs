@@ -31,7 +31,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds
                     };
                     if (Message != null)
                     {
-                        Display.Add(Message.GetJumpUrl());
+                        Display.Add($"[message url]({Message.GetJumpUrl()})");
                     }
                     this.WithListWrittenToField($"{RelatingRole.Mention}", Display, "\n");
                 }

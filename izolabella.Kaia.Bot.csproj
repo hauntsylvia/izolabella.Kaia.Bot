@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\izolabella.KawaiiRed.NET\izolabella.KawaiiRed.NET.csproj" />
+    <ProjectReference Include="..\izolabella.LoFi.Server\izolabella.LoFi.Server.csproj" />
     <ProjectReference Include="..\izolabella.Util\izolabella.Util.csproj" />
   </ItemGroup>
 

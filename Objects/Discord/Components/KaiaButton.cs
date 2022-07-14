@@ -13,7 +13,15 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Components
                                                               Disabled)
         {
             Context.Reference.ButtonExecuted += this.ButtonExecutedAsync;
-            this.CustomId = $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}";
+            this.CustomId = Url == null ? $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}" : null;
+            this.Referrer = new(Context.UserContext.User.Id);
+            this.Context = Context;
+            this.EnabledUntil = DateTime.UtcNow.AddHours(1);
+            this.AnyoneCanPress = AnyoneCanPress;
+        }
+
+        public KaiaButton(CommandContext Context, Uri Url, string Label, IEmote? Emote, bool Disabled = true, bool AnyoneCanPress = false) : base(Label, null, ButtonStyle.Link, url: Url.ToString(), Emote, Disabled)
+        {
             this.Referrer = new(Context.UserContext.User.Id);
             this.Context = Context;
             this.EnabledUntil = DateTime.UtcNow.AddHours(1);

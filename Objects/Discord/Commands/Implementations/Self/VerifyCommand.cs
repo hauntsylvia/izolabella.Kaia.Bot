@@ -34,7 +34,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self
         public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
         {
             KaiaUser U = new(Context.UserContext.User.Id);
-            LoFiUser? R = (await izolabella.LoFi.Server.Structures.Constants.DataStores.UserStore.ReadAsync<LoFiUser>(Context.UserContext.User.Id));
+            LoFiUser? R = await izolabella.LoFi.Server.Structures.Constants.DataStores.UserStore.ReadAsync<LoFiUser>(Context.UserContext.User.Id);
             VerifyEmbed VE = new(U, R);
             KaiaButton Button = new(Context, VE.VLink, "Verify", Emotes.Counting.CheckRare, R != null, false);
             await VE.RefreshAsync();
@@ -43,6 +43,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             {
                 if (Context.UserContext.IsValidToken)
                 {
+                    LUser.DisplayAlias = Context.UserContext.User.Username;
+                    await LoFi.Server.Structures.Constants.DataStores.UserStore.SaveAsync(LUser);
                     VE = new(U, LUser);
                     await VE.RefreshAsync();
                     await Context.UserContext.ModifyOriginalResponseAsync(R =>

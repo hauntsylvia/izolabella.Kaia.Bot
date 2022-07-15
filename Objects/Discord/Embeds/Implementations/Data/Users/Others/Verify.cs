@@ -41,7 +41,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
                 if(Complete != null)
                 {
                     this.WithField("verified", "verification was successful");
-                    this.WithField("secret - _only u can see this embed_", $"||{Complete.Credentials.Secret}||");
+                    this.WithField("secret - _only u can see this embed_", $"||{Complete.Credentials.Secret}||", true);
                     this.WithField("what now?", "copy and paste the secret into the lofi clients to enable tracking of ur statistics, such as the amount of time u spend listening to the radio");
                 }
                 else

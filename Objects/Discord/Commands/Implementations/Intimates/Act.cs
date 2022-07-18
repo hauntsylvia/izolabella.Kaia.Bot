@@ -32,7 +32,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates
 
         public override List<IzolabellaSubCommand> SubCommands => new()
         {
-            new Hug(), new Kiss(), new Pat(), new Cuddle()
+            new Hug(), new Kiss(), new Pat(), new Cuddle(), new Kill()
         };
     }
 }

@@ -28,6 +28,7 @@
             internal static string Kiss => "kiss-7820221106";
             internal static string Pat => "pat-7820221111";
             internal static string Cuddle => "cuddle-7820221112";
+            internal static string Kill => "kill-71720220105";
         }
     }
 }

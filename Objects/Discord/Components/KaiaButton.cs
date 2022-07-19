@@ -13,7 +13,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Components
                                                               Disabled)
         {
             Context.Reference.ButtonExecuted += this.ButtonExecutedAsync;
-            this.CustomId = Url == null ? $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}" : null;
+            this.CustomId = this.Url == null ? $"{this.Label}-{IdGenerator.CreateNewId().ToString(CultureInfo.InvariantCulture)}" : null;
             this.Referrer = new(Context.UserContext.User.Id);
             this.Context = Context;
             this.EnabledUntil = DateTime.UtcNow.AddHours(1);

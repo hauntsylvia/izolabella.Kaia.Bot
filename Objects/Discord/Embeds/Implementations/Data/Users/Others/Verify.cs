@@ -23,17 +23,17 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         public bool IsComplete => this.User != null;
 
-        public Uri VLink => new($"https://izolabella.dev:21621/{new Verify().Route}/{Req.Secret}");
+        public Uri VLink => new($"https://izolabella.dev:21621/{new Verify().Route}/{this.Req.Secret}");
 
         public LoFiUserVerificationRequest Req { get; }
 
         protected override async Task ClientRefreshAsync()
         {
-            if(!IsComplete)
+            if(!this.IsComplete)
             {
-                await izolabella.LoFi.Server.Structures.Constants.DataStores.VerificationRequestsStore.SaveAsync(Req);
-                this.WithField("verify", $"[click here]({VLink}) to verify", true);
-                this.WithField("time limit", $"expires at <t:{(int)Req.ExpiresAt.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds}:T>", true);
+                await izolabella.LoFi.Server.Structures.Constants.DataStores.VerificationRequestsStore.SaveAsync(this.Req);
+                this.WithField("verify", $"[click here]({this.VLink}) to verify", true);
+                this.WithField("time limit", $"expires at <t:{(int)this.Req.ExpiresAt.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds}:T>", true);
             }
             else
             {

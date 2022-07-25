@@ -3,7 +3,7 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeViews
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
     public class MeView : KaiaPathEmbedRefreshable
     {

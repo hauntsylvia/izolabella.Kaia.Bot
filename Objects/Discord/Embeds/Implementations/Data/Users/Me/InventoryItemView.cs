@@ -7,7 +7,7 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 using izolabella.Util.RateLimits.Limiters;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeViews
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
     public class InventoryItemView : KaiaItemContentView
     {

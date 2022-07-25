@@ -4,7 +4,7 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeViews
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
     public class MeInventoryView : KaiaPathEmbedPaginated
     {

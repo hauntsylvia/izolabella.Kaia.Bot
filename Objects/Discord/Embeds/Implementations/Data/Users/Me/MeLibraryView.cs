@@ -4,7 +4,7 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeViews
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
     public class MeLibraryView : KaiaPathEmbedPaginated
     {

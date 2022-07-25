@@ -1,11 +1,11 @@
 ﻿using izolabella.Kaia.Bot.Objects.Constants;
 using izolabella.Kaia.Bot.Objects.Discord.Components;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
-using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeViews;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {

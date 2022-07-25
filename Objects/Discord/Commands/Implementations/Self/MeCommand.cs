@@ -3,13 +3,13 @@ using izolabella.Discord.Objects.Parameters;
 using izolabella.Discord.Objects.Structures.Discord.Commands;
 using izolabella.Kaia.Bot.Objects.Constants;
 using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
-using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeViews;
+using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {
     public class MeCommand : KaiaCommand
     {
-        public override string Name => "Me";
+        public override string Name => "MeData";
 
         public override string Description => "View my statistics and my inventory, or view another user's statistics.";
 

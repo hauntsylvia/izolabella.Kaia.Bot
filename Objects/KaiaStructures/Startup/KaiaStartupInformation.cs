@@ -17,7 +17,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Startup
         [JsonProperty("Token", Required = Required.Always)]
         public string Token { get; }
 
-        [JsonProperty("Name", Required = Required.DisallowNull)]
+        [JsonProperty("DisplayName", Required = Required.DisallowNull)]
         public string Alias { get; }
 
         [JsonProperty("ProfileIsEnabled", Required = Required.DisallowNull)]

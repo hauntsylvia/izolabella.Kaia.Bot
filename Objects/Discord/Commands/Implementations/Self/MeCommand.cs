@@ -9,7 +9,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {
     public class MeCommand : KaiaCommand
     {
-        public override string Name => "MeData";
+        public override string Name => "Me";
 
         public override string Description => "View my statistics and my inventory, or view another user's statistics.";
 

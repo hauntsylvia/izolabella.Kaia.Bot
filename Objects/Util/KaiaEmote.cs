@@ -8,7 +8,7 @@
             this.Name = Name;
         }
 
-        [JsonProperty("Name")]
+        [JsonProperty("DisplayName")]
         public string Name { get; set; }
 
         public bool IsCustom => Emote.TryParse(this.Name, out Emote _);

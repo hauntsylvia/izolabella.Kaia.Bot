@@ -22,6 +22,7 @@
         internal static string ToggleNSFW => "togglensfw-7720221640";
         internal static string Act => "act-7820221041";
         internal static string Verify => "verify-71420221155";
+        internal static string SelfLoFiStats => "selflofistats-72620220843";
         internal static class Acts
         {
             internal static string Hug => "hug-7820221043";

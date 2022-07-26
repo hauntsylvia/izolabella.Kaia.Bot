@@ -43,6 +43,7 @@
                 internal static string Locations => "locations";
                 internal static string ReactionRoles => "roles";
                 internal static string Relationships => "relationships";
+                internal static string LoFi => $"{izolabella.Util.Info.NameForPackages}.LoFi";
             }
         }
         internal static class Responses

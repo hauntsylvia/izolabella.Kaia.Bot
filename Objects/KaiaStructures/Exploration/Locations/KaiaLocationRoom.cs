@@ -80,7 +80,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 
             #region walmart
 
-            //new(Name: "Walmart",
+            //new(DisplayName: "Walmart",
             //    Description: "A super-store run by a mass of both fresh-out-of-highschool students and grumpy people that suck off management.",
             //    ShortDescription: "A super-store containing a diverse selection of items.",
             //    DisplayRewards: true,

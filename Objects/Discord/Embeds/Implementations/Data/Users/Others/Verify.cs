@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using izolabella.LoFi.Server.Structures.Endpoints;
 using izolabella.LoFi.Server.Structures.Users;
+using izolabella.Music.Structure.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others
 {

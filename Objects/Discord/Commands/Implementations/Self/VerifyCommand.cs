@@ -6,7 +6,7 @@ using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Others;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn;
 using izolabella.LoFi.Server.Structures.Endpoints;
-using izolabella.LoFi.Server.Structures.Users;
+using izolabella.Music.Structure.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +43,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self
             {
                 if (Context.UserContext.IsValidToken)
                 {
-                    LUser.DisplayAlias = Context.UserContext.User.Username;
+                    LUser.Profile.DisplayName = Context.UserContext.User.Username;
                     await LoFi.Server.Structures.Constants.DataStores.UserStore.SaveAsync(LUser);
                     VE = new(U, LUser);
                     await VE.RefreshAsync();

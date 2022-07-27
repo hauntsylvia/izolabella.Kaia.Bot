@@ -69,5 +69,10 @@ namespace izolabella.Kaia.Bot.Objects.Constants
         internal static DataStore RateLimitsStore => new(Strings.App.Name, Strings.DataStoreNames.RateLimitStore, SerializerSettings);
         internal static DataStore SaleListingsStore => new(Strings.App.Name, Strings.DataStoreNames.SaleListingsStore, SerializerSettings);
         #endregion
+
+        #region lofi
+        internal static DataStore LoFiUserStore => izolabella.LoFi.Server.Structures.Constants.DataStores.UserStore;
+        internal static DataStore LoFiUserListensStore(ulong UserId) => izolabella.LoFi.Server.Structures.Constants.DataStores.GetUsersListensStore(UserId);
+        #endregion
     }
 }

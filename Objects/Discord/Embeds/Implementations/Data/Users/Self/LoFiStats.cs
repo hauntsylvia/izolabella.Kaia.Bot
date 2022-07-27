@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self;
-using izolabella.LoFi.Server.Structures.Users;
 using izolabella.Music.Structure.Music.Songs;
 using izolabella.Music.Structure.Users;
 
@@ -23,17 +22,19 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.
 
         private static string FormatTimeSpan(TimeSpan Format)
         {
-            return $"{(Format.Days >= 1 ? $"`{Format.Days}d` " : "")}" +
-                        $"{(Format.Hours >= 1 ? $"`{Format.Hours}h` "
-                        : $"{(Format.Minutes >= 1 ? $"`{Format.Minutes}min` " : $"")}")}";
+            return $"{(Format.TotalDays >= 1 ? $"`{Format.Days}d`, " : "")}" +
+                   $"{(Format.TotalHours >= 1 ? $"`{Format.Hours}h`, " : "")}" +
+                   $"{(Format.TotalMinutes >= 1 ? $"`{Format.Minutes}min`, " : "")}" +
+                   $"{(Format.TotalSeconds >= 1 ? $"`{Format.Seconds}s`" : "")}";
         }
 
         protected override async Task ClientRefreshAsync()
         {
-            LoFiUser? User = await LoFiUser.Get(this.DiscordId);
+            LoFiUser? User = await LoFiUser.Get(this.DiscordId, DataStores.LoFiUserStore);
             if(User != null)
             {
-                List<LoFiUserSongListened> Listens = await User.UserListensStore.ReadAllAsync<LoFiUserSongListened>();
+                this.WithField("Alias", $"`{User.Profile.DisplayName}`");
+                List<LoFiUserSongListened> Listens = await LoFi.Server.Structures.Constants.DataStores.GetUsersListensStore(User.Id).ReadAllAsync<LoFiUserSongListened>();
                 if(Listens.Any())
                 {
                     TimeSpan TimeListened = TimeSpan.FromSeconds(Listens.Sum(L => L.TimeListened.TotalSeconds));

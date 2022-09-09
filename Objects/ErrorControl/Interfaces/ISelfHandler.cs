@@ -1,7 +1,6 @@
-﻿namespace izolabella.Kaia.Bot.Objects.ErrorControl.Interfaces
+﻿namespace izolabella.Kaia.Bot.Objects.ErrorControl.Interfaces;
+
+public interface ISelfHandler
 {
-    public interface ISelfHandler
-    {
-        Task OnErrorAsync(Exception Exception);
-    }
+    Task OnErrorAsync(Exception Exception);
 }

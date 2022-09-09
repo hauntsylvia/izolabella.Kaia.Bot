@@ -1,7 +1,6 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants
+﻿namespace izolabella.Kaia.Bot.Objects.Constants;
+
+internal static class TimeSpans
 {
-    internal static class TimeSpans
-    {
-        internal static TimeSpan BookTickRate => TimeSpan.FromMinutes(1);
-    }
+    internal static TimeSpan BookTickRate => TimeSpan.FromMinutes(1);
 }

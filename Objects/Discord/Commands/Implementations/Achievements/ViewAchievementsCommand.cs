@@ -7,35 +7,34 @@ using izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
 using izolabella.Kaia.Bot.Objects.Util;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Achievements
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Achievements;
+
+internal class ViewAchievementsCommand : KaiaCommand
 {
-    internal class ViewAchievementsCommand : KaiaCommand
+    public override string ForeverId => CommandForeverIds.ViewAchievements;
+
+    public override string Name => "Achievements";
+
+    public override string Description => "View your achievements.";
+
+    public override bool GuildsOnly => false;
+
+    public override List<IzolabellaCommandParameter> Parameters { get; } = new();
+
+    public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
+
+    public override List<GuildPermission> RequiredPermissions { get; } = new();
+
+    public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
     {
-        public override string ForeverId => CommandForeverIds.ViewAchievements;
+        this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Achievement Filter", "The filter to apply to the list of achievements.", typeof(AchievementFilter)));
+        return Task.CompletedTask;
+    }
 
-        public override string Name => "Achievements";
-
-        public override string Description => "View your achievements.";
-
-        public override bool GuildsOnly => false;
-
-        public override List<IzolabellaCommandParameter> Parameters { get; } = new();
-
-        public override List<IIzolabellaCommandConstraint> Constraints { get; } = new();
-
-        public override List<GuildPermission> RequiredPermissions { get; } = new();
-
-        public override Task OnLoadAsync(IzolabellaCommand[] AllCommands)
-        {
-            this.Parameters.Add(EnumToReadable.MakeChoicesFromEnum("Achievement Filter", "The filter to apply to the list of achievements.", typeof(AchievementFilter)));
-            return Task.CompletedTask;
-        }
-
-        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
-        {
-            IzolabellaCommandArgument? FilterArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "achievement-filter");
-            AchievementFilter Result = EnumToReadable.GetEnumFromArg<AchievementFilter>(FilterArg);
-            await new AchievementsPaginated(Context, Result, 4).StartAsync();
-        }
+    public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+    {
+        IzolabellaCommandArgument? FilterArg = Arguments.FirstOrDefault(A => A.Name.ToLower(CultureInfo.InvariantCulture) == "achievement-filter");
+        AchievementFilter Result = EnumToReadable.GetEnumFromArg<AchievementFilter>(FilterArg);
+        await new AchievementsPaginated(Context, Result, 4).StartAsync();
     }
 }

@@ -1,18 +1,17 @@
 ﻿using izolabella.Kaia.Bot.Objects.Constants;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds
-{
-    public class RateLimited : KaiaPathEmbedRefreshable
-    {
-        public RateLimited() : base(Strings.EmbedStrings.FakePaths.Global)
-        {
-        }
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.ErrorEmbeds;
 
-        protected override Task ClientRefreshAsync()
-        {
-            this.WithField("Slow down", "Wait.");
-            return Task.CompletedTask;
-        }
+public class RateLimited : KaiaPathEmbedRefreshable
+{
+    public RateLimited() : base(Strings.EmbedStrings.FakePaths.Global)
+    {
+    }
+
+    protected override Task ClientRefreshAsync()
+    {
+        this.WithField("Slow down", "Wait.");
+        return Task.CompletedTask;
     }
 }

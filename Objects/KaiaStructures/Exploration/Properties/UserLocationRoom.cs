@@ -2,48 +2,47 @@
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
 using izolabella.Storage.Objects.DataStores;
 
-namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties;
+
+[JsonObject(MemberSerialization.OptIn)]
+public class UserLocationRoom
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class UserLocationRoom
+    public UserLocationRoom(ulong U)
     {
-        public UserLocationRoom(ulong U)
+        this.U = U;
+        if (this.U != default)
         {
-            this.U = U;
-            if (this.U != default)
+            this.UserLocationStore = DataStores.GetUserLocationsStore(this.U);
+        }
+    }
+
+    public ulong U { get; }
+
+    private DataStore? UserLocationStore { get; }
+
+    public async Task<IEnumerable<KaiaLocation>> GetUserLocationsExploredAsync()
+    {
+        List<KaiaLocation> Locs = await (this.UserLocationStore != null ? this.UserLocationStore.ReadAllAsync<KaiaLocation>() : Task.FromResult(new List<KaiaLocation>()));
+        if (this.UserLocationStore != null)
+        {
+            foreach (KaiaLocation Loc in Locs.Where(L => L.MustWaitUntil < DateTime.UtcNow))
             {
-                this.UserLocationStore = DataStores.GetUserLocationsStore(this.U);
+                await this.UserLocationStore.DeleteAsync(Loc.Id);
             }
         }
+        return Locs.Where(L => L.MustWaitUntil >= DateTime.UtcNow);
+    }
 
-        public ulong U { get; }
+    public async Task AddLocationExploredAsync(KaiaLocation L)
+    {
+        await (this.UserLocationStore != null ? this.UserLocationStore.SaveAsync(L) : Task.CompletedTask);
+    }
 
-        private DataStore? UserLocationStore { get; }
-
-        public async Task<IEnumerable<KaiaLocation>> GetUserLocationsExploredAsync()
+    public async Task RemoveAllLocationsExploredAsync()
+    {
+        if (this.UserLocationStore != null)
         {
-            List<KaiaLocation> Locs = await (this.UserLocationStore != null ? this.UserLocationStore.ReadAllAsync<KaiaLocation>() : Task.FromResult(new List<KaiaLocation>()));
-            if (this.UserLocationStore != null)
-            {
-                foreach (KaiaLocation Loc in Locs.Where(L => L.MustWaitUntil < DateTime.UtcNow))
-                {
-                    await this.UserLocationStore.DeleteAsync(Loc.Id);
-                }
-            }
-            return Locs.Where(L => L.MustWaitUntil >= DateTime.UtcNow);
-        }
-
-        public async Task AddLocationExploredAsync(KaiaLocation L)
-        {
-            await (this.UserLocationStore != null ? this.UserLocationStore.SaveAsync(L) : Task.CompletedTask);
-        }
-
-        public async Task RemoveAllLocationsExploredAsync()
-        {
-            if (this.UserLocationStore != null)
-            {
-                await this.UserLocationStore.DeleteAllAsync();
-            }
+            await this.UserLocationStore.DeleteAllAsync();
         }
     }
 }

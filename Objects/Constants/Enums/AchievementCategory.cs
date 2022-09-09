@@ -1,8 +1,7 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums;
+
+public enum AchievementCategory
 {
-    public enum AchievementCategory
-    {
-        Counting,
-        Economy
-    }
+    Counting,
+    Economy
 }

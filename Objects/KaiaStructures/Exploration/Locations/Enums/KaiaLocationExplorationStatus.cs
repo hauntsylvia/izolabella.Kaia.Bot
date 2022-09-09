@@ -1,11 +1,10 @@
-﻿namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums
+﻿namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
+
+public enum KaiaLocationExplorationStatus
 {
-    public enum KaiaLocationExplorationStatus
-    {
-        Timeout,
-        LocationUnavailable,
-        IncorrectLocationTime,
-        Successful,
-        NotDoneYet
-    }
+    Timeout,
+    LocationUnavailable,
+    IncorrectLocationTime,
+    Successful,
+    NotDoneYet
 }

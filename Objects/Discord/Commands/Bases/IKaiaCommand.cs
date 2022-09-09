@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Bases
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Bases;
+
+public interface IKaiaCommand
 {
-    public interface IKaiaCommand
-    {
-        /// <summary>
-        /// DO NOT CHANGE after first compilation with the command.
-        /// </summary>
-        public string ForeverId { get; }
+    /// <summary>
+    /// DO NOT CHANGE after first compilation with the command.
+    /// </summary>
+    public string ForeverId { get; }
 
-        public string Name { get; }
+    public string Name { get; }
 
-        public List<GuildPermission> RequiredPermissions { get; }
-    }
+    public List<GuildPermission> RequiredPermissions { get; }
 }

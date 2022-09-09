@@ -18,10 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="izolabella.Discord" Version="7.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\izolabella.Discord\izolabella.Discord.csproj" />
     <ProjectReference Include="..\izolabella.KawaiiRed.NET\izolabella.KawaiiRed.NET.csproj" />
     <ProjectReference Include="..\izolabella.LoFi.Server\izolabella.LoFi.Server.csproj" />
     <ProjectReference Include="..\izolabella.Storage\izolabella.Storage.csproj" />

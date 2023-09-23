@@ -10,26 +10,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self;
-
-public class RelationshipsView : KaiaSubCommand
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Self
 {
-    public override string Name => "View";
-
-    public override string Description => "View current relationships you are in.";
-
-    public override bool GuildsOnly => false;
-
-    public override List<IzolabellaCommandParameter> Parameters => new();
-
-    public override List<IIzolabellaCommandConstraint> Constraints => new();
-
-    public override string ForeverId => CommandForeverIds.RelationshipsView;
-
-    public override List<GuildPermission> RequiredPermissions => new();
-
-    public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+    public class RelationshipsView : KaiaSubCommand
     {
-        await new MyRelationshipsPaginated(Context).StartAsync();
+        public override string Name => "View";
+
+        public override string Description => "View current relationships you are in.";
+
+        public override bool GuildsOnly => false;
+
+        public override List<IzolabellaCommandParameter> Parameters => new();
+
+        public override List<IIzolabellaCommandConstraint> Constraints => new();
+
+        public override string ForeverId => CommandForeverIds.RelationshipsView;
+
+        public override List<GuildPermission> RequiredPermissions => new();
+
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        {
+            await new MyRelationshipsPaginated(Context).StartAsync();
+        }
     }
 }

@@ -1,8 +1,9 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums;
-
-public enum AchievementFilter
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums
 {
-    All,
-    Incomplete,
-    Complete
+    public enum AchievementFilter
+    {
+        All,
+        Incomplete,
+        Complete
+    }
 }

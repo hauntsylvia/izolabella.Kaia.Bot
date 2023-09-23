@@ -4,25 +4,25 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations.Enums;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration;
-
-public class LocationPage : KaiaPathEmbedRefreshable
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {
-    public LocationPage(IEnumerable<KaiaLocation> Locations, KaiaUser U) : base(Strings.EmbedStrings.FakePaths.Outside)
+    public class LocationPage : KaiaPathEmbedRefreshable
     {
-        this.Locations = Locations;
-        this.U = U;
-    }
-
-    public IEnumerable<KaiaLocation> Locations { get; }
-
-    public KaiaUser U { get; }
-
-    protected override Task ClientRefreshAsync()
-    {
-        foreach (KaiaLocation Location in this.Locations)
+        public LocationPage(IEnumerable<KaiaLocation> Locations, KaiaUser U) : base(Strings.EmbedStrings.FakePaths.Outside)
         {
-            List<string> Display = new()
+            this.Locations = Locations;
+            this.U = U;
+        }
+
+        public IEnumerable<KaiaLocation> Locations { get; }
+
+        public KaiaUser U { get; }
+
+        protected override Task ClientRefreshAsync()
+        {
+            foreach (KaiaLocation Location in this.Locations)
+            {
+                List<string> Display = new()
             {
                 $"```{(Location.StatusNoTimeout == KaiaLocationExplorationStatus.LocationUnavailable ?
                     $"this location is not available for exploration anymore" :
@@ -30,13 +30,14 @@ public class LocationPage : KaiaPathEmbedRefreshable
                         $"u must wait before exploring this location again" :
                         Location.ShortDescription)}```"
             };
-            if (Location.AvailableUntil.HasValue && Location.StatusNoTimeout != KaiaLocationExplorationStatus.LocationUnavailable)
-            {
-                Display.Add($"`{Math.Round((Location.AvailableUntil.Value - DateTime.UtcNow).TotalDays, 0)}` days left");
+                if (Location.AvailableUntil.HasValue && Location.StatusNoTimeout != KaiaLocationExplorationStatus.LocationUnavailable)
+                {
+                    Display.Add($"`{Math.Round((Location.AvailableUntil.Value - DateTime.UtcNow).TotalDays, 0)}` days left");
+                }
+                Display.Add(Strings.EmbedStrings.Empty);
+                this.WithListWrittenToField($"{Location.Name}", Display, "\n");
             }
-            Display.Add(Strings.EmbedStrings.Empty);
-            this.WithListWrittenToField($"{Location.Name}", Display, "\n");
+            return Task.CompletedTask;
         }
-        return Task.CompletedTask;
     }
 }

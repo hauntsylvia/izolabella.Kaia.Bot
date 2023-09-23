@@ -1,8 +1,9 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums;
-
-public enum LibraryViewFilters
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums
 {
-    Incomplete,
-    Complete,
-    All
+    public enum LibraryViewFilters
+    {
+        Incomplete,
+        Complete,
+        All
+    }
 }

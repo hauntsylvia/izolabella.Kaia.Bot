@@ -1,14 +1,14 @@
 ﻿using izolabella.Kaia.Bot.Objects.Constants;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds.KaiaServer;
-
-public class ColorsEmbed : KaiaPathEmbed
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds.KaiaServer
 {
-    public ColorsEmbed() : base(Strings.EmbedStrings.FakePaths.Kaia, "colors")
+    public class ColorsEmbed : KaiaPathEmbed
     {
-        this.WithImage(new("https://i.pinimg.com/originals/33/4e/a1/334ea17c92dfccd6418b3ebe9206aaa7.gif"));
-        this.WithListWrittenToField("colors", new List<string>()
+        public ColorsEmbed() : base(Strings.EmbedStrings.FakePaths.Kaia, "colors")
+        {
+            this.WithImage(new("https://i.pinimg.com/originals/33/4e/a1/334ea17c92dfccd6418b3ebe9206aaa7.gif"));
+            this.WithListWrittenToField("colors", new List<string>()
         {
             $"{Emotes.Customs.Numbers.Kaia1} : <@&993547948254318722>",
             $"{Emotes.Customs.Numbers.Kaia2} : <@&993548551839830096>",
@@ -20,5 +20,6 @@ public class ColorsEmbed : KaiaPathEmbed
             $"{Emotes.Customs.Numbers.Kaia8} : <@&993547585098874901>",
             $"{Emotes.Customs.Numbers.Kaia9} : <@&993547862346567830>",
         }, "\n");
+        }
     }
 }

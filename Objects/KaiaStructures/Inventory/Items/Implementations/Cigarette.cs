@@ -1,24 +1,25 @@
 ﻿using izolabella.Kaia.Bot.Objects.Constants;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
-namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
-
-public class Cigarette : KaiaInventoryItem
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations
 {
-    public Cigarette() : base(DisplayName: Strings.ItemStrings.Cigarette.Name,
-                         Description: "a cigarette.",
-                         MarketCost: 12.99,
-                         CanInteractWithDirectly: true,
-                         KaiaDisplaysThisOnTheStore: false,
-                         UsersCanSellThis: true,
-                         DisplayEmoteName: Emotes.Items.Cigarette)
+    public class Cigarette : KaiaInventoryItem
     {
-        this.OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
-    }
+        public Cigarette() : base(DisplayName: Strings.ItemStrings.Cigarette.Name,
+                             Description: "a cigarette.",
+                             MarketCost: 12.99,
+                             CanInteractWithDirectly: true,
+                             KaiaDisplaysThisOnTheStore: false,
+                             UsersCanSellThis: true,
+                             DisplayEmoteName: Emotes.Items.Cigarette)
+        {
+            this.OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
+        }
 
-    public override Task OnKaiaStoreRefresh()
-    {
-        this.OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
-        return Task.CompletedTask;
+        public override Task OnKaiaStoreRefresh()
+        {
+            this.OnInteract = new(Strings.ItemStrings.Cigarette.Message, new(-5));
+            return Task.CompletedTask;
+        }
     }
 }

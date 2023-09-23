@@ -1,27 +1,28 @@
-﻿namespace izolabella.Kaia.Bot.Objects.ClientParameters;
-
-public class KaiaParams
+﻿namespace izolabella.Kaia.Bot.Objects.ClientParameters
 {
-    public KaiaParams(DiscordSocketConfig Config, bool AllowBotsOnMessageReceivers, bool GlobalCommands, string Token)
+    public class KaiaParams
     {
-        this.CommandHandler = new(Config, GlobalCommands);
-        this.AllowBotsOnMessageReceivers = AllowBotsOnMessageReceivers;
-        this.Token = Token;
-    }
+        public KaiaParams(DiscordSocketConfig Config, bool AllowBotsOnMessageReceivers, bool GlobalCommands, string Token)
+        {
+            this.CommandHandler = new(Config, GlobalCommands);
+            this.AllowBotsOnMessageReceivers = AllowBotsOnMessageReceivers;
+            this.Token = Token;
+        }
 
-    public IzolabellaDiscordClient CommandHandler { get; }
+        public IzolabellaDiscordClient CommandHandler { get; }
 
-    public bool AllowBotsOnMessageReceivers { get; }
+        public bool AllowBotsOnMessageReceivers { get; }
 
-    private string Token { get; set; }
+        private string Token { get; set; }
 
-    public async Task StartAsync()
-    {
-        await this.CommandHandler.StartAsync(this.Token, false);
-    }
+        public async Task StartAsync()
+        {
+            await this.CommandHandler.StartAsync(this.Token, false);
+        }
 
-    public async Task StopAsync()
-    {
-        await this.CommandHandler.StopAndLogoutAsync();
+        public async Task StopAsync()
+        {
+            await this.CommandHandler.StopAndLogoutAsync();
+        }
     }
 }

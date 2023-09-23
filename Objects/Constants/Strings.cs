@@ -1,99 +1,99 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants;
-
-public static class Strings
+﻿namespace izolabella.Kaia.Bot.Objects.Constants
 {
-    internal static class App
+    public static class Strings
     {
-        internal static string Name => "CompetitiveCounting.Bot";
-    }
-    internal static class DataStoreNames
-    {
-        internal static string UserStore => "CCBUsers";
-        internal static string GuildStore => "CCBGuilds";
-        internal static string BookStore => "Kaia Library";
-        internal static string AchievementStore => "Achievements";
-        internal static string LocationStore => "Locations";
-        internal static string SpellsStore => "Spells";
-        internal static string RateLimitStore => "Rate Limits";
-        internal static string SaleListingsStore => "Sale Relationships";
-        internal static string RelationshipsStore => "User Relationships";
-    }
-    public static class EmbedStrings
-    {
-        internal static string FooterString => "⊹⊱-☿ Mercury-Izolabella ☿-⊰⊹";
-        internal static DateTime DefaultTimestamp => DateTime.UtcNow;
-        public static string Empty => "\u200b";
-        internal static string UnknownUser => "unknown user";
-        internal static string UnknownGuild => "unknown guild";
-        public static class FakePaths
+        internal static class App
         {
-            internal static string NotFound => "not found";
-            internal static string Commands => "commands";
-            internal static string Users => "users";
-            public static string Global => "global";
-            public static string Outside => new Random().Next(0, 1000) == 50 ? "desolation" : "outside";
-            internal static string Guilds => "guilds";
-            internal static string Settings => "settings";
-            internal static string Leaderboards => "leaderboards";
-            internal static string StoreOrShop => "store";
-            internal static string Library => "library";
-            internal static string Inventory => "inventory";
-            internal static string Kaia => "kaia";
-            internal static string Achievements => "achievements";
-            internal static string Locations => "locations";
-            internal static string ReactionRoles => "roles";
-            internal static string Relationships => "relationships";
-            internal static string LoFi => $"{izolabella.Util.Info.NameForPackages}.LoFi";
+            internal static string Name => "CompetitiveCounting.Bot";
         }
-    }
-    internal static class Responses
-    {
-        internal static class Commands
+        internal static class DataStoreNames
         {
-            internal static string GuildSetSaved => "guild settings saved!";
-            internal static string GuildSetSaveFail => "guild settings could not be saved.";
-            internal static string InvalidLeaderboardOption => "that's an invalid leaderboard option!";
-            internal static string NoInventoryItemWithThatNameFound => "there r no items matching that name . .";
-            internal static string ZeroOrNegativeQuantity => "u don't want to buy anything?";
-            internal static string InvalidCurrencyAmount => "u don't have enough to cover this transaction.";
-            internal static string NoBookFound => "oh no, there's no matching book.";
+            internal static string UserStore => "CCBUsers";
+            internal static string GuildStore => "CCBGuilds";
+            internal static string BookStore => "Kaia Library";
+            internal static string AchievementStore => "Achievements";
+            internal static string LocationStore => "Locations";
+            internal static string SpellsStore => "Spells";
+            internal static string RateLimitStore => "Rate Limits";
+            internal static string SaleListingsStore => "Sale Relationships";
+            internal static string RelationshipsStore => "User Relationships";
         }
-        internal static class Counting
+        public static class EmbedStrings
         {
-            internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
-            internal static string UserCountingSaved => "counting refreshed. don't fail next time.";
-            private static string[] UserFailedInCounting => new[]
+            internal static string FooterString => "⊹⊱-☿ Mercury-Izolabella ☿-⊰⊹";
+            internal static DateTime DefaultTimestamp => DateTime.UtcNow;
+            public static string Empty => "\u200b";
+            internal static string UnknownUser => "unknown user";
+            internal static string UnknownGuild => "unknown guild";
+            public static class FakePaths
             {
+                internal static string NotFound => "not found";
+                internal static string Commands => "commands";
+                internal static string Users => "users";
+                public static string Global => "global";
+                public static string Outside => new Random().Next(0, 1000) == 50 ? "desolation" : "outside";
+                internal static string Guilds => "guilds";
+                internal static string Settings => "settings";
+                internal static string Leaderboards => "leaderboards";
+                internal static string StoreOrShop => "store";
+                internal static string Library => "library";
+                internal static string Inventory => "inventory";
+                internal static string Kaia => "kaia";
+                internal static string Achievements => "achievements";
+                internal static string Locations => "locations";
+                internal static string ReactionRoles => "roles";
+                internal static string Relationships => "relationships";
+                internal static string LoFi => $"{izolabella.Util.Info.NameForPackages}.LoFi";
+            }
+        }
+        internal static class Responses
+        {
+            internal static class Commands
+            {
+                internal static string GuildSetSaved => "guild settings saved!";
+                internal static string GuildSetSaveFail => "guild settings could not be saved.";
+                internal static string InvalidLeaderboardOption => "that's an invalid leaderboard option!";
+                internal static string NoInventoryItemWithThatNameFound => "there r no items matching that name . .";
+                internal static string ZeroOrNegativeQuantity => "u don't want to buy anything?";
+                internal static string InvalidCurrencyAmount => "u don't have enough to cover this transaction.";
+                internal static string NoBookFound => "oh no, there's no matching book.";
+            }
+            internal static class Counting
+            {
+                internal static string SameUserTriedCountingTwiceInARow => "sorry! u can't quite do that (someone else has to count next).";
+                internal static string UserCountingSaved => "counting refreshed. don't fail next time.";
+                private static string[] UserFailedInCounting => new[]
+                {
                 "oh my . . how unfortunate. time to start over!",
                 "one day.",
                 "yikes.",
                 "maybe u'll get it next time?",
                 "i feel sorta bad for this one.",
             };
-            internal static string GetRandomCountingFailText()
-            {
-                return UserFailedInCounting[new Random().Next(0, UserFailedInCounting.Length)];
+                internal static string GetRandomCountingFailText()
+                {
+                    return UserFailedInCounting[new Random().Next(0, UserFailedInCounting.Length)];
+                }
             }
         }
-    }
 
-    internal static class ItemStrings
-    {
-        internal static class Rose
+        internal static class ItemStrings
         {
-            internal static string Name => "Rose";
-            internal static string RoseStab => "ouch! the rose stabbed u . .";
-            internal static string RosePretty => "u examine the rose, and find it peaceful.";
-        }
-        internal static class CountingRefresher
-        {
-            internal static string Name => "Counting Refresher";
-        }
-        internal static class Notebook
-        {
-            internal static string Name => "Notebook";
-            private static string[] Messages { get; } = new[]
+            internal static class Rose
             {
+                internal static string Name => "Rose";
+                internal static string RoseStab => "ouch! the rose stabbed u . .";
+                internal static string RosePretty => "u examine the rose, and find it peaceful.";
+            }
+            internal static class CountingRefresher
+            {
+                internal static string Name => "Counting Refresher";
+            }
+            internal static class Notebook
+            {
+                internal static string Name => "Notebook";
+                private static string[] Messages { get; } = new[]
+                {
                 "u write down ur experiences after a long, tiring day.",
                 "writing down 5 things u r grateful for can be difficult, but u did it.",
                 "ur mind is jumbled, so u decide to doodle.",
@@ -104,45 +104,46 @@ public static class Strings
                 "ur thoughts flow through the pen and onto paper.",
                 "r u tired? u haven't written a whole lot. that's okay, get some rest if u need it."
             };
-            internal static string GetMessage()
-            {
-                return Messages[new Random().Next(0, Messages.Length)];
+                internal static string GetMessage()
+                {
+                    return Messages[new Random().Next(0, Messages.Length)];
+                }
             }
-        }
-        internal static class DeadFinger
-        {
-            internal static string Name => "Dead Finger";
-            private static string[] PossibleMessages => new string[]
+            internal static class DeadFinger
             {
+                internal static string Name => "Dead Finger";
+                private static string[] PossibleMessages => new string[]
+                {
                 ". . . ick",
                 "that's . . gross."
-            };
+                };
 
-            public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
-        }
-        internal static class NutAndBolt
-        {
-            internal static string Name => "Nut And Bolt";
-        }
-        internal static class Cigarette
-        {
-            internal static string Name => "Cigarette";
-            private static string[] PossibleMessages => new string[]
+                public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
+            }
+            internal static class NutAndBolt
             {
+                internal static string Name => "Nut And Bolt";
+            }
+            internal static class Cigarette
+            {
+                internal static string Name => "Cigarette";
+                private static string[] PossibleMessages => new string[]
+                {
                 "is this actually worth it to u?",
                 "I hope this relieves ur stress."
-            };
+                };
 
-            public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
+                public static string Message => PossibleMessages[new Random().Next(0, PossibleMessages.Length)];
+            }
+            internal static class Candle
+            {
+                internal static string Name => "Candle";
+            }
         }
-        internal static class Candle
+        internal static class Economy
         {
-            internal static string Name => "Candle";
+            internal static string CurrencyName => "Petals";
+            internal static Emoji CurrencyEmote => Emoji.Parse("💮");
         }
-    }
-    internal static class Economy
-    {
-        internal static string CurrencyName => "Petals";
-        internal static Emoji CurrencyEmote => Emoji.Parse("💮");
     }
 }

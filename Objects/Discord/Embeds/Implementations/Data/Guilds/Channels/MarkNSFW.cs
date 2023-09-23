@@ -1,12 +1,13 @@
 ﻿using izolabella.Kaia.Bot.Objects.Constants;
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.Channels;
-
-internal class MarkNSFW : KaiaPathEmbed
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.Channels
 {
-    public MarkNSFW(string GuildName, string ChannelName, bool IsNSFW) : base(Strings.EmbedStrings.FakePaths.Guilds, GuildName, ChannelName)
+    internal class MarkNSFW : KaiaPathEmbed
     {
-        this.WithField("nsfw", IsNSFW ? "`true`" : "`false`");
+        public MarkNSFW(string GuildName, string ChannelName, bool IsNSFW) : base(Strings.EmbedStrings.FakePaths.Guilds, GuildName, ChannelName)
+        {
+            this.WithField("nsfw", IsNSFW ? "`true`" : "`false`");
+        }
     }
 }

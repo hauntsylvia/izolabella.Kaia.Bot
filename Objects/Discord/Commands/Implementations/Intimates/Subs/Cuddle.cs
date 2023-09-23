@@ -8,30 +8,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs;
-
-public class Cuddle : KaiaSubCommand
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs
 {
-    public override string ForeverId => CommandForeverIds.Acts.Cuddle;
-
-    public override List<GuildPermission> RequiredPermissions => new Act().RequiredPermissions;
-
-    public override string Name => "Cuddle";
-
-    public override string Description => "Cuddle someone!";
-
-    public override bool GuildsOnly => true;
-
-    public override List<IzolabellaCommandParameter> Parameters => new Act().Parameters;
-
-    public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+    public class Cuddle : KaiaSubCommand
     {
-        IzolabellaCommandArgument? OtherUser = Arguments.FirstOrDefault(A => A.Name == "user");
-        if (OtherUser != null && OtherUser.Value is IUser U)
-        {
+        public override string ForeverId => CommandForeverIds.Acts.Cuddle;
 
-            IntimateDisplay D = new(new("cuddle", "cuddles"), new(Context.UserContext.User.Id), new(U.Id));
-            await Context.UserContext.RespondAsync(embed: D.Build());
+        public override List<GuildPermission> RequiredPermissions => new Act().RequiredPermissions;
+
+        public override string Name => "Cuddle";
+
+        public override string Description => "Cuddle someone!";
+
+        public override bool GuildsOnly => true;
+
+        public override List<IzolabellaCommandParameter> Parameters => new Act().Parameters;
+
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        {
+            IzolabellaCommandArgument? OtherUser = Arguments.FirstOrDefault(A => A.Name == "user");
+            if (OtherUser != null && OtherUser.Value is IUser U)
+            {
+
+                IntimateDisplay D = new(new("cuddle", "cuddles"), new(Context.UserContext.User.Id), new(U.Id));
+                await Context.UserContext.RespondAsync(embed: D.Build());
+            }
         }
     }
 }

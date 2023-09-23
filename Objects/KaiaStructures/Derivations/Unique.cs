@@ -2,37 +2,38 @@
 using izolabella.Storage.Objects.Structures;
 using izolabella.Util;
 
-namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations;
-
-[JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
-public class Unique : IDataStoreEntity
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations
 {
-    public Unique(DataStore? BelongsTo, ulong? Id = null)
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
+    public class Unique : IDataStoreEntity
     {
-        this.BelongsTo = BelongsTo;
-        this.Id = Id ?? IdGenerator.CreateNewId();
-    }
-
-    public DataStore? BelongsTo { get; set; }
-
-    [JsonProperty("Id", Required = Required.Always)]
-    public ulong Id { get; }
-
-    public Task SaveAsync()
-    {
-        if (this.BelongsTo != null)
+        public Unique(DataStore? BelongsTo, ulong? Id = null)
         {
-            lock (this)
-            {
-                this.BelongsTo.SaveAsync(this).Wait();
-            }
+            this.BelongsTo = BelongsTo;
+            this.Id = Id ?? IdGenerator.CreateNewId();
         }
-        return Task.CompletedTask;
-    }
 
-    public async Task<T?> GetAsync<T>() where T : class, IDataStoreEntity
-    {
-        T? R = this.BelongsTo != null ? await this.BelongsTo.ReadAsync<T>(this.Id) : null;
-        return R;
+        public DataStore? BelongsTo { get; set; }
+
+        [JsonProperty("Id", Required = Required.Always)]
+        public ulong Id { get; }
+
+        public Task SaveAsync()
+        {
+            if (this.BelongsTo != null)
+            {
+                lock (this)
+                {
+                    this.BelongsTo.SaveAsync(this).Wait();
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        public async Task<T?> GetAsync<T>() where T : class, IDataStoreEntity
+        {
+            T? R = this.BelongsTo != null ? await this.BelongsTo.ReadAsync<T>(this.Id) : null;
+            return R;
+        }
     }
 }

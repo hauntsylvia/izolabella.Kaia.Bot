@@ -8,30 +8,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs;
-
-public class Kill : KaiaSubCommand
+namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Intimates.Subs
 {
-    public override string ForeverId => CommandForeverIds.Acts.Kill;
-
-    public override List<GuildPermission> RequiredPermissions => new Act().RequiredPermissions;
-
-    public override string Name => "Kill";
-
-    public override string Description => "Kill";
-
-    public override bool GuildsOnly => true;
-
-    public override List<IzolabellaCommandParameter> Parameters => new Act().Parameters;
-
-    public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+    public class Kill : KaiaSubCommand
     {
-        IzolabellaCommandArgument? OtherUser = Arguments.FirstOrDefault(A => A.Name == "user");
-        if (OtherUser != null && OtherUser.Value is IUser U)
-        {
+        public override string ForeverId => CommandForeverIds.Acts.Kill;
 
-            IntimateDisplay D = new(new("kill", "kills"), new(Context.UserContext.User.Id), new(U.Id));
-            await Context.UserContext.RespondAsync(embed: D.Build());
+        public override List<GuildPermission> RequiredPermissions => new Act().RequiredPermissions;
+
+        public override string Name => "Kill";
+
+        public override string Description => "Kill";
+
+        public override bool GuildsOnly => true;
+
+        public override List<IzolabellaCommandParameter> Parameters => new Act().Parameters;
+
+        public override async Task RunAsync(CommandContext Context, IzolabellaCommandArgument[] Arguments)
+        {
+            IzolabellaCommandArgument? OtherUser = Arguments.FirstOrDefault(A => A.Name == "user");
+            if (OtherUser != null && OtherUser.Value is IUser U)
+            {
+
+                IntimateDisplay D = new(new("kill", "kills"), new(Context.UserContext.User.Id), new(U.Id));
+                await Context.UserContext.RespondAsync(embed: D.Build());
+            }
         }
     }
 }

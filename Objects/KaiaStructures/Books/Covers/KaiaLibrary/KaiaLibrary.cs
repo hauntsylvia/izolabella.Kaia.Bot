@@ -1,10 +1,10 @@
 ﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 
-namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary;
-
-public class KaiaLibrary
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
 {
-    public static List<KaiaBook> Books => new()
+    public class KaiaLibrary
+    {
+        public static List<KaiaBook> Books => new()
     {
         new("Somokuto",
             "Santōka Taneda",
@@ -67,8 +67,9 @@ public class KaiaLibrary
             62720220418),
     };
 
-    public static KaiaBook? GetActiveBookById(string Id)
-    {
-        return Books.FirstOrDefault(B => B.BookId == Id);
+        public static KaiaBook? GetActiveBookById(string Id)
+        {
+            return Books.FirstOrDefault(B => B.BookId == Id);
+        }
     }
 }

@@ -1,16 +1,17 @@
 ﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties;
-
-public class KaiaItemReturnContext
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Properties
 {
-    public KaiaItemReturnContext(string Message, KaiaUserReward? Reward)
+    public class KaiaItemReturnContext
     {
-        this.Message = Message;
-        this.Reward = Reward;
+        public KaiaItemReturnContext(string Message, KaiaUserReward? Reward)
+        {
+            this.Message = Message;
+            this.Reward = Reward;
+        }
+
+        public string Message { get; }
+
+        public KaiaUserReward? Reward { get; }
     }
-
-    public string Message { get; }
-
-    public KaiaUserReward? Reward { get; }
 }

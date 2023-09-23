@@ -3,47 +3,48 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 using izolabella.Kaia.Bot.Objects.Clients;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Receivers.Implementations;
-
-public class ReactionRoles : IzolabellaReactionReceiver
+namespace izolabella.Kaia.Bot.Objects.Discord.Receivers.Implementations
 {
-    public override string Name => "Reaction Roles";
-
-    public override Predicate<SocketReaction> ValidPredicate => (Arg) => true;
-
-    public override async Task OnReactionAsync(IzolabellaDiscordClient Reference, SocketReaction Reaction, bool ReactionRemoved)
+    public class ReactionRoles : IzolabellaReactionReceiver
     {
-        if (Reaction.Channel is SocketGuildChannel Channel)
+        public override string Name => "Reaction Roles";
+
+        public override Predicate<SocketReaction> ValidPredicate => (Arg) => true;
+
+        public override async Task OnReactionAsync(IzolabellaDiscordClient Reference, SocketReaction Reaction, bool ReactionRemoved)
         {
-            KaiaGuild Guild = new(Channel.Guild.Id);
-            IUser? U = Reaction.User.GetValueOrDefault() ?? await Reference.GetUserAsync(Reaction.UserId);
-            if (U is not null and SocketGuildUser User && User.Id != Reference.CurrentUser.Id)
+            if (Reaction.Channel is SocketGuildChannel Channel)
             {
-                foreach (KaiaReactionRole Role in Guild.Settings.ReactionRoles)
+                KaiaGuild Guild = new(Channel.Guild.Id);
+                IUser? U = Reaction.User.GetValueOrDefault() ?? await Reference.GetUserAsync(Reaction.UserId);
+                if (U is not null and SocketGuildUser User && User.Id != Reference.CurrentUser.Id)
                 {
-                    if (Role.ChannelId == Reaction.Channel.Id && Role.MessageId == Reaction.MessageId && Role.Emote.ToString() == Reaction.Emote.ToString())
+                    foreach (KaiaReactionRole Role in Guild.Settings.ReactionRoles)
                     {
-                        IRole? ActualRole = await Role.GetRoleAsync(Channel.Guild);
-                        if (ActualRole != null)
+                        if (Role.ChannelId == Reaction.Channel.Id && Role.MessageId == Reaction.MessageId && Role.Emote.ToString() == Reaction.Emote.ToString())
                         {
-                            if (ReactionRemoved)
+                            IRole? ActualRole = await Role.GetRoleAsync(Channel.Guild);
+                            if (ActualRole != null)
                             {
-                                await User.RemoveRoleAsync(ActualRole.Id);
-                            }
-                            else
-                            {
-                                await User.AddRoleAsync(ActualRole);
+                                if (ReactionRemoved)
+                                {
+                                    await User.RemoveRoleAsync(ActualRole.Id);
+                                }
+                                else
+                                {
+                                    await User.AddRoleAsync(ActualRole);
+                                }
                             }
                         }
                     }
                 }
+                await Guild.SaveAsync();
             }
-            await Guild.SaveAsync();
         }
-    }
 
-    public override Task OnErrorAsync(HttpException Exception)
-    {
-        return Task.CompletedTask;
+        public override Task OnErrorAsync(HttpException Exception)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

@@ -2,25 +2,26 @@
 using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData;
-
-public class InventoryItemViewRaw : KaiaPathEmbedRefreshable
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
-    public InventoryItemViewRaw(KaiaInventoryItem Item) : base(Strings.EmbedStrings.FakePaths.Inventory, Item.DisplayName)
+    public class InventoryItemViewRaw : KaiaPathEmbedRefreshable
     {
-        this.Item = Item;
-    }
-
-    public KaiaInventoryItem Item { get; }
-
-    protected override Task ClientRefreshAsync()
-    {
-        this.WithField(this.Item.DisplayString, this.Item.Description);
-        if (this.Item.ReceivedAt.HasValue)
+        public InventoryItemViewRaw(KaiaInventoryItem Item) : base(Strings.EmbedStrings.FakePaths.Inventory, Item.DisplayName)
         {
-            this.WithField("received at", $"`{this.Item.ReceivedAt.Value.ToShortDateString()}`");
+            this.Item = Item;
         }
-        this.WithField("unique identifier", $"`{this.Item.Id.ToString(CultureInfo.InvariantCulture)}`");
-        return Task.CompletedTask;
+
+        public KaiaInventoryItem Item { get; }
+
+        protected override Task ClientRefreshAsync()
+        {
+            this.WithField(this.Item.DisplayString, this.Item.Description);
+            if (this.Item.ReceivedAt.HasValue)
+            {
+                this.WithField("received at", $"`{this.Item.ReceivedAt.Value.ToShortDateString()}`");
+            }
+            this.WithField("unique identifier", $"`{this.Item.Id.ToString(CultureInfo.InvariantCulture)}`");
+            return Task.CompletedTask;
+        }
     }
 }

@@ -3,54 +3,55 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.Bases;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books;
-
-public class LibraryPage : KaiaPathEmbedRefreshable
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
-    public LibraryPage(IEnumerable<KaiaBook> BookChunkToWrite, KaiaUser U, bool IsFirstPage = false) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library)
+    public class LibraryPage : KaiaPathEmbedRefreshable
     {
-        this.BookChunk = BookChunkToWrite;
-        this.U = U;
-        this.IsFirstPage = IsFirstPage;
-    }
-
-    public IEnumerable<KaiaBook> BookChunk { get; }
-
-    public KaiaUser U { get; }
-
-    public bool IsFirstPage { get; }
-
-    protected override async Task ClientRefreshAsync()
-    {
-        if (this.IsFirstPage)
+        public LibraryPage(IEnumerable<KaiaBook> BookChunkToWrite, KaiaUser U, bool IsFirstPage = false) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library)
         {
-            this.WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round((await this.U.LibraryProcessor.GetUserBooksAsync()).Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min. " +
-                $"{(this.U.TotalMultiplierOnBooks != 1 ? $"[* `{this.U.TotalMultiplierOnBooks}`]" : "")}");
+            this.BookChunk = BookChunkToWrite;
+            this.U = U;
+            this.IsFirstPage = IsFirstPage;
         }
-        foreach (KaiaBook Book in this.BookChunk)
+
+        public IEnumerable<KaiaBook> BookChunk { get; }
+
+        public KaiaUser U { get; }
+
+        public bool IsFirstPage { get; }
+
+        protected override async Task ClientRefreshAsync()
         {
-            if (Book.AvailableUntil >= DateTime.UtcNow || Book.IsFinished)
+            if (this.IsFirstPage)
             {
-                List<string> Display = new()
+                this.WithField("current total earnings", $"{Strings.Economy.CurrencyEmote} `{Math.Round((await this.U.LibraryProcessor.GetUserBooksAsync()).Sum(B => B.CurrentEarning), 2)}` / `{TimeSpans.BookTickRate.TotalMinutes}` min. " +
+                    $"{(this.U.TotalMultiplierOnBooks != 1 ? $"[* `{this.U.TotalMultiplierOnBooks}`]" : "")}");
+            }
+            foreach (KaiaBook Book in this.BookChunk)
+            {
+                if (Book.AvailableUntil >= DateTime.UtcNow || Book.IsFinished)
+                {
+                    List<string> Display = new()
                 {
                     !Book.IsFinished ?
                         $"{Strings.Economy.CurrencyEmote} `{Book.NextPageTurnCost}` {(Book.CurrentPageIndex == 0 ? $"to begin reading" : $"to read the next page")}" :
                         $"u have finished this book"
                 };
-                if (!Book.IsFinished)
-                {
-                    Display.Add($"`{Math.Round((Book.AvailableUntil - DateTime.UtcNow).TotalDays, 0)}` days left");
+                    if (!Book.IsFinished)
+                    {
+                        Display.Add($"`{Math.Round((Book.AvailableUntil - DateTime.UtcNow).TotalDays, 0)}` days left");
+                    }
+                    if (Book.CurrentPageIndex > 0)
+                    {
+                        Display.Add(!Book.IsFinished ? $"on page `{Book.CurrentPageIndex}` / `{Book.Pages}`" : $"`{Book.Pages}` total pages");
+                        Display.Add($"currently earning - {Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                    }
+                    else
+                    {
+                        Display.Add($"if u begin reading - {Strings.Economy.CurrencyEmote} `{Book.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
+                    }
+                    this.WithListWrittenToField(Book.Title, Display, "\n");
                 }
-                if (Book.CurrentPageIndex > 0)
-                {
-                    Display.Add(!Book.IsFinished ? $"on page `{Book.CurrentPageIndex}` / `{Book.Pages}`" : $"`{Book.Pages}` total pages");
-                    Display.Add($"currently earning - {Strings.Economy.CurrencyEmote} `{Book.CurrentEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
-                }
-                else
-                {
-                    Display.Add($"if u begin reading - {Strings.Economy.CurrencyEmote} `{Book.NextPageEarning}` / `{TimeSpans.BookTickRate.TotalMinutes}` min.");
-                }
-                this.WithListWrittenToField(Book.Title, Display, "\n");
             }
         }
     }

@@ -9,17 +9,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates;
-
-public class IntimateDisplay : KaiaPathEmbed
+namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Intimates
 {
-    public IntimateDisplay(GenericEndpointType TypeOfInteraction, KaiaUser UserActing, KaiaUser TargetUser) : base(TypeOfInteraction.Singular)
+    public class IntimateDisplay : KaiaPathEmbed
     {
-        GenericResponse? Response = new KawaiiRedClient().GetGifAsync(TypeOfInteraction).Result;
-        this.WithField(Strings.EmbedStrings.Empty, $"**<@{UserActing.Id}>** {TypeOfInteraction.Verb} **<@{TargetUser.Id}>**");
-        if (Response != null)
+        public IntimateDisplay(GenericEndpointType TypeOfInteraction, KaiaUser UserActing, KaiaUser TargetUser) : base(TypeOfInteraction.Singular)
         {
-            this.WithImage(Response.ResponseUrl);
+            GenericResponse? Response = new KawaiiRedClient().GetGifAsync(TypeOfInteraction).Result;
+            this.WithField(Strings.EmbedStrings.Empty, $"**<@{UserActing.Id}>** {TypeOfInteraction.Verb} **<@{TargetUser.Id}>**");
+            if (Response != null)
+            {
+                this.WithImage(Response.ResponseUrl);
+            }
         }
     }
 }

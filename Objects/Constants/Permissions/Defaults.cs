@@ -1,14 +1,15 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants.Permissions;
-
-internal class DefaultPerms
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Permissions
 {
-    internal static GuildPermission[] Default => new GuildPermission[]
+    internal class DefaultPerms
     {
+        internal static GuildPermission[] Default => new GuildPermission[]
+        {
         GuildPermission.ViewChannel,
         GuildPermission.SendMessages,
         GuildPermission.SendMessagesInThreads,
         GuildPermission.UseExternalEmojis,
         GuildPermission.AddReactions,
         GuildPermission.UseApplicationCommands
-    };
+        };
+    }
 }

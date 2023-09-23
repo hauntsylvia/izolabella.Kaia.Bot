@@ -1,9 +1,10 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums;
-
-public enum LeaderboardTypes
+﻿namespace izolabella.Kaia.Bot.Objects.Constants.Enums
 {
-    GuildsHighestNumberCounted,
-    GuildsCurrentHighestNumber,
-    UsersHighestNumberCounted,
-    UsersMostNumbersCounted,
+    public enum LeaderboardTypes
+    {
+        GuildsHighestNumberCounted,
+        GuildsCurrentHighestNumber,
+        UsersHighestNumberCounted,
+        UsersMostNumbersCounted,
+    }
 }

@@ -1,6 +1,7 @@
-﻿namespace izolabella.Kaia.Bot.Objects.Constants;
-
-internal static class Colors
+﻿namespace izolabella.Kaia.Bot.Objects.Constants
 {
-    internal static Color EmbedColor => new(0xffccef);
+    internal static class Colors
+    {
+        internal static Color EmbedColor => new(0xffccef);
+    }
 }

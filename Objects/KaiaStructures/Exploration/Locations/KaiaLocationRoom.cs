@@ -1,11 +1,11 @@
 ﻿using izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Properties.Events;
 using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Implementations;
 
-namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations;
-
-public class KaiaLocationRoom
+namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 {
-    public static IEnumerable<KaiaLocation> Locations => new List<KaiaLocation>()
+    public class KaiaLocationRoom
+    {
+        public static IEnumerable<KaiaLocation> Locations => new List<KaiaLocation>()
     {
         #region bright meadow
         new("Bright Meadow", "A meadow, graceful though helpess amidst the sun.", "A peaceful meadow.",
@@ -101,4 +101,5 @@ public class KaiaLocationRoom
         //    CoverUrlCredit: new("https://steamcommunity.com/sharedfiles/filedetails/?id=1624054751&searchtext=")),
         #endregion
     };
+    }
 }

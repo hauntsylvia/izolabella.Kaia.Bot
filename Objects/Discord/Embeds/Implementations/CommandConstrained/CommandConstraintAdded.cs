@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {
-    internal sealed class CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : KaiaPathEmbedRefreshable(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
+    internal sealed partial class CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : KaiaPathEmbedRefreshable(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
     {
         public SocketGuild Guild { get; } = Guild;
 
@@ -21,7 +21,7 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
                 List<string> PermsStrs = new();
                 foreach (GuildPermission P in this.Permissions)
                 {
-                    PermsStrs.Add(Regex.Replace(P.ToString(), "([A-Z])", " $1").ToLower(CultureInfo.InvariantCulture));
+                    PermsStrs.Add(MyRegex().Replace(P.ToString(), " $1").ToLower(CultureInfo.InvariantCulture));
                 }
                 this.WithListWrittenToField("required permissions", PermsStrs, ", ");
             }
@@ -45,5 +45,8 @@ namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandCons
             }
             return Task.CompletedTask;
         }
+
+        [GeneratedRegex("([A-Z])")]
+        private static partial Regex MyRegex();
     }
 }

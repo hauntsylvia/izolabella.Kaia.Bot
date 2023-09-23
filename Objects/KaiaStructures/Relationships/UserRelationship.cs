@@ -64,12 +64,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
         public void RemoveMember(ulong Member)
         {
             this.UserDeclines(Member);
-            if (this.kaiaUserIds.ContainsKey(Member))
-            {
-                this.kaiaUserIds.Remove(Member);
-                this.RemoveMember(Member);
-            }
-            else
+            if (!this.kaiaUserIds.Remove(Member))
             {
                 return;
             }
@@ -77,12 +72,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
 
         public void UserDeclines(ulong UserThatDeclined)
         {
-            if (this.pendingIds.ContainsKey(UserThatDeclined))
-            {
-                this.pendingIds.Remove(UserThatDeclined);
-                this.UserDeclines(UserThatDeclined);
-            }
-            else
+            if (!this.pendingIds.Remove(UserThatDeclined))
             {
                 return;
             }

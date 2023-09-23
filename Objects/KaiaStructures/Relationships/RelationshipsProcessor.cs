@@ -3,14 +3,9 @@ using izolabella.Storage.Objects.DataStores;
 
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
 {
-    public class RelationshipsProcessor
+    public class RelationshipsProcessor(ulong U)
     {
-        public RelationshipsProcessor(ulong U)
-        {
-            this.U = U;
-        }
-
-        public ulong U { get; }
+        public ulong U { get; } = U;
 
         private DataStore RelationshipsStore { get; } = DataStores.UserRelationshipsMainDirectory;
 

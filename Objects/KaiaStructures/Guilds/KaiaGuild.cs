@@ -17,7 +17,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
 
         private KaiaGuildSettings settings;
 
-        [JsonProperty("Settings", Required = Required.Always)]
+        [JsonProperty(nameof(Settings), Required = Required.Always)]
         public KaiaGuildSettings Settings
         {
             get => this.settings;

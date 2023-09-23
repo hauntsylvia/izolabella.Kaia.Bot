@@ -8,17 +8,11 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {
-    public class LocationRawView : KaiaPathEmbedRefreshable
+    public class LocationRawView(CommandContext Context, KaiaLocation Location) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Outside, Location.Name)
     {
-        public LocationRawView(CommandContext Context, KaiaLocation Location) : base(Strings.EmbedStrings.FakePaths.Outside, Location.Name)
-        {
-            this.Context = Context;
-            this.UserLocation = Location;
-        }
+        public CommandContext Context { get; } = Context;
 
-        public CommandContext Context { get; }
-
-        public KaiaLocation UserLocation { get; set; }
+        public KaiaLocation UserLocation { get; set; } = Location;
 
         private KaiaUser User => new(this.Context.UserContext.User.Id);
 

@@ -6,66 +6,49 @@ using izolabella.Storage.Objects.Structures;
 
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
 {
-    public class KaiaLocation : IDataStoreEntity
+    public class KaiaLocation(string Name,
+                        string Description,
+                        string ShortDescription,
+                        bool DisplayRewards,
+                        ulong SuperSecretSelfId,
+                        IEnumerable<KaiaLocationEvent> Events,
+                        TimeSpan AvailableAt,
+                        TimeSpan AvailableTo,
+                        TimeSpan MinimumTimeBetweenExplorations,
+                        KaiaEmote Emote,
+                        Uri? CoverUrl = null,
+                        Uri? CoverUrlCredit = null,
+                        DateTime? ExploredAt = null) : IDataStoreEntity
     {
-        public KaiaLocation(string Name,
-                            string Description,
-                            string ShortDescription,
-                            bool DisplayRewards,
-                            ulong SuperSecretSelfId,
-                            IEnumerable<KaiaLocationEvent> Events,
-                            TimeSpan AvailableAt,
-                            TimeSpan AvailableTo,
-                            TimeSpan MinimumTimeBetweenExplorations,
-                            KaiaEmote Emote,
-                            Uri? CoverUrl = null,
-                            Uri? CoverUrlCredit = null,
-                            DateTime? ExploredAt = null)
-        {
-            this.Name = Name;
-            this.Description = Description;
-            this.ShortDescription = ShortDescription;
-            this.displayRewards = DisplayRewards;
-            this.Id = SuperSecretSelfId;
-            this.Events = Events;
-            this.AvailableAt = AvailableAt;
-            this.AvailableTo = AvailableTo;
-            this.MinimumTimeBetweenExplorations = MinimumTimeBetweenExplorations;
-            this.Emote = Emote;
-            this.CoverUrl = CoverUrl;
-            this.CoverUrlCredit = CoverUrlCredit;
-            this.ExploredAt = ExploredAt;
-        }
+        public string Name { get; } = Name;
 
-        public string Name { get; }
+        public string Description { get; } = Description;
 
-        public string Description { get; }
+        public string ShortDescription { get; } = ShortDescription;
 
-        public string ShortDescription { get; }
-
-        private readonly bool displayRewards;
+        private readonly bool displayRewards = DisplayRewards;
 
         public bool DisplayRewards => this.displayRewards && this.Events.Any();
 
-        public IEnumerable<KaiaLocationEvent> Events { get; }
+        public IEnumerable<KaiaLocationEvent> Events { get; } = Events;
 
-        public TimeSpan AvailableAt { get; }
+        public TimeSpan AvailableAt { get; } = AvailableAt;
 
-        public TimeSpan AvailableTo { get; }
+        public TimeSpan AvailableTo { get; } = AvailableTo;
 
         public DateTime? AvailableUntil { get; set; }
 
-        public TimeSpan MinimumTimeBetweenExplorations { get; }
+        public TimeSpan MinimumTimeBetweenExplorations { get; } = MinimumTimeBetweenExplorations;
 
-        public KaiaEmote Emote { get; }
+        public KaiaEmote Emote { get; } = Emote;
 
-        public DateTime? ExploredAt { get; private set; }
+        public DateTime? ExploredAt { get; private set; } = ExploredAt;
 
         public DateTime? MustWaitUntil => this.ExploredAt.HasValue ? this.ExploredAt.Value.Add(this.MinimumTimeBetweenExplorations) : null;
 
-        public Uri? CoverUrl { get; }
+        public Uri? CoverUrl { get; } = CoverUrl;
 
-        public Uri? CoverUrlCredit { get; }
+        public Uri? CoverUrlCredit { get; } = CoverUrlCredit;
 
         public bool Overnight => this.AvailableAt > this.AvailableTo;
 
@@ -76,7 +59,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Exploration.Locations
         public DateTime End => this.Overnight ? this.InnerClock.Date.AddDays(1).Add(this.AvailableTo) : this.InnerClock.Date.Add(this.AvailableTo);
 
         [JsonProperty("SuperSecretSelfId")]
-        public ulong Id { get; }
+        public ulong Id { get; } = SuperSecretSelfId;
 
         public KaiaLocationExplorationStatus Status =>
             this.Overnight && this.InnerClock.TimeOfDay > this.AvailableTo && this.InnerClock.TimeOfDay < this.AvailableAt ? KaiaLocationExplorationStatus.IncorrectLocationTime :

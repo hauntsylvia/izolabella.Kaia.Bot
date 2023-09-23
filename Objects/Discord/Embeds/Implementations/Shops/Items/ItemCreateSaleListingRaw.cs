@@ -4,14 +4,9 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
-    public class ItemCreateSaleListingRaw : KaiaPathEmbedRefreshable
+    public class ItemCreateSaleListingRaw(SaleListing SingleListing) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop)
     {
-        public ItemCreateSaleListingRaw(SaleListing SingleListing) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop)
-        {
-            this.SingleListing = SingleListing;
-        }
-
-        public SaleListing SingleListing { get; }
+        public SaleListing SingleListing { get; } = SingleListing;
 
         protected override async Task ClientRefreshAsync()
         {

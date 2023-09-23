@@ -3,17 +3,11 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {
-    public class CommandConstrainedByUserIds : KaiaPathEmbedRefreshable
+    public class CommandConstrainedByUserIds(string GuildName, string CommandName) : KaiaPathEmbedRefreshable(GuildName, Strings.EmbedStrings.FakePaths.Commands, CommandName)
     {
-        public CommandConstrainedByUserIds(string GuildName, string CommandName) : base(GuildName, Strings.EmbedStrings.FakePaths.Commands, CommandName)
-        {
-            this.GuildName = GuildName;
-            this.CommandName = CommandName;
-        }
+        public string GuildName { get; } = GuildName;
 
-        public string GuildName { get; }
-
-        public string CommandName { get; }
+        public string CommandName { get; } = CommandName;
 
         protected override Task ClientRefreshAsync()
         {

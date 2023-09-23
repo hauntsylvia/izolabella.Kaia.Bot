@@ -9,14 +9,9 @@ using System.Threading.Tasks;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
-    public class RelationshipViewRaw : KaiaPathEmbedRefreshable
+    public class RelationshipViewRaw(UserRelationship Relationship) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Users, Strings.EmbedStrings.FakePaths.Relationships, Relationship.Id.ToString(CultureInfo.InvariantCulture))
     {
-        public RelationshipViewRaw(UserRelationship Relationship) : base(Strings.EmbedStrings.FakePaths.Users, Strings.EmbedStrings.FakePaths.Relationships, Relationship.Id.ToString(CultureInfo.InvariantCulture))
-        {
-            this.Relationship = Relationship;
-        }
-
-        public UserRelationship Relationship { get; }
+        public UserRelationship Relationship { get; } = Relationship;
 
         protected override Task ClientRefreshAsync()
         {

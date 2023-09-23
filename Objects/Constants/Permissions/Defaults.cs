@@ -1,6 +1,6 @@
 ﻿namespace izolabella.Kaia.Bot.Objects.Constants.Permissions
 {
-    internal class DefaultPerms
+    internal sealed class  DefaultPerms
     {
         internal static GuildPermission[] Default => new GuildPermission[]
         {

@@ -14,12 +14,12 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Properties
             this.Petals = Petals ?? 10.0;
         }
 
-        [JsonProperty("Items", Required = Required.Default)]
+        [JsonProperty(nameof(Items), Required = Required.Default)]
         private readonly List<KaiaInventoryItem> items = new();
 
         public IReadOnlyCollection<KaiaInventoryItem> Items => this.items;
 
-        [JsonProperty("LastBookUpdate", Required = Required.Default)]
+        [JsonProperty(nameof(LastBookUpdate), Required = Required.Default)]
         public DateTime LastBookUpdate { get; set; }
 
         private double petals;

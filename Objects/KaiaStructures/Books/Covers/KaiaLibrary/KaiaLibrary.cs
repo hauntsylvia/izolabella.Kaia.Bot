@@ -13,7 +13,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
             ExponentToIncreaseBy: 1.0005,
             CostPerPage: 5,
             CostPerPageExponent: 2,
-            AvailableUntil: new(year: 2022, month: 7, day: 24),
+            AvailableUntil: new(year: 2024, month: 7, day: 24),
             5252022232),
 
         new("Dogra Magra",
@@ -23,7 +23,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
             ExponentToIncreaseBy: 1.122,
             CostPerPage: 10,
             CostPerPageExponent: 1.95,
-            AvailableUntil: new(year: 2022, month: 9, day: 24),
+            AvailableUntil: new(year: 2024, month: 9, day: 24),
             52520220411),
 
         new("La Porte Étroite",
@@ -33,7 +33,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
             ExponentToIncreaseBy: 1.0001,
             CostPerPage: 6,
             CostPerPageExponent: 1.5,
-            AvailableUntil: new(year: 2022, month: 10, day: 1),
+            AvailableUntil: new(year: 2024, month: 10, day: 1),
             52520220415),
 
         new("Infinite Potential: The Greatest Works of Neville Goddard",
@@ -43,7 +43,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
             ExponentToIncreaseBy: 1.1,
             CostPerPage: 20,
             CostPerPageExponent: 1.5,
-            AvailableUntil: new(year: 2022, month: 11, day: 27),
+            AvailableUntil: new(year: 2024, month: 11, day: 27),
             52720220319),
 
         new("Do Androids Dream of Electric Sheep?",
@@ -53,7 +53,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
             ExponentToIncreaseBy: 1.00025,
             CostPerPage: 6,
             CostPerPageExponent: 1.5001,
-            AvailableUntil: new(year: 2023, month: 1, day: 1),
+            AvailableUntil: new(year: 2025, month: 1, day: 1),
             62720220416),
 
         new("Fahrenheit 451",
@@ -63,7 +63,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Covers.KaiaLibrary
             ExponentToIncreaseBy: 1.1,
             CostPerPage: 12,
             CostPerPageExponent: 1.6,
-            AvailableUntil: new(year: 2023, month: 1, day: 18),
+            AvailableUntil: new(year: 2025, month: 1, day: 18),
             62720220418),
     };
 

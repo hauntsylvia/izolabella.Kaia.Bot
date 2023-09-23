@@ -6,20 +6,13 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
-    public class AchievementRawView : KaiaPathEmbedRefreshable
+    public class AchievementRawView(CommandContext Context, KaiaAchievement KaiaAchievement, KaiaUser User) : KaiaPathEmbedRefreshable(Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Achievements, KaiaAchievement.Title)
     {
-        public AchievementRawView(CommandContext Context, KaiaAchievement KaiaAchievement, KaiaUser User) : base(Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Achievements, KaiaAchievement.Title)
-        {
-            this.Context = Context;
-            this.KaiaAchievement = KaiaAchievement;
-            this.User = User;
-        }
+        public CommandContext Context { get; } = Context;
 
-        public CommandContext Context { get; }
+        public KaiaAchievement KaiaAchievement { get; } = KaiaAchievement;
 
-        public KaiaAchievement KaiaAchievement { get; }
-
-        public KaiaUser User { get; }
+        public KaiaUser User { get; } = User;
 
         protected override async Task ClientRefreshAsync()
         {

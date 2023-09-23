@@ -5,38 +5,28 @@ using izolabella.Util;
 
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships
 {
-    public class UserRelationship : IDataStoreEntity
+    public class UserRelationship(DateTime CreatedAt, string Description, KaiaEmote Emote, Dictionary<ulong, DateTime> PendingIds, Dictionary<ulong, DateTime> KaiaUserIds, ulong? Id = null) : IDataStoreEntity
     {
-        public UserRelationship(DateTime CreatedAt, string Description, KaiaEmote Emote, Dictionary<ulong, DateTime> PendingIds, Dictionary<ulong, DateTime> KaiaUserIds, ulong? Id = null)
-        {
-            this.CreatedAt = CreatedAt;
-            this.description = Description.Length > 512 ? Description[..512] : Description;
-            this.Emote = Emote;
-            this.kaiaUserIds = KaiaUserIds;
-            this.pendingIds = PendingIds;
-            this.Id = Id ?? IdGenerator.CreateNewId();
-        }
+        public DateTime CreatedAt { get; } = CreatedAt;
 
-        public DateTime CreatedAt { get; }
-
-        [JsonProperty("Description")]
-        private readonly string description;
+        [JsonProperty(nameof(Description))]
+        private readonly string description = Description.Length > 512 ? Description[..512] : Description;
 
         [JsonIgnore]
         public string Description => this.description.Length > 32 ? this.description[..32] : this.description.Length == 0 ? Strings.EmbedStrings.Empty : this.description;
 
-        public KaiaEmote Emote { get; }
+        public KaiaEmote Emote { get; } = Emote;
 
-        public ulong Id { get; }
+        public ulong Id { get; } = Id ?? IdGenerator.CreateNewId();
 
-        [JsonProperty("KaiaUserIds")]
-        private readonly Dictionary<ulong, DateTime> kaiaUserIds;
+        [JsonProperty(nameof(KaiaUserIds))]
+        private readonly Dictionary<ulong, DateTime> kaiaUserIds = KaiaUserIds;
 
         [JsonIgnore]
         public IEnumerable<ulong> KaiaUserIds => this.kaiaUserIds.Keys.Distinct().ToArray();
 
         [JsonProperty("PendingUserIds")]
-        private readonly Dictionary<ulong, DateTime> pendingIds;
+        private readonly Dictionary<ulong, DateTime> pendingIds = PendingIds;
 
         [JsonIgnore]
         public IEnumerable<ulong> PendingIds => this.pendingIds.Where(A => DateTime.UtcNow.Subtract(A.Value).TotalDays < 1).Select(KV => KV.Key).Distinct();

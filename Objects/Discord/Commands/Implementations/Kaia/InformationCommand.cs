@@ -6,7 +6,7 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.KaiaEmbeds;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Kaia
 {
-    internal class InformationCommand : KaiaCommand
+    internal sealed class  InformationCommand : KaiaCommand
     {
         public override string ForeverId => CommandForeverIds.BotDevelopmentInformation;
 

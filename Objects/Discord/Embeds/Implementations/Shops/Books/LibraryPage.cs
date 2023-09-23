@@ -5,20 +5,13 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
-    public class LibraryPage : KaiaPathEmbedRefreshable
+    public class LibraryPage(IEnumerable<KaiaBook> BookChunkToWrite, KaiaUser U, bool IsFirstPage = false) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library)
     {
-        public LibraryPage(IEnumerable<KaiaBook> BookChunkToWrite, KaiaUser U, bool IsFirstPage = false) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library)
-        {
-            this.BookChunk = BookChunkToWrite;
-            this.U = U;
-            this.IsFirstPage = IsFirstPage;
-        }
+        public IEnumerable<KaiaBook> BookChunk { get; } = BookChunkToWrite;
 
-        public IEnumerable<KaiaBook> BookChunk { get; }
+        public KaiaUser U { get; } = U;
 
-        public KaiaUser U { get; }
-
-        public bool IsFirstPage { get; }
+        public bool IsFirstPage { get; } = IsFirstPage;
 
         protected override async Task ClientRefreshAsync()
         {

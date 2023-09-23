@@ -1,19 +1,12 @@
 ﻿namespace izolabella.Kaia.Bot.Objects.ClientParameters
 {
-    public class KaiaParams
+    public class KaiaParams(DiscordSocketConfig Config, bool AllowBotsOnMessageReceivers, bool GlobalCommands, string Token)
     {
-        public KaiaParams(DiscordSocketConfig Config, bool AllowBotsOnMessageReceivers, bool GlobalCommands, string Token)
-        {
-            this.CommandHandler = new(Config, GlobalCommands);
-            this.AllowBotsOnMessageReceivers = AllowBotsOnMessageReceivers;
-            this.Token = Token;
-        }
+        public IzolabellaDiscordClient CommandHandler { get; } = new(Config, GlobalCommands);
 
-        public IzolabellaDiscordClient CommandHandler { get; }
+        public bool AllowBotsOnMessageReceivers { get; } = AllowBotsOnMessageReceivers;
 
-        public bool AllowBotsOnMessageReceivers { get; }
-
-        private string Token { get; set; }
+        private string Token { get; set; } = Token;
 
         public async Task StartAsync()
         {

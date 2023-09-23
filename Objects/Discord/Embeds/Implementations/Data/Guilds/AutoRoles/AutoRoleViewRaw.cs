@@ -4,17 +4,11 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.AutoRoles
 {
-    public class AutoRoleViewRaw : KaiaPathEmbedRefreshable
+    public class AutoRoleViewRaw(SocketGuild Guild, KaiaAutoRole Role) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
     {
-        public AutoRoleViewRaw(SocketGuild Guild, KaiaAutoRole Role) : base(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
-        {
-            this.Guild = Guild;
-            this.Role = Role;
-        }
+        public SocketGuild Guild { get; } = Guild;
 
-        public SocketGuild Guild { get; }
-
-        public KaiaAutoRole Role { get; }
+        public KaiaAutoRole Role { get; } = Role;
 
         protected override async Task ClientRefreshAsync()
         {

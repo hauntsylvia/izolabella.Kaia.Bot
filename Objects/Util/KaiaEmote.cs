@@ -1,15 +1,10 @@
 ﻿namespace izolabella.Kaia.Bot.Objects.Util
 {
-    public class KaiaEmote : IEmote
+    [method: JsonConstructor]
+    public class KaiaEmote(string Name) : IEmote
     {
-        [JsonConstructor]
-        public KaiaEmote(string Name)
-        {
-            this.Name = Name;
-        }
-
         [JsonProperty("DisplayName")]
-        public string Name { get; set; }
+        public string Name { get; set; } = Name;
 
         public bool IsCustom => Emote.TryParse(this.Name, out Emote _);
 

@@ -4,23 +4,15 @@ using System.Text.RegularExpressions;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.CommandConstrained
 {
-    internal class CommandConstraintAdded : KaiaPathEmbedRefreshable
+    internal sealed class CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : KaiaPathEmbedRefreshable(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
     {
-        public CommandConstraintAdded(SocketGuild Guild, string CommandName, ulong[]? Roles = null, GuildPermission[]? Permissions = null) : base(Guild.Name, Strings.EmbedStrings.FakePaths.Commands, CommandName)
-        {
-            this.Guild = Guild;
-            this.CommandName = CommandName;
-            this.Roles = Roles;
-            this.Permissions = Permissions;
-        }
+        public SocketGuild Guild { get; } = Guild;
 
-        public SocketGuild Guild { get; }
+        public string CommandName { get; } = CommandName;
 
-        public string CommandName { get; }
+        public ulong[]? Roles { get; } = Roles;
 
-        public ulong[]? Roles { get; }
-
-        public GuildPermission[]? Permissions { get; }
+        public GuildPermission[]? Permissions { get; } = Permissions;
 
         protected override Task ClientRefreshAsync()
         {

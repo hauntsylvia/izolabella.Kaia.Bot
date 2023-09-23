@@ -45,15 +45,15 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
             }
         }
 
-        [JsonProperty("Petals")]
+        [JsonProperty(nameof(Petals))]
         public double Petals { get; }
 
-        [JsonProperty("SpellIds")]
+        [JsonProperty(nameof(SpellIds))]
         private SpellId[]? SpellIds { get; }
 
         public IEnumerable<Spell> Spells => KaiaSpellsRoom.GetSpellsFromIds(this.SpellIds ?? Array.Empty<SpellId>());
 
-        [JsonProperty("Items")]
+        [JsonProperty(nameof(Items))]
         public KaiaInventoryItem[] Items { get; } = Array.Empty<KaiaInventoryItem>();
     }
 }

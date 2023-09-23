@@ -5,22 +5,17 @@ using izolabella.Kaia.Bot.Objects.Util;
 
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Implementations
 {
-    public class UserEarnedAchievement : KaiaAchievement
+    [method: JsonConstructor]/// <summary>
+                             /// An achievement already earned by the user.
+                             /// </summary>
+                             /// <param name="Id"></param>
+                             /// <param name="Title"></param>
+                             /// <param name="Description"></param>
+                             /// <param name="Category"></param>
+                             /// <param name="DisplayEmote"></param>
+                             /// <param name="Rewards"></param>
+    public class UserEarnedAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaEmote DisplayEmote, params KaiaUserReward[] Rewards) : KaiaAchievement(Id, Title, DescriptionWhenAchieved, DescriptionWhenNotAchieved, Category, DisplayEmote, Rewards)
     {
-        /// <summary>
-        /// An achievement already earned by the user.
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="Title"></param>
-        /// <param name="Description"></param>
-        /// <param name="Category"></param>
-        /// <param name="DisplayEmote"></param>
-        /// <param name="Rewards"></param>
-        [JsonConstructor]
-        public UserEarnedAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaEmote DisplayEmote, params KaiaUserReward[] Rewards) : base(Id, Title, DescriptionWhenAchieved, DescriptionWhenNotAchieved, Category, DisplayEmote, Rewards)
-        {
-        }
-
         public override Task<bool> CanAwardAsync(KaiaUser U, CommandContext? Context)
         {
             return Task.FromResult(false);

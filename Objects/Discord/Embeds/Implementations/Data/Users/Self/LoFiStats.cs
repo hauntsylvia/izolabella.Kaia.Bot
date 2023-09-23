@@ -9,14 +9,9 @@ using izolabella.Music.Structure.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Self
 {
-    public class LoFiStats : KaiaPathEmbedRefreshable
+    public class LoFiStats(ulong DiscordId) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.LoFi)
     {
-        public LoFiStats(ulong DiscordId) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.LoFi)
-        {
-            this.DiscordId = DiscordId;
-        }
-
-        public ulong DiscordId { get; }
+        public ulong DiscordId { get; } = DiscordId;
 
         private const int take = 4;
 

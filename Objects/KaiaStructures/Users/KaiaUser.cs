@@ -45,10 +45,10 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
             }
         }
 
-        [JsonProperty("Id", Required = Required.DisallowNull)]
+        [JsonProperty(nameof(Id), Required = Required.DisallowNull)]
         public new ulong Id { get; }
 
-        [JsonProperty("Settings", Required = Required.Always)]
+        [JsonProperty(nameof(Settings), Required = Required.Always)]
         public KaiaUserSettings Settings { get; set; }
 
         public double TotalMultiplierOnBooks => 1 + Math.Round(this.SpellsProcessor.GetActiveSpellsAsync().Result
@@ -70,7 +70,7 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Users
         [JsonIgnore]
         public RelationshipsProcessor RelationshipsProcessor { get; set; }
 
-        [JsonProperty("Exists", Required = Required.Default)]
+        [JsonProperty(nameof(Exists), Required = Required.Default)]
         public bool Exists { get; }
     }
 }

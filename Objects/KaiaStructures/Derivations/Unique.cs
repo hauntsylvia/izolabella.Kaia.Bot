@@ -5,18 +5,12 @@ using izolabella.Util;
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Derivations
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn, ItemRequired = Required.Always)]
-    public class Unique : IDataStoreEntity
+    public class Unique(DataStore? BelongsTo, ulong? Id = null) : IDataStoreEntity
     {
-        public Unique(DataStore? BelongsTo, ulong? Id = null)
-        {
-            this.BelongsTo = BelongsTo;
-            this.Id = Id ?? IdGenerator.CreateNewId();
-        }
+        public DataStore? BelongsTo { get; set; } = BelongsTo;
 
-        public DataStore? BelongsTo { get; set; }
-
-        [JsonProperty("Id", Required = Required.Always)]
-        public ulong Id { get; }
+        [JsonProperty(nameof(Id), Required = Required.Always)]
+        public ulong Id { get; } = Id ?? IdGenerator.CreateNewId();
 
         public Task SaveAsync()
         {

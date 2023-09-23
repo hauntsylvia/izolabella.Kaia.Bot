@@ -3,7 +3,7 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Bases;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.Channels
 {
-    internal class MarkNSFW : KaiaPathEmbed
+    internal sealed class MarkNSFW : KaiaPathEmbed
     {
         public MarkNSFW(string GuildName, string ChannelName, bool IsNSFW) : base(Strings.EmbedStrings.FakePaths.Guilds, GuildName, ChannelName)
         {

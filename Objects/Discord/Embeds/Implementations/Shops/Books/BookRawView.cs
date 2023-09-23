@@ -5,17 +5,11 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Books
 {
-    public class BookRawView : KaiaPathEmbedRefreshable
+    public class BookRawView(KaiaBook? Book, KaiaUser U) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library, Book?.Title ?? Strings.EmbedStrings.FakePaths.NotFound)
     {
-        public BookRawView(KaiaBook? Book, KaiaUser U) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Library, Book?.Title ?? Strings.EmbedStrings.FakePaths.NotFound)
-        {
-            this.Book = Book;
-            this.U = U;
-        }
+        public KaiaBook? Book { get; } = Book;
 
-        public KaiaBook? Book { get; }
-
-        public KaiaUser U { get; }
+        public KaiaUser U { get; } = U;
 
         protected override Task ClientRefreshAsync()
         {

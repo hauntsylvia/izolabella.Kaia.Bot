@@ -4,14 +4,9 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
-    public class InventoryItemViewRaw : KaiaPathEmbedRefreshable
+    public class InventoryItemViewRaw(KaiaInventoryItem Item) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Inventory, Item.DisplayName)
     {
-        public InventoryItemViewRaw(KaiaInventoryItem Item) : base(Strings.EmbedStrings.FakePaths.Inventory, Item.DisplayName)
-        {
-            this.Item = Item;
-        }
-
-        public KaiaInventoryItem Item { get; }
+        public KaiaInventoryItem Item { get; } = Item;
 
         protected override Task ClientRefreshAsync()
         {

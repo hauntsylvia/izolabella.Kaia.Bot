@@ -4,17 +4,11 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds.Roles;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Guilds.ReactionRoles
 {
-    public class ReactionRolesViewRaw : KaiaPathEmbedRefreshable
+    public class ReactionRolesViewRaw(SocketGuild Guild, KaiaReactionRole Role) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
     {
-        public ReactionRolesViewRaw(SocketGuild Guild, KaiaReactionRole Role) : base(Strings.EmbedStrings.FakePaths.Guilds, Guild.Name, Strings.EmbedStrings.FakePaths.ReactionRoles)
-        {
-            this.Guild = Guild;
-            this.Role = Role;
-        }
+        public SocketGuild Guild { get; } = Guild;
 
-        public SocketGuild Guild { get; }
-
-        public KaiaReactionRole Role { get; }
+        public KaiaReactionRole Role { get; } = Role;
 
         protected override async Task ClientRefreshAsync()
         {

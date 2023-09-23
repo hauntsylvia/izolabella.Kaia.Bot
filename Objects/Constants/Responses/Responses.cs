@@ -2,7 +2,7 @@
 
 namespace izolabella.Kaia.Bot.Objects.Constants.Responses
 {
-    internal class Responses
+    internal sealed class  Responses
     {
         internal static async Task PipeErrors(CommandContext Context, KaiaPathEmbedRefreshable E)
         {

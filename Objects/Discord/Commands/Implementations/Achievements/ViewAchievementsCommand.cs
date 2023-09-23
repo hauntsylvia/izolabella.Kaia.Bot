@@ -9,7 +9,7 @@ using izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achieveme
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Commands.Implementations.Achievements
 {
-    internal class ViewAchievementsCommand : KaiaCommand
+    internal sealed class ViewAchievementsCommand : KaiaCommand
     {
         public override string ForeverId => CommandForeverIds.ViewAchievements;
 

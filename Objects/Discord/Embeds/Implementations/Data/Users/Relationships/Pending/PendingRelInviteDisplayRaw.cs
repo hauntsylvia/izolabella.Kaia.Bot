@@ -4,14 +4,9 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.Pending
 {
-    internal class PendingRelInviteDisplayRaw : KaiaPathEmbedRefreshable
+    internal sealed class PendingRelInviteDisplayRaw(UserRelationship Rel) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Users, Strings.EmbedStrings.FakePaths.Relationships, Rel.Id.ToString(CultureInfo.InvariantCulture))
     {
-        public PendingRelInviteDisplayRaw(UserRelationship Rel) : base(Strings.EmbedStrings.FakePaths.Users, Strings.EmbedStrings.FakePaths.Relationships, Rel.Id.ToString(CultureInfo.InvariantCulture))
-        {
-            this.Rel = Rel;
-        }
-
-        public UserRelationship Rel { get; }
+        public UserRelationship Rel { get; } = Rel;
 
         protected override Task ClientRefreshAsync()
         {

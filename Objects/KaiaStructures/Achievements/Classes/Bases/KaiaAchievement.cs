@@ -5,36 +5,25 @@ using izolabella.Storage.Objects.Structures;
 
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Achievements.Classes.Bases
 {
-    public abstract class KaiaAchievement : IDataStoreEntity
+    public abstract class KaiaAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaEmote DisplayEmote, params KaiaUserReward[] Rewards) : IDataStoreEntity
     {
-        public KaiaAchievement(ulong Id, string Title, string DescriptionWhenAchieved, string DescriptionWhenNotAchieved, AchievementCategory Category, KaiaEmote DisplayEmote, params KaiaUserReward[] Rewards)
-        {
-            this.Id = Id;
-            this.Title = Title;
-            this.DescriptionWhenAchieved = DescriptionWhenAchieved;
-            this.DescriptionWhenNotAchieved = DescriptionWhenNotAchieved;
-            this.Category = Category;
-            this.Rewards = Rewards;
-            this.DisplayEmote = DisplayEmote;
-        }
+        public ulong Id { get; } = Id;
 
-        public ulong Id { get; }
-
-        public string Title { get; }
+        public string Title { get; } = Title;
 
         [JsonProperty("WhenAchieved")]
-        private string DescriptionWhenAchieved { get; }
+        private string DescriptionWhenAchieved { get; } = DescriptionWhenAchieved;
 
         [JsonProperty("WhenNotAchieved")]
-        private string DescriptionWhenNotAchieved { get; }
+        private string DescriptionWhenNotAchieved { get; } = DescriptionWhenNotAchieved;
 
-        public AchievementCategory Category { get; }
+        public AchievementCategory Category { get; } = Category;
 
-        public KaiaUserReward[] Rewards { get; }
+        public KaiaUserReward[] Rewards { get; } = Rewards;
 
         public DateTime InitializedAt { get; } = DateTime.UtcNow;
 
-        public KaiaEmote DisplayEmote { get; }
+        public KaiaEmote DisplayEmote { get; } = DisplayEmote;
 
         public abstract Task<bool> CanAwardAsync(KaiaUser U, CommandContext? Context);
 

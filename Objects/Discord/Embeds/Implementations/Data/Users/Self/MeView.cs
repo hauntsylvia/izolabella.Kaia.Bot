@@ -5,17 +5,11 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
-    public class MeView : KaiaPathEmbedRefreshable
+    public class MeView(string UserName, KaiaUser User) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, UserName)
     {
-        public MeView(string UserName, KaiaUser User) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.Users, UserName)
-        {
-            this.UserName = UserName;
-            this.User = User;
-        }
+        public string UserName { get; } = UserName;
 
-        public string UserName { get; }
-
-        public KaiaUser User { get; }
+        public KaiaUser User { get; } = User;
 
         protected override async Task ClientRefreshAsync()
         {

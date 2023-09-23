@@ -6,17 +6,11 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Exploration
 {
-    public class LocationPage : KaiaPathEmbedRefreshable
+    public class LocationPage(IEnumerable<KaiaLocation> Locations, KaiaUser U) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Outside)
     {
-        public LocationPage(IEnumerable<KaiaLocation> Locations, KaiaUser U) : base(Strings.EmbedStrings.FakePaths.Outside)
-        {
-            this.Locations = Locations;
-            this.U = U;
-        }
+        public IEnumerable<KaiaLocation> Locations { get; } = Locations;
 
-        public IEnumerable<KaiaLocation> Locations { get; }
-
-        public KaiaUser U { get; }
+        public KaiaUser U { get; } = U;
 
         protected override Task ClientRefreshAsync()
         {

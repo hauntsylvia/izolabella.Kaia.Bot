@@ -5,14 +5,9 @@ using izolabella.Storage.Objects.DataStores;
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Books.Properties
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class UserLibrary
+    public class UserLibrary(ulong U)
     {
-        public UserLibrary(ulong U)
-        {
-            this.U = U;
-        }
-
-        public ulong U { get; }
+        public ulong U { get; } = U;
 
         public async Task<List<KaiaBook>> GetUserBooksAsync()
         {

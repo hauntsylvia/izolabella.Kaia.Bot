@@ -6,22 +6,16 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.MeData
 {
-    public class MeLibraryView : KaiaPathEmbedPaginated
+    public class MeLibraryView(KaiaUser User, CommandContext Context, int LibraryChunkSize) : KaiaPathEmbedPaginated(new(),
+                                                      Context,
+                                                      0,
+                                                      Strings.EmbedStrings.FakePaths.Global,
+                                                      Strings.EmbedStrings.FakePaths.Users,
+                                                      Context.UserContext.User.Username)
     {
-        public MeLibraryView(KaiaUser User, CommandContext Context, int LibraryChunkSize) : base(new(),
-                                                          Context,
-                                                          0,
-                                                          Strings.EmbedStrings.FakePaths.Global,
-                                                          Strings.EmbedStrings.FakePaths.Users,
-                                                          Context.UserContext.User.Username)
-        {
-            this.User = User;
-            this.LibraryChunkSize = LibraryChunkSize;
-        }
+        public KaiaUser User { get; } = User;
 
-        public KaiaUser User { get; }
-
-        public int LibraryChunkSize { get; }
+        public int LibraryChunkSize { get; } = LibraryChunkSize;
 
         protected override async Task ClientRefreshAsync()
         {

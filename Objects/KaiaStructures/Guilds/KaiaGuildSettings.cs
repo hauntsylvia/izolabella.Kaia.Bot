@@ -16,28 +16,28 @@ namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Guilds
             this.reactionRoles = ReactionRoles ?? new();
         }
 
-        [JsonProperty("CountingChannelId", Required = Required.AllowNull)]
+        [JsonProperty(nameof(CountingChannelId), Required = Required.AllowNull)]
         public ulong? CountingChannelId { get; set; }
 
-        [JsonProperty("LastSuccessfulNumber", Required = Required.AllowNull)]
+        [JsonProperty(nameof(LastSuccessfulNumber), Required = Required.AllowNull)]
         private ulong? lastSuccessfulNumber;
         public ulong LastSuccessfulNumber { get => this.lastSuccessfulNumber ?? 0; set => this.lastSuccessfulNumber = value; }
 
-        [JsonProperty("LastUserWhoCounted", Required = Required.AllowNull)]
+        [JsonProperty(nameof(LastUserWhoCounted), Required = Required.AllowNull)]
         private ulong? lastUserWhoCounted;
         public ulong? LastUserWhoCounted { get => this.lastUserWhoCounted ?? 0; set => this.lastUserWhoCounted = value; }
 
-        [JsonProperty("HighestCountEver", Required = Required.Default)]
+        [JsonProperty(nameof(HighestCountEver), Required = Required.Default)]
         private ulong? highestCountEver;
         public ulong? HighestCountEver { get => this.highestCountEver ?? 0; set => this.highestCountEver = value; }
 
-        [JsonProperty("OverrideCommandPermissionsConstraint", Required = Required.Default)]
+        [JsonProperty(nameof(OverrideCommandPermissionsConstraint), Required = Required.Default)]
         public IReadOnlyDictionary<string, GuildPermission[]> OverrideCommandPermissionsConstraint { get; set; } = new Dictionary<string, GuildPermission[]>();
 
-        [JsonProperty("OverrideCommandRolesConstraint", Required = Required.Default)]
+        [JsonProperty(nameof(OverrideCommandRolesConstraint), Required = Required.Default)]
         public IReadOnlyDictionary<string, ulong[]> OverrideCommandRolesConstraint { get; set; } = new Dictionary<string, ulong[]>();
 
-        [JsonProperty("ReactionRoles", Required = Required.Default)]
+        [JsonProperty(nameof(ReactionRoles), Required = Required.Default)]
         private List<KaiaReactionRole> reactionRoles = new();
         public List<KaiaReactionRole> ReactionRoles
         {

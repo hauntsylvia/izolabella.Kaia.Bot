@@ -5,14 +5,9 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
-    public class AchievementView : KaiaItemContentView
+    public class AchievementView(AchievementsPaginated P, KaiaAchievement Achievement, CommandContext Context) : KaiaItemContentView(P, Context, true)
     {
-        public AchievementView(AchievementsPaginated P, KaiaAchievement Achievement, CommandContext Context) : base(P, Context, true)
-        {
-            this.Achievement = Achievement;
-        }
-
-        public KaiaAchievement Achievement { get; }
+        public KaiaAchievement Achievement { get; } = Achievement;
 
         public override void Dispose()
         {

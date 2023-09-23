@@ -6,63 +6,50 @@ using izolabella.Util;
 namespace izolabella.Kaia.Bot.Objects.KaiaStructures.Inventory.Items.Bases
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class KaiaInventoryItem
+    [method: JsonConstructor]
+    public class KaiaInventoryItem(string DisplayName,
+                             string Description,
+                             double MarketCost,
+                             bool CanInteractWithDirectly,
+                             bool KaiaDisplaysThisOnTheStore,
+                             bool UsersCanSellThis,
+                             KaiaEmote DisplayEmoteName,
+                             KaiaItemReturnContext? OnInteract = null,
+                             ulong? Id = null)
     {
-        [JsonConstructor]
-        public KaiaInventoryItem(string DisplayName,
-                                 string Description,
-                                 double MarketCost,
-                                 bool CanInteractWithDirectly,
-                                 bool KaiaDisplaysThisOnTheStore,
-                                 bool UsersCanSellThis,
-                                 KaiaEmote DisplayEmoteName,
-                                 KaiaItemReturnContext? OnInteract = null,
-                                 ulong? Id = null)
-        {
-            this.DisplayName = DisplayName;
-            this.Description = Description;
-            this.MarketCost = MarketCost;
-            this.CanInteractWithDirectly = CanInteractWithDirectly;
-            this.KaiaDisplaysThisOnTheStore = KaiaDisplaysThisOnTheStore;
-            this.UsersCanSellThis = UsersCanSellThis;
-            this.DisplayEmote = DisplayEmoteName;
-            this.OnInteract = OnInteract;
-            this.Id = Id ?? IdGenerator.CreateNewId();
-        }
-
-        [JsonProperty("DisplayName")]
-        public string DisplayName { get; }
+        [JsonProperty(nameof(DisplayName))]
+        public string DisplayName { get; } = DisplayName;
 
         /// <summary>
         /// $"[{ExplorationStrings.Economy.CurrencyEmote} {ItemChunk.Key.MarketCost}] {ItemChunk.Key.DisplayName}"
         /// </summary>
         public string DisplayString => $"[{Strings.Economy.CurrencyEmote} `{this.MarketCost}`] {this.DisplayName}";
 
-        [JsonProperty("Description")]
-        public string Description { get; }
+        [JsonProperty(nameof(Description))]
+        public string Description { get; } = Description;
 
         [JsonProperty("Cost")]
-        public double MarketCost { get; }
+        public double MarketCost { get; } = MarketCost;
 
-        [JsonProperty("CanInteractWithDirectly")]
-        public bool CanInteractWithDirectly { get; }
+        [JsonProperty(nameof(CanInteractWithDirectly))]
+        public bool CanInteractWithDirectly { get; } = CanInteractWithDirectly;
 
-        [JsonProperty("KaiaDisplaysThisOnTheStore")]
-        public bool KaiaDisplaysThisOnTheStore { get; }
+        [JsonProperty(nameof(KaiaDisplaysThisOnTheStore))]
+        public bool KaiaDisplaysThisOnTheStore { get; } = KaiaDisplaysThisOnTheStore;
 
-        [JsonProperty("UsersCanSellThis")]
-        public bool UsersCanSellThis { get; }
+        [JsonProperty(nameof(UsersCanSellThis))]
+        public bool UsersCanSellThis { get; } = UsersCanSellThis;
 
-        [JsonProperty("DisplayEmote")]
-        public KaiaEmote DisplayEmote { get; set; }
+        [JsonProperty(nameof(DisplayEmote))]
+        public KaiaEmote DisplayEmote { get; set; } = DisplayEmoteName;
 
-        [JsonProperty("OnInteract")]
-        public KaiaItemReturnContext? OnInteract { get; protected set; }
+        [JsonProperty(nameof(OnInteract))]
+        public KaiaItemReturnContext? OnInteract { get; protected set; } = OnInteract;
 
-        [JsonProperty("Id")]
-        public ulong Id { get; set; }
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; } = Id ?? IdGenerator.CreateNewId();
 
-        [JsonProperty("ReceivedAt")]
+        [JsonProperty(nameof(ReceivedAt))]
         public DateTime? ReceivedAt { get; set; }
 
         public virtual Task OnKaiaStoreRefresh()

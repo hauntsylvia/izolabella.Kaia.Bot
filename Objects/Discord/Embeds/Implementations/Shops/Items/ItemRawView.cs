@@ -6,26 +6,17 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Items
 {
-    public class ItemRawView : KaiaPathEmbedRefreshable
+    public class ItemRawView(CommandContext Context, KaiaInventoryItem ItemA, KaiaUser U, SaleListing Listing, bool DisplayBalancesMayGoUpMessage) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, ItemA.DisplayName)
     {
-        public ItemRawView(CommandContext Context, KaiaInventoryItem ItemA, KaiaUser U, SaleListing Listing, bool DisplayBalancesMayGoUpMessage) : base(Strings.EmbedStrings.FakePaths.Global, Strings.EmbedStrings.FakePaths.StoreOrShop, ItemA.DisplayName)
-        {
-            this.Context = Context;
-            this.Item = ItemA;
-            this.U = U;
-            this.Listing = Listing;
-            this.DisplayBalancesMayGoUpMessage = DisplayBalancesMayGoUpMessage;
-        }
+        public CommandContext Context { get; } = Context;
 
-        public CommandContext Context { get; }
+        public KaiaInventoryItem Item { get; } = ItemA;
 
-        public KaiaInventoryItem Item { get; }
+        public KaiaUser U { get; } = U;
 
-        public KaiaUser U { get; }
+        public SaleListing Listing { get; } = Listing;
 
-        public SaleListing Listing { get; }
-
-        public bool DisplayBalancesMayGoUpMessage { get; }
+        public bool DisplayBalancesMayGoUpMessage { get; } = DisplayBalancesMayGoUpMessage;
 
         protected override async Task ClientRefreshAsync()
         {

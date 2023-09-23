@@ -4,20 +4,13 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Relationships;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Data.Users.Relationships.AlreadyIn
 {
-    public class MyRelationshipsPage : KaiaPathEmbedRefreshable
+    public class MyRelationshipsPage(CommandContext Context, int MaxMembersToDisplay, IEnumerable<UserRelationship> Relationships) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Relationships)
     {
-        public MyRelationshipsPage(CommandContext Context, int MaxMembersToDisplay, IEnumerable<UserRelationship> Relationships) : base(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Relationships)
-        {
-            this.Context = Context;
-            this.MaxMembersToDisplay = MaxMembersToDisplay;
-            this.Relationships = Relationships;
-        }
+        public CommandContext Context { get; } = Context;
 
-        public CommandContext Context { get; }
+        public int MaxMembersToDisplay { get; } = MaxMembersToDisplay;
 
-        public int MaxMembersToDisplay { get; }
-
-        public IEnumerable<UserRelationship> Relationships { get; }
+        public IEnumerable<UserRelationship> Relationships { get; } = Relationships;
 
         protected override Task ClientRefreshAsync()
         {

@@ -5,20 +5,13 @@ using izolabella.Kaia.Bot.Objects.KaiaStructures.Users;
 
 namespace izolabella.Kaia.Bot.Objects.Discord.Embeds.Implementations.Shops.Achievements
 {
-    public class AchievementPaginatedPage : KaiaPathEmbedRefreshable
+    public class AchievementPaginatedPage(IEnumerable<KaiaAchievement> Chunk, CommandContext Context, KaiaUser User) : KaiaPathEmbedRefreshable(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Achievements)
     {
-        public AchievementPaginatedPage(IEnumerable<KaiaAchievement> Chunk, CommandContext Context, KaiaUser User) : base(Strings.EmbedStrings.FakePaths.Users, Context.UserContext.User.Username, Strings.EmbedStrings.FakePaths.Achievements)
-        {
-            this.Chunk = Chunk;
-            this.Context = Context;
-            this.User = User;
-        }
+        public IEnumerable<KaiaAchievement> Chunk { get; } = Chunk;
 
-        public IEnumerable<KaiaAchievement> Chunk { get; }
+        public CommandContext Context { get; } = Context;
 
-        public CommandContext Context { get; }
-
-        public KaiaUser User { get; }
+        public KaiaUser User { get; } = User;
 
         protected override Task ClientRefreshAsync()
         {
